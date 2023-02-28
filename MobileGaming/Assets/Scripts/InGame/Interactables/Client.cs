@@ -26,7 +26,13 @@ public class Client : MonoBehaviour
 
     private Coroutine satisfactionRoutine;
     private WaitForSeconds satisfactionWait = new WaitForSeconds(0.1f);
-    
+
+    private void Start()
+    {
+        UpdateFeedbackImage();
+        feedbackText.text = string.Empty;
+    }
+
     public Product ReceiveProduct(Product product)
     {
         if (product.data != expectedData) return product;
@@ -57,7 +63,7 @@ public class Client : MonoBehaviour
                 StopClient();
                 yield break;
             }
-            feedbackText.text = $"{data.name} : \n {expectedData.Color} and {expectedData.Shape}";  
+            feedbackText.text = $"{data.name} : \n{expectedData.Color} and {expectedData.Shape}";  
         }
 
         IEnumerator SatisfactionRoutine()

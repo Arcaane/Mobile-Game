@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ public abstract class Machine : MonoBehaviour
     [Header("Feedback")]
     [SerializeField] private Image feedbackImage;
     [SerializeField] private GameObject feedbackObject; //TODO Make only one object (one per product), not one per machine and teleport it
+    [SerializeField] protected TextMeshProUGUI feedbackText;
     
     [Header("Production Settings")]
     [SerializeField] private float baseTimeToProduce = 5f;
@@ -18,10 +20,31 @@ public abstract class Machine : MonoBehaviour
     protected double waitDuration { get; private set; }
     protected Product currentProduct;
 
+    private void Start()
+    {
+        UpdateFeedbackObject();
+        UpdateFeedbackText(0);
+        StartFeedback();
+    }
+
+    public abstract void StartFeedback();
+
+    public virtual void LoadProduct(Product inProduct,out Product outProduct)
+    {
+        outProduct = inProduct;
+        if (workRoutine is not null) return;
+        
+        UnloadProduct(out outProduct);
+        
+        if (inProduct is not null)
+        {
+            LoadProduct(inProduct);
+        }
+    }
+    
+
     public virtual void LoadProduct(Product product)
     {
-        if(workRoutine != null) return;
-        
         currentProduct = product;
         waitDuration = baseTimeToProduce * 1f / timeMultiplier;
 
@@ -57,13 +80,9 @@ public abstract class Machine : MonoBehaviour
         workRoutine = null;
     }
 
-    public virtual void UnloadProduct(out Product product)
+    public virtual void UnloadProduct(out Product outProduct)
     {
-        product = null;
-        
-        if(workRoutine != null) return;
-        
-        product = currentProduct;
+        outProduct = currentProduct;
 
         currentProduct = null;
         

@@ -19,14 +19,14 @@ public class MachineSlot : Interactable
             return;
         }
         
-        outProduct = null;
-        if (inProduct is null)
-        {
-            machine.UnloadProduct(out outProduct);
-            return;
-        }
+        machine.LoadProduct(inProduct,out outProduct);
+        return;
         
-        machine.LoadProduct(inProduct);
+        if (inProduct is not null)
+        {
+            machine.LoadProduct(inProduct);
+        }
+        machine.UnloadProduct(out outProduct);
     }
 
 }
