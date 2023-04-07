@@ -41,6 +41,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 8c8e77a8cb521f4429d10c1bafe3750c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Opacity:
+        m_Texture: {fileID: 2800000, guid: 5ef120238475a3a47884eb1e1db9e03d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Roughness:
         m_Texture: {fileID: 2800000, guid: 98e9ba0ea0fe0ae409ffc40513513dac, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -63,6 +67,8 @@ Material:
     - _Metallic_Multiplier: 0
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Rotate: 0
+    - _Roughness_Multiplier: 0
     - _Tiling: 1
     m_Colors:
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
