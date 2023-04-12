@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,7 +12,7 @@ public class Level : MonoBehaviour
 {
     [HideInInspector,SerializeField] private float levelDuration;
     private float currentTime;
-    
+
     [HideInInspector,SerializeField] private int scoreToWin;
     private int currentScore;
     
@@ -28,6 +29,7 @@ public class Level : MonoBehaviour
     private double startTime;
     private double maxTime = 0;
 
+    private bool stopRefill;
     private bool running;
 
     private TextMeshProUGUI scoreText;
@@ -47,6 +49,7 @@ public class Level : MonoBehaviour
 
         currentTime = 0;
         currentScore = 0;
+        stopRefill = false;
         running = false;
         
         SetupQueue();
@@ -117,7 +120,7 @@ public class Level : MonoBehaviour
         availableClient.SetData(nextTiming.data);
         
         nextTiming.time += (float) maxTime;
-        queuedTimings.Enqueue(nextTiming);
+        if(!stopRefill) queuedTimings.Enqueue(nextTiming);
     }
 
     private void IncreaseTime()
@@ -126,7 +129,7 @@ public class Level : MonoBehaviour
 
         UpdateTimeUI();
         
-        TryDefeat();
+        CheckWinCondition();
     }
 
     private void UpdateTimeUI()
@@ -134,32 +137,25 @@ public class Level : MonoBehaviour
         timeText.text = $"Time Left : {(levelDuration - currentTime):f0}";
     }
 
-    private void TryDefeat()
+    private void CheckWinCondition()
     {
         if(currentTime < levelDuration) return;
-        EndLevel(0);
+
+        EndLevel((currentScore < scoreToWin) ? 0 : 1);
     }
 
-    private void IncreaseScore(int score)
+    private void IncreaseScore(ClientData data)
     {
-        currentScore += score;
+        currentScore += data.Reward;
         
         UpdateScoreUI();
-        
-        TryVictory();
     }
 
     private void UpdateScoreUI()
     {
         scoreText.text = $"$$ : {currentScore}/{scoreToWin}";
     }
-
-    private void TryVictory()
-    {
-        if(currentScore < scoreToWin) return;
-        EndLevel(1);
-    }
-
+    
     private void EndLevel(int state)
     {
         running = false;
@@ -215,6 +211,8 @@ public class Level : MonoBehaviour
                 }
             }
 
+            
+            
             EditorGUI.indentLevel++;
             for (var timingIndex = 0; timingIndex < level.clientTimings.Count; timingIndex++)
             {
@@ -224,12 +222,8 @@ public class Level : MonoBehaviour
 
                 timing.time = EditorGUILayout.FloatField("Client Time", timing.time);
                 
-                EditorGUILayout.BeginHorizontal();
-                timing.data.name = EditorGUILayout.TextField("Client Name",timing.data.name);
-                EditorGUILayout.LabelField("Points",GUILayout.Width(51));
-                timing.data.points = EditorGUILayout.IntField(timing.data.points,GUILayout.Width(150));
-                EditorGUILayout.EndHorizontal();
-                
+                timing.data.scriptableClient = EditorGUILayout.ObjectField("Client",timing.data.scriptableClient,typeof(ScriptableClient),true) as ScriptableClient;
+
                 EditorGUILayout.BeginHorizontal();
                 clientDataCount[timingIndex] = EditorGUILayout.IntField("Product Count", clientDataCount[timingIndex]);
                 if (GUILayout.Button("+", GUILayout.Width(25)))
@@ -281,7 +275,6 @@ public class Level : MonoBehaviour
             }
             EditorGUILayout.EndHorizontal();
             
-
             base.OnInspectorGUI();
             
             return;

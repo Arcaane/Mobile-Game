@@ -267,6 +267,7 @@ MonoBehaviour:
   feedbackText: {fileID: 1099597332}
   baseTimeToProduce: 5
   timeMultiplier: 1
+  outputLink: {fileID: 0}
   changeColor: 0
   targetColor: 0
   changeShape: 1
@@ -1238,6 +1239,7 @@ MonoBehaviour:
   feedbackText: {fileID: 1376198458}
   baseTimeToProduce: 5
   timeMultiplier: 1
+  outputLink: {fileID: 0}
   changeColor: 1
   targetColor: 3
   changeShape: 0
@@ -1678,6 +1680,7 @@ MonoBehaviour:
   feedbackText: {fileID: 1715943152}
   baseTimeToProduce: 5
   timeMultiplier: 1
+  outputLink: {fileID: 0}
   changeColor: 1
   targetColor: 2
   changeShape: 0
@@ -2355,12 +2358,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   feedbackImage: {fileID: 1508537761}
   feedbackText: {fileID: 1481672242}
-  baseSatisfaction: 45
-  decayPerSecond: 1
-  increaseOnProduct: 0
   data:
-    name: 
-    points: 0
+    scriptableClient: {fileID: 0}
     productDatas: []
 --- !u!1 &642153525 stripped
 GameObject:
@@ -3962,6 +3961,7 @@ MonoBehaviour:
   feedbackText: {fileID: 1933099955}
   baseTimeToProduce: 5
   timeMultiplier: 1
+  outputLink: {fileID: 0}
   changeColor: 1
   targetColor: 1
   changeShape: 0
@@ -4532,6 +4532,7 @@ MonoBehaviour:
   feedbackText: {fileID: 800256859}
   baseTimeToProduce: 5
   timeMultiplier: 1
+  outputLink: {fileID: 0}
   changeColor: 0
   targetColor: 0
   changeShape: 1
@@ -5259,10 +5260,12 @@ MonoBehaviour:
   feedbackText: {fileID: 868701372}
   baseTimeToProduce: 5
   timeMultiplier: 1
+  outputLink: {fileID: 0}
   newProduct:
     data:
       Color: 0
       Shape: 0
+  timeUntilRefresh: 2
 --- !u!114 &1275899745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6935,22 +6938,24 @@ MonoBehaviour:
   clientTimings:
   - time: 0
     data:
-      name: Yov
-      points: 1
+      scriptableClient: {fileID: 11400000, guid: e736ac2dce757b74e89f6842601db770,
+        type: 2}
       productDatas:
       - Color: 1
         Shape: 1
+      - Color: 1
+        Shape: 3
   - time: 5
     data:
-      name: Ju
-      points: 1
+      scriptableClient: {fileID: 11400000, guid: e736ac2dce757b74e89f6842601db770,
+        type: 2}
       productDatas:
       - Color: 3
         Shape: 1
   - time: 10
     data:
-      name: Clem
-      points: 1
+      scriptableClient: {fileID: 11400000, guid: e736ac2dce757b74e89f6842601db770,
+        type: 2}
       productDatas:
       - Color: 3
         Shape: 0
@@ -7061,12 +7066,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   feedbackImage: {fileID: 1145292701}
   feedbackText: {fileID: 815217097}
-  baseSatisfaction: 45
-  decayPerSecond: 1
-  increaseOnProduct: 0
   data:
-    name: 
-    points: 0
+    scriptableClient: {fileID: 0}
     productDatas: []
 --- !u!1 &1442553041 stripped
 GameObject:
@@ -7171,12 +7172,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   feedbackImage: {fileID: 133800844}
   feedbackText: {fileID: 1028529683}
-  baseSatisfaction: 45
-  decayPerSecond: 1
-  increaseOnProduct: 0
   data:
-    name: test
-    points: 0
+    scriptableClient: {fileID: 0}
     productDatas: []
 --- !u!1 &1469533062 stripped
 GameObject:
@@ -8319,6 +8316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ticksPerSecond: 60
+  settings: {fileID: 0}
 --- !u!1 &1740019795 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2148767382902434005, guid: 765d87e21ccea9240845fe62054b1e4d,
@@ -9410,6 +9408,7 @@ MonoBehaviour:
   feedbackText: {fileID: 1183731539}
   baseTimeToProduce: 5
   timeMultiplier: 1
+  outputLink: {fileID: 0}
   changeColor: 0
   targetColor: 0
   changeShape: 1
