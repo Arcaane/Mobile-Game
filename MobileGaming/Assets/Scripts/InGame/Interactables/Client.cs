@@ -33,8 +33,7 @@ public class Client : MonoBehaviour
 
     public Product ReceiveProduct(Product product)
     {
-        if (product.data != expectedData) return product;
-        
+          
         NextProduct();
         return null;
     }
@@ -56,8 +55,11 @@ public class Client : MonoBehaviour
             
             if (currentDataIndex >= data.productDatas.Length)
             {
-                InvokeEndEvents();
+                InvokeNewProductEvents();
+                
+                //Debug.Log("Stopped by new product");
                 StopClient();
+                
                 yield break;
             }
             feedbackText.text = $"{data.name} : \n{expectedData.Color} and {expectedData.Shape}";  
@@ -72,6 +74,7 @@ public class Client : MonoBehaviour
                 UpdateFeedbackImage();
             }
             
+            //Debug.Log("Stopped by satisfaction");
             StopClient();
         }
     }
@@ -83,15 +86,16 @@ public class Client : MonoBehaviour
         if(satisfactionRoutine != null) StopCoroutine(satisfactionRoutine);
         satisfactionRoutine = null;
         currentSatisfaction = 0;
+        feedbackText.text = "";
         UpdateFeedbackImage();
     }
 
-    private void InvokeEndEvents()
+    private void InvokeNewProductEvents()
     {
-        OnEnd?.Invoke(data);
+        OnNewProduct?.Invoke(data);
     }
 
-    public event Action<ClientData> OnEnd; 
+    public event Action<ClientData> OnNewProduct; 
 
     public void SetData(ClientData newData)
     {

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.SceneManagement;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -15,44 +15,39 @@ public class Level : MonoBehaviour
 
     [HideInInspector,SerializeField] private int scoreToWin;
     private int currentScore;
-    
+
     [SerializeField] private List<ClientTiming> clientTimings = new ();
 
     [Header("Setup with tool automatically")]
     public List<Client> clients = new ();
     
     private Queue<ClientTiming> queuedTimings = new ();
-    private Queue<Client> availableClients = new();
+    private Queue<Client> queuedClients = new();
 
     private ClientTiming nextTiming;
     private Client availableClient;
     private double startTime;
     private double maxTime = 0;
-
+    
     private bool stopRefill;
     private bool running;
 
     private TextMeshProUGUI scoreText;
     private TextMeshProUGUI timeText;
-
-    private void Start()
-    {
-        Setup();
-    }
-
+    
     private void Setup()
     {
         OnEndLevel = null;
         
         queuedTimings.Clear();
-        availableClients.Clear();
+        queuedClients.Clear();
 
         currentTime = 0;
         currentScore = 0;
         stopRefill = false;
         running = false;
         
-        SetupQueue();
+        SetupQueues();
         
         SubscribeClients();
         
@@ -69,7 +64,7 @@ public class Level : MonoBehaviour
         running = true;
     }
 
-    private void SetupQueue()
+    private void SetupQueues()
     {
         clientTimings.Sort();
         maxTime = 0;
@@ -78,6 +73,7 @@ public class Level : MonoBehaviour
             queuedTimings.Enqueue(clientData);
             if (maxTime < clientData.time) maxTime = clientData.time;
         }
+        Debug.Log($"Enqueued {queuedTimings.Count} timings");
     }
 
     private void SubscribeClients()
@@ -85,15 +81,36 @@ public class Level : MonoBehaviour
         foreach (var client in clients)
         {
             client.OnClientAvailable += UpdateAvailableClient;
-            client.OnEnd += IncreaseScore;
+            client.OnClientAvailable += TryEndLevel;
+            client.OnClientAvailable += IncreaseScore;
             
             UpdateAvailableClient();
             
+            void TryEndLevel()
+            {
+                if (queuedTimings.Count <= 0 && queuedClients.Count == clients.Count)
+                {
+                    Debug.Log("Ending Level");
+                    EndLevel((currentScore < scoreToWin) ? 0 : 1);
+                }
+            }
+            
             void UpdateAvailableClient()
             {
-                availableClients.Enqueue(client);
+                queuedClients.Enqueue(client);
+            }
+            
+            void IncreaseScore()
+            {
+                var data = client.data;
+        
+                currentScore += data.Reward;
+        
+                UpdateScoreUI();
             }
         }
+        
+        Debug.Log($"Enqueued {queuedClients.Count} clients");
     }
 
     public void SetUIComponents(TextMeshProUGUI newScoreText,TextMeshProUGUI newTimeText)
@@ -111,14 +128,14 @@ public class Level : MonoBehaviour
 
     private void UpdateQueue()
     {
-        if (!queuedTimings.TryPeek(out nextTiming) || !availableClients.TryPeek(out availableClient)) return;
+        if (!queuedTimings.TryPeek(out nextTiming) || !queuedClients.TryPeek(out availableClient)) return;
         
         if(Time.time - startTime < nextTiming.time) return;
         
         queuedTimings.Dequeue();
-        availableClients.Dequeue();
-        availableClient.SetData(nextTiming.data);
-        
+        queuedClients.Dequeue();
+        availableClient.SetData(nextTiming.data);  
+
         nextTiming.time += (float) maxTime;
         if(!stopRefill) queuedTimings.Enqueue(nextTiming);
     }
@@ -129,28 +146,22 @@ public class Level : MonoBehaviour
 
         UpdateTimeUI();
         
-        CheckWinCondition();
+        if(!stopRefill) TryStopRefill();
     }
 
     private void UpdateTimeUI()
     {
-        timeText.text = $"Time Left : {(levelDuration - currentTime):f0}";
+        var time = levelDuration - currentTime;
+        timeText.text = $"Time Left : {(time >= 0 ? time : 0):f0}";
     }
-
-    private void CheckWinCondition()
+    
+    private void TryStopRefill()
     {
         if(currentTime < levelDuration) return;
 
-        EndLevel((currentScore < scoreToWin) ? 0 : 1);
+        stopRefill = true;
     }
-
-    private void IncreaseScore(ClientData data)
-    {
-        currentScore += data.Reward;
-        
-        UpdateScoreUI();
-    }
-
+    
     private void UpdateScoreUI()
     {
         scoreText.text = $"$$ : {currentScore}/{scoreToWin}";
@@ -171,19 +182,26 @@ public class Level : MonoBehaviour
     {
         private int clientTimingCount;
         private int[] clientDataCount = Array.Empty<int>();
-        
+        private Level level;
+
+        private void OnEnable()
+        {
+            level = (Level)target;
+            PrefabUtility.RecordPrefabInstancePropertyModifications(level);
+        }
         public override void OnInspectorGUI()
         {
+            if (EditorApplication.isPlaying) Undo.RecordObject(level, "descriptive name of this operation");
+            
             var script = MonoScript.FromMonoBehaviour(target as MonoBehaviour);
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.ObjectField("Script", script, typeof(MonoScript), false);
             EditorGUI.EndDisabledGroup();
             
-            var level = (Level)target;
-
             EditorGUILayout.LabelField("Level Settings",EditorStyles.boldLabel);
 
             level.levelDuration = EditorGUILayout.FloatField("Level Duration", level.levelDuration);
+
             GUI.enabled = false;
             EditorGUILayout.FloatField("Current Duration", level.currentTime);
             GUI.enabled = true;
@@ -274,6 +292,22 @@ public class Level : MonoBehaviour
                 RemoveClientTiming();
             }
             EditorGUILayout.EndHorizontal();
+
+            if (!EditorApplication.isPlaying)
+            {
+                var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+                if (prefabStage != null)
+                {
+                    EditorSceneManager.MarkSceneDirty(prefabStage.scene);
+                }
+                else
+                {
+                    EditorUtility.SetDirty(level);
+                    PrefabUtility.RecordPrefabInstancePropertyModifications(this);
+                    EditorSceneManager.MarkSceneDirty(level.gameObject.scene);
+                }
+            }
+            
             
             base.OnInspectorGUI();
             
