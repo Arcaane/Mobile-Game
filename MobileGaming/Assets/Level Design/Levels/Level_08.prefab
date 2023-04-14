@@ -7080,6 +7080,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1579457894733071698}
+  - component: {fileID: 3126070242621447851}
   m_Layer: 0
   m_Name: Level_08
   m_TagString: Untagged
@@ -7107,6 +7108,104 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3126070242621447851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579457894733071697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a70c68433140d748bd40c37fb808550, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelDuration: 300
+  scoreToWin: 800
+  palier2: 1600
+  palier3: 2400
+  clientTimings:
+  - time: 0
+    data:
+      scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
+        type: 2}
+      productDatas:
+      - Color: 1
+        Shape: 0
+      - Color: 1
+        Shape: 2
+  - time: 0
+    data:
+      scriptableClient: {fileID: 11400000, guid: 93ec90eeed011be4a822e5d24496ea29,
+        type: 2}
+      productDatas:
+      - Color: 2
+        Shape: 0
+      - Color: 2
+        Shape: 2
+  - time: 0
+    data:
+      scriptableClient: {fileID: 11400000, guid: 93ec90eeed011be4a822e5d24496ea29,
+        type: 2}
+      productDatas:
+      - Color: 1
+        Shape: 2
+      - Color: 2
+        Shape: 0
+      - Color: 1
+        Shape: 0
+  - time: 0
+    data:
+      scriptableClient: {fileID: 11400000, guid: 068882ee2637de442806aad8765d5ceb,
+        type: 2}
+      productDatas:
+      - Color: 1
+        Shape: 2
+  - time: 0
+    data:
+      scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
+        type: 2}
+      productDatas:
+      - Color: 1
+        Shape: 0
+      - Color: 2
+        Shape: 2
+  - time: 0
+    data:
+      scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
+        type: 2}
+      productDatas:
+      - Color: 2
+        Shape: 0
+  - time: 0
+    data:
+      scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
+        type: 2}
+      productDatas:
+      - Color: 1
+        Shape: 0
+  - time: 0
+    data:
+      scriptableClient: {fileID: 11400000, guid: 93ec90eeed011be4a822e5d24496ea29,
+        type: 2}
+      productDatas:
+      - Color: 1
+        Shape: 2
+  - time: 0
+    data:
+      scriptableClient: {fileID: 11400000, guid: 068882ee2637de442806aad8765d5ceb,
+        type: 2}
+      productDatas:
+      - Color: 1
+        Shape: 2
+  - time: 0
+    data:
+      scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
+        type: 2}
+      productDatas:
+      - Color: 2
+        Shape: 0
+  clients: []
 --- !u!1 &1579457894739153018
 GameObject:
   m_ObjectHideFlags: 0

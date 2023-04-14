@@ -15,6 +15,8 @@ public class Level : MonoBehaviour
 
     [HideInInspector,SerializeField] private int scoreToWin;
     private int currentScore;
+    [HideInInspector,SerializeField] private float palier2;
+    [HideInInspector,SerializeField] private float palier3;
 
     [SerializeField] private List<ClientTiming> clientTimings = new ();
 
@@ -126,6 +128,7 @@ public class Level : MonoBehaviour
         IncreaseTime();
     }
 
+    //TODO - Sortir de l'update + clear la queue quand le timer arrive (y'a un truc qui marche mais ca peut etre mieu)
     private void UpdateQueue()
     {
         if (!queuedTimings.TryPeek(out nextTiming) || !queuedClients.TryPeek(out availableClient)) return;
@@ -158,7 +161,9 @@ public class Level : MonoBehaviour
     private void TryStopRefill()
     {
         if(currentTime < levelDuration) return;
-
+        
+        queuedClients.Clear();
+        
         stopRefill = true;
     }
     
@@ -209,6 +214,14 @@ public class Level : MonoBehaviour
             GUI.enabled = false;
             EditorGUILayout.IntField("Current Score", level.currentScore);
             GUI.enabled = true;
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Paliers :");
+            level.scoreToWin = EditorGUILayout.IntField(level.scoreToWin);
+            level.palier2 = EditorGUILayout.FloatField(level.palier2);
+            level.palier3 = EditorGUILayout.FloatField(level.palier3);
+            EditorGUILayout.EndHorizontal();
+
             clientTimingCount = EditorGUILayout.IntField("Client Count", level.clientTimings.Count);
 
             if (clientTimingCount != level.clientTimings.Count)
