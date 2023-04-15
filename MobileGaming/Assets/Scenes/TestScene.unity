@@ -267,6 +267,7 @@ MonoBehaviour:
   feedbackText: {fileID: 1099597332}
   baseTimeToProduce: 5
   timeMultiplier: 1
+  outputLink: {fileID: 0}
   changeColor: 0
   targetColor: 0
   changeShape: 1
@@ -1238,6 +1239,7 @@ MonoBehaviour:
   feedbackText: {fileID: 1376198458}
   baseTimeToProduce: 5
   timeMultiplier: 1
+  outputLink: {fileID: 0}
   changeColor: 1
   targetColor: 3
   changeShape: 0
@@ -1549,8 +1551,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1392171084}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &438875404
 MonoBehaviour:
@@ -1678,6 +1680,7 @@ MonoBehaviour:
   feedbackText: {fileID: 1715943152}
   baseTimeToProduce: 5
   timeMultiplier: 1
+  outputLink: {fileID: 0}
   changeColor: 1
   targetColor: 2
   changeShape: 0
@@ -2355,12 +2358,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   feedbackImage: {fileID: 1508537761}
   feedbackText: {fileID: 1481672242}
-  baseSatisfaction: 45
-  decayPerSecond: 1
-  increaseOnProduct: 0
   data:
-    name: 
-    points: 0
+    scriptableClient: {fileID: 0}
     productDatas: []
 --- !u!1 &642153525 stripped
 GameObject:
@@ -3962,6 +3961,7 @@ MonoBehaviour:
   feedbackText: {fileID: 1933099955}
   baseTimeToProduce: 5
   timeMultiplier: 1
+  outputLink: {fileID: 0}
   changeColor: 1
   targetColor: 1
   changeShape: 0
@@ -4532,6 +4532,7 @@ MonoBehaviour:
   feedbackText: {fileID: 800256859}
   baseTimeToProduce: 5
   timeMultiplier: 1
+  outputLink: {fileID: 0}
   changeColor: 0
   targetColor: 0
   changeShape: 1
@@ -5259,10 +5260,12 @@ MonoBehaviour:
   feedbackText: {fileID: 868701372}
   baseTimeToProduce: 5
   timeMultiplier: 1
+  outputLink: {fileID: 0}
   newProduct:
     data:
       Color: 0
       Shape: 0
+  timeUntilRefresh: 2
 --- !u!114 &1275899745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6729,6 +6732,72 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 5368383032514656387, guid: 765d87e21ccea9240845fe62054b1e4d,
+        type: 3}
+      propertyPath: levelDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5368383032514656387, guid: 765d87e21ccea9240845fe62054b1e4d,
+        type: 3}
+      propertyPath: clients.Array.data[0]
+      value: 
+      objectReference: {fileID: 1462151172}
+    - target: {fileID: 5368383032514656387, guid: 765d87e21ccea9240845fe62054b1e4d,
+        type: 3}
+      propertyPath: clients.Array.data[1]
+      value: 
+      objectReference: {fileID: 637799385}
+    - target: {fileID: 5368383032514656387, guid: 765d87e21ccea9240845fe62054b1e4d,
+        type: 3}
+      propertyPath: clients.Array.data[2]
+      value: 
+      objectReference: {fileID: 1427678729}
+    - target: {fileID: 5368383032514656387, guid: 765d87e21ccea9240845fe62054b1e4d,
+        type: 3}
+      propertyPath: clientTimings.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5368383032514656387, guid: 765d87e21ccea9240845fe62054b1e4d,
+        type: 3}
+      propertyPath: clientTimings.Array.data[0].time
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5368383032514656387, guid: 765d87e21ccea9240845fe62054b1e4d,
+        type: 3}
+      propertyPath: clientTimings.Array.data[1].time
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5368383032514656387, guid: 765d87e21ccea9240845fe62054b1e4d,
+        type: 3}
+      propertyPath: clientTimings.Array.data[2].time
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5368383032514656387, guid: 765d87e21ccea9240845fe62054b1e4d,
+        type: 3}
+      propertyPath: clientTimings.Array.data[3].time
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5368383032514656387, guid: 765d87e21ccea9240845fe62054b1e4d,
+        type: 3}
+      propertyPath: clientTimings.Array.data[3].data.scriptableClient
+      value: 
+      objectReference: {fileID: 11400000, guid: e736ac2dce757b74e89f6842601db770,
+        type: 2}
+    - target: {fileID: 5368383032514656387, guid: 765d87e21ccea9240845fe62054b1e4d,
+        type: 3}
+      propertyPath: clientTimings.Array.data[3].data.productDatas.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5368383032514656387, guid: 765d87e21ccea9240845fe62054b1e4d,
+        type: 3}
+      propertyPath: clientTimings.Array.data[3].data.productDatas.Array.data[0].Color
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5368383032514656387, guid: 765d87e21ccea9240845fe62054b1e4d,
+        type: 3}
+      propertyPath: clientTimings.Array.data[3].data.productDatas.Array.data[0].Shape
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 765d87e21ccea9240845fe62054b1e4d, type: 3}
 --- !u!1 &1375868554 stripped
@@ -6885,79 +6954,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1376198456}
   m_CullTransparentMesh: 1
---- !u!1 &1392171083
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1392171084}
-  - component: {fileID: 1392171085}
-  m_Layer: 0
-  m_Name: Level
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1392171084
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1392171083}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
-  m_Children:
-  - {fileID: 438875403}
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1392171085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1392171083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a70c68433140d748bd40c37fb808550, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelDuration: 120
-  scoreToWin: 10
-  clientTimings:
-  - time: 0
-    data:
-      name: Yov
-      points: 1
-      productDatas:
-      - Color: 1
-        Shape: 1
-  - time: 5
-    data:
-      name: Ju
-      points: 1
-      productDatas:
-      - Color: 3
-        Shape: 1
-  - time: 10
-    data:
-      name: Clem
-      points: 1
-      productDatas:
-      - Color: 3
-        Shape: 0
-  clients:
-  - {fileID: 1462151172}
-  - {fileID: 637799385}
-  - {fileID: 1427678729}
 --- !u!1 &1393383317 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2148767383388997975, guid: 765d87e21ccea9240845fe62054b1e4d,
@@ -7061,12 +7057,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   feedbackImage: {fileID: 1145292701}
   feedbackText: {fileID: 815217097}
-  baseSatisfaction: 45
-  decayPerSecond: 1
-  increaseOnProduct: 0
   data:
-    name: 
-    points: 0
+    scriptableClient: {fileID: 0}
     productDatas: []
 --- !u!1 &1442553041 stripped
 GameObject:
@@ -7171,12 +7163,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   feedbackImage: {fileID: 133800844}
   feedbackText: {fileID: 1028529683}
-  baseSatisfaction: 45
-  decayPerSecond: 1
-  increaseOnProduct: 0
   data:
-    name: test
-    points: 0
+    scriptableClient: {fileID: 0}
     productDatas: []
 --- !u!1 &1469533062 stripped
 GameObject:
@@ -8319,6 +8307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ticksPerSecond: 60
+  settings: {fileID: 11400000, guid: bae39384a5c99a24e97585a21b785c2b, type: 2}
 --- !u!1 &1740019795 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2148767382902434005, guid: 765d87e21ccea9240845fe62054b1e4d,
@@ -9410,6 +9399,7 @@ MonoBehaviour:
   feedbackText: {fileID: 1183731539}
   baseTimeToProduce: 5
   timeMultiplier: 1
+  outputLink: {fileID: 0}
   changeColor: 0
   targetColor: 0
   changeShape: 1

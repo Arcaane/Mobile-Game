@@ -13,13 +13,9 @@ public class Client : MonoBehaviour
     [Header("Feedback")]
     [SerializeField] private Image feedbackImage;
     [SerializeField] private TextMeshProUGUI feedbackText;
-
-    [Header("Satisfaction Settings")]
-    public float baseSatisfaction = 45f;
-    private float currentSatisfaction = 0;
-    [SerializeField] private float decayPerSecond = 1f;
-    [SerializeField] private float increaseOnProduct;
     
+    private float currentSatisfaction = 0;
+
     [HideInInspector] public ClientData data;
     private ProductData expectedData => data.productDatas[currentDataIndex];
     
@@ -37,8 +33,7 @@ public class Client : MonoBehaviour
 
     public Product ReceiveProduct(Product product)
     {
-        if (product.data != expectedData) return product;
-        
+          
         NextProduct();
         return null;
     }
@@ -46,7 +41,7 @@ public class Client : MonoBehaviour
     private void NextProduct()
     {
         currentDataIndex++;
-        currentSatisfaction = baseSatisfaction;
+        currentSatisfaction = data.Satisfaction;
         
         feedbackText.text = "Yay";
         
@@ -60,8 +55,11 @@ public class Client : MonoBehaviour
             
             if (currentDataIndex >= data.productDatas.Length)
             {
-                InvokeEndEvents();
+                InvokeNewProductEvents();
+                
+                //Debug.Log("Stopped by new product");
                 StopClient();
+                
                 yield break;
             }
             feedbackText.text = $"{data.name} : \n{expectedData.Color} and {expectedData.Shape}";  
@@ -72,30 +70,32 @@ public class Client : MonoBehaviour
             while (currentSatisfaction > 0)
             {
                 yield return satisfactionWait;
-                currentSatisfaction -= 0.1f * decayPerSecond;
+                currentSatisfaction -= 0.1f * data.SatisfactionDecayPerSecond;
                 UpdateFeedbackImage();
             }
             
+            //Debug.Log("Stopped by satisfaction");
             StopClient();
         }
     }
 
-    public void StopClient()
+    private void StopClient()
     {
         OnClientAvailable?.Invoke();
         
         if(satisfactionRoutine != null) StopCoroutine(satisfactionRoutine);
         satisfactionRoutine = null;
         currentSatisfaction = 0;
+        feedbackText.text = "";
         UpdateFeedbackImage();
     }
 
-    private void InvokeEndEvents()
+    private void InvokeNewProductEvents()
     {
-        OnEnd?.Invoke(data.points);
+        OnNewProduct?.Invoke(data);
     }
 
-    public event Action<int> OnEnd; 
+    public event Action<ClientData> OnNewProduct; 
 
     public void SetData(ClientData newData)
     {
@@ -107,9 +107,13 @@ public class Client : MonoBehaviour
 
     public event Action OnClientAvailable;
 
-    public void UpdateFeedbackImage()
+    private void UpdateFeedbackImage()
     {
-        feedbackImage.fillAmount = currentSatisfaction / baseSatisfaction;
+        if (data.scriptableClient is null)
+        {
+            return;
+        }
+        feedbackImage.fillAmount = currentSatisfaction / data.Satisfaction;
     }
     
 #if UNITY_EDITOR
@@ -127,8 +131,7 @@ public class Client : MonoBehaviour
             EditorGUILayout.LabelField("Product Settings",EditorStyles.boldLabel);
             
             EditorGUILayout.BeginHorizontal();
-            client.data.name = EditorGUILayout.TextField("Client Name",client.data.name);
-            client.data.points = EditorGUILayout.IntField("Points",client.data.points);
+            client.data.scriptableClient = EditorGUILayout.ObjectField("Client", client.data.scriptableClient,typeof(ScriptableClient),true) as ScriptableClient;
             EditorGUILayout.EndHorizontal();
             
             productDataCount = EditorGUILayout.IntField("Product Count", productDataCount);
@@ -177,7 +180,12 @@ public class Client : MonoBehaviour
 [Serializable]
 public struct ClientData
 {
-    public string name;
-    public int points;
+    public string name => scriptableClient.DisplayName;
+    public ScriptableClient scriptableClient;
     public ProductData[] productDatas;
+
+    public float Satisfaction => scriptableClient.BaseTimer + (productDatas.Length > 1 ? (productDatas.Length - 1) * scriptableClient.IncrementalTimer : 0);
+
+    public float SatisfactionDecayPerSecond => scriptableClient.TimerDecayPerSecond;
+    public int Reward => scriptableClient.BaseReward + (productDatas.Length > 1 ? (productDatas.Length - 1) * scriptableClient.IncrementalReward : 0);
 }
