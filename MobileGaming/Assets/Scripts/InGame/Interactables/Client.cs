@@ -136,7 +136,10 @@ public class Client : MonoBehaviour
             
             productDataCount = EditorGUILayout.IntField("Product Count", productDataCount);
 
+            if (client.data.scriptableClient is null) return;
+            
             var currentLenght = client.data.productDatas.Length;
+            
             if (currentLenght != productDataCount)
             {
                 var data = new ProductData[productDataCount];

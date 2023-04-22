@@ -4760,6 +4760,7 @@ GameObject:
   - component: {fileID: 1579457894389045322}
   - component: {fileID: 1579457894389045321}
   - component: {fileID: 1579457894389045320}
+  - component: {fileID: 3209752796188422707}
   m_Layer: 7
   m_Name: Client(Clone)
   m_TagString: Untagged
@@ -4859,7 +4860,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34d1a2b70b2a32e47b8296a803fcc353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <client>k__BackingField: {fileID: 0}
+  <client>k__BackingField: {fileID: 3209752796188422707}
+--- !u!114 &3209752796188422707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579457894389045326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d558eb498335be49887bab1e383e696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  feedbackImage: {fileID: 0}
+  feedbackText: {fileID: 0}
+  data:
+    scriptableClient: {fileID: 0}
+    productDatas: []
 --- !u!1 &1579457894399156766
 GameObject:
   m_ObjectHideFlags: 0
@@ -7205,7 +7223,10 @@ MonoBehaviour:
       productDatas:
       - Color: 2
         Shape: 0
-  clients: []
+  clients:
+  - {fileID: 3209752796188422707}
+  - {fileID: 1628483503054490568}
+  - {fileID: 4967948368388337983}
 --- !u!1 &1579457894739153018
 GameObject:
   m_ObjectHideFlags: 0
@@ -7587,6 +7608,7 @@ GameObject:
   - component: {fileID: 1579457894797023323}
   - component: {fileID: 1579457894797023322}
   - component: {fileID: 1579457894797023321}
+  - component: {fileID: 4967948368388337983}
   m_Layer: 7
   m_Name: Client(Clone)
   m_TagString: Untagged
@@ -7686,7 +7708,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34d1a2b70b2a32e47b8296a803fcc353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <client>k__BackingField: {fileID: 0}
+  <client>k__BackingField: {fileID: 4967948368388337983}
+--- !u!114 &4967948368388337983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579457894797023327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d558eb498335be49887bab1e383e696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  feedbackImage: {fileID: 0}
+  feedbackText: {fileID: 0}
+  data:
+    scriptableClient: {fileID: 0}
+    productDatas: []
 --- !u!1 &1579457894811682076
 GameObject:
   m_ObjectHideFlags: 0
@@ -11008,6 +11047,7 @@ GameObject:
   - component: {fileID: 1579457895504601882}
   - component: {fileID: 1579457895504601881}
   - component: {fileID: 1579457895504601880}
+  - component: {fileID: 1628483503054490568}
   m_Layer: 7
   m_Name: Client(Clone)
   m_TagString: Untagged
@@ -11107,7 +11147,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34d1a2b70b2a32e47b8296a803fcc353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <client>k__BackingField: {fileID: 0}
+  <client>k__BackingField: {fileID: 1628483503054490568}
+--- !u!114 &1628483503054490568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579457895504601886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d558eb498335be49887bab1e383e696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  feedbackImage: {fileID: 0}
+  feedbackText: {fileID: 0}
+  data:
+    scriptableClient: {fileID: 0}
+    productDatas: []
 --- !u!1 &1579457895505428691
 GameObject:
   m_ObjectHideFlags: 0
