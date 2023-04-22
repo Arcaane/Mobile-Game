@@ -14,7 +14,6 @@ public class Compositor : MonoBehaviour
 {
     [SerializeField] private float ticksPerSecond = 60;
     [SerializeField] private ScriptableSettings settings;
-    public static ScriptableSettings Settings { get; private set; }
     private double currentTime = 0;
     
     protected struct FieldEntry
@@ -229,9 +228,7 @@ public class Compositor : MonoBehaviour
     // Add Services Here
     private void CreateAndWireObjects()
     {
-        Settings = settings;
-        
-        AddService<IGameService>(new GameService());
+        AddService<IGameService>(new GameService(settings));
         
         AddService<IInputService>(new InputService());
         

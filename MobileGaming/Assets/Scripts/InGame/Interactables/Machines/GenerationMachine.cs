@@ -21,7 +21,7 @@ public class GenerationMachine : Machine
 
     public override void StartFeedback()
     {
-        feedbackText.text = $"{newProduct}";
+        if(feedbackText != null) feedbackText.text = $"{newProduct}";
     }
 
     public override bool IsValidInputProduct(Product product)
