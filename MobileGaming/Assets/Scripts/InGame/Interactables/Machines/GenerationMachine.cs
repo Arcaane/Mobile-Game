@@ -38,7 +38,12 @@ public class GenerationMachine : Machine
     {
         product = newProduct;
     }
-    
+
+    public override Product GetInformationOnMachineProduct()
+    {
+        return newProduct;
+    }
+
 #if UNITY_EDITOR
     [CustomEditor(typeof(GenerationMachine)),CanEditMultipleObjects]
     public class GenerationMachineProductEditor : Editor
