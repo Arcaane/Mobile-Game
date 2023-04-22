@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class LevelInitializer : MonoBehaviour
@@ -29,7 +30,12 @@ public class LevelInitializer : MonoBehaviour
             {
                 //c = levelStringKey[blockIndex];
                 c = separatedStringKey[3][blockIndex];
-                GameObject GO = Instantiate(SetBlockByChar(c), new Vector3(x, 0, y), Quaternion.identity, transform);
+
+                var go = PrefabUtility.InstantiatePrefab(SetBlockByChar(c), transform) as GameObject;
+
+                if (go != null) go.transform.SetPositionAndRotation(new Vector3(x, 0, y), Quaternion.identity);
+
+                //GameObject GO = Instantiate(SetBlockByChar(c), new Vector3(x, 0, y), Quaternion.identity, transform);
                 blockIndex++;
             }
         }
