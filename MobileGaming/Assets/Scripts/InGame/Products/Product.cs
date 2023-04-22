@@ -10,6 +10,12 @@ public class Product
         this.data = data;
     }
 
+    public Product(ProductColor color, ProductShape shape)
+    {
+        data.Color = color;
+        data.Shape = shape;
+    }
+    
     public override string ToString()
     {
         return $"{data.Color} and {data.Shape} Product";
@@ -45,7 +51,7 @@ public struct ProductData
     }
 }
 
-public enum ProductShape {Basic, Moon, Flash, Star} 
-public enum ProductColor {Transparent, Red, Blue, Yellow}
+public enum ProductShape {Hearth, Moon, Cross}
+public enum ProductColor {Transparent, Red, Blue, Green}
 
 

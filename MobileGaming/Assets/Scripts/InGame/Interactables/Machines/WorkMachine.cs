@@ -29,7 +29,15 @@ public class WorkMachine : Machine
         if (changeColor) currentProduct.data.Color = targetColor;
         if (changeShape) currentProduct.data.Shape = targetShape;
     }
-    
+
+    public override Product GetInformationOnMachineProduct()
+    {
+        /* var productData = new ProductData();
+        productData.Color = targetColor;
+        productData.Shape = targetShape; */
+        return new Product(targetColor, targetShape);
+    }
+
 #if UNITY_EDITOR
     [CustomEditor(typeof(WorkMachine)),CanEditMultipleObjects]
     public class WorkMachineProductEditor : Editor

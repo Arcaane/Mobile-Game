@@ -125,4 +125,5 @@ public abstract class Machine : MonoBehaviour
         LoadProduct(_product);
     }
 
+    public abstract Product GetInformationOnMachineProduct();
 }
