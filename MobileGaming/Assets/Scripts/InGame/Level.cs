@@ -40,6 +40,17 @@ public class Level : MonoBehaviour
     private TextMeshProUGUI scoreText;
     private TextMeshProUGUI timeText;
     
+    public void Run()
+    {
+        Setup();
+        
+        UpdateTimeUI();
+        UpdateScoreUI();
+        
+        running = true;
+    }
+    
+    
     private void Setup()
     {
         OnEndLevel = null;
@@ -58,17 +69,7 @@ public class Level : MonoBehaviour
         
         startTime = Time.time;
     }
-
-    public void Run()
-    {
-        Setup();
-        
-        UpdateTimeUI();
-        UpdateScoreUI();
-        
-        running = true;
-    }
-
+    
     private void SetupQueues()
     {
         clientTimings.Sort();
@@ -109,7 +110,7 @@ public class Level : MonoBehaviour
             {
                 var data = client.data;
         
-                currentScore += data.Reward;
+                if(client.Satisfaction > 0) currentScore += data.Reward;
         
                 UpdateScoreUI();
             }

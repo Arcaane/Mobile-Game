@@ -15,6 +15,7 @@ public class Client : MonoBehaviour
     [SerializeField] private TextMeshProUGUI feedbackText;
     
     private float currentSatisfaction = 0;
+    public float Satisfaction => currentSatisfaction;
 
     [HideInInspector] public ClientData data;
     private ProductData expectedData => data.productDatas[currentDataIndex];
@@ -57,7 +58,6 @@ public class Client : MonoBehaviour
             {
                 InvokeNewProductEvents();
                 
-                //Debug.Log("Stopped by new product");
                 StopClient();
                 
                 yield break;
@@ -74,7 +74,6 @@ public class Client : MonoBehaviour
                 UpdateFeedbackImage();
             }
             
-            //Debug.Log("Stopped by satisfaction");
             StopClient();
         }
     }
