@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
-public class Client : MonoBehaviour
+public class Client : Interactable
 {
     [Header("Feedback")]
     [SerializeField] private Image feedbackImage;
@@ -16,6 +16,7 @@ public class Client : MonoBehaviour
     
     private float currentSatisfaction = 0;
     public float Satisfaction => currentSatisfaction;
+    private bool canReceiveProduct = false;
 
     [HideInInspector] public ClientData data;
     private ProductData expectedData => data.productDatas[currentDataIndex];
@@ -30,6 +31,24 @@ public class Client : MonoBehaviour
     {
         UpdateFeedbackImage();
         feedbackText.text = string.Empty;
+    }
+    
+    public override void Interact(Product inProduct, out Product outProduct)
+    {
+        if (!canReceiveProduct)
+        {
+            outProduct = inProduct;
+            return;
+        }
+        
+        outProduct = inProduct;
+        
+        if (inProduct is null)
+        {
+            return;
+        }
+
+        outProduct = ReceiveProduct(inProduct);
     }
 
     public Product ReceiveProduct(Product product)
@@ -50,8 +69,10 @@ public class Client : MonoBehaviour
         
         IEnumerator NewProductDelayRoutine()
         {
+            canReceiveProduct = false;
             yield return new WaitForSeconds(0.5f); // TODO - prob mettre l'expected data a null pendant cette periode
-
+            canReceiveProduct = true;
+            
             satisfactionRoutine = StartCoroutine(SatisfactionRoutine());
             
             if (currentDataIndex >= data.productDatas.Length)
