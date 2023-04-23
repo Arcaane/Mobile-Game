@@ -7,11 +7,13 @@ public abstract class Interactable : MonoBehaviour
 
     public void EnterRange()
     {
+        Debug.Log("Enter");
         OnRangeEnter?.Invoke(this);
     }
 
     public void ExitRange()
     {
+        Debug.Log("Exit");
         OnRangeExit?.Invoke(this);
     }
     

@@ -125,6 +125,7 @@ namespace Service
             }
 
             level = Object.Instantiate(settings.Levels[currentLevel],levelParent);
+            level.transform.position = level.LevelPosition;
             
             level.SetUIComponents(sorcererController.scoreText,sorcererController.timeLeftText);
             level.OnEndLevel += UpdateEndGameText;
