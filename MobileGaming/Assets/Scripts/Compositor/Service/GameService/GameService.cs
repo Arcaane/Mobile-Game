@@ -11,9 +11,12 @@ namespace Service
     {
         [DependsOnService] private ISceneService sceneService;
         [DependsOnService] private IInputService inputService;
+        private ScriptableSettings settings;
 
+        private Transform levelParent;
+        private int currentLevel;
+        
         private SorcererController sorcererController;
-        private MachineManager machineManager;
         private Level level;
         
         private Product currentProduct; // TODO - multiple products (product slot class list)
@@ -23,6 +26,11 @@ namespace Service
         private GameObject endGameCanvasGo;
         private TextMeshProUGUI currentProductText;
         private TextMeshProUGUI endGameText;
+
+        public GameService(ScriptableSettings baseSettings)
+        {
+            settings = baseSettings;
+        }
 
         [ServiceInit]
         public void InitGame()
@@ -37,8 +45,6 @@ namespace Service
 
         private void LoadGame()
         {
-            machineManager.InitMachines();
-
             Interactable.ResetEvents();
             Interactable.OnRangeEnter += OnInteractableEnter;
             Interactable.OnRangeExit += OnInteractableExit;
@@ -81,21 +87,52 @@ namespace Service
 
                     sorcererController.OnInteract += InteractWithInteractable;
 
-                    machineManager = Object.FindObjectOfType<MachineManager>(); // TODO - load it before, with the level layout
-                    level = Object.FindObjectOfType<Level>(); // TODO - load it before, with the level layout
-
+                    levelParent = new GameObject().transform;
+                    
                     currentProductText = sorcererController.currentProductText;
                     endGameText = sorcererController.endGameText;
                     endGameCanvasGo = sorcererController.endGameCanvasGo;
                     
                     sorcererController.endGameButton.onClick.AddListener(RestartGame);
-                    
-                    level.SetUIComponents(sorcererController.scoreText,sorcererController.timeLeftText);
-                    level.OnEndLevel += UpdateEndGameText;
+
+                    currentLevel = settings.DefaultStartIndex;
+                    NextLevel();
                     
                     LoadGame();
                 }
             }
+        }
+
+        private void NextLevel(int _)
+        {
+            NextLevel();
+        }
+
+        private void NextLevel()
+        {
+            if (levelParent.childCount > 0)
+            {
+                for (int i = levelParent.childCount - 1; i >= 0; i--)
+                {
+                    Object.Destroy(levelParent.GetChild(i).gameObject);
+                }
+            }
+
+            if (level != null)
+            {
+                level.OnEndLevel -= UpdateEndGameText;
+                level.OnEndLevel -= NextLevel;
+            }
+
+            level = Object.Instantiate(settings.Levels[currentLevel],levelParent);
+            level.transform.position = level.LevelPosition;
+            
+            level.SetUIComponents(sorcererController.scoreText,sorcererController.timeLeftText);
+            level.OnEndLevel += UpdateEndGameText;
+            level.OnEndLevel += NextLevel;
+
+            currentLevel++;
+            if (currentLevel >= settings.Levels.Length) currentLevel = 0;
         }
 
         private void InteractWithInteractable()

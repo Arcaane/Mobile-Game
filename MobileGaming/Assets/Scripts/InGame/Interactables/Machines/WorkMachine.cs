@@ -13,7 +13,7 @@ public class WorkMachine : Machine
 
     public override void StartFeedback()
     {
-        feedbackText.text = $"{(changeColor ? targetColor : string.Empty)}{(changeShape ? targetShape : string.Empty)}";
+        if(feedbackText != null) feedbackText.text = $"{(changeColor ? targetColor : string.Empty)}{(changeShape ? targetShape : string.Empty)}";
     }
 
     public override bool IsValidInputProduct(Product product)

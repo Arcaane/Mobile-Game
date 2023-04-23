@@ -10,6 +10,9 @@ using UnityEditor;
 
 public class Level : MonoBehaviour
 {
+    private Vector3 levelPosition;
+    [field:HideInInspector,SerializeField] public Vector3 LevelPosition { get; private set; }
+    
     [HideInInspector,SerializeField] private float levelDuration;
     private float currentTime;
 
@@ -204,6 +207,8 @@ public class Level : MonoBehaviour
             EditorGUI.EndDisabledGroup();
             
             EditorGUILayout.LabelField("Level Settings",EditorStyles.boldLabel);
+
+            level.LevelPosition = EditorGUILayout.Vector3Field("Level Position", level.LevelPosition);
 
             level.levelDuration = EditorGUILayout.FloatField("Level Duration", level.levelDuration);
 
