@@ -138,7 +138,7 @@ public class MagicLinesManager : MonoBehaviour
     
     private void LinkMachines()
     {
-        if (!currentLineInDrawning.GetComponent<DrawMagicLine>().isLinkable) return;
+        // if (!currentLineInDrawning.GetComponent<DrawMagicLine>().isLinkable) return;
 
         Debug.Log($"Les machines {m1} & {m2} sont link");
         currentMana -= 1;
@@ -146,7 +146,7 @@ public class MagicLinesManager : MonoBehaviour
         StartCoroutine(RecoverMana(timeToRecoverMana));
     }
 
-    private Machine? GetClickMachine(Vector2 mousePos)
+    private Machine GetClickMachine(Vector2 mousePos)
     {
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
         return Physics.Raycast(ray, out hit, machineLayerMask) ? hit.collider.gameObject.GetComponent<Machine>() : null;
@@ -177,15 +177,15 @@ public class MagicLinesManager : MonoBehaviour
     private Vector3 p2;
     private void CreateMagicLine()
     {
-        var GO = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
-        LineRenderer lr = GO.GetComponent<LineRenderer>();
+        var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
+        LineRenderer lr = magicLineGo.GetComponent<LineRenderer>();
         
         MachineLink machineLink = lr.GetComponent<MachineLink>();
         magicLinks.Add(machineLink);
         
         machineLink.machinesInLinks.Add(m1);
-        m1.OnEndWork += machineLink.TakeProductFromMachine; 
-        
+        m1.OnEndWork += machineLink.TakeProductFromMachine;
+
         machineLink.machinesInLinks.Add(m2);
 
         m1.outputLink = machineLink;
@@ -196,6 +196,26 @@ public class MagicLinesManager : MonoBehaviour
         Debug.DrawLine(new Vector3(p1.x, .5f, p1.z), new Vector3(p2.x, .5f, p2.z), Color.green, 20f);
         var start = new Vector3(p1.x, .5f, p1.z);
         var end = new Vector3(p2.x, .5f, p2.z);
+
+
+        var hits = (Physics.RaycastAll(
+            start,
+            end - start,
+            Vector3.Distance(start, end),
+            LayerMask.NameToLayer("Link")));
+
+        if (hits.Length > 0)
+        {
+            foreach (var t in hits)
+            {
+                var hitLink = t.transform.GetComponent<MachineLink>();
+                if (hitLink != null)
+                {
+                    machineLink.AddDependency(hitLink);
+                    machineLink.enabled = false;
+                }
+            }
+        }
         
         if (Physics.Raycast(
                 start, 
@@ -204,8 +224,6 @@ public class MagicLinesManager : MonoBehaviour
                 LayerMask.NameToLayer("Link")))
         {
             Debug.Log("Touche un autre lien au raycast");
-            Destroy(GO);
-            return;
         }
         
         points = new[] { p1, p2 };
@@ -235,7 +253,7 @@ public class MagicLinesManager : MonoBehaviour
     }
     
     private Coroutine drawing;
-    // Update is called once per frame
+    
     void Update()
     {
         if (!isDraging && !isInMagicMode) return;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,13 +21,34 @@ public class MachineLink : MonoBehaviour
 
     public Sprite[] bottleShapesSprites;
     public Sprite[] bottleContentSprites;
+
+    private List<MachineLink> depentLinks = new List<MachineLink>();
+        
     #endregion
 
     private void Start()
     {
         myMaterial = GetComponent<LineRenderer>().material;
         productInTreatment = machinesInLinks[0].GetInformationOnMachineProduct();
+        depentLinks.Clear();
         SetUIProduct();
+    }
+
+    public void AddDependency(MachineLink machineLink)
+    {
+        if(depentLinks.Contains(machineLink)) return;
+        
+        depentLinks.Add(machineLink);
+        
+        machineLink.OnDestroyed += RemoveDependency;
+        
+        void RemoveDependency()
+        {
+            if(!depentLinks.Contains(machineLink)) return;
+            depentLinks.Remove(machineLink);
+            if(depentLinks.Count > 0) return;
+            enabled = true;
+        }
     }
 
     
@@ -91,6 +113,9 @@ public class MachineLink : MonoBehaviour
     {
         machinesInLinks[1].ReceiveProductFromLink(productInTreatment);
         productInTreatment = null;
+        
+        //TODO - Destroy Machine
+        RaiseOnDestroyedEvent();
     }
 
     private void Feedback()
@@ -127,6 +152,13 @@ public class MachineLink : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         Destroy(other.gameObject);
+    }
+
+    public event Action OnDestroyed;
+
+    public void RaiseOnDestroyedEvent()
+    {
+        OnDestroyed?.Invoke();
     }
 
     #endregion
