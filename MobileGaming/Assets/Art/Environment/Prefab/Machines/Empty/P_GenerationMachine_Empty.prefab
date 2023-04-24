@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8863337194420465959}
   - component: {fileID: 7321364294549279913}
   - component: {fileID: 5982880247390205783}
+  - component: {fileID: 9208496105784065306}
   m_Layer: 7
   m_Name: P_GenerationMachine_Empty
   m_TagString: Untagged
@@ -70,6 +71,19 @@ MonoBehaviour:
       Color: 0
       Shape: 0
   timeUntilRefresh: 2
+--- !u!135 &9208496105784065306
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4011043854238429436}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7457948869411325158
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,7 +101,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1790599204340593727
 Transform:
   m_ObjectHideFlags: 0
@@ -115,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 7321364294549279913}
+  <interactable>k__BackingField: {fileID: 0}
 --- !u!135 &2300306682904596933
 SphereCollider:
   m_ObjectHideFlags: 0

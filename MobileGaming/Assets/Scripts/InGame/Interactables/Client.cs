@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
-public class Client : Interactable
+public class Client : Interactable, ILinkable
 {
     [Header("Feedback")]
     [SerializeField] private Image feedbackImage;
@@ -32,6 +32,25 @@ public class Client : Interactable
         UpdateFeedbackImage();
         feedbackText.text = string.Empty;
     }
+    
+    public Transform tr => transform;
+    public void Ping()
+    {
+        
+    }
+
+    public void Output(out Product product)
+    {
+        throw new NotImplementedException();
+    }
+
+    public event Action<Product> OnOutput;
+    public void Input(Product product)
+    {
+        throw new NotImplementedException();
+    }
+
+    public event Action<Product> OnInput;
     
     public override void Interact(Product inProduct, out Product outProduct)
     {

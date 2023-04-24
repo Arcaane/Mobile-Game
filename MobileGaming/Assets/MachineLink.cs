@@ -10,8 +10,11 @@ public class MachineLink : MonoBehaviour
     //public TextMeshProUGUI debugPercentageText;
     public Transform debugImage;
     private DrawMagicLine lineInCollision;
-    public List<Machine> machinesInLinks;
+    public List<Machine> Linkables;
     public Material myMaterial;
+
+    private ILinkable startLinkable;
+    private ILinkable endLinkable;
     
     // Magic Transportation
     private Product productInTreatment;
@@ -29,9 +32,45 @@ public class MachineLink : MonoBehaviour
     private void Start()
     {
         myMaterial = GetComponent<LineRenderer>().material;
-        productInTreatment = machinesInLinks[0].GetInformationOnMachineProduct();
+        
+        // productInTreatment = Linkables[0].GetInformationOnMachineProduct();
+        
         depentLinks.Clear();
+        
         SetUIProduct();
+    }
+    
+    private void Update()
+    {
+        return;
+        
+        if (Linkables[1].currentProduct != null) return; //place dispo a destination
+        
+        if(productInTreatment == null) return; //place dispo sur moi
+        
+        currentTimer += Time.deltaTime;
+        if (currentTimer > timeToCompleteTransportation)
+        {
+            DeliverProductIntoMachine();
+            currentTimer = 0;
+        }
+        
+        Feedback();
+    }
+
+    public void SetLinks(ILinkable startLink,ILinkable endLink)
+    {
+        Debug.Log($"Linking {startLink} to {endLink}");
+        
+        startLinkable = startLink;
+        endLinkable = endLink;
+        
+        startLinkable.OnOutput += TryInputOutput;
+
+        void TryInputOutput(Product outProduct)
+        {
+            endLinkable.Input(outProduct);
+        }
     }
 
     public void AddDependency(MachineLink machineLink)
@@ -53,6 +92,8 @@ public class MachineLink : MonoBehaviour
     
     private void SetUIProduct()
     {
+        return;
+        
         // Forme de la bouteille
         switch (productInTreatment.data.Shape)
         {
@@ -86,30 +127,14 @@ public class MachineLink : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (machinesInLinks[1].currentProduct != null) return; //place dispo a destination
-        
-        if(productInTreatment == null) return; //place dispo sur moi
-        
-        currentTimer += Time.deltaTime;
-        if (currentTimer > timeToCompleteTransportation)
-        {
-            DeliverProductIntoMachine();
-            currentTimer = 0;
-        }
-        
-        Feedback();
-    }
-
     public void TakeProductFromMachine()
     {
-        machinesInLinks[0].UnloadProduct(out productInTreatment);
+        Linkables[0].UnloadProduct(out productInTreatment);
     }
     
     private void DeliverProductIntoMachine()
     {
-        machinesInLinks[1].ReceiveProductFromLink(productInTreatment);
+        Linkables[1].ReceiveProductFromLink(productInTreatment);
         productInTreatment = null;
         
         //TODO - Destroy Machine
@@ -122,8 +147,8 @@ public class MachineLink : MonoBehaviour
         itemProgression =  (int)((currentTimer / timeToCompleteTransportation) * 100);
         myMaterial.SetFloat("_FilingValue", 1 - currentTimer / timeToCompleteTransportation);
         
-        debugImage.position = Vector3.Lerp(machinesInLinks[0].transform.position + Vector3.up, 
-            machinesInLinks[1].transform.position + Vector3.up, currentTimer / timeToCompleteTransportation);
+        debugImage.position = Vector3.Lerp(Linkables[0].transform.position + Vector3.up, 
+            Linkables[1].transform.position + Vector3.up, currentTimer / timeToCompleteTransportation);
         
     }
 

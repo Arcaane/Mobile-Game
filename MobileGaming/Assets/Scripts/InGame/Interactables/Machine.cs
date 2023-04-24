@@ -2,10 +2,9 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
-public abstract class Machine : MonoBehaviour
+public abstract class Machine : MonoBehaviour, ILinkable
 {
     [Header("Feedback")]
     [SerializeField] private Image feedbackImage;
@@ -16,6 +15,7 @@ public abstract class Machine : MonoBehaviour
     [SerializeField] private float baseTimeToProduce = 5f;
     [SerializeField] private float timeMultiplier = 1f;
     
+    public Transform tr => transform;
     private Coroutine workRoutine;
     
     protected double timer { get; private set; }
@@ -126,4 +126,21 @@ public abstract class Machine : MonoBehaviour
     }
 
     public abstract Product GetInformationOnMachineProduct();
+    public void Ping()
+    {
+        
+    }
+
+    public void Output(out Product product)
+    {
+        UnloadProduct(out product);
+    }
+
+    public event Action<Product> OnOutput;
+    public void Input(Product product)
+    {
+        LoadProduct(product);
+    }
+
+    public event Action<Product> OnInput;
 }

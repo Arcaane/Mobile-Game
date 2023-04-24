@@ -160,6 +160,10 @@ public class MagicLinesManager : MonoBehaviour
         // if (!currentLineInDrawning.GetComponent<DrawMagicLine>().isLinkable) return;
         
         Debug.Log($"Linking {currentLinkables.Count} machines");
+
+        CreateMagicLines();
+        
+        return;
         
         
         if (m2 != null && m1 != m2) return;
@@ -168,6 +172,60 @@ public class MagicLinesManager : MonoBehaviour
         currentMana -= 1;
         CreateMagicLine();
         StartCoroutine(RecoverMana(timeToRecoverMana));
+    }
+
+    private void CreateMagicLines()
+    {
+        for (var index = 0; index < currentLinkables.Count-1; index++)
+        {
+            var startLinkable = currentLinkables[index];
+            var endLinkable = currentLinkables[index+1];
+            
+            var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
+            
+            var lr = magicLineGo.GetComponent<LineRenderer>();
+            var machineLink = lr.GetComponent<MachineLink>();
+            
+            magicLinks.Add(machineLink);
+
+            machineLink.SetLinks(startLinkable,endLinkable);
+            
+            var startLinkablePos = startLinkable.tr.position;
+            var endLinkablePos = endLinkable.tr.position;
+            var pos1 = startLinkablePos + (endLinkablePos - startLinkablePos).normalized * 0.7f;
+            var pos2 = endLinkablePos + (startLinkablePos - endLinkablePos).normalized * 0.7f;
+
+            var start = new Vector3(pos1.x, .5f, pos1.z);
+            var end = new Vector3(pos2.x, .5f, pos2.z);
+            
+            var hits = (Physics.RaycastAll(
+                start,
+                end - start,
+                Vector3.Distance(start, end),
+                LayerMask.NameToLayer("Link")));
+
+            if (hits.Length > 0)
+            {
+                foreach (var t in hits)
+                {
+                    var hitLink = t.transform.GetComponent<MachineLink>();
+                    if (hitLink != null)
+                    {
+                        machineLink.AddDependency(hitLink);
+                        machineLink.enabled = false;
+                    }
+                }
+            }
+            
+            points = new[] { pos1, pos2 };
+            lr.positionCount = points.Length;
+            for (int i = 0; i < points.Length; i++)
+            {
+                lr.SetPosition(i, points[i] + Vector3.up);
+            }
+
+            GenerateLinkCollider(lr, p1, p2);
+        }
     }
 
     private Machine GetClickMachine(Vector2 mousePos)
@@ -225,10 +283,10 @@ public class MagicLinesManager : MonoBehaviour
         MachineLink machineLink = lr.GetComponent<MachineLink>();
         magicLinks.Add(machineLink);
         
-        machineLink.machinesInLinks.Add(m1);
+        //machineLink.Linkables.Add(m1);
         m1.OnEndWork += machineLink.TakeProductFromMachine;
 
-        machineLink.machinesInLinks.Add(m2);
+        //machineLink.Linkables.Add(m2);
 
         m1.outputLink = machineLink;
 

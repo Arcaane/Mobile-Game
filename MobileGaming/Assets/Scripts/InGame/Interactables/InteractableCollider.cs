@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
-public class InteractableCollider : MonoBehaviour, ILinkable
+public class InteractableCollider : MonoBehaviour
 {
     [field:SerializeReference] public Interactable interactable { get; private set; }
 
@@ -20,15 +20,5 @@ public class InteractableCollider : MonoBehaviour, ILinkable
     private void OnTriggerExit(Collider other)
     {
         interactable.ExitRange();
-    }
-
-    public void OnLinkStarted()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnLinkConnected()
-    {
-        throw new System.NotImplementedException();
     }
 }
