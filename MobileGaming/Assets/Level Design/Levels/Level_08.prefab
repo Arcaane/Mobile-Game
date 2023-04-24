@@ -4760,6 +4760,7 @@ GameObject:
   - component: {fileID: 1579457894389045322}
   - component: {fileID: 1579457894389045321}
   - component: {fileID: 3209752796188422707}
+  - component: {fileID: 5303442038122368500}
   m_Layer: 7
   m_Name: Client(Clone)
   m_TagString: Untagged
@@ -4865,6 +4866,19 @@ MonoBehaviour:
   data:
     scriptableClient: {fileID: 0}
     productDatas: []
+--- !u!135 &5303442038122368500
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579457894389045326}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457894399156766
 GameObject:
   m_ObjectHideFlags: 0
@@ -4980,7 +4994,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1579457894404159182
 Transform:
   m_ObjectHideFlags: 0
@@ -7428,7 +7442,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1579457894749348751
 Transform:
   m_ObjectHideFlags: 0
@@ -7596,6 +7610,7 @@ GameObject:
   - component: {fileID: 1579457894797023323}
   - component: {fileID: 1579457894797023322}
   - component: {fileID: 4967948368388337983}
+  - component: {fileID: 3611322414157877952}
   m_Layer: 7
   m_Name: Client(Clone)
   m_TagString: Untagged
@@ -7701,6 +7716,19 @@ MonoBehaviour:
   data:
     scriptableClient: {fileID: 0}
     productDatas: []
+--- !u!135 &3611322414157877952
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579457894797023327}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457894811682076
 GameObject:
   m_ObjectHideFlags: 0
@@ -8419,7 +8447,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1579457894961517621
 Transform:
   m_ObjectHideFlags: 0
@@ -11022,6 +11050,7 @@ GameObject:
   - component: {fileID: 1579457895504601882}
   - component: {fileID: 1579457895504601881}
   - component: {fileID: 1628483503054490568}
+  - component: {fileID: 8445045026544838397}
   m_Layer: 7
   m_Name: Client(Clone)
   m_TagString: Untagged
@@ -11127,6 +11156,19 @@ MonoBehaviour:
   data:
     scriptableClient: {fileID: 0}
     productDatas: []
+--- !u!135 &8445045026544838397
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579457895504601886}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457895505428691
 GameObject:
   m_ObjectHideFlags: 0

@@ -237,7 +237,7 @@ public class MagicLinesManager : MonoBehaviour
             var linkable = hit.transform.GetComponent<ILinkable>();
             if (linkable != null)
             {
-                if(!currentLinkables.Contains(linkable)) currentLinkables.Add(linkable);
+                if(!currentLinkables.Contains(linkable)){ currentLinkables.Add(linkable);}
             }
             
             var col = hit.transform.GetComponent<InteractableCollider>();
