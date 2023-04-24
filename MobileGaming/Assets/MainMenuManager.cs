@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Schema;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
@@ -11,6 +12,7 @@ public class MainMenuManager : MonoBehaviour
     public Button settingsButton;
     public bool isInSettingsMenu;
     public GameObject settingsMenu;
+    [SerializeField] private ScriptableSettings settings;
     
     [Space(5)]
     [Header("GamePath")]
@@ -38,6 +40,12 @@ public class MainMenuManager : MonoBehaviour
         isInGamePathMenu = !isInGamePathMenu;
         gamePathMenu.SetActive(isInGamePathMenu);
         if (isInSettingsMenu) ToggleSettings();
+    }
+
+    public void PlaceHolderGoToGameScene(int level)
+    {
+        settings.SetStartIndex(level-1);
+        SceneManager.LoadScene(1);
     }
 }
 
