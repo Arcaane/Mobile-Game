@@ -50,8 +50,6 @@ public class MachineLink : MonoBehaviour
             enabled = true;
         }
     }
-
-    
     
     private void SetUIProduct()
     {
@@ -116,6 +114,7 @@ public class MachineLink : MonoBehaviour
         
         //TODO - Destroy Machine
         RaiseOnDestroyedEvent();
+        Destroy(gameObject);
     }
 
     private void Feedback()

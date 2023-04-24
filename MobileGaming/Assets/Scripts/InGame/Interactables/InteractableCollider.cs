@@ -1,11 +1,9 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
-public class InteractableCollider : MonoBehaviour
+public class InteractableCollider : MonoBehaviour, ILinkable
 {
-    [Header("Settings (autosets to this or parent if null)")]
-    [SerializeReference] private Interactable interactable;
+    [field:SerializeReference] public Interactable interactable { get; private set; }
 
     private void Start()
     {
@@ -22,5 +20,15 @@ public class InteractableCollider : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         interactable.ExitRange();
+    }
+
+    public void OnLinkStarted()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnLinkConnected()
+    {
+        throw new System.NotImplementedException();
     }
 }

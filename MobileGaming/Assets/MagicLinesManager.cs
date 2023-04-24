@@ -30,13 +30,15 @@ public class MagicLinesManager : MonoBehaviour
     private RaycastHit hit;
     private Machine m1;
     private Machine m2;
-    private bool isDraging;
+    private bool isDraging => InputService.deltaPosition.x != 0 && InputService.deltaPosition.y != 0;
     private SorcererController player;
 
     public GameObject orthoCam;
     public GameObject perspCam;
 
     public GameObject currentLineInDrawning;
+
+    private List<ILinkable> currentLinkables = new List<ILinkable>();
 
     #endregion
     
@@ -53,6 +55,26 @@ public class MagicLinesManager : MonoBehaviour
         orthoCam = GameObject.Find("Ortho");
         perspCam = GameObject.Find("Persp");
         orthoCam.SetActive(false);
+        
+        ToggleMagic();
+    }
+    
+    void Update()
+    {
+        if (!isDraging && !isInMagicMode) return;
+        
+        
+        if (isDraging) GetClickMachine(InputService.cursorPosition);
+        
+        if (Input.GetMouseButtonDown(0))
+        {
+            StartLine();
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            FinishLine();
+        }
     }
 
     public void ToggleMagic()
@@ -64,9 +86,9 @@ public class MagicLinesManager : MonoBehaviour
         if (isInMagicMode) EnableMagicMode();
         else DisableMagicMode();
         
-        // Timescale 
-        Time.timeScale = isInMagicMode ? .6f : 1;
-        debugTimeScale.text = Time.timeScale.ToString();
+        // Timescale #TODO - Timescale quand t en train de tracer
+        // Time.timeScale = isInMagicMode ? .6f : 1;
+        // debugTimeScale.text = Time.timeScale.ToString();
     }
     
     private void EnableMagicMode()
@@ -103,43 +125,45 @@ public class MagicLinesManager : MonoBehaviour
 
     private void OnScreenTouch(Vector2 obj)
     {
-        if (currentMana < 1) return;
+        // if (currentMana < 1) return;
         // Sfx can't interact
         // Vfx can't interact
 
         isPressed = true;
+        
         m1 = GetClickMachine(obj);
-        if (m1 != null) StartDrag();
     }
 
     private void OnScreenRelease(Vector2 obj)
     {
         isPressed = false;
+        LinkMachines();
 
         if (!isDraging) return;
 
         m2 = GetClickMachine(obj);
-        if (m2 != null && m1 != m2) LinkMachines();
+        LinkMachines();
+        
+        currentLinkables.Clear();
 
         UnlinkAll();
     }
 
     private void UnlinkAll()
     {
-        isDraging = false;
         m1 = default;
         m2 = default;
-    }
-
-    private void StartDrag()
-    {
-        isDraging = true;
     }
     
     private void LinkMachines()
     {
         // if (!currentLineInDrawning.GetComponent<DrawMagicLine>().isLinkable) return;
-
+        
+        Debug.Log($"Linking {currentLinkables.Count} machines");
+        
+        
+        if (m2 != null && m1 != m2) return;
+        
         Debug.Log($"Les machines {m1} & {m2} sont link");
         currentMana -= 1;
         CreateMagicLine();
@@ -149,7 +173,25 @@ public class MagicLinesManager : MonoBehaviour
     private Machine GetClickMachine(Vector2 mousePos)
     {
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
-        return Physics.Raycast(ray, out hit, machineLayerMask) ? hit.collider.gameObject.GetComponent<Machine>() : null;
+
+        if (Physics.Raycast(ray, out hit, machineLayerMask))
+        {
+            var linkable = hit.transform.GetComponent<ILinkable>();
+            if (linkable != null)
+            {
+                if(!currentLinkables.Contains(linkable)) currentLinkables.Add(linkable);
+            }
+            
+            var col = hit.transform.GetComponent<InteractableCollider>();
+
+            if (col == null) return null;
+            
+            if (col.interactable is MachineSlot slot) return slot.machine;
+
+            return null;
+        }
+
+        return null;
     }
 
     #endregion
@@ -254,21 +296,6 @@ public class MagicLinesManager : MonoBehaviour
     
     private Coroutine drawing;
     
-    void Update()
-    {
-        if (!isDraging && !isInMagicMode) return;
-        
-        if (Input.GetMouseButtonDown(0))
-        {
-            StartLine();
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            FinishLine();
-        }
-    }
-
     private void StartLine()
     {
         if (drawing != null)
