@@ -60,7 +60,7 @@ public class MachineLink : MonoBehaviour
 
     public void SetLinks(ILinkable startLink,ILinkable endLink)
     {
-        Debug.Log($"Linking {startLink} to {endLink}");
+        Debug.Log($"Linking {startLink.tr.name} to {endLink.tr.name}");
         
         startLinkable = startLink;
         endLinkable = endLink;
