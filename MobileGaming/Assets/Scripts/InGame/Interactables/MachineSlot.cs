@@ -1,5 +1,3 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MachineSlot : Interactable
@@ -20,12 +18,5 @@ public class MachineSlot : Interactable
         }
         
         machine.LoadProduct(inProduct,out outProduct);
-        return;
-        
-        if (inProduct is not null)
-        {
-            machine.LoadProduct(inProduct);
-        }
-        machine.UnloadProduct(out outProduct);
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
-public class Client : Interactable
+public class Client : Interactable, ILinkable
 {
     [Header("Feedback")]
     [SerializeField] private Image feedbackImage;
@@ -33,6 +33,33 @@ public class Client : Interactable
         feedbackText.text = string.Empty;
     }
     
+    public Transform tr => transform;
+    public void Ping()
+    {
+        
+    }
+
+    public void Output(out Product product)
+    {
+        product = null;
+    }
+
+    public event Action<Product> OnOutput;
+    public void Input(Product product)
+    {
+        if (product.data == expectedData)
+        {
+            //Todo - Good Product Feedback
+            
+            NextProduct();
+            return;
+        }
+        
+        //Todo - Bad Product Feedback
+    }
+
+    public event Action<Product> OnInput;
+    
     public override void Interact(Product inProduct, out Product outProduct)
     {
         if (!canReceiveProduct)
@@ -51,7 +78,7 @@ public class Client : Interactable
         outProduct = ReceiveProduct(inProduct);
     }
 
-    public Product ReceiveProduct(Product product)
+    private Product ReceiveProduct(Product product)
     {
           
         NextProduct();

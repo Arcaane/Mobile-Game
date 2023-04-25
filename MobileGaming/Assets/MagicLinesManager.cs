@@ -28,15 +28,16 @@ public class MagicLinesManager : MonoBehaviour
     private bool isPressed;
     private Ray ray;
     private RaycastHit hit;
-    private Machine m1;
-    private Machine m2;
-    private bool isDraging;
+    
+    private bool isDraging => InputService.deltaPosition.x != 0 && InputService.deltaPosition.y != 0;
     private SorcererController player;
 
     public GameObject orthoCam;
     public GameObject perspCam;
 
     public GameObject currentLineInDrawning;
+
+    private List<ILinkable> currentLinkables = new List<ILinkable>();
 
     #endregion
     
@@ -53,6 +54,26 @@ public class MagicLinesManager : MonoBehaviour
         orthoCam = GameObject.Find("Ortho");
         perspCam = GameObject.Find("Persp");
         orthoCam.SetActive(false);
+        
+        ToggleMagic();
+    }
+    
+    void Update()
+    {
+        if (!isDraging && !isInMagicMode) return;
+        
+        
+        if (isDraging) GetClickMachine(InputService.cursorPosition);
+        
+        if (Input.GetMouseButtonDown(0))
+        {
+            StartLine();
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            FinishLine();
+        }
     }
 
     public void ToggleMagic()
@@ -64,9 +85,9 @@ public class MagicLinesManager : MonoBehaviour
         if (isInMagicMode) EnableMagicMode();
         else DisableMagicMode();
         
-        // Timescale 
-        Time.timeScale = isInMagicMode ? .6f : 1;
-        debugTimeScale.text = Time.timeScale.ToString();
+        // Timescale #TODO - Timescale quand t en train de tracer
+        // Time.timeScale = isInMagicMode ? .6f : 1;
+        // debugTimeScale.text = Time.timeScale.ToString();
     }
     
     private void EnableMagicMode()
@@ -103,53 +124,109 @@ public class MagicLinesManager : MonoBehaviour
 
     private void OnScreenTouch(Vector2 obj)
     {
-        if (currentMana < 1) return;
+        // if (currentMana < 1) return;
         // Sfx can't interact
         // Vfx can't interact
 
         isPressed = true;
-        m1 = GetClickMachine(obj);
-        if (m1 != null) StartDrag();
     }
 
     private void OnScreenRelease(Vector2 obj)
     {
         isPressed = false;
-
-        if (!isDraging) return;
-
-        m2 = GetClickMachine(obj);
-        if (m2 != null && m1 != m2) LinkMachines();
-
-        UnlinkAll();
-    }
-
-    private void UnlinkAll()
-    {
-        isDraging = false;
-        m1 = default;
-        m2 = default;
-    }
-
-    private void StartDrag()
-    {
-        isDraging = true;
+        LinkMachines();
+        
+        currentLinkables.Clear();
     }
     
     private void LinkMachines()
     {
-        // if (!currentLineInDrawning.GetComponent<DrawMagicLine>().isLinkable) return;
+        Debug.Log($"Linking {currentLinkables.Count} machines");
 
-        Debug.Log($"Les machines {m1} & {m2} sont link");
-        currentMana -= 1;
-        CreateMagicLine();
-        StartCoroutine(RecoverMana(timeToRecoverMana));
+        CreateMagicLines();
+    }
+
+    private void CreateMagicLines()
+    {
+        for (var index = currentLinkables.Count - 2; index >= 0; index--)
+        {
+            LinkWithIndex(index,index+1);
+        }
+
+        void LinkWithIndex(int index1,int index2)
+        {
+            var startLinkable = currentLinkables[index1];
+            var endLinkable = currentLinkables[index2];
+            
+            var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
+            
+            var lr = magicLineGo.GetComponent<LineRenderer>();
+            var machineLink = lr.GetComponent<MachineLink>();
+            
+            magicLinks.Add(machineLink);
+
+            machineLink.SetLinks(startLinkable,endLinkable);
+            
+            var startLinkablePos = startLinkable.tr.position;
+            var endLinkablePos = endLinkable.tr.position;
+            var pos1 = startLinkablePos + (endLinkablePos - startLinkablePos).normalized * 0.7f;
+            var pos2 = endLinkablePos + (startLinkablePos - endLinkablePos).normalized * 0.7f;
+
+            var start = new Vector3(pos1.x, .5f, pos1.z);
+            var end = new Vector3(pos2.x, .5f, pos2.z);
+            
+            var hits = (Physics.RaycastAll(
+                start,
+                end - start,
+                Vector3.Distance(start, end),
+                LayerMask.NameToLayer("Link")));
+
+            if (hits.Length > 0)
+            {
+                foreach (var t in hits)
+                {
+                    var hitLink = t.transform.GetComponent<MachineLink>();
+                    if (hitLink != null)
+                    {
+                        machineLink.AddDependency(hitLink);
+                        machineLink.enabled = false;
+                    }
+                }
+            }
+            
+            points = new[] { pos1, pos2 };
+            lr.positionCount = points.Length;
+            for (int i = 0; i < points.Length; i++)
+            {
+                lr.SetPosition(i, points[i] + Vector3.up);
+            }
+
+            GenerateLinkCollider(lr, p1, p2);
+        }
     }
 
     private Machine GetClickMachine(Vector2 mousePos)
     {
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
-        return Physics.Raycast(ray, out hit, machineLayerMask) ? hit.collider.gameObject.GetComponent<Machine>() : null;
+
+        if (Physics.Raycast(ray, out hit, machineLayerMask))
+        {
+            var linkable = hit.transform.GetComponent<ILinkable>();
+            if (linkable != null)
+            {
+                if(!currentLinkables.Contains(linkable)){ currentLinkables.Add(linkable);}
+            }
+            
+            var col = hit.transform.GetComponent<InteractableCollider>();
+
+            if (col == null) return null;
+            
+            if (col.interactable is MachineSlot slot) return slot.machine;
+
+            return null;
+        }
+
+        return null;
     }
 
     #endregion
@@ -177,16 +254,17 @@ public class MagicLinesManager : MonoBehaviour
     private Vector3 p2;
     private void CreateMagicLine()
     {
+        /*
         var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
         LineRenderer lr = magicLineGo.GetComponent<LineRenderer>();
         
         MachineLink machineLink = lr.GetComponent<MachineLink>();
         magicLinks.Add(machineLink);
         
-        machineLink.machinesInLinks.Add(m1);
+        //machineLink.Linkables.Add(m1);
         m1.OnEndWork += machineLink.TakeProductFromMachine;
 
-        machineLink.machinesInLinks.Add(m2);
+        //machineLink.Linkables.Add(m2);
 
         m1.outputLink = machineLink;
 
@@ -234,6 +312,7 @@ public class MagicLinesManager : MonoBehaviour
         }
 
         GenerateLinkCollider(lr, p1, p2);
+        */
     }
     
     private void GenerateLinkCollider(LineRenderer lineRenderer, Vector3 p1, Vector3 p2)
@@ -254,21 +333,6 @@ public class MagicLinesManager : MonoBehaviour
     
     private Coroutine drawing;
     
-    void Update()
-    {
-        if (!isDraging && !isInMagicMode) return;
-        
-        if (Input.GetMouseButtonDown(0))
-        {
-            StartLine();
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            FinishLine();
-        }
-    }
-
     private void StartLine()
     {
         if (drawing != null)
@@ -276,6 +340,7 @@ public class MagicLinesManager : MonoBehaviour
             StopCoroutine(drawing);
         }
 
+        
         drawing = StartCoroutine(DrawLine());
     }
 

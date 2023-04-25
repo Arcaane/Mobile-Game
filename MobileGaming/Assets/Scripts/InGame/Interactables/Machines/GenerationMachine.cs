@@ -34,15 +34,17 @@ public class GenerationMachine : Machine
         
     }
 
+    protected override void PrePing()
+    {
+        currentProduct = newProduct;
+        Debug.Log($"current product : {currentProduct}");
+    }
+
     public override void UnloadProduct(out Product product)
     {
         product = newProduct;
     }
-
-    public override Product GetInformationOnMachineProduct()
-    {
-        return newProduct;
-    }
+    
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(GenerationMachine)),CanEditMultipleObjects]

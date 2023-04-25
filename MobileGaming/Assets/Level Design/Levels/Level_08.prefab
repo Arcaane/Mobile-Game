@@ -1986,7 +1986,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1579457893855059355
 Transform:
   m_ObjectHideFlags: 0
@@ -2014,7 +2014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 1579457894237146134}
+  <interactable>k__BackingField: {fileID: 0}
 --- !u!135 &1579457893855059364
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2437,7 +2437,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1579457893942717479
 Transform:
   m_ObjectHideFlags: 0
@@ -2465,7 +2465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 1579457894761430410}
+  <interactable>k__BackingField: {fileID: 0}
 --- !u!135 &1579457893942717472
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3801,6 +3801,7 @@ GameObject:
   - component: {fileID: 1579457894216287239}
   - component: {fileID: 1579457894216287238}
   - component: {fileID: 1579457894216287237}
+  - component: {fileID: 5053458730852732441}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
   m_TagString: Untagged
@@ -3901,6 +3902,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <machine>k__BackingField: {fileID: 0}
+--- !u!135 &5053458730852732441
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579457894216287355}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457894235440640
 GameObject:
   m_ObjectHideFlags: 0
@@ -4012,6 +4026,7 @@ GameObject:
   - component: {fileID: 1579457894237146128}
   - component: {fileID: 1579457894237146135}
   - component: {fileID: 1579457894237146134}
+  - component: {fileID: 233716722717532052}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
   m_TagString: Untagged
@@ -4112,6 +4127,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <machine>k__BackingField: {fileID: 0}
+--- !u!135 &233716722717532052
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579457894237146132}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457894243661770
 GameObject:
   m_ObjectHideFlags: 0
@@ -5105,6 +5133,7 @@ GameObject:
   - component: {fileID: 1579457894389045322}
   - component: {fileID: 1579457894389045321}
   - component: {fileID: 3209752796188422707}
+  - component: {fileID: 5303442038122368500}
   m_Layer: 7
   m_Name: Client(Clone)
   m_TagString: Untagged
@@ -5210,6 +5239,19 @@ MonoBehaviour:
   data:
     scriptableClient: {fileID: 0}
     productDatas: []
+--- !u!135 &5303442038122368500
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579457894389045326}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457894399156766
 GameObject:
   m_ObjectHideFlags: 0
@@ -5325,7 +5367,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1579457894404159182
 Transform:
   m_ObjectHideFlags: 0
@@ -5366,7 +5408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 0}
+  <interactable>k__BackingField: {fileID: 0}
 --- !u!1 &1579457894405091574
 GameObject:
   m_ObjectHideFlags: 0
@@ -5678,7 +5720,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1579457894444601900
 Transform:
   m_ObjectHideFlags: 0
@@ -5706,7 +5748,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 1579457894216287237}
+  <interactable>k__BackingField: {fileID: 0}
 --- !u!135 &1579457894444601901
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6125,6 +6167,7 @@ GameObject:
   - component: {fileID: 1579457894551677402}
   - component: {fileID: 1579457894551677401}
   - component: {fileID: 1579457894551677400}
+  - component: {fileID: 1868562183770701893}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
   m_TagString: Untagged
@@ -6225,6 +6268,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <machine>k__BackingField: {fileID: 0}
+--- !u!135 &1868562183770701893
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579457894551677406}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457894558661339
 GameObject:
   m_ObjectHideFlags: 0
@@ -6928,7 +6984,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1579457894620280061
 Transform:
   m_ObjectHideFlags: 0
@@ -6956,7 +7012,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 1579457894843547734}
+  <interactable>k__BackingField: {fileID: 0}
 --- !u!135 &1579457894620280062
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6987,7 +7043,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1579457894628062240
 Transform:
   m_ObjectHideFlags: 0
@@ -7015,7 +7071,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 1579457894551677400}
+  <interactable>k__BackingField: {fileID: 0}
 --- !u!135 &1579457894628062241
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -8226,7 +8282,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1579457894749348751
 Transform:
   m_ObjectHideFlags: 0
@@ -8267,7 +8323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 0}
+  <interactable>k__BackingField: {fileID: 0}
 --- !u!1 &1579457894761430408
 GameObject:
   m_ObjectHideFlags: 0
@@ -8281,6 +8337,7 @@ GameObject:
   - component: {fileID: 1579457894761430420}
   - component: {fileID: 1579457894761430411}
   - component: {fileID: 1579457894761430410}
+  - component: {fileID: 2305962747875909351}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
   m_TagString: Untagged
@@ -8381,6 +8438,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <machine>k__BackingField: {fileID: 0}
+--- !u!135 &2305962747875909351
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579457894761430408}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457894797023327
 GameObject:
   m_ObjectHideFlags: 0
@@ -8394,6 +8464,7 @@ GameObject:
   - component: {fileID: 1579457894797023323}
   - component: {fileID: 1579457894797023322}
   - component: {fileID: 4967948368388337983}
+  - component: {fileID: 3611322414157877952}
   m_Layer: 7
   m_Name: Client(Clone)
   m_TagString: Untagged
@@ -8499,6 +8570,19 @@ MonoBehaviour:
   data:
     scriptableClient: {fileID: 0}
     productDatas: []
+--- !u!135 &3611322414157877952
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579457894797023327}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457894811682076
 GameObject:
   m_ObjectHideFlags: 0
@@ -8806,6 +8890,7 @@ GameObject:
   - component: {fileID: 1579457894843547728}
   - component: {fileID: 1579457894843547735}
   - component: {fileID: 1579457894843547734}
+  - component: {fileID: 6315635969714377478}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
   m_TagString: Untagged
@@ -8906,6 +8991,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <machine>k__BackingField: {fileID: 0}
+--- !u!135 &6315635969714377478
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579457894843547732}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457894846245441
 GameObject:
   m_ObjectHideFlags: 0
@@ -9217,7 +9315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1579457894961517621
 Transform:
   m_ObjectHideFlags: 0
@@ -9258,7 +9356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 0}
+  <interactable>k__BackingField: {fileID: 0}
 --- !u!1 &1579457895018696177
 GameObject:
   m_ObjectHideFlags: 0
@@ -11820,6 +11918,7 @@ GameObject:
   - component: {fileID: 1579457895504601882}
   - component: {fileID: 1579457895504601881}
   - component: {fileID: 1628483503054490568}
+  - component: {fileID: 8445045026544838397}
   m_Layer: 7
   m_Name: Client(Clone)
   m_TagString: Untagged
@@ -11925,6 +12024,19 @@ MonoBehaviour:
   data:
     scriptableClient: {fileID: 0}
     productDatas: []
+--- !u!135 &8445045026544838397
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579457895504601886}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457895505428691
 GameObject:
   m_ObjectHideFlags: 0

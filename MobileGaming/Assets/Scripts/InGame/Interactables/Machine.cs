@@ -2,10 +2,9 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
-public abstract class Machine : MonoBehaviour
+public abstract class Machine : MonoBehaviour, ILinkable
 {
     [Header("Feedback")]
     [SerializeField] private Image feedbackImage;
@@ -16,14 +15,13 @@ public abstract class Machine : MonoBehaviour
     [SerializeField] private float baseTimeToProduce = 5f;
     [SerializeField] private float timeMultiplier = 1f;
     
+    public Transform tr => transform;
     private Coroutine workRoutine;
     
     protected double timer { get; private set; }
     protected double waitDuration { get; private set; }
     public Product currentProduct { get; protected set; } = null;
-
-    public MachineLink outputLink;
-
+    
     private void Start()
     {
         UpdateFeedbackObject();
@@ -41,6 +39,7 @@ public abstract class Machine : MonoBehaviour
         if (inProduct is not null) if(!IsValidInputProduct(inProduct)) return;
         
         UnloadProduct(out outProduct);
+        currentProduct = null;
         
         if (inProduct is not null)
         {
@@ -95,13 +94,13 @@ public abstract class Machine : MonoBehaviour
     protected void InvokeEndWork()
     {
         OnEndWork?.Invoke();
+        
+        OnOutput?.Invoke(currentProduct);
     }
 
     public virtual void UnloadProduct(out Product outProduct)
     {
         outProduct = currentProduct;
-
-        currentProduct = null;
         
         UpdateFeedbackText(0);
         
@@ -119,11 +118,30 @@ public abstract class Machine : MonoBehaviour
         if(feedbackObject == null) return;
         feedbackObject.SetActive(currentProduct != null);
     }
-
-    public void ReceiveProductFromLink(Product _product)
+    
+    public void Ping()
     {
-        LoadProduct(_product);
+        PrePing();
+        if(currentProduct != null && workRoutine == null) EndWork();
     }
 
-    public abstract Product GetInformationOnMachineProduct();
+    protected virtual void PrePing()
+    {
+        
+    }
+
+    public void Output(out Product product)
+    {
+        UnloadProduct(out product);
+    }
+
+    public event Action<Product> OnOutput;
+    public void Input(Product product)
+    {
+        Debug.Log($"Input Received ({product})");
+        
+        LoadProduct(product);
+    }
+
+    public event Action<Product> OnInput;
 }

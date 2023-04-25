@@ -39,6 +39,7 @@ public class DrawMagicLine : MonoBehaviour
         
         Mesh mesh = new Mesh();
         myLR.BakeMesh(mesh, true);
+        
         meshCollider.sharedMesh = mesh;
     }
 }
