@@ -110,6 +110,8 @@ public class Client : Interactable, ILinkable
                 
                 yield break;
             }
+            
+            
             feedbackText.text = $"{data.name} : \n{expectedData.Color} and {expectedData.Shape}";  
         }
 

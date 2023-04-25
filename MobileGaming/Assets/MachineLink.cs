@@ -111,8 +111,8 @@ public class MachineLink : MonoBehaviour
         // Forme de la bouteille
         var shape = productInTreatment.data.Shape;
         var color = productInTreatment.data.Color;
-        var imageComponent = debugImage.transform.GetChild(1).GetComponent<Image>();
         var imageComponentShape = debugImage.transform.GetChild(0).GetComponent<Image>();
+        var imageComponent = debugImage.transform.GetChild(1).GetComponent<Image>();
         
         switch (shape)
         {
