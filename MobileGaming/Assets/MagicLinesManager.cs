@@ -7,19 +7,9 @@ using UnityEngine;
 public class MagicLinesManager : MonoBehaviour
 {
     #region Variables
-
-    // Public or Visible 
-    [SerializeField] private TextMeshProUGUI debugMode;
-    [SerializeField] private TextMeshProUGUI debugTimeScale;
-    [SerializeField] private TextMeshProUGUI debugMana;
-
+    
     [SerializeField] private LayerMask machineLayerMask;
     [SerializeField] private bool isInMagicMode;
-
-    [SerializeField] private int maxMana;
-    [SerializeField] private int currentMana;
-    [SerializeField] private int bonusMana;
-    public float timeToRecoverMana = 4.5f;
     
     public GameObject linePrefab;
     public Vector3[] points;
@@ -45,13 +35,8 @@ public class MagicLinesManager : MonoBehaviour
     private void Start()
     {
         isInMagicMode = false;
-        debugMode.text = $"Magic Mode : {isInMagicMode}";
         player = GetComponent<SorcererController>();
         
-        // Mana
-        currentMana = maxMana + bonusMana;
-        UpdateManaDebug();
-
         orthoCam = GameObject.Find("Ortho");
         perspCam = GameObject.Find("Persp");
         orthoCam.SetActive(false);
@@ -79,7 +64,6 @@ public class MagicLinesManager : MonoBehaviour
     public void ToggleMagic()
     {
         isInMagicMode = !isInMagicMode;
-        debugMode.text = $"Magic Mode : {isInMagicMode}";
 
         // Controls
         if (isInMagicMode) EnableMagicMode();
@@ -238,23 +222,6 @@ public class MagicLinesManager : MonoBehaviour
         }
 
         return null;
-    }
-
-    #endregion
-
-    #region Mana
-
-    private void UpdateManaDebug()
-    {
-        debugMana.text = $"Mana : {currentMana}/{maxMana}";
-    }
-    
-    IEnumerator RecoverMana(float _timeToWait)
-    {
-        UpdateManaDebug();
-        yield return new WaitForSeconds(_timeToWait);
-        currentMana++;
-        UpdateManaDebug();
     }
 
     #endregion
