@@ -96,6 +96,8 @@ public abstract class Machine : MonoBehaviour, ILinkable
         OnEndWork?.Invoke();
         
         OnOutput?.Invoke(currentProduct);
+
+        currentProduct = null;
     }
 
     public virtual void UnloadProduct(out Product outProduct)
