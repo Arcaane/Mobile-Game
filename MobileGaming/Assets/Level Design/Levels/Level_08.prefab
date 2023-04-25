@@ -3800,8 +3800,6 @@ GameObject:
   - component: {fileID: 1579457894216287232}
   - component: {fileID: 1579457894216287239}
   - component: {fileID: 1579457894216287238}
-  - component: {fileID: 1579457894216287237}
-  - component: {fileID: 5053458730852732441}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
   m_TagString: Untagged
@@ -3889,32 +3887,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &1579457894216287237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579457894216287355}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
---- !u!135 &5053458730852732441
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579457894216287355}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457894235440640
 GameObject:
   m_ObjectHideFlags: 0
@@ -4025,8 +3997,6 @@ GameObject:
   - component: {fileID: 1579457894237146129}
   - component: {fileID: 1579457894237146128}
   - component: {fileID: 1579457894237146135}
-  - component: {fileID: 1579457894237146134}
-  - component: {fileID: 233716722717532052}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
   m_TagString: Untagged
@@ -4114,32 +4084,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &1579457894237146134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579457894237146132}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
---- !u!135 &233716722717532052
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579457894237146132}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457894243661770
 GameObject:
   m_ObjectHideFlags: 0
@@ -6166,8 +6110,6 @@ GameObject:
   - component: {fileID: 1579457894551677403}
   - component: {fileID: 1579457894551677402}
   - component: {fileID: 1579457894551677401}
-  - component: {fileID: 1579457894551677400}
-  - component: {fileID: 1868562183770701893}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
   m_TagString: Untagged
@@ -6255,32 +6197,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &1579457894551677400
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579457894551677406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
---- !u!135 &1868562183770701893
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579457894551677406}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457894558661339
 GameObject:
   m_ObjectHideFlags: 0
@@ -8336,8 +8252,6 @@ GameObject:
   - component: {fileID: 1579457894761430421}
   - component: {fileID: 1579457894761430420}
   - component: {fileID: 1579457894761430411}
-  - component: {fileID: 1579457894761430410}
-  - component: {fileID: 2305962747875909351}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
   m_TagString: Untagged
@@ -8425,32 +8339,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &1579457894761430410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579457894761430408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
---- !u!135 &2305962747875909351
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579457894761430408}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457894797023327
 GameObject:
   m_ObjectHideFlags: 0
@@ -8889,8 +8777,6 @@ GameObject:
   - component: {fileID: 1579457894843547729}
   - component: {fileID: 1579457894843547728}
   - component: {fileID: 1579457894843547735}
-  - component: {fileID: 1579457894843547734}
-  - component: {fileID: 6315635969714377478}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
   m_TagString: Untagged
@@ -8978,32 +8864,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &1579457894843547734
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579457894843547732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
---- !u!135 &6315635969714377478
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579457894843547732}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1579457894846245441
 GameObject:
   m_ObjectHideFlags: 0
