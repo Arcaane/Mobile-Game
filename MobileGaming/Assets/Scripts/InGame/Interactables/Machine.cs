@@ -98,8 +98,6 @@ public abstract class Machine : MonoBehaviour, ILinkable
         OnEndWork?.Invoke();
         
         OnOutput?.Invoke(currentProduct);
-
-        currentProduct = null;
     }
 
     public virtual void UnloadProduct(out Product outProduct)
@@ -137,6 +135,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
     public void Output(out Product product)
     {
         UnloadProduct(out product);
+        currentProduct = null;
     }
 
     public event Action<Product> OnOutput;

@@ -10,7 +10,6 @@ public class MachineLink : MonoBehaviour
     //public TextMeshProUGUI debugPercentageText;
     public Transform debugImage;
     private DrawMagicLine lineInCollision;
-    public List<Machine> Linkables;
     public Material myMaterial;
 
     private ILinkable startLinkable;
@@ -25,20 +24,22 @@ public class MachineLink : MonoBehaviour
     public Sprite[] bottleShapesSprites;
     public Sprite[] bottleContentSprites;
 
-    private List<MachineLink> depentLinks = new List<MachineLink>();
-        
+    private List<MachineLink> dependentLinks = new List<MachineLink>();
+    
+    private static readonly int FilingValue = Shader.PropertyToID("_FilingValue");
+
     #endregion
 
     private void Start()
     {
         myMaterial = GetComponent<LineRenderer>().material;
         
-        depentLinks.Clear();
+        dependentLinks.Clear();
     }
 
-    private void MoveProduct(Product product)
+    private void MoveProduct()
     {
-        productInTreatment = product;
+        startLinkable.Output(out productInTreatment);
         currentTimer = 0f;
         
         SetUIProduct();
@@ -85,23 +86,23 @@ public class MachineLink : MonoBehaviour
         {
             startLinkable.OnOutput -= TryInputOutput;
             
-            MoveProduct(outProduct);
+            MoveProduct();
         }
     }
 
     public void AddDependency(MachineLink machineLink)
     {
-        if(depentLinks.Contains(machineLink)) return;
+        if(dependentLinks.Contains(machineLink)) return;
         
-        depentLinks.Add(machineLink);
+        dependentLinks.Add(machineLink);
         
         machineLink.OnDestroyed += RemoveDependency;
         
         void RemoveDependency()
         {
-            if(!depentLinks.Contains(machineLink)) return;
-            depentLinks.Remove(machineLink);
-            if(depentLinks.Count > 0) return;
+            if(!dependentLinks.Contains(machineLink)) return;
+            dependentLinks.Remove(machineLink);
+            if(dependentLinks.Count > 0) return;
             enabled = true;
         }
     }
@@ -154,7 +155,7 @@ public class MachineLink : MonoBehaviour
     private void Feedback()
     {
         itemProgression =  (int)((currentTimer / timeToCompleteTransportation) * 100);
-        myMaterial.SetFloat("_FilingValue", 1 - currentTimer / timeToCompleteTransportation);
+        myMaterial.SetFloat(FilingValue, 1 - currentTimer / timeToCompleteTransportation);
         
         debugImage.position = Vector3.Lerp(startLinkable.tr.position + Vector3.up, 
             endLinkable.tr.position + Vector3.up, currentTimer / timeToCompleteTransportation);
