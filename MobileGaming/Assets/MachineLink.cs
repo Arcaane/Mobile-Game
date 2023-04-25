@@ -33,29 +33,41 @@ public class MachineLink : MonoBehaviour
     {
         myMaterial = GetComponent<LineRenderer>().material;
         
-        // productInTreatment = Linkables[0].GetInformationOnMachineProduct();
-        
         depentLinks.Clear();
+    }
+
+    private void MoveProduct(Product product)
+    {
+        productInTreatment = product;
+        currentTimer = 0f;
         
         SetUIProduct();
     }
     
     private void Update()
     {
-        return;
-        
-        if (Linkables[1].currentProduct != null) return; //place dispo a destination
-        
-        if(productInTreatment == null) return; //place dispo sur moi
+        if(productInTreatment == null) return;
         
         currentTimer += Time.deltaTime;
         if (currentTimer > timeToCompleteTransportation)
         {
-            DeliverProductIntoMachine();
-            currentTimer = 0;
+            CompleteTransfer();
         }
         
         Feedback();
+    }
+
+    private void CompleteTransfer()
+    {
+        currentTimer = 0;
+        
+        endLinkable.Input(productInTreatment);
+            
+        productInTreatment = null;
+        
+        OnDestroyed?.Invoke();
+        
+        Destroy(gameObject);
     }
 
     public void SetLinks(ILinkable startLink,ILinkable endLink)
@@ -66,10 +78,14 @@ public class MachineLink : MonoBehaviour
         endLinkable = endLink;
         
         startLinkable.OnOutput += TryInputOutput;
+        
+        startLinkable.Ping();
 
         void TryInputOutput(Product outProduct)
         {
-            endLinkable.Input(outProduct);
+            startLinkable.OnOutput -= TryInputOutput;
+            
+            MoveProduct(outProduct);
         }
     }
 
@@ -92,63 +108,56 @@ public class MachineLink : MonoBehaviour
     
     private void SetUIProduct()
     {
-        return;
-        
         // Forme de la bouteille
-        switch (productInTreatment.data.Shape)
+        var shape = productInTreatment.data.Shape;
+        var color = productInTreatment.data.Color;
+        var imageComponent = debugImage.transform.GetChild(1).GetComponent<Image>();
+        var imageComponentShape = debugImage.transform.GetChild(0).GetComponent<Image>();
+        
+        switch (shape)
         {
-            case ProductShape.Hearth: debugImage.transform.GetChild(0).GetComponent<Image>().sprite = bottleShapesSprites[0];
-                switch (productInTreatment.data.Color)
+            case ProductShape.Hearth: 
+                imageComponentShape.sprite = bottleShapesSprites[0];
+                switch (color)
                 {
-                    case ProductColor.Transparent: Debug.Log("Hearh Shape without content"); break;
-                    case ProductColor.Blue: debugImage.transform.GetChild(1).GetComponent<Image>().sprite = bottleContentSprites[0]; break;
-                    case ProductColor.Green: debugImage.transform.GetChild(1).GetComponent<Image>().sprite = bottleContentSprites[1]; break;
-                    case ProductColor.Red: debugImage.transform.GetChild(1).GetComponent<Image>().sprite = bottleContentSprites[2]; break;
+                    case ProductColor.Transparent: Debug.Log("Heart Shape without content"); break;
+                    case ProductColor.Blue: imageComponent.sprite = bottleContentSprites[0]; break;
+                    case ProductColor.Green: imageComponent.sprite = bottleContentSprites[1]; break;
+                    case ProductColor.Red: imageComponent.sprite = bottleContentSprites[2]; break;
                 }
                 break;
-            case ProductShape.Cross: debugImage.transform.GetChild(0).GetComponent<Image>().sprite = bottleShapesSprites[1];
-                switch (productInTreatment.data.Color)
+            case ProductShape.Cross: 
+                imageComponentShape.sprite = bottleShapesSprites[1];
+                switch (color)
                 {
                     case ProductColor.Transparent: break;
-                    case ProductColor.Blue: debugImage.transform.GetChild(1).GetComponent<Image>().sprite = bottleContentSprites[3]; break;
-                    case ProductColor.Green: debugImage.transform.GetChild(1).GetComponent<Image>().sprite = bottleContentSprites[4]; break;
-                    case ProductColor.Red: debugImage.transform.GetChild(1).GetComponent<Image>().sprite = bottleContentSprites[5]; break;
+                    case ProductColor.Blue: imageComponent.sprite = bottleContentSprites[3]; break;
+                    case ProductColor.Green: imageComponent.sprite = bottleContentSprites[4]; break;
+                    case ProductColor.Red: imageComponent.sprite = bottleContentSprites[5]; break;
                 }
                 break;
-            case ProductShape.Moon: debugImage.transform.GetChild(0).GetComponent<Image>().sprite = bottleShapesSprites[2];
-                switch (productInTreatment.data.Color)
+            case ProductShape.Moon:
+                imageComponentShape.sprite = bottleShapesSprites[2];
+                switch (color)
                 {
                     case ProductColor.Transparent: break;
-                    case ProductColor.Blue: debugImage.transform.GetChild(1).GetComponent<Image>().sprite = bottleContentSprites[6]; break;
-                    case ProductColor.Green: debugImage.transform.GetChild(1).GetComponent<Image>().sprite = bottleContentSprites[7]; break;
-                    case ProductColor.Red: debugImage.transform.GetChild(1).GetComponent<Image>().sprite = bottleContentSprites[8]; break;
+                    case ProductColor.Blue: imageComponent.sprite = bottleContentSprites[6]; break;
+                    case ProductColor.Green: imageComponent.sprite = bottleContentSprites[7]; break;
+                    case ProductColor.Red: imageComponent.sprite = bottleContentSprites[8]; break;
                 }
                 break;
         }
     }
-
-    public void TakeProductFromMachine()
-    {
-        Linkables[0].UnloadProduct(out productInTreatment);
-    }
     
-    private void DeliverProductIntoMachine()
-    {
-        Linkables[1].ReceiveProductFromLink(productInTreatment);
-        productInTreatment = null;
-        
-        //TODO - Destroy Machine
-        RaiseOnDestroyedEvent();
-        Destroy(gameObject);
-    }
-
+    public event Action OnDestroyed;
+    
     private void Feedback()
     {
         itemProgression =  (int)((currentTimer / timeToCompleteTransportation) * 100);
         myMaterial.SetFloat("_FilingValue", 1 - currentTimer / timeToCompleteTransportation);
         
-        debugImage.position = Vector3.Lerp(Linkables[0].transform.position + Vector3.up, 
-            Linkables[1].transform.position + Vector3.up, currentTimer / timeToCompleteTransportation);
+        debugImage.position = Vector3.Lerp(startLinkable.tr.position + Vector3.up, 
+            endLinkable.tr.position + Vector3.up, currentTimer / timeToCompleteTransportation);
         
     }
 
@@ -178,12 +187,6 @@ public class MachineLink : MonoBehaviour
         Destroy(other.gameObject);
     }
 
-    public event Action OnDestroyed;
-
-    public void RaiseOnDestroyedEvent()
-    {
-        OnDestroyed?.Invoke();
-    }
-
+    
     #endregion
 }

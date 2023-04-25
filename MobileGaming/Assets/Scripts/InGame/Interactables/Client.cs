@@ -41,13 +41,21 @@ public class Client : Interactable, ILinkable
 
     public void Output(out Product product)
     {
-        throw new NotImplementedException();
+        product = null;
     }
 
     public event Action<Product> OnOutput;
     public void Input(Product product)
     {
-        throw new NotImplementedException();
+        if (product.data == expectedData)
+        {
+            //Todo - Good Product Feedback
+            
+            NextProduct();
+            return;
+        }
+        
+        //Todo - Bad Product Feedback
     }
 
     public event Action<Product> OnInput;
@@ -70,7 +78,7 @@ public class Client : Interactable, ILinkable
         outProduct = ReceiveProduct(inProduct);
     }
 
-    public Product ReceiveProduct(Product product)
+    private Product ReceiveProduct(Product product)
     {
           
         NextProduct();

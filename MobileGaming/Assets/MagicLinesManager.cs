@@ -28,8 +28,7 @@ public class MagicLinesManager : MonoBehaviour
     private bool isPressed;
     private Ray ray;
     private RaycastHit hit;
-    private Machine m1;
-    private Machine m2;
+    
     private bool isDraging => InputService.deltaPosition.x != 0 && InputService.deltaPosition.y != 0;
     private SorcererController player;
 
@@ -130,53 +129,26 @@ public class MagicLinesManager : MonoBehaviour
         // Vfx can't interact
 
         isPressed = true;
-        
-        m1 = GetClickMachine(obj);
     }
 
     private void OnScreenRelease(Vector2 obj)
     {
         isPressed = false;
         LinkMachines();
-
-        if (!isDraging) return;
-
-        m2 = GetClickMachine(obj);
-        LinkMachines();
         
         currentLinkables.Clear();
-
-        UnlinkAll();
-    }
-
-    private void UnlinkAll()
-    {
-        m1 = default;
-        m2 = default;
     }
     
     private void LinkMachines()
     {
-        // if (!currentLineInDrawning.GetComponent<DrawMagicLine>().isLinkable) return;
-        
         Debug.Log($"Linking {currentLinkables.Count} machines");
 
         CreateMagicLines();
-        
-        return;
-        
-        
-        if (m2 != null && m1 != m2) return;
-        
-        Debug.Log($"Les machines {m1} & {m2} sont link");
-        currentMana -= 1;
-        CreateMagicLine();
-        StartCoroutine(RecoverMana(timeToRecoverMana));
     }
 
     private void CreateMagicLines()
     {
-        for (var index = 0; index < currentLinkables.Count-1; index++)
+        for (var index = currentLinkables.Count - 2; index >= 0; index--)
         {
             var startLinkable = currentLinkables[index];
             var endLinkable = currentLinkables[index+1];
@@ -277,6 +249,7 @@ public class MagicLinesManager : MonoBehaviour
     private Vector3 p2;
     private void CreateMagicLine()
     {
+        /*
         var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
         LineRenderer lr = magicLineGo.GetComponent<LineRenderer>();
         
@@ -334,6 +307,7 @@ public class MagicLinesManager : MonoBehaviour
         }
 
         GenerateLinkCollider(lr, p1, p2);
+        */
     }
     
     private void GenerateLinkCollider(LineRenderer lineRenderer, Vector3 p1, Vector3 p2)
@@ -361,6 +335,7 @@ public class MagicLinesManager : MonoBehaviour
             StopCoroutine(drawing);
         }
 
+        
         drawing = StartCoroutine(DrawLine());
     }
 

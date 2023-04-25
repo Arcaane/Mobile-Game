@@ -21,9 +21,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
     protected double timer { get; private set; }
     protected double waitDuration { get; private set; }
     public Product currentProduct { get; protected set; } = null;
-
-    public MachineLink outputLink;
-
+    
     private void Start()
     {
         UpdateFeedbackObject();
@@ -41,6 +39,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
         if (inProduct is not null) if(!IsValidInputProduct(inProduct)) return;
         
         UnloadProduct(out outProduct);
+        currentProduct = null;
         
         if (inProduct is not null)
         {
@@ -95,13 +94,13 @@ public abstract class Machine : MonoBehaviour, ILinkable
     protected void InvokeEndWork()
     {
         OnEndWork?.Invoke();
+        
+        OnOutput?.Invoke(currentProduct);
     }
 
     public virtual void UnloadProduct(out Product outProduct)
     {
         outProduct = currentProduct;
-
-        currentProduct = null;
         
         UpdateFeedbackText(0);
         
@@ -119,14 +118,14 @@ public abstract class Machine : MonoBehaviour, ILinkable
         if(feedbackObject == null) return;
         feedbackObject.SetActive(currentProduct != null);
     }
-
-    public void ReceiveProductFromLink(Product _product)
+    
+    public void Ping()
     {
-        LoadProduct(_product);
+        PrePing();
+        if(currentProduct != null && workRoutine == null) EndWork();
     }
 
-    public abstract Product GetInformationOnMachineProduct();
-    public void Ping()
+    protected virtual void PrePing()
     {
         
     }
@@ -139,6 +138,8 @@ public abstract class Machine : MonoBehaviour, ILinkable
     public event Action<Product> OnOutput;
     public void Input(Product product)
     {
+        Debug.Log($"Input Received ({product})");
+        
         LoadProduct(product);
     }
 
