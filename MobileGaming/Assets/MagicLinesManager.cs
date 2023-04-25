@@ -150,8 +150,13 @@ public class MagicLinesManager : MonoBehaviour
     {
         for (var index = currentLinkables.Count - 2; index >= 0; index--)
         {
-            var startLinkable = currentLinkables[index];
-            var endLinkable = currentLinkables[index+1];
+            LinkWithIndex(index,index+1);
+        }
+
+        void LinkWithIndex(int index1,int index2)
+        {
+            var startLinkable = currentLinkables[index1];
+            var endLinkable = currentLinkables[index2];
             
             var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
             
