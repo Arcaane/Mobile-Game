@@ -30,6 +30,7 @@ namespace Service
         public GameService(ScriptableSettings baseSettings)
         {
             settings = baseSettings;
+            settings.SetAsGlobalSettings();
         }
 
         [ServiceInit]
