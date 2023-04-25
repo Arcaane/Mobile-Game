@@ -1517,17 +1517,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b7aa766a37ba4468cbb90eb71d9152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: {fileID: 0}
-  debugTimeScale: {fileID: 0}
-  debugMana: {fileID: 0}
   machineLayerMask:
     serializedVersion: 2
     m_Bits: 128
   isInMagicMode: 1
-  maxMana: 5
-  currentMana: 0
-  bonusMana: 0
-  timeToRecoverMana: 5
   linePrefab: {fileID: 1722924855489795753, guid: 97fb3b5f6dc24ed419b3fc518cd4f3b3,
     type: 3}
   points:
@@ -3770,7 +3763,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -111}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 200}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &5623279246717172752
