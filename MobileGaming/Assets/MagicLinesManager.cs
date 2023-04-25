@@ -322,7 +322,7 @@ public class MagicLinesManager : MonoBehaviour
         drawing = StartCoroutine(DrawLine());
     }
 
-    private void FinishLine()
+    public void FinishLine()
     {
         if (drawing == null) return;
         StopCoroutine(drawing);
