@@ -34,6 +34,9 @@ public class Client : Interactable, ILinkable
     }
     
     public Transform tr => transform;
+    public bool Inputable => true;
+    public bool Outputable => false;
+
     public void Ping()
     {
         

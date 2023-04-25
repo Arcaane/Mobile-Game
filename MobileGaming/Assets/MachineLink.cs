@@ -72,7 +72,7 @@ public class MachineLink : MonoBehaviour
 
     public void SetLinks(ILinkable startLink,ILinkable endLink)
     {
-        Debug.Log($"Linking {startLink.tr.name} to {endLink.tr.name}");
+        if(!startLink.Outputable || !endLink.Inputable) return;
         
         startLinkable = startLink;
         endLinkable = endLink;
@@ -159,6 +159,11 @@ public class MachineLink : MonoBehaviour
         debugImage.position = Vector3.Lerp(startLinkable.tr.position + Vector3.up, 
             endLinkable.tr.position + Vector3.up, currentTimer / timeToCompleteTransportation);
         
+    }
+
+    public bool CompareLinks(ILinkable start,ILinkable end)
+    {
+        return (startLinkable == start && endLinkable == end);
     }
 
 

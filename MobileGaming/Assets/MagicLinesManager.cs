@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -61,7 +62,6 @@ public class MagicLinesManager : MonoBehaviour
     void Update()
     {
         if (!isDraging && !isInMagicMode) return;
-        
         
         if (isDraging) GetClickMachine(InputService.cursorPosition);
         
@@ -158,6 +158,10 @@ public class MagicLinesManager : MonoBehaviour
             var startLinkable = currentLinkables[index1];
             var endLinkable = currentLinkables[index2];
             
+            if(!startLinkable.Outputable || !endLinkable.Inputable) return;
+            
+            if(magicLinks.Any(link => link.CompareLinks(startLinkable,endLinkable))) return;
+            
             var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
             
             var lr = magicLineGo.GetComponent<LineRenderer>();
@@ -166,6 +170,8 @@ public class MagicLinesManager : MonoBehaviour
             magicLinks.Add(machineLink);
 
             machineLink.SetLinks(startLinkable,endLinkable);
+
+            machineLink.OnDestroyed += RemoveMachine;
             
             var startLinkablePos = startLinkable.tr.position;
             var endLinkablePos = endLinkable.tr.position;
@@ -202,6 +208,11 @@ public class MagicLinesManager : MonoBehaviour
             }
 
             GenerateLinkCollider(lr, p1, p2);
+
+            void RemoveMachine()
+            {
+                if (magicLinks.Contains(machineLink)) magicLinks.Remove(machineLink);
+            }
         }
     }
 
