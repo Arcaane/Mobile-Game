@@ -15,7 +15,7 @@ public class Client : Interactable, ILinkable
     [SerializeField] private Image feedbackImage;
     [SerializeField] private Image contentImage;
     [SerializeField] private Image shapeImage;
-    [SerializeField] private TextMeshProUGUI feedbackText;
+    //[SerializeField] private TextMeshProUGUI feedbackText;
     
     private float currentSatisfaction = 0;
     public float Satisfaction => currentSatisfaction;
@@ -33,8 +33,9 @@ public class Client : Interactable, ILinkable
     private void Start()
     {
         UpdateFeedbackImage();
-        feedbackText.text = string.Empty;
+       // feedbackText.text = string.Empty;
         feedbackGo.SetActive(false);
+        feedbackImage.transform.rotation = Quaternion.Euler(0,0,90f);
     }
     
     public Transform tr => transform;
@@ -97,7 +98,7 @@ public class Client : Interactable, ILinkable
         currentDataIndex++;
         currentSatisfaction = data.Satisfaction;
         
-        feedbackText.text = "Yay";
+        //feedbackText.text = "Yay";
         feedbackGo.SetActive(false);
         
         StartCoroutine(NewProductDelayRoutine());
@@ -119,7 +120,7 @@ public class Client : Interactable, ILinkable
                 yield break;
             }
             
-            feedbackText.text = $"{data.name} : \n{expectedData.Color} and {expectedData.Shape}";  
+            //feedbackText.text = $"{data.name} : \n{expectedData.Color} and {expectedData.Shape}";  
             UpdateUIProductImage();
         }
 
@@ -143,7 +144,7 @@ public class Client : Interactable, ILinkable
         if(satisfactionRoutine != null) StopCoroutine(satisfactionRoutine);
         satisfactionRoutine = null;
         currentSatisfaction = 0;
-        feedbackText.text = "";
+        //feedbackText.text = "";
         UpdateFeedbackImage();
     }
 
@@ -170,7 +171,8 @@ public class Client : Interactable, ILinkable
         {
             return;
         }
-        feedbackImage.fillAmount = currentSatisfaction / data.Satisfaction;
+        
+        feedbackImage.transform.rotation = Quaternion.Lerp(Quaternion.Euler(80,0,-90f), Quaternion.Euler(80,0,90f), (currentSatisfaction / data.Satisfaction));
     }
     
     private void UpdateUIProductImage()
