@@ -13,4 +13,15 @@ public class ScriptableSettings : ScriptableObject
         if (index >= Levels.Length) index = Levels.Length - 1;
         DefaultStartIndex = index;
     }
+    
+    [field: SerializeField] public Sprite[] bottleShapesSprites { get; private set; }
+    [field: SerializeField] public Sprite[] bottleContentSprites { get; private set; }
+
+    public static ScriptableSettings GlobalSettings { get; private set; }
+
+    public void SetAsGlobalSettings()
+    {
+        GlobalSettings = this;
+        Debug.Log($"Global Settings set to {GlobalSettings}");
+    }
 }

@@ -11,7 +11,10 @@ using UnityEditor;
 public class Client : Interactable, ILinkable
 {
     [Header("Feedback")]
+    [SerializeField] private GameObject feedbackGo;
     [SerializeField] private Image feedbackImage;
+    [SerializeField] private Image contentImage;
+    [SerializeField] private Image shapeImage;
     [SerializeField] private TextMeshProUGUI feedbackText;
     
     private float currentSatisfaction = 0;
@@ -31,6 +34,7 @@ public class Client : Interactable, ILinkable
     {
         UpdateFeedbackImage();
         feedbackText.text = string.Empty;
+        feedbackGo.SetActive(false);
     }
     
     public Transform tr => transform;
@@ -94,6 +98,7 @@ public class Client : Interactable, ILinkable
         currentSatisfaction = data.Satisfaction;
         
         feedbackText.text = "Yay";
+        feedbackGo.SetActive(false);
         
         StartCoroutine(NewProductDelayRoutine());
         
@@ -113,7 +118,9 @@ public class Client : Interactable, ILinkable
                 
                 yield break;
             }
+            
             feedbackText.text = $"{data.name} : \n{expectedData.Color} and {expectedData.Shape}";  
+            UpdateUIProductImage();
         }
 
         IEnumerator SatisfactionRoutine()
@@ -164,6 +171,51 @@ public class Client : Interactable, ILinkable
             return;
         }
         feedbackImage.fillAmount = currentSatisfaction / data.Satisfaction;
+    }
+    
+    private void UpdateUIProductImage()
+    {
+        feedbackGo.SetActive(true);
+        
+        var shape = expectedData.Shape;
+        var color = expectedData.Color;
+        var imageComponent = contentImage;
+        var imageComponentShape = shapeImage;
+        var settings = ScriptableSettings.GlobalSettings;
+        
+        switch (shape)
+        {
+            case ProductShape.Hearth: 
+                imageComponentShape.sprite = settings.bottleShapesSprites[0];
+                switch (color)
+                {
+                    case ProductColor.Transparent: Debug.Log("Heart Shape without content"); break;
+                    case ProductColor.Blue: imageComponent.sprite = settings.bottleContentSprites[0]; break;
+                    case ProductColor.Green: imageComponent.sprite = settings.bottleContentSprites[1]; break;
+                    case ProductColor.Red: imageComponent.sprite = settings.bottleContentSprites[2]; break;
+                }
+                break;
+            case ProductShape.Cross: 
+                imageComponentShape.sprite = settings.bottleShapesSprites[1];
+                switch (color)
+                {
+                    case ProductColor.Transparent: break;
+                    case ProductColor.Blue: imageComponent.sprite = settings.bottleContentSprites[3]; break;
+                    case ProductColor.Green: imageComponent.sprite = settings.bottleContentSprites[4]; break;
+                    case ProductColor.Red: imageComponent.sprite = settings.bottleContentSprites[5]; break;
+                }
+                break;
+            case ProductShape.Moon:
+                imageComponentShape.sprite = settings.bottleShapesSprites[2];
+                switch (color)
+                {
+                    case ProductColor.Transparent: break;
+                    case ProductColor.Blue: imageComponent.sprite = settings.bottleContentSprites[6]; break;
+                    case ProductColor.Green: imageComponent.sprite = settings.bottleContentSprites[7]; break;
+                    case ProductColor.Red: imageComponent.sprite = settings.bottleContentSprites[8]; break;
+                }
+                break;
+        }
     }
     
 #if UNITY_EDITOR

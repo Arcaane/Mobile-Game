@@ -20,10 +20,7 @@ public class MachineLink : MonoBehaviour
     [Range(0,100)] public int itemProgression = 0;
     public float timeToCompleteTransportation = 10f;
     public float currentTimer = 0f;
-
-    public Sprite[] bottleShapesSprites;
-    public Sprite[] bottleContentSprites;
-
+    
     private List<MachineLink> dependentLinks = new List<MachineLink>();
     
     private static readonly int FilingValue = Shader.PropertyToID("_FilingValue");
@@ -114,37 +111,38 @@ public class MachineLink : MonoBehaviour
         var color = productInTreatment.data.Color;
         var imageComponent = debugImage.transform.GetChild(1).GetComponent<Image>();
         var imageComponentShape = debugImage.transform.GetChild(0).GetComponent<Image>();
+        var settings = ScriptableSettings.GlobalSettings;
         
         switch (shape)
         {
             case ProductShape.Hearth: 
-                imageComponentShape.sprite = bottleShapesSprites[0];
+                imageComponentShape.sprite = settings.bottleShapesSprites[0];
                 switch (color)
                 {
                     case ProductColor.Transparent: Debug.Log("Heart Shape without content"); break;
-                    case ProductColor.Blue: imageComponent.sprite = bottleContentSprites[0]; break;
-                    case ProductColor.Green: imageComponent.sprite = bottleContentSprites[1]; break;
-                    case ProductColor.Red: imageComponent.sprite = bottleContentSprites[2]; break;
+                    case ProductColor.Blue: imageComponent.sprite = settings.bottleContentSprites[0]; break;
+                    case ProductColor.Green: imageComponent.sprite = settings.bottleContentSprites[1]; break;
+                    case ProductColor.Red: imageComponent.sprite = settings.bottleContentSprites[2]; break;
                 }
                 break;
             case ProductShape.Cross: 
-                imageComponentShape.sprite = bottleShapesSprites[1];
+                imageComponentShape.sprite = settings.bottleShapesSprites[1];
                 switch (color)
                 {
                     case ProductColor.Transparent: break;
-                    case ProductColor.Blue: imageComponent.sprite = bottleContentSprites[3]; break;
-                    case ProductColor.Green: imageComponent.sprite = bottleContentSprites[4]; break;
-                    case ProductColor.Red: imageComponent.sprite = bottleContentSprites[5]; break;
+                    case ProductColor.Blue: imageComponent.sprite = settings.bottleContentSprites[3]; break;
+                    case ProductColor.Green: imageComponent.sprite = settings.bottleContentSprites[4]; break;
+                    case ProductColor.Red: imageComponent.sprite = settings.bottleContentSprites[5]; break;
                 }
                 break;
             case ProductShape.Moon:
-                imageComponentShape.sprite = bottleShapesSprites[2];
+                imageComponentShape.sprite = settings.bottleShapesSprites[2];
                 switch (color)
                 {
                     case ProductColor.Transparent: break;
-                    case ProductColor.Blue: imageComponent.sprite = bottleContentSprites[6]; break;
-                    case ProductColor.Green: imageComponent.sprite = bottleContentSprites[7]; break;
-                    case ProductColor.Red: imageComponent.sprite = bottleContentSprites[8]; break;
+                    case ProductColor.Blue: imageComponent.sprite = settings.bottleContentSprites[6]; break;
+                    case ProductColor.Green: imageComponent.sprite = settings.bottleContentSprites[7]; break;
+                    case ProductColor.Red: imageComponent.sprite = settings.bottleContentSprites[8]; break;
                 }
                 break;
         }
