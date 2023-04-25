@@ -38,6 +38,7 @@ public class DrawMagicLine : MonoBehaviour
         meshCollider ??= gameObject.AddComponent<MeshCollider>();
         
         Mesh mesh = new Mesh();
+        mesh.name = $"Line";
         myLR.BakeMesh(mesh, true);
         
         meshCollider.sharedMesh = mesh;
