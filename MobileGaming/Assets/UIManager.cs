@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
 
     public void EnablePauseMenu()
     {
+        magicLinesManager.FinishLine();
         sorcererController.enabled = false;
         magicLinesManager.enabled = false;
         pauseMenu.SetActive(true);
@@ -28,6 +29,7 @@ public class UIManager : MonoBehaviour
 
     public void EnableInfoMenu()
     {
+        magicLinesManager.FinishLine();
         sorcererController.enabled = false;
         magicLinesManager.enabled = false;
         levelMenu.SetActive(true);
