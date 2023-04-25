@@ -37,6 +37,11 @@ public class MachineLink : MonoBehaviour
     private void MoveProduct()
     {
         startLinkable.Output(out productInTreatment);
+        
+        if(productInTreatment == null) return;
+        
+        startLinkable.OnOutput -= TryInputOutput;
+        
         currentTimer = 0f;
         
         SetUIProduct();
@@ -78,13 +83,11 @@ public class MachineLink : MonoBehaviour
         startLinkable.OnOutput += TryInputOutput;
         
         startLinkable.Ping();
-
-        void TryInputOutput(Product outProduct)
-        {
-            startLinkable.OnOutput -= TryInputOutput;
-            
-            MoveProduct();
-        }
+    }
+    
+    void TryInputOutput(Product outProduct)
+    {
+        MoveProduct();
     }
 
     public void AddDependency(MachineLink machineLink)
@@ -107,6 +110,8 @@ public class MachineLink : MonoBehaviour
     private void SetUIProduct()
     {
         // Forme de la bouteille
+        if(productInTreatment == null) return;
+        
         var shape = productInTreatment.data.Shape;
         var color = productInTreatment.data.Color;
         var imageComponent = debugImage.transform.GetChild(1).GetComponent<Image>();
