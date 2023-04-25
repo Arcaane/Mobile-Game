@@ -1,7 +1,10 @@
 using System;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class LevelInitializer : MonoBehaviour
 {
@@ -17,6 +20,7 @@ public class LevelInitializer : MonoBehaviour
     
     public void Bake()
     {
+#if UNITY_EDITOR
         ClearGrid();
         string[] separatedStringKey = levelStringKey.Split(';');
 
@@ -39,7 +43,9 @@ public class LevelInitializer : MonoBehaviour
                 blockIndex++;
             }
         }
+#endif
     }
+    
 
     private GameObject SetBlockByChar(char actualChar)
     {

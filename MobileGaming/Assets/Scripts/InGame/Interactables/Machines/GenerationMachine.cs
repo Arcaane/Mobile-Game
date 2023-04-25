@@ -11,6 +11,8 @@ public class GenerationMachine : Machine
     [SerializeField] private float timeUntilRefresh = 2;
     private float timer;
 
+    public override bool Inputable => false;
+
     private void Update()
     {
         timer += Time.deltaTime;

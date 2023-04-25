@@ -1,24 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
 public class MagicLinesManager : MonoBehaviour
 {
     #region Variables
-
-    // Public or Visible 
-    [SerializeField] private TextMeshProUGUI debugMode;
-    [SerializeField] private TextMeshProUGUI debugTimeScale;
-    [SerializeField] private TextMeshProUGUI debugMana;
-
+    
     [SerializeField] private LayerMask machineLayerMask;
     [SerializeField] private bool isInMagicMode;
-
-    [SerializeField] private int maxMana;
-    [SerializeField] private int currentMana;
-    [SerializeField] private int bonusMana;
-    public float timeToRecoverMana = 4.5f;
     
     public GameObject linePrefab;
     public Vector3[] points;
@@ -44,13 +35,8 @@ public class MagicLinesManager : MonoBehaviour
     private void Start()
     {
         isInMagicMode = false;
-        debugMode.text = $"Magic Mode : {isInMagicMode}";
         player = GetComponent<SorcererController>();
         
-        // Mana
-        currentMana = maxMana + bonusMana;
-        UpdateManaDebug();
-
         orthoCam = GameObject.Find("Ortho");
         perspCam = GameObject.Find("Persp");
         orthoCam.SetActive(false);
@@ -61,7 +47,6 @@ public class MagicLinesManager : MonoBehaviour
     void Update()
     {
         if (!isDraging && !isInMagicMode) return;
-        
         
         if (isDraging) GetClickMachine(InputService.cursorPosition);
         
@@ -79,7 +64,6 @@ public class MagicLinesManager : MonoBehaviour
     public void ToggleMagic()
     {
         isInMagicMode = !isInMagicMode;
-        debugMode.text = $"Magic Mode : {isInMagicMode}";
 
         // Controls
         if (isInMagicMode) EnableMagicMode();
@@ -158,6 +142,10 @@ public class MagicLinesManager : MonoBehaviour
             var startLinkable = currentLinkables[index1];
             var endLinkable = currentLinkables[index2];
             
+            if(!startLinkable.Outputable || !endLinkable.Inputable) return;
+            
+            if(magicLinks.Any(link => link.CompareLinks(startLinkable,endLinkable))) return;
+            
             var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
             
             var lr = magicLineGo.GetComponent<LineRenderer>();
@@ -166,6 +154,8 @@ public class MagicLinesManager : MonoBehaviour
             magicLinks.Add(machineLink);
 
             machineLink.SetLinks(startLinkable,endLinkable);
+
+            machineLink.OnDestroyed += RemoveMachine;
             
             var startLinkablePos = startLinkable.tr.position;
             var endLinkablePos = endLinkable.tr.position;
@@ -202,6 +192,11 @@ public class MagicLinesManager : MonoBehaviour
             }
 
             GenerateLinkCollider(lr, p1, p2);
+
+            void RemoveMachine()
+            {
+                if (magicLinks.Contains(machineLink)) magicLinks.Remove(machineLink);
+            }
         }
     }
 
@@ -227,23 +222,6 @@ public class MagicLinesManager : MonoBehaviour
         }
 
         return null;
-    }
-
-    #endregion
-
-    #region Mana
-
-    private void UpdateManaDebug()
-    {
-        debugMana.text = $"Mana : {currentMana}/{maxMana}";
-    }
-    
-    IEnumerator RecoverMana(float _timeToWait)
-    {
-        UpdateManaDebug();
-        yield return new WaitForSeconds(_timeToWait);
-        currentMana++;
-        UpdateManaDebug();
     }
 
     #endregion

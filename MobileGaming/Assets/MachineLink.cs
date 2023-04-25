@@ -10,7 +10,6 @@ public class MachineLink : MonoBehaviour
     //public TextMeshProUGUI debugPercentageText;
     public Transform debugImage;
     private DrawMagicLine lineInCollision;
-    public List<Machine> Linkables;
     public Material myMaterial;
 
     private ILinkable startLinkable;
@@ -21,24 +20,28 @@ public class MachineLink : MonoBehaviour
     [Range(0,100)] public int itemProgression = 0;
     public float timeToCompleteTransportation = 10f;
     public float currentTimer = 0f;
+    
+    private List<MachineLink> dependentLinks = new List<MachineLink>();
+    
+    private static readonly int FilingValue = Shader.PropertyToID("_FilingValue");
 
-    public Sprite[] bottleShapesSprites;
-    public Sprite[] bottleContentSprites;
-
-    private List<MachineLink> depentLinks = new List<MachineLink>();
-        
     #endregion
 
     private void Start()
     {
         myMaterial = GetComponent<LineRenderer>().material;
         
-        depentLinks.Clear();
+        dependentLinks.Clear();
     }
 
-    private void MoveProduct(Product product)
+    private void MoveProduct()
     {
-        productInTreatment = product;
+        startLinkable.Output(out productInTreatment);
+        
+        if(productInTreatment == null) return;
+        
+        startLinkable.OnOutput -= TryInputOutput;
+        
         currentTimer = 0f;
         
         SetUIProduct();
@@ -72,7 +75,7 @@ public class MachineLink : MonoBehaviour
 
     public void SetLinks(ILinkable startLink,ILinkable endLink)
     {
-        Debug.Log($"Linking {startLink.tr.name} to {endLink.tr.name}");
+        if(!startLink.Outputable || !endLink.Inputable) return;
         
         startLinkable = startLink;
         endLinkable = endLink;
@@ -80,28 +83,26 @@ public class MachineLink : MonoBehaviour
         startLinkable.OnOutput += TryInputOutput;
         
         startLinkable.Ping();
-
-        void TryInputOutput(Product outProduct)
-        {
-            startLinkable.OnOutput -= TryInputOutput;
-            
-            MoveProduct(outProduct);
-        }
+    }
+    
+    void TryInputOutput(Product outProduct)
+    {
+        MoveProduct();
     }
 
     public void AddDependency(MachineLink machineLink)
     {
-        if(depentLinks.Contains(machineLink)) return;
+        if(dependentLinks.Contains(machineLink)) return;
         
-        depentLinks.Add(machineLink);
+        dependentLinks.Add(machineLink);
         
         machineLink.OnDestroyed += RemoveDependency;
         
         void RemoveDependency()
         {
-            if(!depentLinks.Contains(machineLink)) return;
-            depentLinks.Remove(machineLink);
-            if(depentLinks.Count > 0) return;
+            if(!dependentLinks.Contains(machineLink)) return;
+            dependentLinks.Remove(machineLink);
+            if(dependentLinks.Count > 0) return;
             enabled = true;
         }
     }
@@ -109,41 +110,45 @@ public class MachineLink : MonoBehaviour
     private void SetUIProduct()
     {
         // Forme de la bouteille
+        if(productInTreatment == null) return;
+        
         var shape = productInTreatment.data.Shape;
         var color = productInTreatment.data.Color;
         var imageComponentShape = debugImage.transform.GetChild(0).GetComponent<Image>();
         var imageComponent = debugImage.transform.GetChild(1).GetComponent<Image>();
+        var settings = ScriptableSettings.GlobalSettings;
+
         
         switch (shape)
         {
             case ProductShape.Hearth: 
-                imageComponentShape.sprite = bottleShapesSprites[0];
+                imageComponentShape.sprite = settings.bottleShapesSprites[0];
                 switch (color)
                 {
                     case ProductColor.Transparent: Debug.Log("Heart Shape without content"); break;
-                    case ProductColor.Blue: imageComponent.sprite = bottleContentSprites[0]; break;
-                    case ProductColor.Green: imageComponent.sprite = bottleContentSprites[1]; break;
-                    case ProductColor.Red: imageComponent.sprite = bottleContentSprites[2]; break;
+                    case ProductColor.Blue: imageComponent.sprite = settings.bottleContentSprites[0]; break;
+                    case ProductColor.Green: imageComponent.sprite = settings.bottleContentSprites[1]; break;
+                    case ProductColor.Red: imageComponent.sprite = settings.bottleContentSprites[2]; break;
                 }
                 break;
             case ProductShape.Cross: 
-                imageComponentShape.sprite = bottleShapesSprites[1];
+                imageComponentShape.sprite = settings.bottleShapesSprites[1];
                 switch (color)
                 {
                     case ProductColor.Transparent: break;
-                    case ProductColor.Blue: imageComponent.sprite = bottleContentSprites[3]; break;
-                    case ProductColor.Green: imageComponent.sprite = bottleContentSprites[4]; break;
-                    case ProductColor.Red: imageComponent.sprite = bottleContentSprites[5]; break;
+                    case ProductColor.Blue: imageComponent.sprite = settings.bottleContentSprites[3]; break;
+                    case ProductColor.Green: imageComponent.sprite = settings.bottleContentSprites[4]; break;
+                    case ProductColor.Red: imageComponent.sprite = settings.bottleContentSprites[5]; break;
                 }
                 break;
             case ProductShape.Moon:
-                imageComponentShape.sprite = bottleShapesSprites[2];
+                imageComponentShape.sprite = settings.bottleShapesSprites[2];
                 switch (color)
                 {
                     case ProductColor.Transparent: break;
-                    case ProductColor.Blue: imageComponent.sprite = bottleContentSprites[6]; break;
-                    case ProductColor.Green: imageComponent.sprite = bottleContentSprites[7]; break;
-                    case ProductColor.Red: imageComponent.sprite = bottleContentSprites[8]; break;
+                    case ProductColor.Blue: imageComponent.sprite = settings.bottleContentSprites[6]; break;
+                    case ProductColor.Green: imageComponent.sprite = settings.bottleContentSprites[7]; break;
+                    case ProductColor.Red: imageComponent.sprite = settings.bottleContentSprites[8]; break;
                 }
                 break;
         }
@@ -154,11 +159,16 @@ public class MachineLink : MonoBehaviour
     private void Feedback()
     {
         itemProgression =  (int)((currentTimer / timeToCompleteTransportation) * 100);
-        myMaterial.SetFloat("_FilingValue", 1 - currentTimer / timeToCompleteTransportation);
+        myMaterial.SetFloat(FilingValue, 1 - currentTimer / timeToCompleteTransportation);
         
         debugImage.position = Vector3.Lerp(startLinkable.tr.position + Vector3.up, 
             endLinkable.tr.position + Vector3.up, currentTimer / timeToCompleteTransportation);
         
+    }
+
+    public bool CompareLinks(ILinkable start,ILinkable end)
+    {
+        return (startLinkable == start && endLinkable == end);
     }
 
 

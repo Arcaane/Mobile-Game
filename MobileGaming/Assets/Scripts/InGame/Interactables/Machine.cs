@@ -16,6 +16,8 @@ public abstract class Machine : MonoBehaviour, ILinkable
     [SerializeField] private float timeMultiplier = 1f;
     
     public Transform tr => transform;
+    public virtual bool Inputable => true;
+    public virtual bool Outputable => true;
     private Coroutine workRoutine;
     
     protected double timer { get; private set; }
@@ -133,6 +135,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
     public void Output(out Product product)
     {
         UnloadProduct(out product);
+        currentProduct = null;
     }
 
     public event Action<Product> OnOutput;
