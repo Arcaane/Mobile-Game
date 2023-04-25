@@ -502,6 +502,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4651964764788466123}
   - component: {fileID: 4591369749376023720}
+  - component: {fileID: 7916541750523679219}
   m_Layer: 0
   m_Name: Level_01
   m_TagString: Untagged
@@ -611,6 +612,20 @@ MonoBehaviour:
   - {fileID: 2453304263045335136}
   - {fileID: 8145804125309639918}
   - {fileID: 4416799135220625107}
+--- !u!114 &7916541750523679219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4651964764788466122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6674c7fc96792845911b8cbb0fdb321, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RendererInfo: []
+  m_Lightmaps: []
 --- !u!1 &5563308872164397872
 GameObject:
   m_ObjectHideFlags: 0
