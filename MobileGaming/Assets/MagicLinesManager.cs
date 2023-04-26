@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 
 public class MagicLinesManager : MonoBehaviour
@@ -15,6 +14,11 @@ public class MagicLinesManager : MonoBehaviour
     public Vector3[] points;
     public List<MachineLink> magicLinks;
 
+    [Space(5)]
+    [ColorUsage(true, true)]
+    public List<Color> linesColorList;
+    private int currentColorIndex = default;
+
     // Private
     private bool isPressed;
     private Ray ray;
@@ -23,6 +27,7 @@ public class MagicLinesManager : MonoBehaviour
     private bool isDraging => InputService.deltaPosition.x != 0 && InputService.deltaPosition.y != 0;
     private SorcererController player;
 
+    [Space(15)]
     public GameObject orthoCam;
     public GameObject perspCam;
 
@@ -39,6 +44,7 @@ public class MagicLinesManager : MonoBehaviour
         
         orthoCam = GameObject.Find("Ortho");
         perspCam = GameObject.Find("Persp");
+        
         orthoCam.SetActive(false);
         
         ToggleMagic();
@@ -46,9 +52,10 @@ public class MagicLinesManager : MonoBehaviour
     
     void Update()
     {
-        if (!isDraging && !isInMagicMode) return;
-        
-        if (isDraging) GetClickMachine(InputService.cursorPosition);
+        if (isDraging)
+        {
+            GetClickMachine(InputService.cursorPosition);
+        }
         
         if (Input.GetMouseButtonDown(0))
         {
@@ -59,6 +66,8 @@ public class MagicLinesManager : MonoBehaviour
         {
             FinishLine();
         }
+
+        Time.timeScale = isPressed ? 0.6f : 1f;
     }
 
     public void ToggleMagic()
@@ -149,7 +158,7 @@ public class MagicLinesManager : MonoBehaviour
             var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
             
             var lr = magicLineGo.GetComponent<LineRenderer>();
-            var machineLink = lr.GetComponent<MachineLink>();
+            var machineLink = magicLineGo.GetComponent<MachineLink>();
             
             magicLinks.Add(machineLink);
 
@@ -157,6 +166,11 @@ public class MagicLinesManager : MonoBehaviour
 
             machineLink.OnDestroyed += RemoveMachine;
             
+            //machineLink.SetMaterialColor(linesColorList[currentColorIndex]);
+            lr.material.SetColor("_InnerColor", linesColorList[currentColorIndex]);
+            currentColorIndex++;
+            if (currentColorIndex > linesColorList.Count - 1) currentColorIndex = 0;
+
             var startLinkablePos = startLinkable.tr.position;
             var endLinkablePos = endLinkable.tr.position;
             var pos1 = startLinkablePos + (endLinkablePos - startLinkablePos).normalized * 0.7f;
@@ -305,7 +319,7 @@ public class MagicLinesManager : MonoBehaviour
         BoxCollider linkCollider;
         linkCollider = lineRenderer.gameObject.AddComponent<BoxCollider>();
         linkCollider.center = new Vector3(0,1,0);
-        linkCollider.size = new Vector3(.5f, .5f, Vector3.Distance(p2, p1));
+        linkCollider.size = new Vector3(.6f, .6f, Vector3.Distance(p2, p1));
         linkCollider.isTrigger = true;
     }
     

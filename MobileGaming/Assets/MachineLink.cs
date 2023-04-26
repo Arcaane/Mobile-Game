@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class MachineLink : MonoBehaviour
@@ -8,7 +9,7 @@ public class MachineLink : MonoBehaviour
     #region Variables
     
     //public TextMeshProUGUI debugPercentageText;
-    public Transform debugImage;
+    [FormerlySerializedAs("debugImage")] public Transform bottleImage;
     private DrawMagicLine lineInCollision;
     public Material myMaterial;
 
@@ -23,14 +24,13 @@ public class MachineLink : MonoBehaviour
     
     private List<MachineLink> dependentLinks = new List<MachineLink>();
     
-    private static readonly int FilingValue = Shader.PropertyToID("_FilingValue");
+    private static readonly int MaterialInnerColor = Shader.PropertyToID("_InnerColor");
 
     #endregion
 
     private void Start()
     {
-        myMaterial = GetComponent<LineRenderer>().material;
-        
+        //myMaterial = GetComponent<LineRenderer>().material;
         dependentLinks.Clear();
     }
 
@@ -114,8 +114,8 @@ public class MachineLink : MonoBehaviour
         
         var shape = productInTreatment.data.Shape;
         var color = productInTreatment.data.Color;
-        var imageComponentShape = debugImage.transform.GetChild(0).GetComponent<Image>();
-        var imageComponent = debugImage.transform.GetChild(1).GetComponent<Image>();
+        var imageComponentShape = bottleImage.transform.GetChild(0).GetComponent<Image>();
+        var imageComponent = bottleImage.transform.GetChild(1).GetComponent<Image>();
         var settings = ScriptableSettings.GlobalSettings;
 
         
@@ -159,9 +159,9 @@ public class MachineLink : MonoBehaviour
     private void Feedback()
     {
         itemProgression =  (int)((currentTimer / timeToCompleteTransportation) * 100);
-        myMaterial.SetFloat(FilingValue, 1 - currentTimer / timeToCompleteTransportation);
+        //myMaterial.SetFloat(MaterialInnerColor, 1 - currentTimer / timeToCompleteTransportation);
         
-        debugImage.position = Vector3.Lerp(startLinkable.tr.position + Vector3.up, 
+        bottleImage.position = Vector3.Lerp(startLinkable.tr.position + Vector3.up, 
             endLinkable.tr.position + Vector3.up, currentTimer / timeToCompleteTransportation);
         
     }
@@ -195,6 +195,11 @@ public class MachineLink : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         Destroy(other.gameObject);
+    }
+
+    public void SetMaterialColor(Color newColor)
+    {
+        myMaterial.SetColor("_InnerColor", newColor);
     }
 
     

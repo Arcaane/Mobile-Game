@@ -253,7 +253,7 @@ LineRenderer:
       serializedVersion: 2
       key0: {r: 1, g: 0.61698115, b: 0.977697, a: 1}
       key1: {r: 0.46416286, g: 0, b: 0.6037736, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
+      key2: {r: 0, g: 0, b: 0, a: 1}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
@@ -268,8 +268,8 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 65535
-      atime2: 0
+      atime1: 964
+      atime2: 65535
       atime3: 0
       atime4: 0
       atime5: 0
@@ -277,7 +277,7 @@ LineRenderer:
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
+      m_NumAlphaKeys: 3
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
@@ -315,25 +315,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugImage: {fileID: 9189563112177039142}
-  Linkables: []
-  myMaterial: {fileID: 2100000, guid: 17482694686d5a14685115a993555735, type: 2}
+  myMaterial: {fileID: 2100000, guid: af792047dc8912c4cb5b45b483283e2f, type: 2}
   itemProgression: 0
-  timeToCompleteTransportation: 1
+  timeToCompleteTransportation: 1.5
   currentTimer: 0
-  bottleShapesSprites:
-  - {fileID: -1426059977, guid: aed75903643729a4c9611b5baefc1900, type: 3}
-  - {fileID: 2048094751, guid: aed75903643729a4c9611b5baefc1900, type: 3}
-  - {fileID: -1217404695, guid: aed75903643729a4c9611b5baefc1900, type: 3}
-  bottleContentSprites:
-  - {fileID: 783010066, guid: aed75903643729a4c9611b5baefc1900, type: 3}
-  - {fileID: 2010091434, guid: aed75903643729a4c9611b5baefc1900, type: 3}
-  - {fileID: -404263817, guid: aed75903643729a4c9611b5baefc1900, type: 3}
-  - {fileID: 1164308184, guid: aed75903643729a4c9611b5baefc1900, type: 3}
-  - {fileID: 859231104, guid: aed75903643729a4c9611b5baefc1900, type: 3}
-  - {fileID: -1969706588, guid: aed75903643729a4c9611b5baefc1900, type: 3}
-  - {fileID: -719217488, guid: aed75903643729a4c9611b5baefc1900, type: 3}
-  - {fileID: 1614534744, guid: aed75903643729a4c9611b5baefc1900, type: 3}
-  - {fileID: 1847673032, guid: aed75903643729a4c9611b5baefc1900, type: 3}
 --- !u!1 &7990441087891660444
 GameObject:
   m_ObjectHideFlags: 0
