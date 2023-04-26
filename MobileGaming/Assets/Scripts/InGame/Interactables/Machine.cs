@@ -27,7 +27,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
     private void Start()
     {
         UpdateFeedbackObject();
-        UpdateFeedbackText(0);
+        UpdateFeedbackImage(0);
         StartFeedback();
     }
 
@@ -68,7 +68,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
             yield return null;
             timer += Time.deltaTime;
             
-            UpdateFeedbackText(1 - timer/waitDuration);
+            UpdateFeedbackImage(timer / waitDuration);
             
             UpdateFeedbackObject();
         }
@@ -82,7 +82,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
 
     private void EndWork()
     {
-        UpdateFeedbackText(0);
+        UpdateFeedbackImage(0);
         
         UpdateFeedbackObject();
 
@@ -104,15 +104,16 @@ public abstract class Machine : MonoBehaviour, ILinkable
     {
         outProduct = currentProduct;
         
-        UpdateFeedbackText(0);
+        UpdateFeedbackImage(0);
         
         UpdateFeedbackObject();
     }
 
-    private void UpdateFeedbackText(double amount)
+    private void UpdateFeedbackImage(double amount)
     {
         if(feedbackImage == null) return;
-        feedbackImage.fillAmount = (float)amount;
+        float yRotation = Mathf.Lerp(0, -360, (float)(amount)) % 360.0f;
+        feedbackImage.transform.eulerAngles = new Vector3(80, transform.eulerAngles.y, yRotation);
     }
 
     private void UpdateFeedbackObject()
