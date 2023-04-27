@@ -67,7 +67,7 @@ public class MagicLinesManager : MonoBehaviour
             FinishLine();
         }
 
-        Time.timeScale = isPressed ? 0.6f : 1f;
+        Time.timeScale = isPressed ? 0.7f : 1f;
     }
 
     public void ToggleMagic()
@@ -120,7 +120,6 @@ public class MagicLinesManager : MonoBehaviour
         // if (currentMana < 1) return;
         // Sfx can't interact
         // Vfx can't interact
-
         isPressed = true;
     }
 
@@ -139,11 +138,21 @@ public class MagicLinesManager : MonoBehaviour
         CreateMagicLines();
     }
 
+    private MachineLink machineLinkTemp;
+    private LineRenderer lrTemp;
+    
     private void CreateMagicLines()
     {
-        for (var index = currentLinkables.Count - 2; index >= 0; index--)
+        for (int index = currentLinkables.Count - 2; index >= 0; index--)
         {
+            Debug.Log(index);
             LinkWithIndex(index,index+1);
+            
+            if (index == 0)
+            {
+                currentColorIndex++;
+                if (currentColorIndex > linesColorList.Count - 1) currentColorIndex = 0;
+            }
         }
 
         void LinkWithIndex(int index1,int index2)
@@ -157,20 +166,17 @@ public class MagicLinesManager : MonoBehaviour
             
             var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
             
-            var lr = magicLineGo.GetComponent<LineRenderer>();
-            var machineLink = magicLineGo.GetComponent<MachineLink>();
+            lrTemp = magicLineGo.GetComponent<LineRenderer>();
             
-            magicLinks.Add(machineLink);
+            machineLinkTemp = magicLineGo.GetComponent<MachineLink>();
+            lrTemp.material.SetColor("_InnerColor", linesColorList[currentColorIndex]);
+            machineLinkTemp.lineGroupNumber = currentColorIndex;
+            magicLinks.Add(machineLinkTemp);
 
-            machineLink.SetLinks(startLinkable,endLinkable);
+            machineLinkTemp.SetLinks(startLinkable,endLinkable);
 
-            machineLink.OnDestroyed += RemoveMachine;
+            machineLinkTemp.OnDestroyed += RemoveMachine;
             
-            //machineLink.SetMaterialColor(linesColorList[currentColorIndex]);
-            lr.material.SetColor("_InnerColor", linesColorList[currentColorIndex]);
-            currentColorIndex++;
-            if (currentColorIndex > linesColorList.Count - 1) currentColorIndex = 0;
-
             var startLinkablePos = startLinkable.tr.position;
             var endLinkablePos = endLinkable.tr.position;
             var pos1 = startLinkablePos + (endLinkablePos - startLinkablePos).normalized * 0.7f;
@@ -192,24 +198,24 @@ public class MagicLinesManager : MonoBehaviour
                     var hitLink = t.transform.GetComponent<MachineLink>();
                     if (hitLink != null)
                     {
-                        machineLink.AddDependency(hitLink);
-                        machineLink.enabled = false;
+                        machineLinkTemp.AddDependency(hitLink);
+                        machineLinkTemp.enabled = false;
                     }
                 }
             }
             
             points = new[] { pos1, pos2 };
-            lr.positionCount = points.Length;
+            lrTemp.positionCount = points.Length;
             for (int i = 0; i < points.Length; i++)
             {
-                lr.SetPosition(i, points[i] + Vector3.up);
+                lrTemp.SetPosition(i, points[i] + Vector3.up);
             }
 
-            GenerateLinkCollider(lr, p1, p2);
+            GenerateLinkCollider(lrTemp, p1, p2);
 
             void RemoveMachine()
             {
-                if (magicLinks.Contains(machineLink)) magicLinks.Remove(machineLink);
+                if (magicLinks.Contains(machineLinkTemp)) magicLinks.Remove(machineLinkTemp);
             }
         }
     }

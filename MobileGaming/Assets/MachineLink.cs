@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -12,26 +13,26 @@ public class MachineLink : MonoBehaviour
     [FormerlySerializedAs("debugImage")] public Transform bottleImage;
     private DrawMagicLine lineInCollision;
     public Material myMaterial;
-
     private ILinkable startLinkable;
     private ILinkable endLinkable;
     
     // Magic Transportation
     private Product productInTreatment;
-    [Range(0,100)] public int itemProgression = 0;
-    public float timeToCompleteTransportation = 10f;
+    [Range(0,100)] [SerializeField] private int itemProgression = 0;
+    public float timeToCompleteTransportation = 5f;
     public float currentTimer = 0f;
-    
+    public TextMeshProUGUI lineGroupNumberText;
+    public int lineGroupNumber;
     private List<MachineLink> dependentLinks = new List<MachineLink>();
-    
-    private static readonly int MaterialInnerColor = Shader.PropertyToID("_InnerColor");
-
     #endregion
 
     private void Start()
     {
-        //myMaterial = GetComponent<LineRenderer>().material;
+        var myMaterial = GetComponent<LineRenderer>();
+        
         dependentLinks.Clear();
+        lineGroupNumberText.text = lineGroupNumber.ToString();
+        lineGroupNumberText.gameObject.transform.position = (startLinkable.tr.position + endLinkable.tr.position) / 2 + Vector3.up * 2;
     }
 
     private void MoveProduct()
@@ -158,7 +159,7 @@ public class MachineLink : MonoBehaviour
     
     private void Feedback()
     {
-        itemProgression =  (int)((currentTimer / timeToCompleteTransportation) * 100);
+        itemProgression = (int)((currentTimer / timeToCompleteTransportation) * 100);
         //myMaterial.SetFloat(MaterialInnerColor, 1 - currentTimer / timeToCompleteTransportation);
         
         bottleImage.position = Vector3.Lerp(startLinkable.tr.position + Vector3.up, 
@@ -196,12 +197,6 @@ public class MachineLink : MonoBehaviour
     {
         Destroy(other.gameObject);
     }
-
-    public void SetMaterialColor(Color newColor)
-    {
-        myMaterial.SetColor("_InnerColor", newColor);
-    }
-
     
     #endregion
 }
