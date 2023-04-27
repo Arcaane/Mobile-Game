@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,8 +15,8 @@ public class Client : Interactable, ILinkable
     [SerializeField] private Image feedbackImage;
     [SerializeField] private Image contentImage;
     [SerializeField] private Image shapeImage;
-    //[SerializeField] private TextMeshProUGUI feedbackText;
-    
+    [SerializeField] private GameObject clientGraphHandler;
+
     private float currentSatisfaction = 0;
     public float Satisfaction => currentSatisfaction;
     private bool canReceiveProduct = false;
@@ -33,7 +33,6 @@ public class Client : Interactable, ILinkable
     private void Start()
     {
         UpdateFeedbackImage();
-       // feedbackText.text = string.Empty;
         feedbackGo.SetActive(false);
         feedbackImage.transform.rotation = Quaternion.Euler(0,0,90f);
     }
@@ -88,7 +87,6 @@ public class Client : Interactable, ILinkable
 
     private Product ReceiveProduct(Product product)
     {
-          
         NextProduct();
         return null;
     }
@@ -108,6 +106,10 @@ public class Client : Interactable, ILinkable
             canReceiveProduct = false;
             yield return new WaitForSeconds(0.5f); // TODO - prob mettre l'expected data a null pendant cette periode
             canReceiveProduct = true;
+
+            Debug.Log(currentDataIndex); 
+            //if (currentDataIndex > 0) Destroy(clientGraphHandler.transform.GetChild(0).gameObject); CA MARCHE PAS
+            Instantiate(data.scriptableClient.ClientMeshPrefab, clientGraphHandler.transform);
             
             satisfactionRoutine = StartCoroutine(SatisfactionRoutine());
             
@@ -292,7 +294,6 @@ public struct ClientData
     public ProductData[] productDatas;
 
     public float Satisfaction => scriptableClient.BaseTimer + (productDatas.Length > 1 ? (productDatas.Length - 1) * scriptableClient.IncrementalTimer : 0);
-
     public float SatisfactionDecayPerSecond => scriptableClient.TimerDecayPerSecond;
     public int Reward => scriptableClient.BaseReward + (productDatas.Length > 1 ? (productDatas.Length - 1) * scriptableClient.IncrementalReward : 0);
 }

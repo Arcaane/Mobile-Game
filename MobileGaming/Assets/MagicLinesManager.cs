@@ -145,10 +145,9 @@ public class MagicLinesManager : MonoBehaviour
     {
         for (int index = currentLinkables.Count - 2; index >= 0; index--)
         {
-            Debug.Log(index);
             LinkWithIndex(index,index+1);
             
-            if (index == 0)
+            if (index <= 0)
             {
                 currentColorIndex++;
                 if (currentColorIndex > linesColorList.Count - 1) currentColorIndex = 0;
@@ -337,7 +336,6 @@ public class MagicLinesManager : MonoBehaviour
         {
             StopCoroutine(drawing);
         }
-
         
         drawing = StartCoroutine(DrawLine());
     }

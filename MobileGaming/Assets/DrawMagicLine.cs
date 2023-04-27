@@ -14,7 +14,6 @@ public class DrawMagicLine : MonoBehaviour
     private MeshCollider meshCollider;
     [HideInInspector] public LineRenderer myLR;
     
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +27,8 @@ public class DrawMagicLine : MonoBehaviour
     IEnumerator Reset(float _resetTime)
     {
         myLR.Simplify(0.05f);
-        GenerateMeshCollider();
+        if (myLR.positionCount > 3) GenerateMeshCollider();
+        
         yield return new WaitForSeconds(_resetTime);
         StartCoroutine(Reset(_resetTime));
     }
