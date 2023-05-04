@@ -2411,7 +2411,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 3237989473905525840}
 --- !u!135 &3237989472660438911
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3290,7 +3289,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 3237989473772157963}
 --- !u!135 &3237989472826684441
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3460,7 +3458,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 0}
 --- !u!1 &3237989472921521244
 GameObject:
   m_ObjectHideFlags: 0
@@ -3604,7 +3601,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 3237989473134203701}
 --- !u!135 &3237989472927568464
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3872,7 +3868,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 0}
 --- !u!1 &3237989472980577402
 GameObject:
   m_ObjectHideFlags: 0
@@ -4016,7 +4011,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 3237989473441673108}
 --- !u!135 &3237989472983266468
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4631,7 +4625,6 @@ GameObject:
   - component: {fileID: 3237989473134203704}
   - component: {fileID: 3237989473134203707}
   - component: {fileID: 3237989473134203706}
-  - component: {fileID: 3237989473134203701}
   - component: {fileID: 168445159114035912}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
@@ -4720,19 +4713,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &3237989473134203701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3237989473134203703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!114 &168445159114035912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4750,7 +4730,6 @@ MonoBehaviour:
   feedbackText: {fileID: 0}
   baseTimeToProduce: 5
   timeMultiplier: 1
-  outputLink: {fileID: 0}
   changeColor: 0
   targetColor: 0
   changeShape: 0
@@ -7217,7 +7196,6 @@ GameObject:
   - component: {fileID: 3237989473441673115}
   - component: {fileID: 3237989473441673114}
   - component: {fileID: 3237989473441673109}
-  - component: {fileID: 3237989473441673108}
   - component: {fileID: 2172525410670705398}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
@@ -7306,19 +7284,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &3237989473441673108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3237989473441673110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!114 &2172525410670705398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7336,7 +7301,6 @@ MonoBehaviour:
   feedbackText: {fileID: 0}
   baseTimeToProduce: 5
   timeMultiplier: 1
-  outputLink: {fileID: 0}
   changeColor: 0
   targetColor: 0
   changeShape: 0
@@ -7791,7 +7755,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 0}
 --- !u!1 &3237989473540734616
 GameObject:
   m_ObjectHideFlags: 0
@@ -8980,7 +8943,6 @@ GameObject:
   - component: {fileID: 3237989473772157966}
   - component: {fileID: 3237989473772157961}
   - component: {fileID: 3237989473772157960}
-  - component: {fileID: 3237989473772157963}
   - component: {fileID: 5707078702174974187}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
@@ -9069,19 +9031,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &3237989473772157963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3237989473772157957}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!114 &5707078702174974187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9099,7 +9048,6 @@ MonoBehaviour:
   feedbackText: {fileID: 0}
   baseTimeToProduce: 5
   timeMultiplier: 1
-  outputLink: {fileID: 0}
   changeColor: 0
   targetColor: 0
   changeShape: 0
@@ -9508,7 +9456,6 @@ GameObject:
   - component: {fileID: 3237989473905525847}
   - component: {fileID: 3237989473905525846}
   - component: {fileID: 3237989473905525841}
-  - component: {fileID: 3237989473905525840}
   - component: {fileID: 8925894450063545415}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
@@ -9597,19 +9544,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &3237989473905525840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3237989473905525842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!114 &8925894450063545415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9627,7 +9561,6 @@ MonoBehaviour:
   feedbackText: {fileID: 0}
   baseTimeToProduce: 5
   timeMultiplier: 1
-  outputLink: {fileID: 0}
   changeColor: 0
   targetColor: 0
   changeShape: 0

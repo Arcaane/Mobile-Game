@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8863337194420465959}
-  - component: {fileID: 7321364294549279913}
   - component: {fileID: 5982880247390205783}
   - component: {fileID: 9208496105784065306}
   m_Layer: 7
@@ -35,19 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7321364294549279913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4011043854238429436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 5982880247390205783}
 --- !u!114 &5982880247390205783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,7 +51,6 @@ MonoBehaviour:
   feedbackText: {fileID: 0}
   baseTimeToProduce: 5
   timeMultiplier: 1
-  outputLink: {fileID: 0}
   newProduct:
     data:
       Color: 0
@@ -129,7 +114,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <interactable>k__BackingField: {fileID: 0}
 --- !u!135 &2300306682904596933
 SphereCollider:
   m_ObjectHideFlags: 0

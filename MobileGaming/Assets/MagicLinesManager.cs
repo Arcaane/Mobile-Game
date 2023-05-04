@@ -88,9 +88,7 @@ public class MagicLinesManager : MonoBehaviour
         // Inputs 
         InputService.OnPress += OnScreenTouch;
         InputService.OnRelease += OnScreenRelease;
-        InputService.OnPress -= player.OnScreenTouch;
-        InputService.OnRelease -= player.OnScreenRelease;
-        
+
         // Camera
         perspCam.SetActive(false);
         orthoCam.SetActive(true);
@@ -101,9 +99,7 @@ public class MagicLinesManager : MonoBehaviour
         // Inputs
         InputService.OnPress -= OnScreenTouch;
         InputService.OnRelease -= OnScreenRelease;
-        InputService.OnPress += player.OnScreenTouch;
-        InputService.OnRelease += player.OnScreenRelease;
-        
+
         // Camera
         orthoCam.SetActive(false);
         perspCam.SetActive(true);
@@ -226,16 +222,10 @@ public class MagicLinesManager : MonoBehaviour
         if (Physics.Raycast(ray, out hit, machineLayerMask))
         {
             var linkable = hit.transform.GetComponent<ILinkable>();
-            if (linkable != null)
-            {
-                if(!currentLinkables.Contains(linkable)){ currentLinkables.Add(linkable);}
-            }
             
-            var col = hit.transform.GetComponent<InteractableCollider>();
-
-            if (col == null) return null;
+            if (linkable == null) return null;
             
-            if (col.interactable is MachineSlot slot) return slot.machine;
+            if(!currentLinkables.Contains(linkable)){ currentLinkables.Add(linkable);}
 
             return null;
         }

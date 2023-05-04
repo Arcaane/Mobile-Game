@@ -19,12 +19,7 @@ namespace Service
         private SorcererController sorcererController;
         private Level level;
         
-        private Product currentProduct; // TODO - multiple products (product slot class list)
-        
-        private Interactable currentInteractable;
-
         private GameObject endGameCanvasGo;
-        private TextMeshProUGUI currentProductText;
         private TextMeshProUGUI endGameText;
 
         public GameService(ScriptableSettings baseSettings)
@@ -46,12 +41,6 @@ namespace Service
 
         private void LoadGame()
         {
-            Interactable.ResetEvents();
-            Interactable.OnRangeEnter += OnInteractableEnter;
-            Interactable.OnRangeExit += OnInteractableExit;
-            
-            UpdateProductText();
-            
             level.Run();
         }
 
@@ -60,47 +49,25 @@ namespace Service
             var cameras = Object.Instantiate(camerasGo).GetComponent<CameraComponents>();
             Release(camerasGo);
 
-            AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("JoystickCanvas", LoadJoystickCanvas);
+            AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("SorcererController", LoadSorcererController);
 
-            void LoadJoystickCanvas(GameObject joystickCanvasGo)
+            void LoadSorcererController(GameObject sorcererControllerGo)
             {
-                var joystickCanvas = Object.Instantiate(joystickCanvasGo).GetComponent<JoystickComponents>();
-                // TODO - apply sprites, then release
-                //Release(joystickCanvasGo);
-                
-                AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("SorcererController", LoadSorcererController);
-
-                void LoadSorcererController(GameObject sorcererControllerGo)
-                {
-                    sorcererController = Object.Instantiate(sorcererControllerGo).GetComponent<SorcererController>();
-                    // TODO - apply materials, then release
-                    //Release(sorcererControllerGo);
-
-                    sorcererController.perspCameraGo = cameras.perspCameraGo;
-                    sorcererController.perspCam = cameras.perspCamera;
-                    sorcererController.orthoCam = cameras.othoCamera;
-
-                    sorcererController.joystickParentGo = joystickCanvas.parentGo;
-                    sorcererController.joystickParentTr = joystickCanvas.parentTr;
-                    sorcererController.joystickTr = joystickCanvas.joystickTr;
+                sorcererController = Object.Instantiate(sorcererControllerGo).GetComponent<SorcererController>();
+                // TODO - apply materials, then release
+                //Release(sorcererControllerGo);
                     
-                    sorcererController.SetVariables();
-
-                    sorcererController.OnInteract += InteractWithInteractable;
-
-                    levelParent = new GameObject().transform;
+                levelParent = new GameObject().transform;
                     
-                    currentProductText = sorcererController.currentProductText;
-                    endGameText = sorcererController.endGameText;
-                    endGameCanvasGo = sorcererController.endGameCanvasGo;
+                endGameText = sorcererController.endGameText;
+                endGameCanvasGo = sorcererController.endGameCanvasGo;
                     
-                    sorcererController.endGameButton.onClick.AddListener(RestartGame);
+                sorcererController.endGameButton.onClick.AddListener(RestartGame);
 
-                    currentLevel = settings.DefaultStartIndex;
-                    NextLevel();
+                currentLevel = settings.DefaultStartIndex;
+                NextLevel();
                     
-                    LoadGame();
-                }
+                LoadGame();
             }
         }
 
@@ -135,32 +102,7 @@ namespace Service
             currentLevel++;
             if (currentLevel >= settings.Levels.Length) currentLevel = 0;
         }
-
-        private void InteractWithInteractable()
-        {
-            if(currentInteractable is null) return;
-            
-            //Debug.Log($"Interacting, product is {currentProduct}");
-            currentInteractable.Interact(currentProduct,out currentProduct);
-            //Debug.Log($"Interacted, product is now {currentProduct}");
-            UpdateProductText();
-        }
-
-        private void UpdateProductText()
-        {
-            currentProductText.text = $"Current :\n{currentProduct}";
-        }
-
-        private void OnInteractableEnter(Interactable interactable)
-        {
-            currentInteractable = interactable;
-        }
         
-        private void OnInteractableExit(Interactable interactable)
-        {
-            if (currentInteractable == interactable) currentInteractable = null;
-        }
-
         private void UpdateEndGameText(int state)
         {
             endGameText.text = state == 0 ? "lose :c" : "win :)";
