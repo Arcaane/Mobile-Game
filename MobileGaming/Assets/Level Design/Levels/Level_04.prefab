@@ -1519,7 +1519,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 0}
 --- !u!1 &2127511614254916144
 GameObject:
   m_ObjectHideFlags: 0
@@ -2644,7 +2643,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 2127511615787616572}
 --- !u!135 &2127511614438948709
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5760,7 +5758,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 0}
 --- !u!1 &2127511615013075452
 GameObject:
   m_ObjectHideFlags: 0
@@ -5969,7 +5966,6 @@ GameObject:
   - component: {fileID: 2127511615026483144}
   - component: {fileID: 2127511615026483159}
   - component: {fileID: 2127511615026483158}
-  - component: {fileID: 2127511615026483157}
   - component: {fileID: 7249469193165296226}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
@@ -6058,19 +6054,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &2127511615026483157
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2127511615026483155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!114 &7249469193165296226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6088,7 +6071,6 @@ MonoBehaviour:
   feedbackText: {fileID: 0}
   baseTimeToProduce: 5
   timeMultiplier: 1
-  outputLink: {fileID: 0}
   changeColor: 0
   targetColor: 0
   changeShape: 0
@@ -9079,7 +9061,6 @@ GameObject:
   - component: {fileID: 2127511615787616575}
   - component: {fileID: 2127511615787616574}
   - component: {fileID: 2127511615787616573}
-  - component: {fileID: 2127511615787616572}
   - component: {fileID: 4715782920029821168}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
@@ -9168,19 +9149,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &2127511615787616572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2127511615787616570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!114 &4715782920029821168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9198,7 +9166,6 @@ MonoBehaviour:
   feedbackText: {fileID: 0}
   baseTimeToProduce: 5
   timeMultiplier: 1
-  outputLink: {fileID: 0}
   changeColor: 0
   targetColor: 0
   changeShape: 0
@@ -10293,7 +10260,6 @@ GameObject:
   - component: {fileID: 2127511615970519543}
   - component: {fileID: 2127511615970519542}
   - component: {fileID: 2127511615970519541}
-  - component: {fileID: 2127511615970519540}
   - component: {fileID: 3162582598079738185}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
@@ -10382,19 +10348,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &2127511615970519540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2127511615970519538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!114 &3162582598079738185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10412,7 +10365,6 @@ MonoBehaviour:
   feedbackText: {fileID: 0}
   baseTimeToProduce: 5
   timeMultiplier: 1
-  outputLink: {fileID: 0}
   changeColor: 0
   targetColor: 0
   changeShape: 0
@@ -10854,7 +10806,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 2127511615026483157}
 --- !u!135 &2127511616070324988
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -12200,7 +12151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 0}
 --- !u!1 &2127511616219713894
 GameObject:
   m_ObjectHideFlags: 0
@@ -12540,7 +12490,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 2127511615970519540}
 --- !u!135 &2127511616252603892
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -7394,7 +7394,6 @@ GameObject:
   - component: {fileID: 5707814995307954252}
   - component: {fileID: 5707814995307954255}
   - component: {fileID: 5707814995307954254}
-  - component: {fileID: 5707814995307954257}
   - component: {fileID: 3098498507764093948}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
@@ -7483,19 +7482,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &5707814995307954257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5707814995307954259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 3098498507764093948}
 --- !u!114 &3098498507764093948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7695,7 +7681,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <interactable>k__BackingField: {fileID: 0}
 --- !u!135 &5707814995423859033
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7917,7 +7902,6 @@ GameObject:
   - component: {fileID: 5707814995475358717}
   - component: {fileID: 5707814995475358716}
   - component: {fileID: 5707814995475358719}
-  - component: {fileID: 5707814995475358718}
   - component: {fileID: 1728859812497008940}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
@@ -8006,19 +7990,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &5707814995475358718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5707814995475358592}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 1728859812497008940}
 --- !u!114 &1728859812497008940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8490,7 +8461,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <interactable>k__BackingField: {fileID: 0}
 --- !u!1 &5707814995528662667
 GameObject:
   m_ObjectHideFlags: 0
@@ -8843,7 +8813,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <interactable>k__BackingField: {fileID: 0}
 --- !u!1 &5707814995619361210
 GameObject:
   m_ObjectHideFlags: 0
@@ -9576,7 +9545,6 @@ GameObject:
   - component: {fileID: 5707814995745603159}
   - component: {fileID: 5707814995745603158}
   - component: {fileID: 5707814995745603161}
-  - component: {fileID: 5707814995745603160}
   - component: {fileID: 5975590270119331340}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
@@ -9665,19 +9633,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &5707814995745603160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5707814995745603162}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 5975590270119331340}
 --- !u!114 &5975590270119331340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10299,7 +10254,6 @@ GameObject:
   - component: {fileID: 5707814995896513522}
   - component: {fileID: 5707814995896513525}
   - component: {fileID: 5707814995896513524}
-  - component: {fileID: 5707814995896513527}
   - component: {fileID: 5977914741308548028}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
@@ -10388,19 +10342,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &5707814995896513527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5707814995896513529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 5977914741308548028}
 --- !u!114 &5977914741308548028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11055,7 +10996,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <interactable>k__BackingField: {fileID: 0}
 --- !u!135 &5707814996011019760
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -12290,7 +12230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <interactable>k__BackingField: {fileID: 0}
 --- !u!135 &5707814996225690687
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -12545,7 +12484,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <interactable>k__BackingField: {fileID: 0}
 --- !u!135 &5707814996273431408
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -12813,7 +12751,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <interactable>k__BackingField: {fileID: 0}
 --- !u!1 &5707814996365594011
 GameObject:
   m_ObjectHideFlags: 0

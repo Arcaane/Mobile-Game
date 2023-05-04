@@ -1580,7 +1580,6 @@ GameObject:
   - component: {fileID: 4651964762925064881}
   - component: {fileID: 4651964762925064880}
   - component: {fileID: 4651964762925064883}
-  - component: {fileID: 4651964762925064882}
   - component: {fileID: 2116005967709220250}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
@@ -1669,19 +1668,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &4651964762925064882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4651964762925064876}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!114 &2116005967709220250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1699,7 +1685,6 @@ MonoBehaviour:
   feedbackText: {fileID: 0}
   baseTimeToProduce: 5
   timeMultiplier: 1
-  outputLink: {fileID: 0}
   changeColor: 0
   targetColor: 0
   changeShape: 1
@@ -2056,7 +2041,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 4651964763835960606}
 --- !u!1 &4651964763035957315
 GameObject:
   m_ObjectHideFlags: 0
@@ -3474,7 +3458,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 4651964764344767182}
 --- !u!135 &4651964763478270926
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3794,7 +3777,6 @@ GameObject:
   - component: {fileID: 4651964763622031702}
   - component: {fileID: 4651964763622031697}
   - component: {fileID: 4651964763622031696}
-  - component: {fileID: 4651964763622031699}
   - component: {fileID: 3600867313749089738}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
@@ -3883,19 +3865,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &4651964763622031699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4651964763622031693}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!114 &3600867313749089738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3913,7 +3882,6 @@ MonoBehaviour:
   feedbackText: {fileID: 0}
   baseTimeToProduce: 5
   timeMultiplier: 1
-  outputLink: {fileID: 0}
   changeColor: 1
   targetColor: 3
   changeShape: 0
@@ -5106,7 +5074,6 @@ GameObject:
   - component: {fileID: 4651964763835960605}
   - component: {fileID: 4651964763835960604}
   - component: {fileID: 4651964763835960607}
-  - component: {fileID: 4651964763835960606}
   m_Layer: 7
   m_Name: Client(Clone)
   m_TagString: Untagged
@@ -5194,19 +5161,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 0
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &4651964763835960606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4651964763835960600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34d1a2b70b2a32e47b8296a803fcc353, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <client>k__BackingField: {fileID: 0}
 --- !u!1 &4651964763839940711
 GameObject:
   m_ObjectHideFlags: 0
@@ -5219,7 +5173,6 @@ GameObject:
   - component: {fileID: 4651964763839940712}
   - component: {fileID: 4651964763839940715}
   - component: {fileID: 4651964763839940714}
-  - component: {fileID: 4651964763839940709}
   m_Layer: 7
   m_Name: Client(Clone)
   m_TagString: Untagged
@@ -5307,19 +5260,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 0
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &4651964763839940709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4651964763839940711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34d1a2b70b2a32e47b8296a803fcc353, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <client>k__BackingField: {fileID: 0}
 --- !u!1 &4651964763846866719
 GameObject:
   m_ObjectHideFlags: 0
@@ -6281,7 +6221,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 4651964762925064882}
 --- !u!135 &4651964764074501732
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6831,7 +6770,6 @@ GameObject:
   - component: {fileID: 4651964764237457818}
   - component: {fileID: 4651964764237457813}
   - component: {fileID: 4651964764237457812}
-  - component: {fileID: 4651964764237457815}
   m_Layer: 7
   m_Name: Client(Clone)
   m_TagString: Untagged
@@ -6919,19 +6857,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 0
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &4651964764237457815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4651964764237457809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34d1a2b70b2a32e47b8296a803fcc353, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <client>k__BackingField: {fileID: 0}
 --- !u!1 &4651964764285173613
 GameObject:
   m_ObjectHideFlags: 0
@@ -7382,7 +7307,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 4651964763839940709}
 --- !u!1 &4651964764344767176
 GameObject:
   m_ObjectHideFlags: 0
@@ -7395,7 +7319,6 @@ GameObject:
   - component: {fileID: 4651964764344767181}
   - component: {fileID: 4651964764344767180}
   - component: {fileID: 4651964764344767183}
-  - component: {fileID: 4651964764344767182}
   - component: {fileID: 1186865591499205368}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
@@ -7484,19 +7407,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &4651964764344767182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4651964764344767176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!114 &1186865591499205368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7514,7 +7424,6 @@ MonoBehaviour:
   feedbackText: {fileID: 0}
   baseTimeToProduce: 5
   timeMultiplier: 1
-  outputLink: {fileID: 0}
   changeColor: 1
   targetColor: 2
   changeShape: 1
@@ -8936,7 +8845,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 4651964763622031699}
 --- !u!135 &4651964764672630474
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10058,7 +9966,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 4651964764237457815}
 --- !u!1 &4651964764965709427
 GameObject:
   m_ObjectHideFlags: 0
