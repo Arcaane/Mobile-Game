@@ -18,7 +18,7 @@ public class Product
     
     public override string ToString()
     {
-        return $"{data.Color} and {data.Shape} Product";
+        return $"{data.Color}, {data.Shape} and {data.Topping} Product";
     }
 }
 
@@ -27,6 +27,7 @@ public struct ProductData
 {
     public ProductColor Color;
     public ProductShape Shape;
+    public ProductTopping Topping;
 
     public static bool operator ==(ProductData data1, ProductData data2) 
     {
@@ -42,6 +43,7 @@ public struct ProductData
     {
         Shape = GetRandomEnum<ProductShape>(),
         Color = GetRandomEnum<ProductColor>(),
+        Topping = GetRandomEnum<ProductTopping>(),
     };
 
     public static T GetRandomEnum<T>()
@@ -53,5 +55,6 @@ public struct ProductData
 
 public enum ProductShape {Hearth, Moon, Cross}
 public enum ProductColor {Transparent, Red, Blue, Green}
+public enum ProductTopping {Transparent, Red, Blue, Green}
 
 

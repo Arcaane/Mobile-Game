@@ -123,8 +123,6 @@ public class MagicLinesManager : MonoBehaviour
     
     private void LinkMachines()
     {
-        Debug.Log($"Linking {currentLinkables.Count} machines");
-
         CreateMagicLines();
     }
 

@@ -28,31 +28,9 @@ public abstract class Machine : MonoBehaviour, ILinkable
     {
         UpdateFeedbackObject();
         UpdateFeedbackText(0);
-        StartFeedback();
     }
-
-    public abstract void StartFeedback();
-
-    public virtual void LoadProduct(Product inProduct, out Product outProduct)
-    {
-        outProduct = inProduct;
-        if (workRoutine is not null) return;
-        
-        if (inProduct is not null) if(!IsValidInputProduct(inProduct)) return;
-        
-        UnloadProduct(out outProduct);
-        currentProduct = null;
-        
-        if (inProduct is not null)
-        {
-            LoadProduct(inProduct);
-        }
-    }
-
-    public abstract bool IsValidInputProduct(Product product);
-
-
-    public virtual void LoadProduct(Product product)
+    
+    private void LoadProduct(Product product)
     {
         currentProduct = product;
         waitDuration = baseTimeToProduce * 1f / timeMultiplier;

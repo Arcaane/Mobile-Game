@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8863337194420465959}
   - component: {fileID: 5982880247390205783}
-  - component: {fileID: 9208496105784065306}
+  - component: {fileID: 8848783579804282980}
   m_Layer: 7
   m_Name: P_GenerationMachine_Empty
   m_TagString: Untagged
@@ -56,8 +56,8 @@ MonoBehaviour:
       Color: 0
       Shape: 0
   timeUntilRefresh: 2
---- !u!135 &9208496105784065306
-SphereCollider:
+--- !u!65 &8848783579804282980
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -67,8 +67,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2.2, y: 3, z: 2.2}
+  m_Center: {x: 0, y: 1.45, z: 0}
 --- !u!1 &7457948869411325158
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,24 +10,14 @@ public class WorkMachine : Machine
     [SerializeField] private ProductColor targetColor;
     [HideInInspector] public bool changeShape;
     [SerializeField] private ProductShape targetShape;
-
-    public override void StartFeedback()
-    {
-        if(feedbackText != null) feedbackText.text = $"{(changeColor ? targetColor : string.Empty)}{(changeShape ? targetShape : string.Empty)}";
-    }
-
-    public override bool IsValidInputProduct(Product product)
-    {
-        if (changeColor && changeShape && product.data.Color == targetColor && product.data.Shape == targetShape) return false;
-        if (changeColor && !changeShape && product.data.Color == targetColor) return false;
-        if (changeShape && !changeColor && product.data.Shape == targetShape) return false;
-        return true;
-    }
-
+    [HideInInspector] public bool changeTopping;
+    [SerializeField] private ProductTopping targetTopping;
+    
     protected override void Work()
     {
         if (changeColor) currentProduct.data.Color = targetColor;
         if (changeShape) currentProduct.data.Shape = targetShape;
+        if (changeTopping) currentProduct.data.Topping = targetTopping;
     }
 
 #if UNITY_EDITOR
@@ -39,18 +29,23 @@ public class WorkMachine : Machine
             base.OnInspectorGUI();
 
             var machine = (WorkMachine)target;
+
+            var boolWidth = 100;
+            var enumWidth = 100;
             
             EditorGUILayout.LabelField("Work Settings",EditorStyles.boldLabel);
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Generated Product :",GUILayout.MaxWidth(160));
-            machine.changeColor = EditorGUILayout.ToggleLeft("Change Color",machine.changeColor,GUILayout.MinWidth(120));
-            machine.changeShape = EditorGUILayout.ToggleLeft("Change Shape",machine.changeShape);
+            machine.changeColor = EditorGUILayout.ToggleLeft("Change Color",machine.changeColor,GUILayout.MaxWidth(boolWidth));
+            machine.changeShape = EditorGUILayout.ToggleLeft("Change Shape",machine.changeShape,GUILayout.MaxWidth(boolWidth));
+            machine.changeTopping = EditorGUILayout.ToggleLeft("Change Topping",machine.changeTopping,GUILayout.MaxWidth(boolWidth));
             EditorGUILayout.EndHorizontal();
             
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("                   ",GUILayout.MaxWidth(160));
-            if(machine.changeColor) machine.targetColor = (ProductColor) EditorGUILayout.EnumPopup(machine.targetColor,GUILayout.MinWidth(10));
+            if(machine.changeColor) machine.targetColor = (ProductColor) EditorGUILayout.EnumPopup(machine.targetColor);
             if(machine.changeShape) machine.targetShape = (ProductShape) EditorGUILayout.EnumPopup(machine.targetShape);
+            if(machine.changeTopping) machine.targetTopping = (ProductTopping) EditorGUILayout.EnumPopup(machine.targetTopping);
             EditorGUILayout.EndHorizontal();
         }
     }
