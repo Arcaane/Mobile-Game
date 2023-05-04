@@ -17,8 +17,9 @@ public class Client : MonoBehaviour, ILinkable
     [SerializeField] private Image shapeImage;
     
     [SerializeField] private GameObject[] clientGraphsHandler;
+    [SerializeField] private ParticleSystem[] emotesFeedback; 
 
-    private float currentSatisfaction = 0;
+    public float currentSatisfaction = 0;
     public float Satisfaction => currentSatisfaction;
     private bool canReceiveProduct = false;
 
@@ -31,6 +32,9 @@ public class Client : MonoBehaviour, ILinkable
     private Coroutine satisfactionRoutine;
     private WaitForSeconds satisfactionWait = new (0.1f);
 
+    private enum ClientSatisfaction { NewClient, Interrogate, Sleepy, Anger}
+    private ClientSatisfaction clientSatisfactionEnum = ClientSatisfaction.NewClient;
+    
     private void Start()
     {
         foreach (var t in clientGraphsHandler) t.SetActive(false);
@@ -59,7 +63,7 @@ public class Client : MonoBehaviour, ILinkable
     {
         if (product.data == expectedData)
         {
-            //Todo - Good Product Feedback
+            emotesFeedback[3].Play();
             
             NextProduct();
             return;
@@ -74,8 +78,13 @@ public class Client : MonoBehaviour, ILinkable
     {
         currentDataIndex++;
         currentSatisfaction = data.Satisfaction;
+        clientSatisfactionEnum = ClientSatisfaction.NewClient;
         
-        //feedbackText.text = "Yay";
+        foreach (var t in emotesFeedback)
+        {
+            t.Stop();
+        }
+        
         feedbackGo.SetActive(false);
         
         StartCoroutine(NewProductDelayRoutine());
@@ -85,20 +94,9 @@ public class Client : MonoBehaviour, ILinkable
             canReceiveProduct = false;
             yield return new WaitForSeconds(0.5f); // TODO - prob mettre l'expected data a null pendant cette periode
             canReceiveProduct = true;
-
-            Debug.Log(currentDataIndex);
-
+            
             foreach (var t in clientGraphsHandler) { t.SetActive(false); }
-            
-            switch (data.scriptableClient.clientType)
-            {
-                case ClientLook.Frog: clientGraphsHandler[0].SetActive(true); break;
-                case ClientLook.Peasant: clientGraphsHandler[1].SetActive(true); break;
-                default: throw new ArgumentOutOfRangeException();
-            }
-            
-            //if (currentDataIndex > 0) Destroy(clientGraphHandler.transform.GetChild(0).gameObject); CA MARCHE PAS
-            //Instantiate(data.scriptableClient.ClientMeshPrefab, clientGraphHandler.transform);
+            clientGraphsHandler[(int)ClientLook.Parse(data.scriptableClient.clientType.GetType(), data.scriptableClient.clientType.ToString())].SetActive(true);
             
             satisfactionRoutine = StartCoroutine(SatisfactionRoutine());
             
@@ -111,7 +109,6 @@ public class Client : MonoBehaviour, ILinkable
                 yield break;
             }
             
-            //feedbackText.text = $"{data.name} : \n{expectedData.Color} and {expectedData.Shape}";  
             UpdateUIProductImage();
         }
 
@@ -135,7 +132,6 @@ public class Client : MonoBehaviour, ILinkable
         if(satisfactionRoutine != null) StopCoroutine(satisfactionRoutine);
         satisfactionRoutine = null;
         currentSatisfaction = 0;
-        //feedbackText.text = "";
         UpdateFeedbackImage();
     }
 
@@ -156,6 +152,7 @@ public class Client : MonoBehaviour, ILinkable
 
     public event Action OnClientAvailable;
 
+    public float currentSDebug;
     private void UpdateFeedbackImage()
     {
         if (data.scriptableClient is null)
@@ -164,6 +161,26 @@ public class Client : MonoBehaviour, ILinkable
         }
         
         feedbackImage.transform.rotation = Quaternion.Lerp(Quaternion.Euler(80,0,-90f), Quaternion.Euler(80,0,90f), (currentSatisfaction / data.Satisfaction));
+        currentSDebug = (currentSatisfaction / data.Satisfaction);
+        
+        
+        if (clientSatisfactionEnum == ClientSatisfaction.NewClient && currentSatisfaction / data.Satisfaction < 0.9f)
+        {
+            emotesFeedback[0].Play();
+            clientSatisfactionEnum = ClientSatisfaction.Interrogate;
+        }
+        
+        if (clientSatisfactionEnum == ClientSatisfaction.Interrogate && currentSatisfaction / data.Satisfaction < 0.6f)
+        {
+            emotesFeedback[1].Play();
+            clientSatisfactionEnum = ClientSatisfaction.Sleepy;
+        }
+        
+        if (clientSatisfactionEnum == ClientSatisfaction.Sleepy && currentSatisfaction / data.Satisfaction < 0.3f)
+        {
+            emotesFeedback[2].Play();
+            clientSatisfactionEnum = ClientSatisfaction.Anger;
+        }
     }
     
     private void UpdateUIProductImage()

@@ -8,18 +8,21 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
 
-public class Level : MonoBehaviour
+public partial class Level : MonoBehaviour
 {
+    public int currentChapter;
+    public int currentLevel;
+    
     private Vector3 levelPosition;
     [field:HideInInspector,SerializeField] public Vector3 LevelPosition { get; private set; }
     
-    [HideInInspector,SerializeField] private float levelDuration;
-    private float currentTime;
+    [HideInInspector,SerializeField] public float levelDuration;
+    [HideInInspector,SerializeField] private float currentTime;
 
-    [HideInInspector,SerializeField] private int scoreToWin;
-    private int currentScore;
-    [HideInInspector,SerializeField] private float palier2;
-    [HideInInspector,SerializeField] private float palier3;
+    [HideInInspector,SerializeField] public int scoreToWin;
+    [HideInInspector,SerializeField] public int currentScore;
+    [HideInInspector,SerializeField] public float palier2;
+    [HideInInspector,SerializeField] public float palier3;
 
     [SerializeField] private List<ClientTiming> clientTimings = new ();
 
@@ -39,6 +42,7 @@ public class Level : MonoBehaviour
 
     private TextMeshProUGUI scoreText;
     private TextMeshProUGUI timeText;
+    
     
     public void Run()
     {
@@ -372,3 +376,4 @@ public class ClientTiming : IComparable<ClientTiming>
         return $"Timing at {time}";
     }
 }
+
