@@ -105,10 +105,13 @@ public class MagicLinesManager : MonoBehaviour
 
     #region Drag & Drop
 
+    public Material[] shaderDarkness;
+    
     private void OnScreenTouch(Vector2 obj)
     {
         isPressed = true;
         Time.timeScale = slowedTime;
+        foreach (var t in shaderDarkness) t.SetInt("_Darkness", 1);
     }
 
     private void OnScreenRelease(Vector2 obj)
@@ -116,6 +119,7 @@ public class MagicLinesManager : MonoBehaviour
         isPressed = false;
         Time.timeScale = 1;
         
+        foreach (var t in shaderDarkness) t.SetInt("_Darkness", 0);
         LinkMachines();
         
         currentLinkables.Clear();
