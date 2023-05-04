@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,16 +23,17 @@ public class LevelStartPannel : MonoBehaviour
         SorcererController.Instance.menuCanvasGO.SetActive(false);
         
         Time.timeScale = 0f;
-        myLevel = transform.root.GetComponent<Level>();
+        myLevel = transform.parent.GetComponent<Level>();
         
         chapterNumberText.text = $"Chapter {myLevel.currentChapter}";
-        levelNumberText.text = $"Chapter {myLevel.currentLevel}";
-        timerText.text = $"Chapter {myLevel.levelDuration}";
+        levelNumberText.text = $"Level {myLevel.currentLevel}";
+        
+        TimeSpan time = TimeSpan.FromSeconds(myLevel.levelDuration);
+        timerText.text = time.ToString(@"mm\:ss");
+        
         oneStarNumberText.text = $"{myLevel.scoreToWin}";
         twoStarNumberText.text = $"{myLevel.palier2}";
-        twoStarNumberText.text = $"{myLevel.palier3}";
-        
-        
+        threeStarNumberText.text = $"{myLevel.palier3}";
     }
     
     #endregion

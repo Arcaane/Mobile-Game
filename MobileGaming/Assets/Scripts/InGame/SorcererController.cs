@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,8 +28,5 @@ public class SorcererController : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
-    {
-        endGameCanvasGo.SetActive(false);
-    }
+    private void Start() => endGameCanvasGo.SetActive(false);
 }

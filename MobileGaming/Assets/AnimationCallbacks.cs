@@ -13,9 +13,8 @@ public class AnimationCallbacks : MonoBehaviour
             Destroy(t);
         }
         
-        SorcererController.Instance.hudCanvasGO.SetActive(false);
-        SorcererController.Instance.menuCanvasGO.SetActive(false);
-
+        SorcererController.Instance.hudCanvasGO.SetActive(true);
+        
         Time.timeScale = 1f;
     }
 }
