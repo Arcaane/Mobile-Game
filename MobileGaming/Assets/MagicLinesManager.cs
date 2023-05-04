@@ -107,16 +107,15 @@ public class MagicLinesManager : MonoBehaviour
 
     private void OnScreenTouch(Vector2 obj)
     {
-        // if (currentMana < 1) return;
-        // Sfx can't interact
-        // Vfx can't interact
-
         isPressed = true;
+        Time.timeScale = slowedTime;
     }
 
     private void OnScreenRelease(Vector2 obj)
     {
         isPressed = false;
+        Time.timeScale = 1;
+        
         LinkMachines();
         
         currentLinkables.Clear();
@@ -143,7 +142,7 @@ public class MagicLinesManager : MonoBehaviour
             
             if(!startLinkable.Outputable || !endLinkable.Inputable) return;
             
-            if(magicLinks.Any(link => link.CompareLinks(startLinkable,endLinkable))) return;
+            if(magicLinks.Any(link => link.CompareLinks(startLinkable,endLinkable) || link.CompareLinks(endLinkable,startLinkable))) return;
             
             var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
             
