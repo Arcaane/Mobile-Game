@@ -7,31 +7,22 @@ using UnityEditor;
 public class GenerationMachine : Machine
 {
     [HideInInspector] public Product newProduct;
-    [SerializeField] private float timeUntilRefresh = 2;
     private float timer;
 
     public override bool Inputable => false;
 
-    private void Update()
-    {
-        timer += Time.deltaTime;
-        if(timer < timeUntilRefresh) return;
-        timer = 0;
-        InvokeEndWork();
-    }
-    
-    protected override void Work()
+    protected override void Setup()
     {
         
     }
 
-    protected override void PrePing()
+    protected override void Work()
     {
-        currentProduct = newProduct;
-        Debug.Log($"current product : {currentProduct}");
+        
     }
+    
 
-    public override void UnloadProduct(out Product product)
+    protected override void UnloadProduct(out Product product)
     {
         product = newProduct;
     }

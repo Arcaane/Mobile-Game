@@ -15,8 +15,7 @@ public class Client : MonoBehaviour, ILinkable
     [SerializeField] private Image feedbackImage;
     [SerializeField] private Image contentImage;
     [SerializeField] private Image shapeImage;
-    //[SerializeField] private TextMeshProUGUI feedbackText;
-    
+
     private float currentSatisfaction = 0;
     public float Satisfaction => currentSatisfaction;
     private bool canReceiveProduct = false;
@@ -40,8 +39,28 @@ public class Client : MonoBehaviour, ILinkable
     public Transform tr => transform;
     public bool Inputable => true;
     public bool Outputable => false;
+    
+    public void AddLinkAction(MachineLink link, Action action)
+    {
+        OnOutput += InvokeAction;
 
-    public void Ping()
+        link.OnDestroyed += RemoveInvokeOnLinkDestroyed;
+        
+        void InvokeAction(Product _)
+        {
+            action.Invoke();
+            link.OnDestroyed -= RemoveInvokeOnLinkDestroyed;
+            OnOutput -= InvokeAction;
+        }
+        
+        void RemoveInvokeOnLinkDestroyed()
+        {
+            OnOutput -= InvokeAction;
+        }
+    }
+    
+
+    public void RemoveLinkAction(MachineLink link)
     {
         
     }

@@ -7,7 +7,9 @@ public interface ILinkable
     public bool Inputable { get;}
     public bool Outputable { get;}
     
-    public void Ping();
+    public void AddLinkAction(MachineLink link,Action action);
+    public void RemoveLinkAction(MachineLink link);
+    
     public void Output(out Product product);
     public event Action<Product> OnOutput;
 

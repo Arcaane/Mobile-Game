@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,13 +24,16 @@ public abstract class Machine : MonoBehaviour, ILinkable
     protected double timer { get; private set; }
     protected double waitDuration { get; private set; }
     public Product currentProduct { get; protected set; } = null;
-    
+
     private void Start()
     {
         UpdateFeedbackObject();
         UpdateFeedbackText(0);
+        Setup();
     }
-    
+
+    protected abstract void Setup();
+
     private void LoadProduct(Product product)
     {
         currentProduct = product;
@@ -71,14 +75,12 @@ public abstract class Machine : MonoBehaviour, ILinkable
     
     public event Action OnEndWork;
 
-    protected void InvokeEndWork()
+    private void InvokeEndWork()
     {
         OnEndWork?.Invoke();
-        
-        OnOutput?.Invoke(currentProduct);
     }
 
-    public virtual void UnloadProduct(out Product outProduct)
+    protected virtual void UnloadProduct(out Product outProduct)
     {
         outProduct = currentProduct;
         
@@ -99,28 +101,28 @@ public abstract class Machine : MonoBehaviour, ILinkable
         feedbackObject.SetActive(currentProduct != null);
     }
     
-    public void Ping()
-    {
-        PrePing();
-        if(currentProduct != null && workRoutine == null) EndWork();
-    }
-
-    protected virtual void PrePing()
+    public virtual void AddLinkAction(MachineLink link, Action action)
     {
         
     }
-
-    public void Output(out Product product)
+    
+    public virtual void RemoveLinkAction(MachineLink link)
+    {
+        
+    }
+    
+    public virtual void Output(out Product product)
     {
         UnloadProduct(out product);
+        
+        OnOutput?.Invoke(currentProduct);
+        
         currentProduct = null;
     }
 
     public event Action<Product> OnOutput;
     public void Input(Product product)
     {
-        Debug.Log($"Input Received ({product})");
-        
         LoadProduct(product);
     }
 

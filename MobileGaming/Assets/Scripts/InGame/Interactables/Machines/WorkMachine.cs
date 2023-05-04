@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -13,12 +15,34 @@ public class WorkMachine : Machine
     [HideInInspector] public bool changeTopping;
     [SerializeField] private ProductTopping targetTopping;
     
+    private List<Action> queueOutputActions = new List<Action>();
+
+    protected override void Setup()
+    {
+        queueOutputActions.Clear();
+        
+        
+    }
+
     protected override void Work()
     {
         if (changeColor) currentProduct.data.Color = targetColor;
         if (changeShape) currentProduct.data.Shape = targetShape;
         if (changeTopping) currentProduct.data.Topping = targetTopping;
     }
+
+    public override void AddLinkAction(MachineLink link, Action action)
+    {
+        queueOutputActions.Add(action);
+
+        link.OnDestroyed += RemoveAction;
+        
+        void RemoveAction()
+        {
+            if (queueOutputActions.Contains(action)) queueOutputActions.Remove(action);
+        }
+    }
+
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(WorkMachine)),CanEditMultipleObjects]

@@ -33,19 +33,6 @@ public class MachineLink : MonoBehaviour
         
         dependentLinks.Clear();
     }
-
-    private void MoveProduct()
-    {
-        startLinkable.Output(out productInTreatment);
-        
-        if(productInTreatment == null) return;
-        
-        startLinkable.OnOutput -= TryInputOutput;
-        
-        currentTimer = 0f;
-        
-        SetUIProduct();
-    }
     
     private void Update()
     {
@@ -80,16 +67,20 @@ public class MachineLink : MonoBehaviour
         startLinkable = startLink;
         endLinkable = endLink;
         
-        startLinkable.OnOutput += TryInputOutput;
-        
-        startLinkable.Ping();
+        startLinkable.AddLinkAction(this,MoveProduct);
     }
     
-    void TryInputOutput(Product outProduct)
+    private void MoveProduct()
     {
-        MoveProduct();
+        startLinkable.Output(out productInTreatment);
+        
+        if(productInTreatment == null) return;
+        
+        currentTimer = 0f;
+        
+        SetUIProduct();
     }
-
+    
     public void AddDependency(MachineLink machineLink)
     {
         if(dependentLinks.Contains(machineLink)) return;
