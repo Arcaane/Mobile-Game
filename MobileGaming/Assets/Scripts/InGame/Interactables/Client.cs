@@ -15,7 +15,8 @@ public class Client : Interactable, ILinkable
     [SerializeField] private Image feedbackImage;
     [SerializeField] private Image contentImage;
     [SerializeField] private Image shapeImage;
-    [SerializeField] private GameObject clientGraphHandler;
+    
+    [SerializeField] private GameObject[] clientGraphsHandler;
 
     private float currentSatisfaction = 0;
     public float Satisfaction => currentSatisfaction;
@@ -32,6 +33,8 @@ public class Client : Interactable, ILinkable
 
     private void Start()
     {
+        foreach (var t in clientGraphsHandler) t.SetActive(false);
+        
         UpdateFeedbackImage();
         feedbackGo.SetActive(false);
         feedbackImage.transform.rotation = Quaternion.Euler(0,0,90f);
@@ -107,9 +110,19 @@ public class Client : Interactable, ILinkable
             yield return new WaitForSeconds(0.5f); // TODO - prob mettre l'expected data a null pendant cette periode
             canReceiveProduct = true;
 
-            Debug.Log(currentDataIndex); 
+            Debug.Log(currentDataIndex);
+
+            foreach (var t in clientGraphsHandler) { t.SetActive(false); }
+            
+            switch (data.scriptableClient.clientType)
+            {
+                case ClientLook.Frog: clientGraphsHandler[0].SetActive(true); break;
+                case ClientLook.Peasant: clientGraphsHandler[1].SetActive(true); break;
+                default: throw new ArgumentOutOfRangeException();
+            }
+            
             //if (currentDataIndex > 0) Destroy(clientGraphHandler.transform.GetChild(0).gameObject); CA MARCHE PAS
-            Instantiate(data.scriptableClient.ClientMeshPrefab, clientGraphHandler.transform);
+            //Instantiate(data.scriptableClient.ClientMeshPrefab, clientGraphHandler.transform);
             
             satisfactionRoutine = StartCoroutine(SatisfactionRoutine());
             
@@ -296,4 +309,10 @@ public struct ClientData
     public float Satisfaction => scriptableClient.BaseTimer + (productDatas.Length > 1 ? (productDatas.Length - 1) * scriptableClient.IncrementalTimer : 0);
     public float SatisfactionDecayPerSecond => scriptableClient.TimerDecayPerSecond;
     public int Reward => scriptableClient.BaseReward + (productDatas.Length > 1 ? (productDatas.Length - 1) * scriptableClient.IncrementalReward : 0);
+}
+
+public enum ClientLook
+{
+    Frog,
+    Peasant
 }
