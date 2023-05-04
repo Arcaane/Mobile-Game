@@ -5,11 +5,9 @@ using UnityEngine.UI;
 
 public class SorcererController : MonoBehaviour
 {
-    [Header("Dependencies")] [SerializeField]
-    private GameObject sorcererGo;
-
     public static SorcererController Instance;
     
+    [field: SerializeField] public MagicLinesManager magicLinesManager { get; private set; }
     [field: SerializeField] public TextMeshProUGUI timeLeftText { get; private set; }
     [field: SerializeField] public TextMeshProUGUI scoreText { get; private set; }
     [field: SerializeField] public TextMeshProUGUI endGameText { get; private set; }

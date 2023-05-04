@@ -14,7 +14,7 @@ public class DrawMagicLine : MonoBehaviour
     private MeshCollider meshCollider;
     [HideInInspector] public LineRenderer myLR;
     
-    // Start is called before the first frame update
+    
     void Start()
     {
         linkLayer = LayerMask.NameToLayer("Link");
@@ -27,8 +27,7 @@ public class DrawMagicLine : MonoBehaviour
     IEnumerator Reset(float _resetTime)
     {
         myLR.Simplify(0.05f);
-        if (myLR.positionCount > 3) GenerateMeshCollider();
-        
+        GenerateMeshCollider();
         yield return new WaitForSeconds(_resetTime);
         StartCoroutine(Reset(_resetTime));
     }
@@ -38,7 +37,6 @@ public class DrawMagicLine : MonoBehaviour
         meshCollider ??= gameObject.AddComponent<MeshCollider>();
         
         Mesh mesh = new Mesh();
-        mesh.name = $"Line";
         myLR.BakeMesh(mesh, true);
         
         meshCollider.sharedMesh = mesh;

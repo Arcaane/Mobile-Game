@@ -63,6 +63,7 @@ namespace Service
                 endGameCanvasGo = sorcererController.endGameCanvasGo;
                     
                 sorcererController.endGameButton.onClick.AddListener(RestartGame);
+                sorcererController.magicLinesManager.SetCameras(cameras.perspCamera,cameras.othoCamera);
 
                 currentLevel = settings.DefaultStartIndex;
                 NextLevel();

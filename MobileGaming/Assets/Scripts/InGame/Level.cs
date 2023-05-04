@@ -298,6 +298,7 @@ public partial class Level : MonoBehaviour
                     EditorGUILayout.PrefixLabel($"Product {index}");
                     productData.Color = (ProductColor)EditorGUILayout.EnumPopup(productData.Color);
                     productData.Shape = (ProductShape)EditorGUILayout.EnumPopup(productData.Shape);
+                    productData.Topping = (ProductTopping)EditorGUILayout.EnumPopup(productData.Topping);
                     EditorGUILayout.EndHorizontal();
                     level.clientTimings[timingIndex].data.productDatas[index] = productData;
                 }

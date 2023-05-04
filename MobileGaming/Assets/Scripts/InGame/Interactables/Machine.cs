@@ -27,32 +27,10 @@ public abstract class Machine : MonoBehaviour, ILinkable
     private void Start()
     {
         UpdateFeedbackObject();
-        UpdateFeedbackImage(0);
-        StartFeedback();
+        UpdateFeedbackText(0);
     }
-
-    public abstract void StartFeedback();
-
-    public virtual void LoadProduct(Product inProduct, out Product outProduct)
-    {
-        outProduct = inProduct;
-        if (workRoutine is not null) return;
-        
-        if (inProduct is not null) if(!IsValidInputProduct(inProduct)) return;
-        
-        UnloadProduct(out outProduct);
-        currentProduct = null;
-        
-        if (inProduct is not null)
-        {
-            LoadProduct(inProduct);
-        }
-    }
-
-    public abstract bool IsValidInputProduct(Product product);
-
-
-    public virtual void LoadProduct(Product product)
+    
+    private void LoadProduct(Product product)
     {
         currentProduct = product;
         waitDuration = baseTimeToProduce * 1f / timeMultiplier;
@@ -68,7 +46,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
             yield return null;
             timer += Time.deltaTime;
             
-            UpdateFeedbackImage(timer / waitDuration);
+            UpdateFeedbackText(1 - timer/waitDuration);
             
             UpdateFeedbackObject();
         }
@@ -82,7 +60,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
 
     private void EndWork()
     {
-        UpdateFeedbackImage(0);
+        UpdateFeedbackText(0);
         
         UpdateFeedbackObject();
 
@@ -104,16 +82,15 @@ public abstract class Machine : MonoBehaviour, ILinkable
     {
         outProduct = currentProduct;
         
-        UpdateFeedbackImage(0);
+        UpdateFeedbackText(0);
         
         UpdateFeedbackObject();
     }
 
-    private void UpdateFeedbackImage(double amount)
+    private void UpdateFeedbackText(double amount)
     {
         if(feedbackImage == null) return;
-        float yRotation = Mathf.Lerp(0, -360, (float)(amount)) % 360.0f;
-        feedbackImage.transform.eulerAngles = new Vector3(80, transform.eulerAngles.y, yRotation);
+        feedbackImage.fillAmount = (float)amount;
     }
 
     private void UpdateFeedbackObject()

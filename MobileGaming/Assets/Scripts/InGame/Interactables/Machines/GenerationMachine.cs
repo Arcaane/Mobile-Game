@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -20,17 +19,7 @@ public class GenerationMachine : Machine
         timer = 0;
         InvokeEndWork();
     }
-
-    public override void StartFeedback()
-    {
-        if(feedbackText != null) feedbackText.text = $"{newProduct}";
-    }
-
-    public override bool IsValidInputProduct(Product product)
-    {
-        return true;
-    }
-
+    
     protected override void Work()
     {
         
@@ -64,6 +53,7 @@ public class GenerationMachine : Machine
             EditorGUILayout.LabelField("Generated Product :",GUILayout.MaxWidth(160));
             machine.newProduct.data.Shape = (ProductShape) EditorGUILayout.EnumPopup( machine.newProduct.data.Shape);
             machine.newProduct.data.Color = (ProductColor) EditorGUILayout.EnumPopup( machine.newProduct.data.Color);
+            machine.newProduct.data.Topping = (ProductTopping) EditorGUILayout.EnumPopup( machine.newProduct.data.Topping);
             
             EditorGUILayout.EndHorizontal();
         }
