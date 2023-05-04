@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
-public class Client : Interactable, ILinkable
+public class Client : MonoBehaviour, ILinkable
 {
     [Header("Feedback")]
     [SerializeField] private GameObject feedbackGo;
@@ -33,7 +33,6 @@ public class Client : Interactable, ILinkable
     private void Start()
     {
         UpdateFeedbackImage();
-       // feedbackText.text = string.Empty;
         feedbackGo.SetActive(false);
         feedbackImage.transform.rotation = Quaternion.Euler(0,0,90f);
     }
@@ -68,31 +67,6 @@ public class Client : Interactable, ILinkable
 
     public event Action<Product> OnInput;
     
-    public override void Interact(Product inProduct, out Product outProduct)
-    {
-        if (!canReceiveProduct)
-        {
-            outProduct = inProduct;
-            return;
-        }
-        
-        outProduct = inProduct;
-        
-        if (inProduct is null)
-        {
-            return;
-        }
-
-        outProduct = ReceiveProduct(inProduct);
-    }
-
-    private Product ReceiveProduct(Product product)
-    {
-          
-        NextProduct();
-        return null;
-    }
-
     private void NextProduct()
     {
         currentDataIndex++;
