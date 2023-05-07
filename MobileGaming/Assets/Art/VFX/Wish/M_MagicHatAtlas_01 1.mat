@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_MagicHatAtlas_01
+  m_Name: M_MagicHatAtlas_01 1
   m_Shader: {fileID: -6465566751694194690, guid: 2855029ee7608c1429e4e21335488cba,
     type: 3}
   m_ValidKeywords: []
@@ -50,7 +50,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Mask:
-        m_Texture: {fileID: 2800000, guid: f00418ec7947603448334834c8beb795, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -127,6 +127,7 @@ Material:
     - _QueueOffset: 0
     - _R: 1
     - _ReceiveShadows: 1
+    - _RotationSpeed: -1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -137,13 +138,13 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 0.9305442, b: 0.4009434, a: 1}
+    - _Color: {r: 2, g: 1.9529412, b: 1.5450981, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MaskOffset: {r: 0, g: 0, b: 0, a: 0}
     - _MaskTiling: {r: 1, g: 1, b: 0, a: 0}
-    - _Offset: {r: 0, g: 0.4, b: 0, a: 0}
+    - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Tiling: {r: 1, g: 0.63, b: 0, a: 0}
+    - _Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &8217021293585595185
 MonoBehaviour:
