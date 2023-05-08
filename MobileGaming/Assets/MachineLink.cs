@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Link : MonoBehaviour
+public class MachineLink : MonoBehaviour
 {
     #region Variables
     
@@ -21,7 +21,7 @@ public class Link : MonoBehaviour
     public float timeToCompleteTransportation = 10f;
     private float currentTimer;
     
-    private List<Link> dependentLinks = new List<Link>();
+    private List<MachineLink> dependentLinks = new List<MachineLink>();
     
     private static readonly int FilingValue = Shader.PropertyToID("_FilingValue");
 
@@ -154,7 +154,7 @@ public class Link : MonoBehaviour
         StartLinkable.SetStartLinkable(this);
     }
     
-    public void AddDependency(Link link)
+    public void AddDependency(MachineLink link)
     {
         if(dependentLinks.Contains(link)) return;
         

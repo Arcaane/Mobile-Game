@@ -16,7 +16,7 @@ public class MagicLinesManager : MonoBehaviour
     
     [SerializeField] private GameObject linePrefab;
     [SerializeField] private Vector3[] points;
-    [SerializeField] private List<Link> magicLinks;
+    [SerializeField] private List<MachineLink> magicLinks;
 
     // Private
     private bool isPressed;
@@ -145,7 +145,7 @@ public class MagicLinesManager : MonoBehaviour
             var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
             
             var lr = magicLineGo.GetComponent<LineRenderer>();
-            var link = lr.GetComponent<Link>();
+            var link = lr.GetComponent<MachineLink>();
             
             magicLinks.Add(link);
 
@@ -167,7 +167,7 @@ public class MagicLinesManager : MonoBehaviour
             {
                 foreach (var t in hits)
                 {
-                    var hitLink = t.transform.GetComponent<Link>();
+                    var hitLink = t.transform.GetComponent<MachineLink>();
                     if (hitLink == null) continue;
                     
                     link.AddDependency(hitLink);

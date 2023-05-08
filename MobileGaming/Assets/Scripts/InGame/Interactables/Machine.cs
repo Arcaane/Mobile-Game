@@ -97,9 +97,9 @@ public abstract class Machine : MonoBehaviour, ILinkable
     #endregion
 
     #region Linkable
-    public abstract void SetStartLinkable(Link link);
-    public abstract void SetEndLinkable(Link link);
-    public abstract bool IsAvailable(Link link);
+    public abstract void SetStartLinkable(MachineLink link);
+    public abstract void SetEndLinkable(MachineLink link);
+    public abstract bool IsAvailable(MachineLink link);
     public event Action OnAvailable;
 
     #endregion

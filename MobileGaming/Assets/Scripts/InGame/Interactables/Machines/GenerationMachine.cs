@@ -23,7 +23,7 @@ public class GenerationMachine : Machine
         
     }
 
-    public override void SetStartLinkable(Link link)
+    public override void SetStartLinkable(MachineLink link)
     {
         if (link.EndLinkable.IsAvailable(link))
         {
@@ -41,8 +41,8 @@ public class GenerationMachine : Machine
         }
     }
     
-    public override void SetEndLinkable(Link link) { }
-    public override bool IsAvailable(Link link) => false;
+    public override void SetEndLinkable(MachineLink link) { }
+    public override bool IsAvailable(MachineLink link) => false;
 
     #region Editor
 #if UNITY_EDITOR
