@@ -15,79 +15,26 @@ public abstract class Machine : MonoBehaviour, ILinkable
     [SerializeField] private float baseTimeToProduce = 5f;
     [SerializeField] private float timeMultiplier = 1f;
     
-    public Transform tr => transform;
+    public Vector3 Position => transform.position;
     public virtual bool Inputable => true;
     public virtual bool Outputable => true;
-    private Coroutine workRoutine;
     
     protected double timer { get; private set; }
     protected double waitDuration { get; private set; }
     public Product currentProduct { get; protected set; } = null;
-    
+    public bool IsWorking { get; protected set; } = false;
+
     private void Start()
     {
         UpdateFeedbackObject();
-        UpdateFeedbackText(0);
-    }
-    
-    private void LoadProduct(Product product)
-    {
-        currentProduct = product;
-        waitDuration = baseTimeToProduce * 1f / timeMultiplier;
-
-        workRoutine = StartCoroutine(WorkProduct());
+        UpdateFeedbackImage(0);
+        
+        Setup();
     }
 
-    private IEnumerator WorkProduct()
-    {
-        timer = 0;
-        while (timer < waitDuration)
-        {
-            yield return null;
-            timer += Time.deltaTime;
-            
-            UpdateFeedbackText(1 - timer/waitDuration);
-            
-            UpdateFeedbackObject();
-        }
-        
-        Work();
-        
-        EndWork();
-    }
+    #region Feedback
 
-    protected abstract void Work();
-
-    private void EndWork()
-    {
-        UpdateFeedbackText(0);
-        
-        UpdateFeedbackObject();
-
-        InvokeEndWork();
-
-        workRoutine = null;
-    }
-    
-    public event Action OnEndWork;
-
-    protected void InvokeEndWork()
-    {
-        OnEndWork?.Invoke();
-        
-        OnOutput?.Invoke(currentProduct);
-    }
-
-    public virtual void UnloadProduct(out Product outProduct)
-    {
-        outProduct = currentProduct;
-        
-        UpdateFeedbackText(0);
-        
-        UpdateFeedbackObject();
-    }
-
-    private void UpdateFeedbackText(double amount)
+    private void UpdateFeedbackImage(double amount)
     {
         if(feedbackImage == null) return;
         feedbackImage.fillAmount = (float)amount;
@@ -98,31 +45,62 @@ public abstract class Machine : MonoBehaviour, ILinkable
         if(feedbackObject == null) return;
         feedbackObject.SetActive(currentProduct != null);
     }
+    protected abstract void Setup();
+
+    #endregion
+
+    #region Work
+
+    protected void StartWork(Product product)
+    {
+        IsWorking = true;
+        currentProduct = product;
+        waitDuration = baseTimeToProduce * 1f / timeMultiplier;
+
+        StartCoroutine(WorkProduct());
+    }
     
-    public void Ping()
+    private IEnumerator WorkProduct()
     {
-        PrePing();
-        if(currentProduct != null && workRoutine == null) EndWork();
-    }
-
-    protected virtual void PrePing()
-    {
+        timer = 0;
         
-    }
-
-    public void Output(out Product product)
-    {
-        UnloadProduct(out product);
-        currentProduct = null;
-    }
-
-    public event Action<Product> OnOutput;
-    public void Input(Product product)
-    {
-        Debug.Log($"Input Received ({product})");
+        UpdateFeedback();
         
-        LoadProduct(product);
-    }
+        while (timer < waitDuration)
+        {
+            yield return null;
+            timer += Time.deltaTime;
+            
+            UpdateFeedbackImage(1 - timer/waitDuration);
+            
+            UpdateFeedbackObject();
+        }
+        
+        UpdateFeedback();
 
-    public event Action<Product> OnInput;
+        IsWorking = false;
+        
+        EndWork();
+        
+        OnAvailable?.Invoke();
+    }
+    
+    protected abstract void EndWork();
+    
+    private void UpdateFeedback()
+    {
+        UpdateFeedbackImage(0);
+        
+        UpdateFeedbackObject();
+    }
+ 
+    #endregion
+
+    #region Linkable
+    public abstract void SetStartLinkable(MachineLink link);
+    public abstract void SetEndLinkable(MachineLink link);
+    public abstract bool IsAvailable(MachineLink link);
+    public event Action OnAvailable;
+
+    #endregion
 }

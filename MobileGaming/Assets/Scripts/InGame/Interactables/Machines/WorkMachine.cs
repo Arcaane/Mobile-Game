@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -13,13 +14,89 @@ public class WorkMachine : Machine
     [HideInInspector] public bool changeTopping;
     [SerializeField] private ProductTopping targetTopping;
     
-    protected override void Work()
+    private List<MachineLink> nextLinksToLoad = new ();
+    [SerializeField] private List<MachineLink> nextLinksToUnload = new ();
+    private bool hasProductToLoad => !IsWorking && currentProduct != null;
+
+    protected override void Setup()
+    {
+        nextLinksToLoad.Clear();
+        nextLinksToUnload.Clear();
+    }
+
+    protected override void EndWork()
     {
         if (changeColor) currentProduct.data.Color = targetColor;
         if (changeShape) currentProduct.data.Shape = targetShape;
         if (changeTopping) currentProduct.data.Topping = targetTopping;
+        
+        LoadNextLink();
     }
 
+    public override bool IsAvailable(MachineLink link)
+    {
+        if (nextLinksToUnload.Count <= 0) return false;
+        
+        if (IsWorking) return false;
+        if (currentProduct != null) return false;
+        
+        return link == nextLinksToUnload[0];
+    }
+
+    private void LoadNextLink()
+    {
+        if(nextLinksToLoad.Count <= 0) return;
+        
+        var nextLink = nextLinksToLoad[0];
+        nextLinksToLoad.RemoveAt(0);
+
+        if (nextLink.EndLinkable.IsAvailable(nextLink))
+        {
+            nextLink.LoadProduct(currentProduct);
+            currentProduct = null;
+            return;
+        }
+
+        nextLink.EndLinkable.OnAvailable += LoadProductInLink;
+
+        void LoadProductInLink()
+        {
+            if(!nextLink.EndLinkable.IsAvailable(nextLink)) return;
+            
+            nextLink.LoadProduct(currentProduct);
+            currentProduct = null;
+            nextLink.EndLinkable.OnAvailable -= LoadProductInLink;
+        }
+    }
+    
+    public override void SetStartLinkable(MachineLink link)
+    {
+        nextLinksToLoad.Add(link);
+        link.OnDestroyed += RemoveLinkFromList;
+        
+        if(nextLinksToLoad.Count == 1 && hasProductToLoad) LoadNextLink();
+
+        void RemoveLinkFromList()
+        {
+            if (nextLinksToLoad.Contains(link)) nextLinksToLoad.Remove(link);
+        }
+    }
+    
+    public override void SetEndLinkable(MachineLink link)
+    {
+        link.OnComplete += StartWork;
+        
+        nextLinksToUnload.Add(link);
+        link.OnDestroyed += RemoveLinkFromList;
+        
+        void RemoveLinkFromList()
+        {
+            if (nextLinksToUnload.Contains(link)) nextLinksToUnload.Remove(link);
+        }
+    }
+
+
+    #region Editor
 #if UNITY_EDITOR
     [CustomEditor(typeof(WorkMachine)),CanEditMultipleObjects]
     public class WorkMachineProductEditor : Editor
@@ -50,4 +127,5 @@ public class WorkMachine : Machine
         }
     }
 #endif
+    #endregion
 }
