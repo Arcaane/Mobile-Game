@@ -1,30 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 
 public class MagicLinesManager : MonoBehaviour
 {
     #region Variables
+
+    [Header("Settings")]
+    [SerializeField] private float slowedTime = 0.5f;
     
+    [Header("Variables")]
     [SerializeField] private LayerMask machineLayerMask;
     [SerializeField] private bool isInMagicMode;
     
-    public GameObject linePrefab;
-    public Vector3[] points;
-    public List<MachineLink> magicLinks;
+    [SerializeField] private GameObject linePrefab;
+    [SerializeField] private Vector3[] points;
+    [SerializeField] private List<MachineLink> magicLinks;
 
     // Private
     private bool isPressed;
     private Ray ray;
     private RaycastHit hit;
+    private LayerMask linkLayer;
     
     private bool isDraging => InputService.deltaPosition.x != 0 && InputService.deltaPosition.y != 0;
-    private SorcererController player;
 
-    public GameObject orthoCam;
-    public GameObject perspCam;
+    public Camera orthoCam;
+    public Camera perspCam;
 
     public GameObject currentLineInDrawning;
 
@@ -35,16 +38,12 @@ public class MagicLinesManager : MonoBehaviour
     private void Start()
     {
         isInMagicMode = false;
-        player = GetComponent<SorcererController>();
-        
-        orthoCam = GameObject.Find("Ortho");
-        perspCam = GameObject.Find("Persp");
-        orthoCam.SetActive(false);
+        linkLayer = LayerMask.NameToLayer("Link");
         
         ToggleMagic();
     }
     
-    void Update()
+    private void Update()
     {
         if (!isDraging && !isInMagicMode) return;
         
@@ -61,17 +60,21 @@ public class MagicLinesManager : MonoBehaviour
         }
     }
 
-    public void ToggleMagic()
+    public void SetCameras(Camera cam1, Camera cam2)
+    {
+        perspCam = cam1;
+        orthoCam = cam2;
+        orthoCam.gameObject.SetActive(false);
+        
+        EnableMagicMode();
+    }
+
+    private void ToggleMagic()
     {
         isInMagicMode = !isInMagicMode;
-
-        // Controls
+        
         if (isInMagicMode) EnableMagicMode();
         else DisableMagicMode();
-        
-        // Timescale #TODO - Timescale quand t en train de tracer
-        // Time.timeScale = isInMagicMode ? .6f : 1;
-        // debugTimeScale.text = Time.timeScale.ToString();
     }
     
     private void EnableMagicMode()
@@ -79,12 +82,10 @@ public class MagicLinesManager : MonoBehaviour
         // Inputs 
         InputService.OnPress += OnScreenTouch;
         InputService.OnRelease += OnScreenRelease;
-        InputService.OnPress -= player.OnScreenTouch;
-        InputService.OnRelease -= player.OnScreenRelease;
-        
+
         // Camera
-        perspCam.SetActive(false);
-        orthoCam.SetActive(true);
+        perspCam.gameObject.SetActive(false);
+        orthoCam.gameObject.SetActive(true);
     }
 
     private void DisableMagicMode()
@@ -92,12 +93,10 @@ public class MagicLinesManager : MonoBehaviour
         // Inputs
         InputService.OnPress -= OnScreenTouch;
         InputService.OnRelease -= OnScreenRelease;
-        InputService.OnPress += player.OnScreenTouch;
-        InputService.OnRelease += player.OnScreenRelease;
-        
+
         // Camera
-        orthoCam.SetActive(false);
-        perspCam.SetActive(true);
+        orthoCam.gameObject.SetActive(false);
+        perspCam.gameObject.SetActive(true);
 
         if(drawing != null) StopCoroutine(drawing);
         
@@ -106,18 +105,21 @@ public class MagicLinesManager : MonoBehaviour
 
     #region Drag & Drop
 
+    public Material[] shaderDarkness;
+    
     private void OnScreenTouch(Vector2 obj)
     {
-        // if (currentMana < 1) return;
-        // Sfx can't interact
-        // Vfx can't interact
-
         isPressed = true;
+        Time.timeScale = slowedTime;
+        foreach (var t in shaderDarkness) t.SetInt("_Darkness", 1);
     }
 
     private void OnScreenRelease(Vector2 obj)
     {
         isPressed = false;
+        Time.timeScale = 1;
+        
+        foreach (var t in shaderDarkness) t.SetInt("_Darkness", 0);
         LinkMachines();
         
         currentLinkables.Clear();
@@ -125,8 +127,6 @@ public class MagicLinesManager : MonoBehaviour
     
     private void LinkMachines()
     {
-        Debug.Log($"Linking {currentLinkables.Count} machines");
-
         CreateMagicLines();
     }
 
@@ -144,7 +144,7 @@ public class MagicLinesManager : MonoBehaviour
             
             if(!startLinkable.Outputable || !endLinkable.Inputable) return;
             
-            if(magicLinks.Any(link => link.CompareLinks(startLinkable,endLinkable))) return;
+            if(magicLinks.Any(link => link.CompareLinks(startLinkable,endLinkable) || link.CompareLinks(endLinkable,startLinkable))) return;
             
             var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
             
@@ -165,22 +165,17 @@ public class MagicLinesManager : MonoBehaviour
             var start = new Vector3(pos1.x, .5f, pos1.z);
             var end = new Vector3(pos2.x, .5f, pos2.z);
             
-            var hits = (Physics.RaycastAll(
-                start,
-                end - start,
-                Vector3.Distance(start, end),
-                LayerMask.NameToLayer("Link")));
+            var hits = Physics.RaycastAll(start, end - start, Vector3.Distance(start, end), linkLayer);
 
             if (hits.Length > 0)
             {
                 foreach (var t in hits)
                 {
                     var hitLink = t.transform.GetComponent<MachineLink>();
-                    if (hitLink != null)
-                    {
-                        machineLink.AddDependency(hitLink);
-                        machineLink.enabled = false;
-                    }
+                    if (hitLink == null) continue;
+                    
+                    machineLink.AddDependency(hitLink);
+                    machineLink.enabled = false;
                 }
             }
             
@@ -202,21 +197,15 @@ public class MagicLinesManager : MonoBehaviour
 
     private Machine GetClickMachine(Vector2 mousePos)
     {
-        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        Ray ray = orthoCam.ScreenPointToRay(mousePos);
 
         if (Physics.Raycast(ray, out hit, machineLayerMask))
         {
             var linkable = hit.transform.GetComponent<ILinkable>();
-            if (linkable != null)
-            {
-                if(!currentLinkables.Contains(linkable)){ currentLinkables.Add(linkable);}
-            }
             
-            var col = hit.transform.GetComponent<InteractableCollider>();
-
-            if (col == null) return null;
+            if (linkable == null) return null;
             
-            if (col.interactable is MachineSlot slot) return slot.machine;
+            if(!currentLinkables.Contains(linkable)){ currentLinkables.Add(linkable);}
 
             return null;
         }
@@ -230,69 +219,6 @@ public class MagicLinesManager : MonoBehaviour
 
     private Vector3 p1;
     private Vector3 p2;
-    private void CreateMagicLine()
-    {
-        /*
-        var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
-        LineRenderer lr = magicLineGo.GetComponent<LineRenderer>();
-        
-        MachineLink machineLink = lr.GetComponent<MachineLink>();
-        magicLinks.Add(machineLink);
-        
-        //machineLink.Linkables.Add(m1);
-        m1.OnEndWork += machineLink.TakeProductFromMachine;
-
-        //machineLink.Linkables.Add(m2);
-
-        m1.outputLink = machineLink;
-
-        p1 = m1.transform.position + (m2.transform.position - m1.transform.position).normalized * 0.7f;
-        p2 = m2.transform.position + (m1.transform.position - m2.transform.position).normalized * 0.7f;
-        
-        Debug.DrawLine(new Vector3(p1.x, .5f, p1.z), new Vector3(p2.x, .5f, p2.z), Color.green, 20f);
-        var start = new Vector3(p1.x, .5f, p1.z);
-        var end = new Vector3(p2.x, .5f, p2.z);
-
-
-        var hits = (Physics.RaycastAll(
-            start,
-            end - start,
-            Vector3.Distance(start, end),
-            LayerMask.NameToLayer("Link")));
-
-        if (hits.Length > 0)
-        {
-            foreach (var t in hits)
-            {
-                var hitLink = t.transform.GetComponent<MachineLink>();
-                if (hitLink != null)
-                {
-                    machineLink.AddDependency(hitLink);
-                    machineLink.enabled = false;
-                }
-            }
-        }
-        
-        if (Physics.Raycast(
-                start, 
-                end - start, 
-                Vector3.Distance(start, end),
-                LayerMask.NameToLayer("Link")))
-        {
-            Debug.Log("Touche un autre lien au raycast");
-        }
-        
-        points = new[] { p1, p2 };
-        lr.positionCount = points.Length;
-        for (int i = 0; i < points.Length; i++)
-        {
-            lr.SetPosition(i, points[i] + Vector3.up);
-        }
-
-        GenerateLinkCollider(lr, p1, p2);
-        */
-    }
-    
     private void GenerateLinkCollider(LineRenderer lineRenderer, Vector3 p1, Vector3 p2)
     {
         lineRenderer.gameObject.transform.forward = (p2 - p1).normalized;
@@ -339,7 +265,7 @@ public class MagicLinesManager : MonoBehaviour
 
         while (true)
         {
-            Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 position = orthoCam.ScreenToWorldPoint(Input.mousePosition);
             position.y = .5f;
             line.positionCount++;
             line.SetPosition(line.positionCount - 1, position);

@@ -15,7 +15,6 @@ public class DrawMagicLine : MonoBehaviour
     [HideInInspector] public LineRenderer myLR;
     
     
-    // Start is called before the first frame update
     void Start()
     {
         linkLayer = LayerMask.NameToLayer("Link");

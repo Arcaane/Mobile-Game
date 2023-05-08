@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class MachineLink : MonoBehaviour
@@ -8,30 +10,29 @@ public class MachineLink : MonoBehaviour
     #region Variables
     
     //public TextMeshProUGUI debugPercentageText;
-    public Transform debugImage;
+    [FormerlySerializedAs("debugImage")] public Transform bottleImage;
     private DrawMagicLine lineInCollision;
     public Material myMaterial;
-
     private ILinkable startLinkable;
     private ILinkable endLinkable;
     
     // Magic Transportation
     private Product productInTreatment;
-    [Range(0,100)] public int itemProgression = 0;
-    public float timeToCompleteTransportation = 10f;
+    [Range(0,100)] [SerializeField] private int itemProgression = 0;
+    public float timeToCompleteTransportation = 5f;
     public float currentTimer = 0f;
-    
+    public TextMeshProUGUI lineGroupNumberText;
+    public int lineGroupNumber;
     private List<MachineLink> dependentLinks = new List<MachineLink>();
-    
-    private static readonly int FilingValue = Shader.PropertyToID("_FilingValue");
-
     #endregion
 
     private void Start()
     {
-        myMaterial = GetComponent<LineRenderer>().material;
+        var myMaterial = GetComponent<LineRenderer>();
         
         dependentLinks.Clear();
+        lineGroupNumberText.text = lineGroupNumber.ToString();
+        lineGroupNumberText.gameObject.transform.position = (startLinkable.tr.position + endLinkable.tr.position) / 2 + Vector3.up * 2;
     }
 
     private void MoveProduct()
@@ -114,8 +115,8 @@ public class MachineLink : MonoBehaviour
         
         var shape = productInTreatment.data.Shape;
         var color = productInTreatment.data.Color;
-        var imageComponentShape = debugImage.transform.GetChild(0).GetComponent<Image>();
-        var imageComponent = debugImage.transform.GetChild(1).GetComponent<Image>();
+        var imageComponentShape = bottleImage.transform.GetChild(0).GetComponent<Image>();
+        var imageComponent = bottleImage.transform.GetChild(1).GetComponent<Image>();
         var settings = ScriptableSettings.GlobalSettings;
 
         
@@ -158,10 +159,10 @@ public class MachineLink : MonoBehaviour
     
     private void Feedback()
     {
-        itemProgression =  (int)((currentTimer / timeToCompleteTransportation) * 100);
-        myMaterial.SetFloat(FilingValue, 1 - currentTimer / timeToCompleteTransportation);
+        itemProgression = (int)((currentTimer / timeToCompleteTransportation) * 100);
+        //myMaterial.SetFloat(MaterialInnerColor, 1 - currentTimer / timeToCompleteTransportation);
         
-        debugImage.position = Vector3.Lerp(startLinkable.tr.position + Vector3.up, 
+        bottleImage.position = Vector3.Lerp(startLinkable.tr.position + Vector3.up, 
             endLinkable.tr.position + Vector3.up, currentTimer / timeToCompleteTransportation);
         
     }
@@ -196,7 +197,6 @@ public class MachineLink : MonoBehaviour
     {
         Destroy(other.gameObject);
     }
-
     
     #endregion
 }

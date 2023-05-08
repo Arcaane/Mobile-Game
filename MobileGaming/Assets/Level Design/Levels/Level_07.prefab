@@ -3343,7 +3343,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 0}
 --- !u!1 &2574239853568482349
 GameObject:
   m_ObjectHideFlags: 0
@@ -3683,7 +3682,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 2574239853881821717}
 --- !u!135 &2574239853606279444
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3807,7 +3805,6 @@ GameObject:
   - component: {fileID: 2574239853629971239}
   - component: {fileID: 2574239853629971238}
   - component: {fileID: 2574239853629971237}
-  - component: {fileID: 2574239853629971236}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
   m_TagString: Untagged
@@ -3895,19 +3892,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &2574239853629971236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2574239853629971234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!1 &2574239853644667107
 GameObject:
   m_ObjectHideFlags: 0
@@ -4051,7 +4035,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 2574239854694139867}
 --- !u!135 &2574239853659673082
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4208,7 +4191,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 2574239855127422239}
 --- !u!135 &2574239853673113103
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4574,7 +4556,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 0}
 --- !u!1 &2574239853687545583
 GameObject:
   m_ObjectHideFlags: 0
@@ -5506,7 +5487,6 @@ GameObject:
   - component: {fileID: 2574239853881821720}
   - component: {fileID: 2574239853881821719}
   - component: {fileID: 2574239853881821718}
-  - component: {fileID: 2574239853881821717}
   m_Layer: 0
   m_Name: MachineAnchor(Clone)
   m_TagString: Untagged
@@ -5594,19 +5574,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &2574239853881821717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2574239853881821715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!1 &2574239853892788558
 GameObject:
   m_ObjectHideFlags: 0
@@ -6730,7 +6697,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 0}
 --- !u!135 &2574239854016238275
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7475,7 +7441,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 0}
 --- !u!135 &2574239854100264163
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9397,7 +9362,6 @@ GameObject:
   - component: {fileID: 2574239854436772130}
   - component: {fileID: 2574239854436772129}
   - component: {fileID: 2574239854436772128}
-  - component: {fileID: 2574239854436772159}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
   m_TagString: Untagged
@@ -9485,19 +9449,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &2574239854436772159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2574239854436772157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!1 &2574239854452849802
 GameObject:
   m_ObjectHideFlags: 0
@@ -10623,7 +10574,6 @@ GameObject:
   - component: {fileID: 2574239854694139870}
   - component: {fileID: 2574239854694139869}
   - component: {fileID: 2574239854694139868}
-  - component: {fileID: 2574239854694139867}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
   m_TagString: Untagged
@@ -10711,19 +10661,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &2574239854694139867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2574239854694139865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!1 &2574239854694827168
 GameObject:
   m_ObjectHideFlags: 0
@@ -10965,7 +10902,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 2574239854436772159}
 --- !u!135 &2574239854725558398
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -13443,7 +13379,6 @@ GameObject:
   - component: {fileID: 2574239855127422210}
   - component: {fileID: 2574239855127422209}
   - component: {fileID: 2574239855127422208}
-  - component: {fileID: 2574239855127422239}
   m_Layer: 7
   m_Name: MachineAnchor(Clone)
   m_TagString: Untagged
@@ -13531,19 +13466,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &2574239855127422239
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2574239855127422237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!1 &2574239855148848671
 GameObject:
   m_ObjectHideFlags: 0
@@ -13798,7 +13720,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 0}
 --- !u!1 &2574239855172219573
 GameObject:
   m_ObjectHideFlags: 0
@@ -16098,7 +16019,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 0}
 --- !u!135 &2574239855388502121
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -16745,7 +16665,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 2574239853629971236}
 --- !u!135 &2574239855481523837
 SphereCollider:
   m_ObjectHideFlags: 0

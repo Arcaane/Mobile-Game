@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5443814242498105381}
-  - component: {fileID: 5443814242498105380}
   m_Layer: 7
   m_Name: Machine Slot
   m_TagString: Untagged
@@ -34,19 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5443814242498105380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5443814242498105382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!1 &5443814243154665671
 GameObject:
   m_ObjectHideFlags: 0
@@ -105,7 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 5443814242498105380}
 --- !u!1 &5443814244501577178
 GameObject:
   m_ObjectHideFlags: 0

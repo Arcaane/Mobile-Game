@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,16 +8,18 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
-public class Client : Interactable, ILinkable
+public class Client : MonoBehaviour, ILinkable
 {
     [Header("Feedback")]
     [SerializeField] private GameObject feedbackGo;
     [SerializeField] private Image feedbackImage;
     [SerializeField] private Image contentImage;
     [SerializeField] private Image shapeImage;
-    //[SerializeField] private TextMeshProUGUI feedbackText;
     
-    private float currentSatisfaction = 0;
+    [SerializeField] private GameObject[] clientGraphsHandler;
+    [SerializeField] private ParticleSystem[] emotesFeedback; 
+
+    public float currentSatisfaction = 0;
     public float Satisfaction => currentSatisfaction;
     private bool canReceiveProduct = false;
 
@@ -30,10 +32,14 @@ public class Client : Interactable, ILinkable
     private Coroutine satisfactionRoutine;
     private WaitForSeconds satisfactionWait = new (0.1f);
 
+    private enum ClientSatisfaction { NewClient, Interrogate, Sleepy, Anger}
+    private ClientSatisfaction clientSatisfactionEnum = ClientSatisfaction.NewClient;
+    
     private void Start()
     {
+        foreach (var t in clientGraphsHandler) t.SetActive(false);
+        
         UpdateFeedbackImage();
-       // feedbackText.text = string.Empty;
         feedbackGo.SetActive(false);
         feedbackImage.transform.rotation = Quaternion.Euler(0,0,90f);
     }
@@ -57,7 +63,7 @@ public class Client : Interactable, ILinkable
     {
         if (product.data == expectedData)
         {
-            //Todo - Good Product Feedback
+            emotesFeedback[3].Play();
             
             NextProduct();
             return;
@@ -68,37 +74,17 @@ public class Client : Interactable, ILinkable
 
     public event Action<Product> OnInput;
     
-    public override void Interact(Product inProduct, out Product outProduct)
-    {
-        if (!canReceiveProduct)
-        {
-            outProduct = inProduct;
-            return;
-        }
-        
-        outProduct = inProduct;
-        
-        if (inProduct is null)
-        {
-            return;
-        }
-
-        outProduct = ReceiveProduct(inProduct);
-    }
-
-    private Product ReceiveProduct(Product product)
-    {
-          
-        NextProduct();
-        return null;
-    }
-
     private void NextProduct()
     {
         currentDataIndex++;
         currentSatisfaction = data.Satisfaction;
+        clientSatisfactionEnum = ClientSatisfaction.NewClient;
         
-        //feedbackText.text = "Yay";
+        foreach (var t in emotesFeedback)
+        {
+            t.Stop();
+        }
+        
         feedbackGo.SetActive(false);
         
         StartCoroutine(NewProductDelayRoutine());
@@ -108,6 +94,9 @@ public class Client : Interactable, ILinkable
             canReceiveProduct = false;
             yield return new WaitForSeconds(0.5f); // TODO - prob mettre l'expected data a null pendant cette periode
             canReceiveProduct = true;
+            
+            foreach (var t in clientGraphsHandler) { t.SetActive(false); }
+            clientGraphsHandler[(int)ClientLook.Parse(data.scriptableClient.clientType.GetType(), data.scriptableClient.clientType.ToString())].SetActive(true);
             
             satisfactionRoutine = StartCoroutine(SatisfactionRoutine());
             
@@ -120,7 +109,6 @@ public class Client : Interactable, ILinkable
                 yield break;
             }
             
-            //feedbackText.text = $"{data.name} : \n{expectedData.Color} and {expectedData.Shape}";  
             UpdateUIProductImage();
         }
 
@@ -144,7 +132,6 @@ public class Client : Interactable, ILinkable
         if(satisfactionRoutine != null) StopCoroutine(satisfactionRoutine);
         satisfactionRoutine = null;
         currentSatisfaction = 0;
-        //feedbackText.text = "";
         UpdateFeedbackImage();
     }
 
@@ -165,6 +152,7 @@ public class Client : Interactable, ILinkable
 
     public event Action OnClientAvailable;
 
+    public float currentSDebug;
     private void UpdateFeedbackImage()
     {
         if (data.scriptableClient is null)
@@ -173,6 +161,26 @@ public class Client : Interactable, ILinkable
         }
         
         feedbackImage.transform.rotation = Quaternion.Lerp(Quaternion.Euler(80,0,-90f), Quaternion.Euler(80,0,90f), (currentSatisfaction / data.Satisfaction));
+        currentSDebug = (currentSatisfaction / data.Satisfaction);
+        
+        
+        if (clientSatisfactionEnum == ClientSatisfaction.NewClient && currentSatisfaction / data.Satisfaction < 0.9f)
+        {
+            emotesFeedback[0].Play();
+            clientSatisfactionEnum = ClientSatisfaction.Interrogate;
+        }
+        
+        if (clientSatisfactionEnum == ClientSatisfaction.Interrogate && currentSatisfaction / data.Satisfaction < 0.6f)
+        {
+            emotesFeedback[1].Play();
+            clientSatisfactionEnum = ClientSatisfaction.Sleepy;
+        }
+        
+        if (clientSatisfactionEnum == ClientSatisfaction.Sleepy && currentSatisfaction / data.Satisfaction < 0.3f)
+        {
+            emotesFeedback[2].Play();
+            clientSatisfactionEnum = ClientSatisfaction.Anger;
+        }
     }
     
     private void UpdateUIProductImage()
@@ -292,7 +300,12 @@ public struct ClientData
     public ProductData[] productDatas;
 
     public float Satisfaction => scriptableClient.BaseTimer + (productDatas.Length > 1 ? (productDatas.Length - 1) * scriptableClient.IncrementalTimer : 0);
-
     public float SatisfactionDecayPerSecond => scriptableClient.TimerDecayPerSecond;
     public int Reward => scriptableClient.BaseReward + (productDatas.Length > 1 ? (productDatas.Length - 1) * scriptableClient.IncrementalReward : 0);
+}
+
+public enum ClientLook
+{
+    Frog,
+    Peasant
 }
