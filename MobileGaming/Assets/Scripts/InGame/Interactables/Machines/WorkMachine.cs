@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,35 +14,89 @@ public class WorkMachine : Machine
     [HideInInspector] public bool changeTopping;
     [SerializeField] private ProductTopping targetTopping;
     
-    private List<Action> queueOutputActions = new List<Action>();
+    private List<Link> nextLinksToLoad = new ();
+    [SerializeField] private List<Link> nextLinksToUnload = new ();
+    private bool hasProductToLoad => !IsWorking && currentProduct != null;
 
     protected override void Setup()
     {
-        queueOutputActions.Clear();
-        
-        
+        nextLinksToLoad.Clear();
+        nextLinksToUnload.Clear();
     }
 
-    protected override void Work()
+    protected override void EndWork()
     {
         if (changeColor) currentProduct.data.Color = targetColor;
         if (changeShape) currentProduct.data.Shape = targetShape;
         if (changeTopping) currentProduct.data.Topping = targetTopping;
+        
+        LoadNextLink();
     }
 
-    public override void AddLinkAction(MachineLink link, Action action)
+    public override bool IsAvailable(Link link)
     {
-        queueOutputActions.Add(action);
-
-        link.OnDestroyed += RemoveAction;
+        if (nextLinksToUnload.Count <= 0) return false;
         
-        void RemoveAction()
+        if (IsWorking) return false;
+        if (currentProduct != null) return false;
+        
+        return link == nextLinksToUnload[0];
+    }
+
+    private void LoadNextLink()
+    {
+        if(nextLinksToLoad.Count <= 0) return;
+        
+        var nextLink = nextLinksToLoad[0];
+        nextLinksToLoad.RemoveAt(0);
+
+        if (nextLink.EndLinkable.IsAvailable(nextLink))
         {
-            if (queueOutputActions.Contains(action)) queueOutputActions.Remove(action);
+            nextLink.LoadProduct(currentProduct);
+            currentProduct = null;
+            return;
+        }
+
+        nextLink.EndLinkable.OnAvailable += LoadProductInLink;
+
+        void LoadProductInLink()
+        {
+            if(!nextLink.EndLinkable.IsAvailable(nextLink)) return;
+            
+            nextLink.LoadProduct(currentProduct);
+            currentProduct = null;
+            nextLink.EndLinkable.OnAvailable -= LoadProductInLink;
+        }
+    }
+    
+    public override void SetStartLinkable(Link link)
+    {
+        nextLinksToLoad.Add(link);
+        link.OnDestroyed += RemoveLinkFromList;
+        
+        if(nextLinksToLoad.Count == 1 && hasProductToLoad) LoadNextLink();
+
+        void RemoveLinkFromList()
+        {
+            if (nextLinksToLoad.Contains(link)) nextLinksToLoad.Remove(link);
+        }
+    }
+    
+    public override void SetEndLinkable(Link link)
+    {
+        link.OnComplete += StartWork;
+        
+        nextLinksToUnload.Add(link);
+        link.OnDestroyed += RemoveLinkFromList;
+        
+        void RemoveLinkFromList()
+        {
+            if (nextLinksToUnload.Contains(link)) nextLinksToUnload.Remove(link);
         }
     }
 
 
+    #region Editor
 #if UNITY_EDITOR
     [CustomEditor(typeof(WorkMachine)),CanEditMultipleObjects]
     public class WorkMachineProductEditor : Editor
@@ -74,4 +127,5 @@ public class WorkMachine : Machine
         }
     }
 #endif
+    #endregion
 }

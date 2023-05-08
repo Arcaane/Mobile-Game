@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -7,6 +8,7 @@ using UnityEditor;
 public class GenerationMachine : Machine
 {
     [HideInInspector] public Product newProduct;
+    public ProductData data => newProduct.data;
     private float timer;
 
     public override bool Inputable => false;
@@ -16,18 +18,33 @@ public class GenerationMachine : Machine
         
     }
 
-    protected override void Work()
+    protected override void EndWork()
     {
         
     }
-    
 
-    protected override void UnloadProduct(out Product product)
+    public override void SetStartLinkable(Link link)
     {
-        product = newProduct;
+        if (link.EndLinkable.IsAvailable(link))
+        {
+            link.LoadProduct(new Product(data));
+            return;
+        }
+
+        link.EndLinkable.OnAvailable += LoadProductInLink;
+
+        void LoadProductInLink()
+        {
+            if(!link.EndLinkable.IsAvailable(link)) return;
+            link.LoadProduct(new Product(data));
+            link.EndLinkable.OnAvailable -= LoadProductInLink;
+        }
     }
     
+    public override void SetEndLinkable(Link link) { }
+    public override bool IsAvailable(Link link) => false;
 
+    #region Editor
 #if UNITY_EDITOR
     [CustomEditor(typeof(GenerationMachine)),CanEditMultipleObjects]
     public class GenerationMachineProductEditor : Editor
@@ -50,5 +67,6 @@ public class GenerationMachine : Machine
         }
     }
 #endif
+    #endregion
 }
 

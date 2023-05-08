@@ -3,16 +3,12 @@ using UnityEngine;
 
 public interface ILinkable
 {
-    public Transform tr { get; }
+    public Vector3 Position { get; }
     public bool Inputable { get;}
     public bool Outputable { get;}
     
-    public void AddLinkAction(MachineLink link,Action action);
-    public void RemoveLinkAction(MachineLink link);
-    
-    public void Output(out Product product);
-    public event Action<Product> OnOutput;
-
-    public void Input(Product product);
-    public event Action<Product> OnInput;
+    public void SetStartLinkable(Link link);
+    public void SetEndLinkable(Link link);
+    public bool IsAvailable(Link link);
+    public event Action OnAvailable;
 }

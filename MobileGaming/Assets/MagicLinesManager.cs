@@ -16,7 +16,7 @@ public class MagicLinesManager : MonoBehaviour
     
     [SerializeField] private GameObject linePrefab;
     [SerializeField] private Vector3[] points;
-    [SerializeField] private List<MachineLink> magicLinks;
+    [SerializeField] private List<Link> magicLinks;
 
     // Private
     private bool isPressed;
@@ -140,21 +140,21 @@ public class MagicLinesManager : MonoBehaviour
             
             if(!startLinkable.Outputable || !endLinkable.Inputable) return;
             
-            if(magicLinks.Any(link => link.CompareLinks(startLinkable,endLinkable) || link.CompareLinks(endLinkable,startLinkable))) return;
+            if(magicLinks.Any(link => /*link.CompareLinks(startLinkable,endLinkable) ||*/ link.CompareLinks(endLinkable,startLinkable))) return;
             
             var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
             
             var lr = magicLineGo.GetComponent<LineRenderer>();
-            var machineLink = lr.GetComponent<MachineLink>();
+            var link = lr.GetComponent<Link>();
             
-            magicLinks.Add(machineLink);
+            magicLinks.Add(link);
 
-            machineLink.SetLinks(startLinkable,endLinkable);
+            link.SetLinks(startLinkable,endLinkable);
 
-            machineLink.OnDestroyed += RemoveMachine;
+            link.OnDestroyed += RemoveMachine;
             
-            var startLinkablePos = startLinkable.tr.position;
-            var endLinkablePos = endLinkable.tr.position;
+            var startLinkablePos = startLinkable.Position;
+            var endLinkablePos = endLinkable.Position;
             var pos1 = startLinkablePos + (endLinkablePos - startLinkablePos).normalized * 0.7f;
             var pos2 = endLinkablePos + (startLinkablePos - endLinkablePos).normalized * 0.7f;
 
@@ -167,11 +167,11 @@ public class MagicLinesManager : MonoBehaviour
             {
                 foreach (var t in hits)
                 {
-                    var hitLink = t.transform.GetComponent<MachineLink>();
+                    var hitLink = t.transform.GetComponent<Link>();
                     if (hitLink == null) continue;
                     
-                    machineLink.AddDependency(hitLink);
-                    machineLink.enabled = false;
+                    link.AddDependency(hitLink);
+                    link.enabled = false;
                 }
             }
             
@@ -186,7 +186,7 @@ public class MagicLinesManager : MonoBehaviour
 
             void RemoveMachine()
             {
-                if (magicLinks.Contains(machineLink)) magicLinks.Remove(machineLink);
+                if (magicLinks.Contains(link)) magicLinks.Remove(link);
             }
         }
     }
@@ -217,7 +217,7 @@ public class MagicLinesManager : MonoBehaviour
     private Vector3 p2;
     private void GenerateLinkCollider(LineRenderer lineRenderer, Vector3 p1, Vector3 p2)
     {
-        lineRenderer.gameObject.transform.forward = (p2 - p1).normalized;
+//        lineRenderer.gameObject.transform.forward = (p2 - p1).normalized;
         Mesh mesh = new Mesh();
         
         lineRenderer.BakeMesh(mesh, true);

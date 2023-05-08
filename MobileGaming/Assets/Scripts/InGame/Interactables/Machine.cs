@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,80 +15,26 @@ public abstract class Machine : MonoBehaviour, ILinkable
     [SerializeField] private float baseTimeToProduce = 5f;
     [SerializeField] private float timeMultiplier = 1f;
     
-    public Transform tr => transform;
+    public Vector3 Position => transform.position;
     public virtual bool Inputable => true;
     public virtual bool Outputable => true;
-    private Coroutine workRoutine;
     
     protected double timer { get; private set; }
     protected double waitDuration { get; private set; }
     public Product currentProduct { get; protected set; } = null;
+    public bool IsWorking { get; protected set; } = false;
 
     private void Start()
     {
         UpdateFeedbackObject();
-        UpdateFeedbackText(0);
+        UpdateFeedbackImage(0);
+        
         Setup();
     }
 
-    protected abstract void Setup();
+    #region Feedback
 
-    private void LoadProduct(Product product)
-    {
-        currentProduct = product;
-        waitDuration = baseTimeToProduce * 1f / timeMultiplier;
-
-        workRoutine = StartCoroutine(WorkProduct());
-    }
-
-    private IEnumerator WorkProduct()
-    {
-        timer = 0;
-        while (timer < waitDuration)
-        {
-            yield return null;
-            timer += Time.deltaTime;
-            
-            UpdateFeedbackText(1 - timer/waitDuration);
-            
-            UpdateFeedbackObject();
-        }
-        
-        Work();
-        
-        EndWork();
-    }
-
-    protected abstract void Work();
-
-    private void EndWork()
-    {
-        UpdateFeedbackText(0);
-        
-        UpdateFeedbackObject();
-
-        InvokeEndWork();
-
-        workRoutine = null;
-    }
-    
-    public event Action OnEndWork;
-
-    private void InvokeEndWork()
-    {
-        OnEndWork?.Invoke();
-    }
-
-    protected virtual void UnloadProduct(out Product outProduct)
-    {
-        outProduct = currentProduct;
-        
-        UpdateFeedbackText(0);
-        
-        UpdateFeedbackObject();
-    }
-
-    private void UpdateFeedbackText(double amount)
+    private void UpdateFeedbackImage(double amount)
     {
         if(feedbackImage == null) return;
         feedbackImage.fillAmount = (float)amount;
@@ -100,31 +45,62 @@ public abstract class Machine : MonoBehaviour, ILinkable
         if(feedbackObject == null) return;
         feedbackObject.SetActive(currentProduct != null);
     }
-    
-    public virtual void AddLinkAction(MachineLink link, Action action)
-    {
-        
-    }
-    
-    public virtual void RemoveLinkAction(MachineLink link)
-    {
-        
-    }
-    
-    public virtual void Output(out Product product)
-    {
-        UnloadProduct(out product);
-        
-        OnOutput?.Invoke(currentProduct);
-        
-        currentProduct = null;
-    }
+    protected abstract void Setup();
 
-    public event Action<Product> OnOutput;
-    public void Input(Product product)
-    {
-        LoadProduct(product);
-    }
+    #endregion
 
-    public event Action<Product> OnInput;
+    #region Work
+
+    protected void StartWork(Product product)
+    {
+        IsWorking = true;
+        currentProduct = product;
+        waitDuration = baseTimeToProduce * 1f / timeMultiplier;
+
+        StartCoroutine(WorkProduct());
+    }
+    
+    private IEnumerator WorkProduct()
+    {
+        timer = 0;
+        
+        UpdateFeedback();
+        
+        while (timer < waitDuration)
+        {
+            yield return null;
+            timer += Time.deltaTime;
+            
+            UpdateFeedbackImage(1 - timer/waitDuration);
+            
+            UpdateFeedbackObject();
+        }
+        
+        UpdateFeedback();
+
+        IsWorking = false;
+        
+        EndWork();
+        
+        OnAvailable?.Invoke();
+    }
+    
+    protected abstract void EndWork();
+    
+    private void UpdateFeedback()
+    {
+        UpdateFeedbackImage(0);
+        
+        UpdateFeedbackObject();
+    }
+ 
+    #endregion
+
+    #region Linkable
+    public abstract void SetStartLinkable(Link link);
+    public abstract void SetEndLinkable(Link link);
+    public abstract bool IsAvailable(Link link);
+    public event Action OnAvailable;
+
+    #endregion
 }

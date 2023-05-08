@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,18 +17,22 @@ public class Client : MonoBehaviour, ILinkable
     [SerializeField] private Image contentImage;
     [SerializeField] private Image shapeImage;
 
+    [HideInInspector] public ClientData data;
+    private ProductData expectedData => data.productDatas[currentDataIndex];
+    public Vector3 Position => transform.position;
+    public bool Inputable => true;
+    public bool Outputable => false;
+
     private float currentSatisfaction = 0;
     public float Satisfaction => currentSatisfaction;
     private bool canReceiveProduct = false;
-
-    [HideInInspector] public ClientData data;
-    private ProductData expectedData => data.productDatas[currentDataIndex];
     
     private int currentDataIndex = 0;
     private Product feedbackProduct;
 
     private Coroutine satisfactionRoutine;
     private WaitForSeconds satisfactionWait = new (0.1f);
+    
 
     private void Start()
     {
@@ -35,130 +40,10 @@ public class Client : MonoBehaviour, ILinkable
         feedbackGo.SetActive(false);
         feedbackImage.transform.rotation = Quaternion.Euler(0,0,90f);
     }
-    
-    public Transform tr => transform;
-    public bool Inputable => true;
-    public bool Outputable => false;
-    
-    public void AddLinkAction(MachineLink link, Action action)
-    {
-        OnOutput += InvokeAction;
 
-        link.OnDestroyed += RemoveInvokeOnLinkDestroyed;
-        
-        void InvokeAction(Product _)
-        {
-            action.Invoke();
-            link.OnDestroyed -= RemoveInvokeOnLinkDestroyed;
-            OnOutput -= InvokeAction;
-        }
-        
-        void RemoveInvokeOnLinkDestroyed()
-        {
-            OnOutput -= InvokeAction;
-        }
-    }
-    
+    #region Feedback
 
-    public void RemoveLinkAction(MachineLink link)
-    {
-        
-    }
-
-    public void Output(out Product product)
-    {
-        product = null;
-    }
-
-    public event Action<Product> OnOutput;
-    public void Input(Product product)
-    {
-        if (product.data == expectedData)
-        {
-            //Todo - Good Product Feedback
-            
-            NextProduct();
-            return;
-        }
-        
-        //Todo - Bad Product Feedback
-    }
-
-    public event Action<Product> OnInput;
-    
-    private void NextProduct()
-    {
-        currentDataIndex++;
-        currentSatisfaction = data.Satisfaction;
-        
-        //feedbackText.text = "Yay";
-        feedbackGo.SetActive(false);
-        
-        StartCoroutine(NewProductDelayRoutine());
-        
-        IEnumerator NewProductDelayRoutine()
-        {
-            canReceiveProduct = false;
-            yield return new WaitForSeconds(0.5f); // TODO - prob mettre l'expected data a null pendant cette periode
-            canReceiveProduct = true;
-            
-            satisfactionRoutine = StartCoroutine(SatisfactionRoutine());
-            
-            if (currentDataIndex >= data.productDatas.Length)
-            {
-                InvokeNewProductEvents();
-                
-                StopClient();
-                
-                yield break;
-            }
-            
-            //feedbackText.text = $"{data.name} : \n{expectedData.Color} and {expectedData.Shape}";  
-            UpdateUIProductImage();
-        }
-
-        IEnumerator SatisfactionRoutine()
-        {
-            while (currentSatisfaction > 0)
-            {
-                yield return satisfactionWait;
-                currentSatisfaction -= 0.1f * data.SatisfactionDecayPerSecond;
-                UpdateFeedbackImage();
-            }
-            
-            StopClient();
-        }
-    }
-
-    private void StopClient()
-    {
-        OnClientAvailable?.Invoke();
-        
-        if(satisfactionRoutine != null) StopCoroutine(satisfactionRoutine);
-        satisfactionRoutine = null;
-        currentSatisfaction = 0;
-        //feedbackText.text = "";
-        UpdateFeedbackImage();
-    }
-
-    private void InvokeNewProductEvents()
-    {
-        OnNewProduct?.Invoke(data);
-    }
-
-    public event Action<ClientData> OnNewProduct; 
-
-    public void SetData(ClientData newData)
-    {
-        data = newData;
-        currentDataIndex = -1;
-        
-        NextProduct();
-    }
-
-    public event Action OnClientAvailable;
-
-    private void UpdateFeedbackImage()
+     private void UpdateFeedbackImage()
     {
         if (data.scriptableClient is null)
         {
@@ -212,7 +97,105 @@ public class Client : MonoBehaviour, ILinkable
                 break;
         }
     }
+
+    #endregion
+
+    #region Product
+
+    public void SetData(ClientData newData)
+    {
+        data = newData;
+        currentDataIndex = -1;
+        
+        NextProduct();
+    }
     
+    public void ReceiveProduct(Product product)
+    {
+        if (product.data == expectedData)
+        {
+            //Todo - Good Product Feedback
+            
+            NextProduct();
+            return;
+        }
+        
+        //Todo - Bad Product Feedback
+    }
+    
+    private void NextProduct()
+    {
+        canReceiveProduct = false;
+        
+        currentDataIndex++;
+        
+        if (currentDataIndex >= data.productDatas.Length)
+        {
+            StopClient();
+            return;
+        }
+        
+        currentSatisfaction = data.Satisfaction;
+        
+        feedbackGo.SetActive(false);
+        
+        StartCoroutine(NewProductDelayRoutine());
+        
+        IEnumerator NewProductDelayRoutine()
+        {
+            yield return new WaitForSeconds(0.5f); // TODO - prob mettre l'expected data a null pendant cette periode
+            canReceiveProduct = true;
+            
+            satisfactionRoutine = StartCoroutine(SatisfactionRoutine());
+            
+            UpdateUIProductImage();
+        }
+
+        IEnumerator SatisfactionRoutine()
+        {
+            while (currentSatisfaction > 0)
+            {
+                yield return satisfactionWait;
+                currentSatisfaction -= 0.1f * data.SatisfactionDecayPerSecond;
+                UpdateFeedbackImage();
+            }
+            
+            StopClient();
+        }
+    }
+    private void StopClient()
+    {
+        OnClientAvailable?.Invoke();
+        
+        if(satisfactionRoutine != null) StopCoroutine(satisfactionRoutine);
+        satisfactionRoutine = null;
+        currentSatisfaction = 0;
+        //feedbackText.text = "";
+        UpdateFeedbackImage();
+    }
+    
+    public event Action OnClientAvailable;
+    #endregion
+
+    #region Linkable
+    
+    public void SetStartLinkable(Link link)
+    {
+        
+    }
+    
+    public void SetEndLinkable(Link link)
+    {
+        link.OnComplete += ReceiveProduct;
+    }
+
+    public bool IsAvailable(Link link) => true;
+
+    public event Action OnAvailable;
+
+    #endregion
+    
+    #region Editor
 #if UNITY_EDITOR
     [CustomEditor(typeof(Client)),CanEditMultipleObjects]
     public class ClientEditor : Editor
@@ -275,6 +258,7 @@ public class Client : MonoBehaviour, ILinkable
         }
     }
 #endif
+    #endregion
 }
 
 [Serializable]
