@@ -20,9 +20,11 @@ public class Client : MonoBehaviour, ILinkable
     
     [SerializeField] private GameObject[] clientGraphsHandler;
     [SerializeField] private ParticleSystem[] emotesFeedback; 
-
-
+    
     [HideInInspector] public ClientData data;
+    
+    [SerializeField] private float currentSDebug;
+    
     private ProductData expectedData => data.productDatas[currentDataIndex];
     public Vector3 Position => transform.position;
     public bool Inputable => true;
@@ -37,7 +39,6 @@ public class Client : MonoBehaviour, ILinkable
 
     private Coroutine satisfactionRoutine;
     private WaitForSeconds satisfactionWait = new (0.1f);
-    
 
     private enum ClientSatisfaction { NewClient, Interrogate, Sleepy, Anger}
     private ClientSatisfaction clientSatisfactionEnum = ClientSatisfaction.NewClient;
@@ -52,12 +53,32 @@ public class Client : MonoBehaviour, ILinkable
     }
 
     #region Feedback
-
+    
      private void UpdateFeedbackImage()
     {
         if (data.scriptableClient is null)
         {
             return;
+        }
+        
+        currentSDebug = (currentSatisfaction / data.Satisfaction);
+        
+        if (clientSatisfactionEnum == ClientSatisfaction.NewClient && currentSatisfaction / data.Satisfaction < 0.9f)
+        {
+            emotesFeedback[0].Play();
+            clientSatisfactionEnum = ClientSatisfaction.Interrogate;
+        }
+        
+        if (clientSatisfactionEnum == ClientSatisfaction.Interrogate && currentSatisfaction / data.Satisfaction < 0.6f)
+        {
+            emotesFeedback[1].Play();
+            clientSatisfactionEnum = ClientSatisfaction.Sleepy;
+        }
+        
+        if (clientSatisfactionEnum == ClientSatisfaction.Sleepy && currentSatisfaction / data.Satisfaction < 0.3f)
+        {
+            emotesFeedback[2].Play();
+            clientSatisfactionEnum = ClientSatisfaction.Anger;
         }
         
         feedbackImage.transform.rotation = Quaternion.Lerp(Quaternion.Euler(80,0,-90f), Quaternion.Euler(80,0,90f), (currentSatisfaction / data.Satisfaction));
@@ -194,33 +215,11 @@ public class Client : MonoBehaviour, ILinkable
     
     public event Action OnClientAvailable;
     #endregion
-
-    public float currentSDebug;
-    private void UpdateFeedbackImage()
-    {
-        
-        currentSDebug = (currentSatisfaction / data.Satisfaction);
-        
-        
-        if (clientSatisfactionEnum == ClientSatisfaction.NewClient && currentSatisfaction / data.Satisfaction < 0.9f)
-        {
-            emotesFeedback[0].Play();
-            clientSatisfactionEnum = ClientSatisfaction.Interrogate;
-        }
-        
-        if (clientSatisfactionEnum == ClientSatisfaction.Interrogate && currentSatisfaction / data.Satisfaction < 0.6f)
-        {
-            emotesFeedback[1].Play();
-            clientSatisfactionEnum = ClientSatisfaction.Sleepy;
-        }
-        
-        if (clientSatisfactionEnum == ClientSatisfaction.Sleepy && currentSatisfaction / data.Satisfaction < 0.3f)
-        {
-            emotesFeedback[2].Play();
-            clientSatisfactionEnum = ClientSatisfaction.Anger;
-        }
-    }
     
+    #region Linkable
+
+    public void SetStartLinkable(MachineLink link) { }
+
     public void SetEndLinkable(MachineLink link)
     {
         link.OnComplete += ReceiveProduct;

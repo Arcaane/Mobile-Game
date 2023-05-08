@@ -10,7 +10,6 @@ public class MachineLink : MonoBehaviour
 {
     #region Variables
     
-    //public TextMeshProUGUI debugPercentageText;
     [FormerlySerializedAs("debugImage")] public Transform bottleImage;
     private DrawMagicLine lineInCollision;
     public Material myMaterial;
@@ -26,6 +25,8 @@ public class MachineLink : MonoBehaviour
     public int lineGroupNumber;
     public Product productInTreatment { get; private set; }
     private List<MachineLink> dependentLinks = new List<MachineLink>();
+    
+    private static readonly int FilingValue = Shader.PropertyToID("_FilingValue");
     #endregion
 
     private void Start()
@@ -34,7 +35,7 @@ public class MachineLink : MonoBehaviour
         
         dependentLinks.Clear();
         lineGroupNumberText.text = lineGroupNumber.ToString();
-        lineGroupNumberText.gameObject.transform.position = (startLinkable.tr.position + endLinkable.tr.position) / 2 + Vector3.up * 2;
+        lineGroupNumberText.gameObject.transform.position = (StartLinkable.Position + EndLinkable.Position) / 2 + Vector3.up * 2;
     }
     
     #region Feedback
@@ -43,7 +44,7 @@ public class MachineLink : MonoBehaviour
     {
         myMaterial.SetFloat(FilingValue, 1 - currentTimer / timeToCompleteTransportation);
         
-        debugImage.position = Vector3.Lerp(StartLinkable.Position + Vector3.up, 
+        bottleImage.position = Vector3.Lerp(StartLinkable.Position + Vector3.up, 
             EndLinkable.Position + Vector3.up, currentTimer / timeToCompleteTransportation);
         
     }
@@ -112,8 +113,8 @@ public class MachineLink : MonoBehaviour
     {
         currentTimer = 0f;
         
-        bottleImage.position = Vector3.Lerp(startLinkable.tr.position + Vector3.up, 
-            endLinkable.tr.position + Vector3.up, currentTimer / timeToCompleteTransportation);
+        bottleImage.position = Vector3.Lerp(StartLinkable.Position + Vector3.up, 
+            EndLinkable.Position + Vector3.up, currentTimer / timeToCompleteTransportation);
         SetUIProduct();
         
         currentTimer += Time.deltaTime;
