@@ -144,7 +144,7 @@ public class MagicLinesManager : MonoBehaviour
             
             if(!startLinkable.Outputable || !endLinkable.Inputable) return;
             
-            if(magicLinks.Any(link => /*link.CompareLinks(startLinkable,endLinkable) ||*/ link.CompareLinks(endLinkable,startLinkable))) return;
+            //if(magicLinks.Any(link => /*link.CompareLinks(startLinkable,endLinkable) ||*/ link.CompareLinks(endLinkable,startLinkable))) return;
             
             var magicLineGo = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
             
