@@ -804,9 +804,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a70c68433140d748bd40c37fb808550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentChapter: 0
+  currentLevel: 0
   <LevelPosition>k__BackingField: {x: 0, y: 0, z: 0}
   levelDuration: 0
+  currentTime: 0
   scoreToWin: 0
+  currentScore: 0
   palier2: 0
   palier3: 0
   clientTimings: []
@@ -836,7 +840,7 @@ MonoBehaviour:
   - renderer: {fileID: 4673060802414580358}
     lightmapIndex: 0
     lightmapOffsetScale: {x: 0.026393581, y: 0.026393581, z: 0.1883883, w: 0.264401}
-  - renderer: {fileID: 3110730923775492331}
+  - renderer: {fileID: 0}
     lightmapIndex: 0
     lightmapOffsetScale: {x: 0.1900757, y: 0.1900757, z: -0.0023792614, w: 0.42144886}
   - renderer: {fileID: 6374436735718596941}
@@ -16031,12 +16035,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2b9acbf54b8d7134488468b9dda684a4, type: 3}
---- !u!23 &3110730923775492331 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 8129133627443383565, guid: 2b9acbf54b8d7134488468b9dda684a4,
-    type: 3}
-  m_PrefabInstance: {fileID: 6628158173994028518}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6305325327798439082 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 899296364481413452, guid: 2b9acbf54b8d7134488468b9dda684a4,
