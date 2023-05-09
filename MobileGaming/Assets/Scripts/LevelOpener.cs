@@ -3,7 +3,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelOpener : MonoBehaviour
-{ 
+{
+    public ScriptableLevelInSagaMap levelScriptable;
+    
     public TextMeshProUGUI levelText;
     public int levelIndex;
 
@@ -19,5 +21,10 @@ public class LevelOpener : MonoBehaviour
     {
         if (isLevelLock) return;
         SceneManager.LoadScene("TestScene");
+    }
+
+    public void BuildScriptable()
+    {
+        
     }
 }

@@ -8,6 +8,9 @@ public class GamePathManager : MonoBehaviour
         get => Instance;
         set => Instance = value;
     }
+
+    [SerializeField] private LevelSelectionContentHolder levelSelection;
+    [SerializeField] private LevelPreScreenContentHolder preScreenLevel;
     
     public LevelOpener[] levels;
     public int unlockedLevels = 1;
