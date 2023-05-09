@@ -17,21 +17,8 @@ public class LevelSelectionContentHolder : MonoBehaviour
     public Image[] gearImage;
     
     [Header("Social Info Section")] [Space(5)]
-    public SocialInfo[] players;
+    public SocialInfoHolder[] socialHolder;
     
-    /*public Image playerImage;
-    public TextMeshProUGUI playerName;
-    public TextMeshProUGUI playerScore;
-    [Space(5)]
-    public Image npc1Image;
-    public TextMeshProUGUI npc1Name;
-    public TextMeshProUGUI npc1Score;
-    [Space(5)]
-    public Image npc2Image;
-    public TextMeshProUGUI npc2Name;
-    public TextMeshProUGUI npc2Score;*/
-    
-
     public void BuildUI(ScriptableLevelInSagaMap _scriptableObject)
     {
         levelTitleText.text = _scriptableObject.title;
@@ -39,20 +26,35 @@ public class LevelSelectionContentHolder : MonoBehaviour
         levelObjective.text = $"Objective: {_scriptableObject.levelObjective}";
         sectionBackground.sprite = _scriptableObject.levelSelectionBackground;
         
-        // Voir pour les stars
-        // Voir pour le gear
+        // TODO - Voir pour les stars
+        // TODO - Voir pour le gear
+        // TODO - Partie Social Player
 
-        for (int i = 0; i < _scriptableObject.socialInfos.Length; i++)
+        /*for (int i = 1; i < _scriptableObject.socialInfos.Length; i++)
         {
-            players[i].image = _scriptableObject.socialInfos[i].image;
-            players[i].name = _scriptableObject.socialInfos[i].name;
-            players[i].score = _scriptableObject.socialInfos[i].score;
-        }
+            socialHolder[i].image.sprite = _scriptableObject.socialInfos[i].image;
+            socialHolder[i].name.text = _scriptableObject.socialInfos[i].name;
+            socialHolder[i].score.text = $"Score: {_scriptableObject.socialInfos[i].score}";
+        }*/
+    }
+}
+
+public struct SocialInfo
+{
+    public string name;
+    public Sprite image;
+    public int score;
+
+    public SocialInfo(string npcName1, Sprite imgTemp, int ncpScore1)
+    {
+        name = npcName1;
+        image = imgTemp;
+        score = ncpScore1;
     }
 }
 
 [Serializable]
-public struct SocialInfo
+public class SocialInfoHolder
 {
     public TextMeshProUGUI name;
     public Image image;

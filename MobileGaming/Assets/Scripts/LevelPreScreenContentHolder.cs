@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +14,14 @@ public class LevelPreScreenContentHolder : MonoBehaviour
     public TextMeshProUGUI levelTitleText;
     public TextMeshProUGUI upperSentenceText;
     public TextMeshProUGUI lowerSentenceText;
+
+    private int currentLevelToLaunch;
+    [SerializeField] private MainMenuManager mainMenu;
     
+    public void LaunchLevel()
+    {
+        mainMenu.PlaceHolderGoToGameScene(currentLevelToLaunch);
+    }
     
     public void BuildUI(ScriptableLevelInSagaMap _scriptableObject)
     {
@@ -24,5 +32,7 @@ public class LevelPreScreenContentHolder : MonoBehaviour
         sectionBackgroundImage.sprite = _scriptableObject.preScreenLevelBackground;
         levelItemToDisplayImage.sprite = _scriptableObject.potionToUseSprite;
         levelItemRewardImage.sprite = _scriptableObject.fragementReward;
+
+        currentLevelToLaunch = _scriptableObject.currentLevel;  
     }
 }

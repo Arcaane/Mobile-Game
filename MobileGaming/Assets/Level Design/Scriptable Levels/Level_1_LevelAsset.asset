@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e080e9472134dca46b3b89edc74c9412, type: 3}
+  m_Name: Level_1_LevelAsset
+  m_EditorClassIdentifier: 
+  title: Editor Window is life
+  currentLevel: 1
+  levelObjective: 3600
+  gearCountPlayerCanEquip: 1
+  levelSelectionBackground: {fileID: 21300000, guid: 9c6629a3ad07b9046ab9ebb7248cd9ff,
+    type: 3}
+  preScreenLevelBackground: {fileID: 21300000, guid: d0c7fd0fa9dbdda4fb26522715cba685,
+    type: 3}
+  fragementReward: {fileID: 21300000, guid: 6ea298726fef11c49b0982583fd1c85c, type: 3}
+  potionToUseSprite: {fileID: 21300000, guid: 9aa4348290784b2468144a97eb15d8d7, type: 3}
+  areaText1: L'habit  ne fait pas le moine
+  areaText2: "L'habit ne fait pas le moine \xE0 moins que le moine ne soies couturier."

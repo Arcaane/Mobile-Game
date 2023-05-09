@@ -1,7 +1,6 @@
 using System;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class ScriptableForSagaWindow : EditorWindow
 {
@@ -20,8 +19,8 @@ public class ScriptableForSagaWindow : EditorWindow
     private int levelObjective;
     private int gearCountPlayerCanEquip;
     
-    private Sprite levelSelectionBackground;
-    private Sprite preScreenLevelBackground;
+    // private Sprite levelSelectionBackground;
+    //private Sprite preScreenLevelBackground;
     private Sprite fragementReward;
     private Sprite potionToUseSprite;
 
@@ -32,13 +31,13 @@ public class ScriptableForSagaWindow : EditorWindow
     private string npcName2;
     private Sprite npcImage2;
     private int ncpScore2;
-    
+
     private string path = "Assets/Level Design/Scriptable Levels/";
 
     Vector2 scrollPosition = Vector2.zero;
     private void OnGUI()
     {
-        scrollPosition = GUILayout.BeginScrollView(scrollPosition, false, true, GUILayout.Height(focusedWindow.position.width)); 
+        GUILayout.BeginScrollView(scrollPosition, false, false); 
         
         // COMMON PART
         GUILayout.Label("Common UI", EditorStyles.boldLabel);
@@ -49,24 +48,26 @@ public class ScriptableForSagaWindow : EditorWindow
         GUILayout.Label("Level Selection", EditorStyles.boldLabel);
         currentLevel = EditorGUILayout.IntField("Current Level", currentLevel);
         levelObjective = EditorGUILayout.IntField("Level Objective", levelObjective);
-        levelSelectionBackground = EditorGUILayout.ObjectField("LevelSelectionBackground", levelSelectionBackground, typeof(Sprite), false) as Sprite;
+        //levelSelectionBackground = EditorGUILayout.ObjectField("LevelSelectionBackground", levelSelectionBackground, typeof(Sprite), false) as Sprite;
         gearCountPlayerCanEquip = EditorGUILayout.IntField("Gear Count Unlocked", gearCountPlayerCanEquip);
         EditorGUILayout.Space(5);
         GUILayout.Label("Social", EditorStyles.boldLabel);
+        
         EditorGUILayout.Space(2);
         GUILayout.Label("NPC 1", EditorStyles.boldLabel);
         npcName1 = EditorGUILayout.TextField("NPC 1 Name", npcName1);
-        npcImage1 = EditorGUILayout.ObjectField("NPC 1 SPRITE", npcImage1, typeof(Sprite), false) as Sprite;
+        npcImage1 = EditorGUILayout.ObjectField("NPC 1 I", npcImage1, typeof(Sprite), false) as Sprite;
         ncpScore1 = EditorGUILayout.IntField("NPC 1 Score", ncpScore1);
         GUILayout.Label("NPC 2", EditorStyles.boldLabel);
-        npcName2 = EditorGUILayout.TextField("NPC 2 Name", npcName2);
+        npcName2 = EditorGUILayout.TextField("NPC 2 Name", npcName1);
         npcImage2 = EditorGUILayout.ObjectField("NPC 2 SPRITE", npcImage2, typeof(Sprite), false) as Sprite;
         ncpScore2 = EditorGUILayout.IntField("NPC 2 Score", ncpScore2);
+        
         EditorGUILayout.Space(20);
         GUILayout.Label("Pre-Game Screen", EditorStyles.boldLabel);
         areaText1 = EditorGUILayout.TextField("Area Text 1", areaText1);
         areaText2 = EditorGUILayout.TextField("Area Text 2", areaText2);
-        preScreenLevelBackground = EditorGUILayout.ObjectField("Pre-Screen Level Background Sprite", preScreenLevelBackground, typeof(Sprite), false) as Sprite;
+        //preScreenLevelBackground = EditorGUILayout.ObjectField("Pre-Screen Level Background Sprite", preScreenLevelBackground, typeof(Sprite), false) as Sprite;
         fragementReward = EditorGUILayout.ObjectField("Fragement Reward Sprite", fragementReward, typeof(Sprite), false) as Sprite;
         potionToUseSprite = EditorGUILayout.ObjectField("Advise Potion  Sprite", potionToUseSprite, typeof(Sprite), false) as Sprite;
         
@@ -86,7 +87,7 @@ public class ScriptableForSagaWindow : EditorWindow
     private void GenerateScriptable()
     {
         ScriptableLevelInSagaMap temp = ScriptableObject.CreateInstance<ScriptableLevelInSagaMap>();
-        var assetPath = $"{path}{title}_Level.asset";
+        var assetPath = $"{path}Level_{currentLevel}_LevelAsset.asset";
         
         temp.title = title;
         temp.areaText1 = areaText1;
@@ -94,32 +95,18 @@ public class ScriptableForSagaWindow : EditorWindow
         temp.currentLevel = currentLevel;
         temp.levelObjective = levelObjective;
         temp.gearCountPlayerCanEquip = gearCountPlayerCanEquip;
-        temp.levelSelectionBackground = levelSelectionBackground;
-        temp.preScreenLevelBackground = preScreenLevelBackground;
+        //temp.levelSelectionBackground = levelSelectionBackground;
+        //temp.preScreenLevelBackground = preScreenLevelBackground;
         temp.fragementReward = fragementReward;
         temp.potionToUseSprite = potionToUseSprite;
-
-        // temp.socialInfos = new[]
-        // {
-        //     new SocialInfo(), 
-        //     new SocialInfo(
-        //     {
-        //         
-        //     }, 
-        //     new SocialInfo(
-        //     {
-        //         
-        //     }
-        // };
         
-        temp.socialInfos[1].name.text = npcName1;
-        temp.socialInfos[2].name.text = npcName2;
+        temp.socialInfos = new[]
+        {
+            new SocialInfo(null, null, 0), 
+            new SocialInfo(npcName1, npcImage1, ncpScore1), 
+            new SocialInfo(npcName2, npcImage2, ncpScore2)
+        };
         
-        temp.socialInfos[1].image.sprite = npcImage1;
-        temp.socialInfos[2].image.sprite = npcImage2;
-        
-        temp.socialInfos[1].score.text = $"Score: {ncpScore1}";
-        temp.socialInfos[2].score.text = $"Score: {ncpScore2}";
         AssetDatabase.CreateAsset(temp, assetPath);
     }
 }
