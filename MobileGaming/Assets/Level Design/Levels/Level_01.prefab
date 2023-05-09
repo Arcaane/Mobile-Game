@@ -541,9 +541,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a70c68433140d748bd40c37fb808550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentChapter: 0
+  currentLevel: 0
   <LevelPosition>k__BackingField: {x: -7.24, y: 0, z: -6}
   levelDuration: 180
+  currentTime: 0
   scoreToWin: 1600
+  currentScore: 0
   palier2: 2000
   palier3: 2400
   clientTimings:
@@ -554,6 +558,7 @@ MonoBehaviour:
       productDatas:
       - Color: 1
         Shape: 0
+        Topping: 0
   - time: 3.5
     data:
       scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
@@ -561,6 +566,7 @@ MonoBehaviour:
       productDatas:
       - Color: 2
         Shape: 0
+        Topping: 0
   - time: 8
     data:
       scriptableClient: {fileID: 11400000, guid: 93ec90eeed011be4a822e5d24496ea29,
@@ -568,6 +574,7 @@ MonoBehaviour:
       productDatas:
       - Color: 1
         Shape: 0
+        Topping: 0
   - time: 3
     data:
       scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
@@ -575,8 +582,10 @@ MonoBehaviour:
       productDatas:
       - Color: 2
         Shape: 0
+        Topping: 0
       - Color: 1
         Shape: 0
+        Topping: 0
   - time: 3
     data:
       scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
@@ -584,6 +593,7 @@ MonoBehaviour:
       productDatas:
       - Color: 2
         Shape: 0
+        Topping: 0
   - time: 3
     data:
       scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
@@ -591,6 +601,7 @@ MonoBehaviour:
       productDatas:
       - Color: 1
         Shape: 0
+        Topping: 0
   - time: 3
     data:
       scriptableClient: {fileID: 11400000, guid: 93ec90eeed011be4a822e5d24496ea29,
@@ -598,6 +609,7 @@ MonoBehaviour:
       productDatas:
       - Color: 2
         Shape: 0
+        Topping: 0
   - time: 3
     data:
       scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
@@ -605,8 +617,10 @@ MonoBehaviour:
       productDatas:
       - Color: 1
         Shape: 0
+        Topping: 0
       - Color: 2
         Shape: 0
+        Topping: 0
   clients:
   - {fileID: 2453304263045335136}
   - {fileID: 8145804125309639918}
