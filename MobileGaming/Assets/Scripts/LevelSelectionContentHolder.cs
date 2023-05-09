@@ -31,6 +31,7 @@ public class LevelSelectionContentHolder : MonoBehaviour
     public TextMeshProUGUI npc2Name;
     public TextMeshProUGUI npc2Score;*/
     
+
     public void BuildUI(ScriptableLevelInSagaMap _scriptableObject)
     {
         levelTitleText.text = _scriptableObject.title;
@@ -53,7 +54,7 @@ public class LevelSelectionContentHolder : MonoBehaviour
 [Serializable]
 public struct SocialInfo
 {
-    public Image image;
     public TextMeshProUGUI name;
+    public Image image;
     public TextMeshProUGUI score;
 }

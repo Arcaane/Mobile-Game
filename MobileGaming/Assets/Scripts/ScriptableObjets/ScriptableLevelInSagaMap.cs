@@ -16,7 +16,8 @@ public class ScriptableLevelInSagaMap : ScriptableObject
     // Social
     public SocialInfo[] socialInfos;
     
-    [Space(5)] [Header("Pre-Screen Level Section")]
+    
+    [Space(20)] [Header("Pre-Screen Level Section")]
     [ShowAssetPreview] public Sprite preScreenLevelBackground;
     [ShowAssetPreview] public Sprite fragementReward;
     [ShowAssetPreview] public Sprite potionToUseSprite;
