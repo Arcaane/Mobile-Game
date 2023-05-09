@@ -72,10 +72,20 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 631d00dd4cd6dcb4baa998f4862b6b09, type: 2}
+    - target: {fileID: -5576156735665741227, guid: 9d99be6bb63bb3e4b834f9f4f3396ce9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9d99be6bb63bb3e4b834f9f4f3396ce9,
         type: 3}
       propertyPath: m_Name
       value: ME_Heart_Machinery
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9d99be6bb63bb3e4b834f9f4f3396ce9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d99be6bb63bb3e4b834f9f4f3396ce9, type: 3}
@@ -101,10 +111,30 @@ PrefabInstance:
       propertyPath: targetColor
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3257032387364477399, guid: 3014312edbc4d1243851e70eb1e13b75,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4011043854238429436, guid: 3014312edbc4d1243851e70eb1e13b75,
         type: 3}
       propertyPath: m_Name
       value: P_WorkingMachine_Heart
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011043854238429436, guid: 3014312edbc4d1243851e70eb1e13b75,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227173880850313023, guid: 3014312edbc4d1243851e70eb1e13b75,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7925311910196230458, guid: 3014312edbc4d1243851e70eb1e13b75,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8863337194420465959, guid: 3014312edbc4d1243851e70eb1e13b75,
         type: 3}
@@ -159,6 +189,11 @@ PrefabInstance:
     - target: {fileID: 8863337194420465959, guid: 3014312edbc4d1243851e70eb1e13b75,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8863854231462902017, guid: 3014312edbc4d1243851e70eb1e13b75,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
