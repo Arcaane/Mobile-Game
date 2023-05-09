@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ScriptableForSagaWindow : EditorWindow
 {
-    
     [MenuItem("Tool/Scriptable Generator Level In Saga")]
     public static void ShowWindow()
     {
@@ -19,7 +18,7 @@ public class ScriptableForSagaWindow : EditorWindow
     private int levelObjective;
     private int gearCountPlayerCanEquip;
     
-    // private Sprite levelSelectionBackground;
+    //private Sprite levelSelectionBackground;
     //private Sprite preScreenLevelBackground;
     private Sprite fragementReward;
     private Sprite potionToUseSprite;
@@ -50,20 +49,18 @@ public class ScriptableForSagaWindow : EditorWindow
         levelObjective = EditorGUILayout.IntField("Level Objective", levelObjective);
         //levelSelectionBackground = EditorGUILayout.ObjectField("LevelSelectionBackground", levelSelectionBackground, typeof(Sprite), false) as Sprite;
         gearCountPlayerCanEquip = EditorGUILayout.IntField("Gear Count Unlocked", gearCountPlayerCanEquip);
-        EditorGUILayout.Space(5);
+        EditorGUILayout.Space(15);
         GUILayout.Label("Social", EditorStyles.boldLabel);
-        
-        EditorGUILayout.Space(2);
         GUILayout.Label("NPC 1", EditorStyles.boldLabel);
         npcName1 = EditorGUILayout.TextField("NPC 1 Name", npcName1);
-        npcImage1 = EditorGUILayout.ObjectField("NPC 1 I", npcImage1, typeof(Sprite), false) as Sprite;
+        npcImage1 = EditorGUILayout.ObjectField("NPC 1 Image", npcImage1, typeof(Sprite), false) as Sprite;
         ncpScore1 = EditorGUILayout.IntField("NPC 1 Score", ncpScore1);
+        EditorGUILayout.Space(7.5f);
         GUILayout.Label("NPC 2", EditorStyles.boldLabel);
-        npcName2 = EditorGUILayout.TextField("NPC 2 Name", npcName1);
+        npcName2 = EditorGUILayout.TextField("NPC 2 Name", npcName2);
         npcImage2 = EditorGUILayout.ObjectField("NPC 2 SPRITE", npcImage2, typeof(Sprite), false) as Sprite;
         ncpScore2 = EditorGUILayout.IntField("NPC 2 Score", ncpScore2);
-        
-        EditorGUILayout.Space(20);
+        EditorGUILayout.Space(15);
         GUILayout.Label("Pre-Game Screen", EditorStyles.boldLabel);
         areaText1 = EditorGUILayout.TextField("Area Text 1", areaText1);
         areaText2 = EditorGUILayout.TextField("Area Text 2", areaText2);
@@ -108,5 +105,6 @@ public class ScriptableForSagaWindow : EditorWindow
         };
         
         AssetDatabase.CreateAsset(temp, assetPath);
+        Debug.Log($"Asset {currentLevel}_LevelAsset.asset well created !");
     }
 }

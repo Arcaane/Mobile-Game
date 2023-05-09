@@ -29,7 +29,7 @@ public class LevelPreScreenContentHolder : MonoBehaviour
         upperSentenceText.text = _scriptableObject.areaText1;
         lowerSentenceText.text = _scriptableObject.areaText2;
         
-        sectionBackgroundImage.sprite = _scriptableObject.preScreenLevelBackground;
+        //sectionBackgroundImage.sprite = _scriptableObject.preScreenLevelBackground;
         levelItemToDisplayImage.sprite = _scriptableObject.potionToUseSprite;
         levelItemRewardImage.sprite = _scriptableObject.fragementReward;
 

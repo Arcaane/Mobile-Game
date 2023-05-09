@@ -24,7 +24,7 @@ public class LevelSelectionContentHolder : MonoBehaviour
         levelTitleText.text = _scriptableObject.title;
         currentLevelText.text = $"Level: {_scriptableObject.currentLevel}";
         levelObjective.text = $"Objective: {_scriptableObject.levelObjective}";
-        sectionBackground.sprite = _scriptableObject.levelSelectionBackground;
+        //sectionBackground.sprite = _scriptableObject.levelSelectionBackground;
         
         // TODO - Voir pour les stars
         // TODO - Voir pour le gear
@@ -39,6 +39,7 @@ public class LevelSelectionContentHolder : MonoBehaviour
     }
 }
 
+[Serializable]
 public struct SocialInfo
 {
     public string name;
