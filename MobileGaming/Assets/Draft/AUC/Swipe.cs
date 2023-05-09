@@ -19,6 +19,8 @@ public class Swipe : MonoBehaviour
         {
             pos[i] = dst * i;
         }
+        
+        scrollPos = 0.5f;
     }
     
     // Update is called once per frame
