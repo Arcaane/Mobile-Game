@@ -10,19 +10,12 @@ public class MainMenuManager : MonoBehaviour
     public GameObject settingsMenu;
     [SerializeField] private ScriptableSettings settings;
     
-    [Space(5)]
-    [Header("GamePath")]
-    public Button gamePathButton;
-    public bool isInGamePathMenu;
-    public GameObject gamePathMenu;
-
     public RectTransform levelPanelRectTransform;
     
     // Start is called before the first frame update
     void Start()
     {
         settingsMenu.SetActive(isInSettingsMenu);   
-        gamePathMenu.SetActive(isInGamePathMenu);   
     }
     
     public void ToggleSettings()
@@ -33,8 +26,6 @@ public class MainMenuManager : MonoBehaviour
 
     public void ToggleGamePath()
     {
-        isInGamePathMenu = !isInGamePathMenu;
-        gamePathMenu.SetActive(isInGamePathMenu);
         if (isInSettingsMenu) ToggleSettings();
     }
 
