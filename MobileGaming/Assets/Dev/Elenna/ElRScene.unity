@@ -125,6 +125,110 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 96c09ae4e9d9d86448d9e889705db047, type: 2}
+--- !u!1001 &982632948
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1880870158575905711, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880870158790546862, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880870159299759152, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880870159459932490, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880870159784385576, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: TrailModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880870159784385576, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880870159784385577, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464202965524278328, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464202965524278328, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.2021456
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464202965524278328, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.621409
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464202965524278328, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -113.79033
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464202965524278328, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464202965524278328, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464202965524278328, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464202965524278328, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464202965524278328, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464202965524278328, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464202965524278328, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4784395208536800434, guid: 6ecc8ac556ccd224f9079f1bed0a0c93,
+        type: 3}
+      propertyPath: m_Name
+      value: VFX_Gain
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6ecc8ac556ccd224f9079f1bed0a0c93, type: 3}
 --- !u!1 &2071954266
 GameObject:
   m_ObjectHideFlags: 0

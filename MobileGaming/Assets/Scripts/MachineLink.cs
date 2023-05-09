@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,21 +10,23 @@ public class MachineLink : MonoBehaviour
 {
     #region Variables
     
-    //public TextMeshProUGUI debugPercentageText;
     [FormerlySerializedAs("debugImage")] public Transform bottleImage;
     private DrawMagicLine lineInCollision;
     public Material myMaterial;
-    private ILinkable startLinkable;
-    private ILinkable endLinkable;
+
+    public ILinkable StartLinkable { get; private set; }
+    public ILinkable EndLinkable { get; private set; }
     
     // Magic Transportation
-    private Product productInTreatment;
     [Range(0,100)] [SerializeField] private int itemProgression = 0;
     public float timeToCompleteTransportation = 5f;
     public float currentTimer = 0f;
     public TextMeshProUGUI lineGroupNumberText;
     public int lineGroupNumber;
+    public Product productInTreatment { get; private set; }
     private List<MachineLink> dependentLinks = new List<MachineLink>();
+    
+    private static readonly int FilingValue = Shader.PropertyToID("_FilingValue");
     #endregion
 
     private void Start()
@@ -32,80 +35,18 @@ public class MachineLink : MonoBehaviour
         
         dependentLinks.Clear();
         lineGroupNumberText.text = lineGroupNumber.ToString();
-        lineGroupNumberText.gameObject.transform.position = (startLinkable.tr.position + endLinkable.tr.position) / 2 + Vector3.up * 2;
-    }
-
-    private void MoveProduct()
-    {
-        startLinkable.Output(out productInTreatment);
-        
-        if(productInTreatment == null) return;
-        
-        startLinkable.OnOutput -= TryInputOutput;
-        
-        currentTimer = 0f;
-        
-        SetUIProduct();
+        lineGroupNumberText.gameObject.transform.position = (StartLinkable.Position + EndLinkable.Position) / 2 + Vector3.up * 2;
     }
     
-    private void Update()
-    {
-        if(productInTreatment == null) return;
-        
-        currentTimer += Time.deltaTime;
-        if (currentTimer > timeToCompleteTransportation)
-        {
-            CompleteTransfer();
-        }
-        
-        Feedback();
-    }
+    #region Feedback
 
-    private void CompleteTransfer()
+    private void Feedback()
     {
-        currentTimer = 0;
+        myMaterial.SetFloat(FilingValue, 1 - currentTimer / timeToCompleteTransportation);
         
-        endLinkable.Input(productInTreatment);
-            
-        productInTreatment = null;
+        bottleImage.position = Vector3.Lerp(StartLinkable.Position + Vector3.up, 
+            EndLinkable.Position + Vector3.up, currentTimer / timeToCompleteTransportation);
         
-        OnDestroyed?.Invoke();
-        
-        Destroy(gameObject);
-    }
-
-    public void SetLinks(ILinkable startLink,ILinkable endLink)
-    {
-        if(!startLink.Outputable || !endLink.Inputable) return;
-        
-        startLinkable = startLink;
-        endLinkable = endLink;
-        
-        startLinkable.OnOutput += TryInputOutput;
-        
-        startLinkable.Ping();
-    }
-    
-    void TryInputOutput(Product outProduct)
-    {
-        MoveProduct();
-    }
-
-    public void AddDependency(MachineLink machineLink)
-    {
-        if(dependentLinks.Contains(machineLink)) return;
-        
-        dependentLinks.Add(machineLink);
-        
-        machineLink.OnDestroyed += RemoveDependency;
-        
-        void RemoveDependency()
-        {
-            if(!dependentLinks.Contains(machineLink)) return;
-            dependentLinks.Remove(machineLink);
-            if(dependentLinks.Count > 0) return;
-            enabled = true;
-        }
     }
     
     private void SetUIProduct()
@@ -154,22 +95,99 @@ public class MachineLink : MonoBehaviour
                 break;
         }
     }
+
+    #endregion
     
-    public event Action OnDestroyed;
-    
-    private void Feedback()
+    #region ProductTransfer
+
+    public void LoadProduct(Product product)
     {
-        itemProgression = (int)((currentTimer / timeToCompleteTransportation) * 100);
-        //myMaterial.SetFloat(MaterialInnerColor, 1 - currentTimer / timeToCompleteTransportation);
+        productInTreatment = product;
         
-        bottleImage.position = Vector3.Lerp(startLinkable.tr.position + Vector3.up, 
-            endLinkable.tr.position + Vector3.up, currentTimer / timeToCompleteTransportation);
+        if (productInTreatment == null) return;
         
+        StartCoroutine(MoveProductRoutine());
+    }
+    
+    private IEnumerator MoveProductRoutine()
+    {
+        currentTimer = 0f;
+        
+        bottleImage.position = Vector3.Lerp(StartLinkable.Position + Vector3.up, 
+            EndLinkable.Position + Vector3.up, currentTimer / timeToCompleteTransportation);
+        SetUIProduct();
+        
+        currentTimer += Time.deltaTime;
+        while (currentTimer < timeToCompleteTransportation)
+        {
+            currentTimer += Time.deltaTime;
+            
+            Feedback();
+            
+            yield return null;
+        }
+        
+        CompleteTransfer();
+        
+        Feedback();
+    }
+
+    private void CompleteTransfer()
+    {
+        currentTimer = 0;
+        
+        Debug.Log($"Completed transfer with {productInTreatment}");
+        
+        OnComplete?.Invoke(productInTreatment);
+        
+        productInTreatment = null;
+        
+        Destroy();
+        
+        Destroy(gameObject);
+    }
+
+    #endregion
+    
+    public void SetLinks(ILinkable startLink,ILinkable endLink)
+    {
+        if(!startLink.Outputable || !endLink.Inputable) return;
+        
+        StartLinkable = startLink;
+        EndLinkable = endLink;
+        
+        EndLinkable.SetEndLinkable(this);
+        StartLinkable.SetStartLinkable(this);
+    }
+    
+    public void AddDependency(MachineLink link)
+    {
+        if(dependentLinks.Contains(link)) return;
+        
+        dependentLinks.Add(link);
+        
+        link.OnDestroyed += RemoveDependency;
+        
+        void RemoveDependency()
+        {
+            if(!dependentLinks.Contains(link)) return;
+            dependentLinks.Remove(link);
+            if(dependentLinks.Count > 0) return;
+            enabled = true;
+        }
+    }
+    
+    public event Action<Product> OnComplete;
+    public event Action OnDestroyed;
+
+    public void Destroy()
+    {
+        OnDestroyed?.Invoke();
     }
 
     public bool CompareLinks(ILinkable start,ILinkable end)
     {
-        return (startLinkable == start && endLinkable == end);
+        return (StartLinkable == start && EndLinkable == end);
     }
 
 
