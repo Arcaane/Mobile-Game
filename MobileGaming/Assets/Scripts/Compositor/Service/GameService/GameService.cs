@@ -48,8 +48,17 @@ namespace Service
         {
             var cameras = Object.Instantiate(camerasGo).GetComponent<CameraComponents>();
             Release(camerasGo);
-
-            AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("SorcererController", LoadSorcererController);
+            
+            AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("DialogueCanvas", LoadDialogueManager);
+            
+            void LoadDialogueManager(GameObject dialogueManagerGo)
+            {
+                var dialogueManager = Object.Instantiate(dialogueManagerGo);
+                DialogueManager.SetInstance(dialogueManager.GetComponent<DialogueManager>());
+                Release(dialogueManagerGo);
+                
+                AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("SorcererController", LoadSorcererController);
+            }
 
             void LoadSorcererController(GameObject sorcererControllerGo)
             {
