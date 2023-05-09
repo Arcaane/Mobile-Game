@@ -14,8 +14,8 @@ public class WorkMachine : Machine
     [HideInInspector] public bool changeTopping;
     [SerializeField] private ProductTopping targetTopping;
     
-    private List<MachineLink> nextLinksToLoad = new ();
-    [SerializeField] private List<MachineLink> nextLinksToUnload = new ();
+    private List<Link> nextLinksToLoad = new ();
+    [SerializeField] private List<Link> nextLinksToUnload = new ();
     private bool hasProductToLoad => !IsWorking && currentProduct != null;
 
     protected override void Setup()
@@ -33,7 +33,7 @@ public class WorkMachine : Machine
         LoadNextLink();
     }
 
-    public override bool IsAvailable(MachineLink link)
+    public override bool IsAvailable(Link link)
     {
         if (nextLinksToUnload.Count <= 0) return false;
         
@@ -69,7 +69,7 @@ public class WorkMachine : Machine
         }
     }
     
-    public override void SetStartLinkable(MachineLink link)
+    public override void SetStartLinkable(Link link)
     {
         nextLinksToLoad.Add(link);
         link.OnDestroyed += RemoveLinkFromList;
@@ -82,7 +82,7 @@ public class WorkMachine : Machine
         }
     }
     
-    public override void SetEndLinkable(MachineLink link)
+    public override void SetEndLinkable(Link link)
     {
         link.OnComplete += StartWork;
         

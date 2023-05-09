@@ -218,14 +218,14 @@ public class Client : MonoBehaviour, ILinkable
     
     #region Linkable
 
-    public void SetStartLinkable(MachineLink link) { }
+    public void SetStartLinkable(Link link) { }
 
-    public void SetEndLinkable(MachineLink link)
+    public void SetEndLinkable(Link link)
     {
         link.OnComplete += ReceiveProduct;
     }
 
-    public bool IsAvailable(MachineLink link) => true;
+    public bool IsAvailable(Link link) => true;
 
     public event Action OnAvailable;
 
