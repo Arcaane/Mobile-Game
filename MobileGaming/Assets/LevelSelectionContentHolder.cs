@@ -30,12 +30,23 @@ public class LevelSelectionContentHolder : MonoBehaviour
     public Image npc2Image;
     public TextMeshProUGUI npc2Name;
     public TextMeshProUGUI npc2Score;*/
-
     
-
-    public void BuildUI(ScriptableObject _scriptableObject)
+    public void BuildUI(ScriptableLevelInSagaMap _scriptableObject)
     {
+        levelTitleText.text = _scriptableObject.title;
+        currentLevelText.text = $"Level: {_scriptableObject.currentLevel}";
+        levelObjective.text = $"Objective: {_scriptableObject.levelObjective}";
+        sectionBackground.sprite = _scriptableObject.levelSelectionBackground;
         
+        // Voir pour les stars
+        // Voir pour le gear
+
+        for (int i = 0; i < _scriptableObject.socialInfos.Length; i++)
+        {
+            players[i].image = _scriptableObject.socialInfos[i].image;
+            players[i].name = _scriptableObject.socialInfos[i].name;
+            players[i].score = _scriptableObject.socialInfos[i].score;
+        }
     }
 }
 
