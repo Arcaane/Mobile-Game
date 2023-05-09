@@ -6,16 +6,19 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class MachineLink : MonoBehaviour
+public class Link : MonoBehaviour
 {
     #region Variables
     
+    [field:SerializeField] public LineRenderer LineRenderer { get; private set; }
+    [field:SerializeField] public MeshCollider Collider { get; private set; }
     [FormerlySerializedAs("debugImage")] public Transform bottleImage;
     private DrawMagicLine lineInCollision;
     public Material myMaterial;
 
     public ILinkable StartLinkable { get; private set; }
     public ILinkable EndLinkable { get; private set; }
+    public Vector2[] Points { get; private set; }
     
     // Magic Transportation
     [Range(0,100)] [SerializeField] private int itemProgression = 0;
@@ -24,7 +27,7 @@ public class MachineLink : MonoBehaviour
     public TextMeshProUGUI lineGroupNumberText;
     public int lineGroupNumber;
     public Product productInTreatment { get; private set; }
-    private List<MachineLink> dependentLinks = new List<MachineLink>();
+    private List<Link> dependentLinks = new List<Link>();
     
     private static readonly int FilingValue = Shader.PropertyToID("_FilingValue");
     #endregion
@@ -67,7 +70,7 @@ public class MachineLink : MonoBehaviour
                 imageComponentShape.sprite = settings.bottleShapesSprites[0];
                 switch (color)
                 {
-                    case ProductColor.Transparent: Debug.Log("Heart Shape without content"); break;
+                    case ProductColor.Transparent: break;
                     case ProductColor.Blue: imageComponent.sprite = settings.bottleContentSprites[0]; break;
                     case ProductColor.Green: imageComponent.sprite = settings.bottleContentSprites[1]; break;
                     case ProductColor.Red: imageComponent.sprite = settings.bottleContentSprites[2]; break;
@@ -136,8 +139,6 @@ public class MachineLink : MonoBehaviour
     {
         currentTimer = 0;
         
-        Debug.Log($"Completed transfer with {productInTreatment}");
-        
         OnComplete?.Invoke(productInTreatment);
         
         productInTreatment = null;
@@ -160,7 +161,7 @@ public class MachineLink : MonoBehaviour
         StartLinkable.SetStartLinkable(this);
     }
     
-    public void AddDependency(MachineLink link)
+    public void AddDependency(Link link)
     {
         if(dependentLinks.Contains(link)) return;
         
@@ -190,31 +191,25 @@ public class MachineLink : MonoBehaviour
         return (StartLinkable == start && EndLinkable == end);
     }
 
-
-    #region Event Methods
-
-    private void OnTriggerEnter(Collider other)
+    public void SetPoints()
     {
-        lineInCollision = other.GetComponent<DrawMagicLine>();
-        if (lineInCollision is null) return;
-        lineInCollision.myLR.material = lineInCollision.linkMaterials[1];
-        Debug.LogWarning("Collision avec un autre lien magique");
-        lineInCollision.isLinkable = false;
-    }
+        var mesh = new Mesh();
+        
+        LineRenderer.BakeMesh(mesh,false);
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (lineInCollision is null) return;
-        lineInCollision.myLR.material = lineInCollision.linkMaterials[0];
-        Debug.LogWarning("Sortie de collision avec un autre lien magique");
-        lineInCollision.isLinkable = true;
-        lineInCollision = null;
-    }
+        Collider.sharedMesh = mesh;
+        
+        Points = new Vector2[LineRenderer.positionCount];
 
-    private void OnCollisionEnter(Collision other)
-    {
-        Destroy(other.gameObject);
+        var vec3 = new Vector3[Points.Length];
+        
+        LineRenderer.GetPositions(vec3);
+
+        for (var index = 0; index < Points.Length; index++)
+        {
+            var point = Points[index];
+            point.y = vec3[index].z;
+            Points[index] = point;
+        }
     }
-    
-    #endregion
 }

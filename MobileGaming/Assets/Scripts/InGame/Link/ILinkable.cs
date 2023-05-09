@@ -7,8 +7,8 @@ public interface ILinkable
     public bool Inputable { get;}
     public bool Outputable { get;}
     
-    public void SetStartLinkable(MachineLink link);
-    public void SetEndLinkable(MachineLink link);
-    public bool IsAvailable(MachineLink link);
+    public void SetStartLinkable(Link link);
+    public void SetEndLinkable(Link link);
+    public bool IsAvailable(Link link);
     public event Action OnAvailable;
 }
