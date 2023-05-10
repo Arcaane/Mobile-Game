@@ -192,9 +192,9 @@ TextureImporter:
       name: S_CollectionBackground
       rect:
         serializedVersion: 2
-        x: 402
+        x: 409
         y: 347
-        width: 401
+        width: 394
         height: 666
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -215,8 +215,8 @@ TextureImporter:
         serializedVersion: 2
         x: 133
         y: 752
-        width: 263
-        height: 154
+        width: 257
+        height: 156
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -272,6 +272,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: S_ClientsBubble
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 124
+        width: 133
+        height: 191
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ae6bb20340f6914090f39241c134d77
+      internalID: 821267396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -284,6 +305,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       S_CollectionFrame: -725785206
+      S_ClientsBubble: 821267396
       S_CollectionBanner: 1131637886
       S_CollectionPadlock: -1006129681
       S_MacroArrow: -516638887
