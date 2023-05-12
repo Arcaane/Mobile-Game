@@ -30,12 +30,12 @@ public class LevelSelectionContentHolder : MonoBehaviour
         // TODO - Voir pour le gear
         // TODO - Partie Social Player
 
-        /*for (int i = 1; i < _scriptableObject.socialInfos.Length; i++)
+        for (int i = 1; i < _scriptableObject.socialInfos.Length; i++)
         {
             socialHolder[i].image.sprite = _scriptableObject.socialInfos[i].image;
             socialHolder[i].name.text = _scriptableObject.socialInfos[i].name;
             socialHolder[i].score.text = $"Score: {_scriptableObject.socialInfos[i].score}";
-        }*/
+        }
     }
 }
 
