@@ -255,6 +255,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5416526359094639539}
+  - component: {fileID: 1404824894633582713}
   m_Layer: 0
   m_Name: Level_02
   m_TagString: Untagged
@@ -284,6 +285,69 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1404824894633582713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5416526359094639538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a70c68433140d748bd40c37fb808550, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentChapter: 0
+  currentLevel: 0
+  <LevelPosition>k__BackingField: {x: 0, y: 0, z: 0}
+  levelDuration: 0
+  currentTime: 0
+  scoreToWin: 0
+  currentScore: 0
+  palier2: 0
+  palier3: 0
+  clientTimings:
+  - time: 1
+    data:
+      scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
+        type: 2}
+      productDatas:
+      - Color: 1
+        Shape: 0
+        Topping: 0
+  - time: 3
+    data:
+      scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
+        type: 2}
+      productDatas:
+      - Color: 2
+        Shape: 0
+        Topping: 0
+  - time: 5
+    data:
+      scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
+        type: 2}
+      productDatas:
+      - Color: 2
+        Shape: 0
+        Topping: 0
+  - time: 2
+    data:
+      scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
+        type: 2}
+      productDatas:
+      - Color: 1
+        Shape: 0
+        Topping: 0
+  - time: 3
+    data:
+      scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
+        type: 2}
+      productDatas:
+      - Color: 1
+        Shape: 0
+        Topping: 0
+  clients: []
 --- !u!1 &6070294286395979225
 GameObject:
   m_ObjectHideFlags: 0
