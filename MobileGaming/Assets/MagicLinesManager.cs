@@ -29,8 +29,7 @@ public class MagicLinesManager : MonoBehaviour
     
     private bool isDraging => InputService.deltaPosition.x != 0 && InputService.deltaPosition.y != 0;
 
-    public Camera orthoCam;
-    public Camera perspCam;
+    private Camera cam;
 
     public GameObject currentLineInDrawning;
 
@@ -73,11 +72,11 @@ public class MagicLinesManager : MonoBehaviour
         }
     }
 
-    public void SetCameras(Camera cam1, Camera cam2)
+    public void SetCameras(Camera camToSet)
     {
-        perspCam = cam1;
-        orthoCam = cam2;
-        orthoCam.gameObject.SetActive(false);
+        cam = camToSet;
+        
+        Debug.Log($"Cam was set to {cam}");
         
         EnableMagicMode();
     }
@@ -95,10 +94,6 @@ public class MagicLinesManager : MonoBehaviour
         // Inputs 
         InputService.OnPress += OnScreenTouch;
         InputService.OnRelease += OnScreenRelease;
-
-        // Camera
-        perspCam.gameObject.SetActive(false);
-        orthoCam.gameObject.SetActive(true);
     }
 
     private void DisableMagicMode()
@@ -106,11 +101,7 @@ public class MagicLinesManager : MonoBehaviour
         // Inputs
         InputService.OnPress -= OnScreenTouch;
         InputService.OnRelease -= OnScreenRelease;
-
-        // Camera
-        orthoCam.gameObject.SetActive(false);
-        perspCam.gameObject.SetActive(true);
-
+        
         if(drawing != null) StopCoroutine(drawing);
         
         if (currentLineInDrawning != null) Destroy(currentLineInDrawning);
@@ -198,7 +189,7 @@ public class MagicLinesManager : MonoBehaviour
                 lr.SetPosition(i, points[i] + Vector3.up);
             }
             
-            link.SetPoints();
+            link.SetPoints(cam);
             
             CheckLinkCollisions(link);
             
@@ -279,7 +270,7 @@ public class MagicLinesManager : MonoBehaviour
 
     private void GetClickMachine(Vector2 mousePos)
     {
-        var ray = orthoCam.ScreenPointToRay(mousePos);
+        var ray = cam.ScreenPointToRay(mousePos);
 
         if (!Physics.Raycast(ray, out hit, machineLayerMask)) return;
         var linkable = hit.transform.GetComponent<ILinkable>();
@@ -291,7 +282,7 @@ public class MagicLinesManager : MonoBehaviour
 
     private void DestroyClickLink(Vector2 mousePos)
     {
-        var ray = orthoCam.ScreenPointToRay(mousePos);
+        var ray = cam.ScreenPointToRay(mousePos);
         
         Debug.DrawRay(ray.origin,ray.direction,Color.yellow);
         
@@ -315,7 +306,6 @@ public class MagicLinesManager : MonoBehaviour
         {
             StopCoroutine(drawing);
         }
-
         
         drawing = StartCoroutine(DrawLine());
     }
@@ -337,7 +327,7 @@ public class MagicLinesManager : MonoBehaviour
 
         while (true)
         {
-            Vector3 position = orthoCam.ScreenToWorldPoint(Input.mousePosition);
+            var position = cam.ScreenToWorldPoint(Input.mousePosition);
             position.y = .5f;
             line.positionCount++;
             line.SetPosition(line.positionCount - 1, position);

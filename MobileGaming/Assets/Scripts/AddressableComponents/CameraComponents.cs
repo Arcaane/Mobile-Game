@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Addressables.Components
@@ -13,6 +14,10 @@ namespace Addressables.Components
         public Camera perspCamera => _perspCamera;
         public Camera othoCamera => _othoCamera;
 
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
     }
 }
 

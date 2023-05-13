@@ -6,7 +6,6 @@ public class SorcererController : MonoBehaviour
 {
     public static SorcererController Instance;
     
-    [field: SerializeField] public MagicLinesManager magicLinesManager { get; private set; }
     [field: SerializeField] public TextMeshProUGUI timeLeftText { get; private set; }
     [field: SerializeField] public TextMeshProUGUI scoreText { get; private set; }
     [field: SerializeField] public TextMeshProUGUI endGameText { get; private set; }
@@ -26,6 +25,7 @@ public class SorcererController : MonoBehaviour
         }
 
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start() => endGameCanvasGo.SetActive(false);

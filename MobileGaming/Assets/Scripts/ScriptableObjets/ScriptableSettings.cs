@@ -1,10 +1,12 @@
 using System;
+using NaughtyAttributes;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Settings")]
 public class ScriptableSettings : ScriptableObject
 {
     [field: SerializeField] public Level[] Levels { get; private set; } = Array.Empty<Level>();
+    [field: SerializeField,Scene] public int[] LevelScenes { get; private set; } = Array.Empty<int>();
     [field: SerializeField] public int DefaultStartIndex { get; private set; } = 0;
 
     public void SetStartIndex(int index)

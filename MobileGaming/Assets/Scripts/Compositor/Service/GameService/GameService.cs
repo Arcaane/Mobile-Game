@@ -17,8 +17,8 @@ namespace Service
         private int currentLevel;
         
         private SorcererController sorcererController;
-        private Level level;
-        
+        private MagicLinesManager magicLinesManager;
+
         private GameObject endGameCanvasGo;
         private TextMeshProUGUI endGameText;
 
@@ -36,18 +36,7 @@ namespace Service
 
         private void LoadAssets()
         {
-            AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("Cameras", LoadCameras);
-        }
-
-        private void LoadGame()
-        {
-            level.Run();
-        }
-
-        private void LoadCameras(GameObject camerasGo)
-        {
-            var cameras = Object.Instantiate(camerasGo).GetComponent<CameraComponents>();
-            Release(camerasGo);
+            //AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("Cameras", LoadCameras);
             
             AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("DialogueCanvas", LoadDialogueManager);
             
@@ -59,60 +48,55 @@ namespace Service
                 
                 AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("SorcererController", LoadSorcererController);
             }
-
+            
             void LoadSorcererController(GameObject sorcererControllerGo)
             {
                 sorcererController = Object.Instantiate(sorcererControllerGo).GetComponent<SorcererController>();
+                magicLinesManager = sorcererController.GetComponent<MagicLinesManager>();
                 // TODO - apply materials, then release
                 //Release(sorcererControllerGo);
-                    
-                levelParent = new GameObject().transform;
-                    
+                
                 endGameText = sorcererController.endGameText;
                 endGameCanvasGo = sorcererController.endGameCanvasGo;
                     
                 sorcererController.endGameButton.onClick.AddListener(RestartGame);
-                sorcererController.magicLinesManager.SetCameras(cameras.perspCamera,cameras.othoCamera);
 
-                currentLevel = settings.DefaultStartIndex;
+                currentLevel = settings.DefaultStartIndex - 1;
                 NextLevel();
-                    
-                LoadGame();
             }
+        }
+        
+        private void LoadCameras(GameObject camerasGo)
+        {
+            var cameras = Object.Instantiate(camerasGo).GetComponent<CameraComponents>();
+            Release(camerasGo);
         }
 
         private void NextLevel(int _)
         {
             NextLevel();
         }
-
+        
         private void NextLevel()
         {
-            if (levelParent.childCount > 0)
-            {
-                for (int i = levelParent.childCount - 1; i >= 0; i--)
-                {
-                    Object.Destroy(levelParent.GetChild(i).gameObject);
-                }
-            }
+            currentLevel++;
+            if (currentLevel >= settings.LevelScenes.Length) currentLevel = 0;
 
-            if (level != null)
-            {
-                level.OnEndLevel -= UpdateEndGameText;
-                level.OnEndLevel -= NextLevel;
-            }
+            Level.OnLevelLoad += OnLevelLoaded;
+            sceneService.LoadSceneAsync(settings.LevelScenes[currentLevel]);
+        }
 
-            level = Object.Instantiate(settings.Levels[currentLevel],levelParent);
-            level.transform.position = level.LevelPosition;
-            
+        private void OnLevelLoaded(Level level)
+        {
             level.SetUIComponents(sorcererController.scoreText,sorcererController.timeLeftText);
             level.OnEndLevel += UpdateEndGameText;
             level.OnEndLevel += NextLevel;
 
-            currentLevel++;
-            if (currentLevel >= settings.Levels.Length) currentLevel = 0;
+            magicLinesManager.SetCameras(level.Camera);
+            
+            level.Run();
         }
-        
+
         private void UpdateEndGameText(int state)
         {
             endGameText.text = state == 0 ? "lose :c" : "win :)";

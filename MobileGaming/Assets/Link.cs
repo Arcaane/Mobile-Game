@@ -191,11 +191,11 @@ public class Link : MonoBehaviour
         return (StartLinkable == start && EndLinkable == end);
     }
 
-    public void SetPoints()
+    public void SetPoints(Camera cam)
     {
         var mesh = new Mesh();
         
-        LineRenderer.BakeMesh(mesh,false);
+        LineRenderer.BakeMesh(mesh,cam);
 
         Collider.sharedMesh = mesh;
         

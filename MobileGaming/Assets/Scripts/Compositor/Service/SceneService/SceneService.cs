@@ -10,6 +10,12 @@ namespace Service.SceneService
             SceneManager.LoadScene(sceneIndex);
         }
 
+        public void LoadSceneAsync(int sceneIndex)
+        {
+            if(!enable) return;
+            SceneManager.LoadSceneAsync(sceneIndex);
+        }
+
         public void LoadScene(string sceneName)
         {
             if(!enable) return;

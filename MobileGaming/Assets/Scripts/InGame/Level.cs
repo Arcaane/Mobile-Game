@@ -13,8 +13,7 @@ public partial class Level : MonoBehaviour
     public int currentChapter;
     public int currentLevel;
     
-    private Vector3 levelPosition;
-    [field:HideInInspector,SerializeField] public Vector3 LevelPosition { get; private set; }
+    [field:SerializeField] public Camera Camera { get; private set; }
     
     [HideInInspector,SerializeField] public float levelDuration;
     [HideInInspector,SerializeField] private float currentTime;
@@ -42,8 +41,18 @@ public partial class Level : MonoBehaviour
 
     private TextMeshProUGUI scoreText;
     private TextMeshProUGUI timeText;
-    
-    
+
+    public static event Action<Level> OnLevelLoad;
+
+    private void Start()
+    {
+        Debug.Log($"Spawned level {this}");
+        
+        OnLevelLoad?.Invoke(this);
+        OnLevelLoad = null;
+    }
+
+
     public void Run()
     {
         Setup();
@@ -212,8 +221,6 @@ public partial class Level : MonoBehaviour
             EditorGUI.EndDisabledGroup();
             
             EditorGUILayout.LabelField("Level Settings",EditorStyles.boldLabel);
-
-            level.LevelPosition = EditorGUILayout.Vector3Field("Level Position", level.LevelPosition);
 
             level.levelDuration = EditorGUILayout.FloatField("Level Duration", level.levelDuration);
 
