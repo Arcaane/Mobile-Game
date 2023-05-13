@@ -184,6 +184,8 @@ public class Link : MonoBehaviour
     public void Destroy()
     {
         OnDestroyed?.Invoke();
+        
+        Destroy(gameObject);
     }
 
     public bool CompareLinks(ILinkable start,ILinkable end)

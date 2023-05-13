@@ -23,9 +23,9 @@ public class MagicLinesManager : MonoBehaviour
 
     // Private
     private bool isPressed;
-    private Ray ray;
     private RaycastHit hit;
     private LayerMask linkLayer;
+    private Link linkToDestroy;
     
     private bool isDraging => InputService.deltaPosition.x != 0 && InputService.deltaPosition.y != 0;
 
@@ -51,13 +51,6 @@ public class MagicLinesManager : MonoBehaviour
 
         if (isDraging)
         {
-            if (Input.GetKey(KeyCode.A))
-            {
-                Debug.Log("Destruction");
-                DestroyClickLink(InputService.cursorPosition);
-                return;
-            }
-            
             GetClickMachine(InputService.cursorPosition);
         }
 
@@ -68,7 +61,18 @@ public class MagicLinesManager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            if (linkToDestroy != null)
+            {
+                linkToDestroy.Destroy();
+                linkToDestroy = null;
+            }
+            
             FinishLine();
+        }
+        
+        if (Input.GetKey(KeyCode.A))
+        {
+            DestroySetLink(InputService.cursorPosition);
         }
     }
 
@@ -280,18 +284,15 @@ public class MagicLinesManager : MonoBehaviour
         if(!currentLinkables.Contains(linkable)){ currentLinkables.Add(linkable);}
     }
 
-    private void DestroyClickLink(Vector2 mousePos)
+    private void DestroySetLink(Vector2 mousePos)
     {
         var ray = cam.ScreenPointToRay(mousePos);
-        
-        Debug.DrawRay(ray.origin,ray.direction,Color.yellow);
-        
+
+        linkToDestroy = null;
         if (!Physics.Raycast(ray, out hit, linkLayer)) return;
         var link = hit.transform.GetComponent<Link>();
         
-        if (link == null) return;
-        
-        link.Destroy();
+        linkToDestroy = link != null ? link : null;
     }
 
     #endregion
