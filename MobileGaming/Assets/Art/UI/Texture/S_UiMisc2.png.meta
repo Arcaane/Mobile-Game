@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b50e87581f3f17a45a8eb571ed4e03b6
+guid: 601e4e00f7a6d7d439f8c1e420685bc6
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -105,127 +105,190 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: S_StarSmall
+      name: S_CollectionBanner
       rect:
         serializedVersion: 2
-        x: 0
-        y: 32
-        width: 32
-        height: 32
+        x: 27
+        y: 628
+        width: 89
+        height: 383
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d056885e92cd0a1428df6990062c51a3
-      internalID: -2121591814
+      spriteID: d8ab2f40f38eac04a830e960a7eb89e3
+      internalID: 1131637886
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_StarSmallFaded
+      name: S_CollectionFrame
       rect:
         serializedVersion: 2
-        x: 32
-        y: 32
-        width: 32
-        height: 32
+        x: 133
+        y: 936
+        width: 75
+        height: 75
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8d41087ccc595fb44ac612fb9ac40501
-      internalID: 1626675113
+      spriteID: d3362dec435cbaf408cb7b96f326e36b
+      internalID: -725785206
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_ButtonSmall
+      name: S_MacroArrow
       rect:
         serializedVersion: 2
-        x: 64
-        y: 32
+        x: 229
+        y: 956
         width: 32
-        height: 32
+        height: 37
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eedac1454df21ee4c82b1fe885a94f61
-      internalID: 2089800198
+      spriteID: d6209bbab83f25244b03f9a3f0b8cf8d
+      internalID: -516638887
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_IconControls
+      name: S_CollectionPadlock
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 32
-        height: 32
+        x: 282
+        y: 932
+        width: 82
+        height: 86
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b3e5715fea829074d9b538db25d8736b
-      internalID: 1346325970
+      spriteID: 6f47614fbe231a44e841f8bbc755dc46
+      internalID: -1006129681
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_IconPause
+      name: S_CollectionBackground
       rect:
         serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 32
+        x: 409
+        y: 347
+        width: 394
+        height: 666
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9b861ceb3d105f840b5bcd664e894bb3
-      internalID: 1825344594
+      spriteID: bc58301d2b32c884294808facfb6c7e2
+      internalID: 1985537715
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_IconPlus
+      name: S_CollectionShelf
       rect:
         serializedVersion: 2
-        x: 64
-        y: 0
-        width: 32
-        height: 32
+        x: 133
+        y: 752
+        width: 257
+        height: 156
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c29aeac0e9f640945876ed1d5694df0c
-      internalID: -29481130
+      spriteID: 023d7a4e473c05f4eb2b31275c38635a
+      internalID: -44319241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: S_CollectionParchment
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 629
+        width: 250
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4cc3bc7ada442d441a71507f71c0abd4
+      internalID: 1099197507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: S_CollectionBook
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 95
+        width: 352
+        height: 493
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 044c40e6a316dbc4ba2f595fc3beb08c
+      internalID: -423982727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: S_ClientsBubble
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 124
+        width: 133
+        height: 191
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ae6bb20340f6914090f39241c134d77
+      internalID: 821267396
       vertices: []
       indices: 
       edges: []
@@ -233,7 +296,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 9db92cf990536e14fa5fbf9eee1f9680
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -241,12 +304,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      S_IconPlus: -29481130
-      S_StarSmallFaded: 1626675113
-      S_StarSmall: -2121591814
-      S_IconPause: 1825344594
-      S_IconControls: 1346325970
-      S_ButtonSmall: 2089800198
+      S_CollectionFrame: -725785206
+      S_ClientsBubble: 821267396
+      S_CollectionBanner: 1131637886
+      S_CollectionPadlock: -1006129681
+      S_MacroArrow: -516638887
+      S_CollectionBackground: 1985537715
+      S_CollectionParchment: 1099197507
+      S_CollectionBook: -423982727
+      S_CollectionShelf: -44319241
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

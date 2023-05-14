@@ -105,7 +105,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: S_Chrono
+      name: S_IconMoney
       rect:
         serializedVersion: 2
         x: 0
@@ -113,7 +113,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -126,15 +126,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_ChronoNeedle
+      name: S_IconRight
       rect:
         serializedVersion: 2
         x: 64
         y: 192
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.51398265, y: 0.49813604}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,7 +147,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_SatisfactionGauge
+      name: S_StarBigEmpty
       rect:
         serializedVersion: 2
         x: 128
@@ -155,7 +155,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -168,7 +168,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_SatisfactionGaugeNeedle
+      name: S_StarBig
       rect:
         serializedVersion: 2
         x: 192
@@ -176,7 +176,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -189,7 +189,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_IconMoney
+      name: S_ButtonBig
       rect:
         serializedVersion: 2
         x: 0
@@ -197,7 +197,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -210,7 +210,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_IconRight
+      name: S_IconPlay
       rect:
         serializedVersion: 2
         x: 64
@@ -218,7 +218,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -231,7 +231,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_StarBigEmpty
+      name: S_IconBin
       rect:
         serializedVersion: 2
         x: 128
@@ -239,7 +239,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -252,7 +252,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_StarBig
+      name: S_IconQuit
       rect:
         serializedVersion: 2
         x: 192
@@ -260,7 +260,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -273,7 +273,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_ButtonBig
+      name: S_IconBack
       rect:
         serializedVersion: 2
         x: 0
@@ -281,7 +281,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -294,7 +294,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_IconPlay
+      name: S_IconArchive
       rect:
         serializedVersion: 2
         x: 64
@@ -302,7 +302,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -315,7 +315,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_IconBin
+      name: S_IconSlider
       rect:
         serializedVersion: 2
         x: 128
@@ -323,7 +323,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -336,7 +336,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_IconQuit
+      name: S_MacroCollection
       rect:
         serializedVersion: 2
         x: 192
@@ -344,7 +344,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -357,7 +357,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_IconBack
+      name: S_MacroShop
       rect:
         serializedVersion: 2
         x: 0
@@ -365,7 +365,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -378,7 +378,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_IconArchive
+      name: S_MacroWish
       rect:
         serializedVersion: 2
         x: 64
@@ -386,7 +386,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -399,7 +399,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S_IconSlider
+      name: S_MacroPlay
       rect:
         serializedVersion: 2
         x: 128
@@ -407,7 +407,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -415,6 +415,111 @@ TextureImporter:
       bones: []
       spriteID: 5cd3f1e65a4177b41a6d013917fa6e31
       internalID: 672680704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: S_Chrono
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eec69bdcf67977f4d95eeebc10af675f
+      internalID: -110148391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: S_ChronoNeedle
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ced5fabb6e5be354a9ffbdc8e3cdce79
+      internalID: -1767454186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: S_SatisfactionGauge
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84805e5a2ab535948a55e875c5b7650f
+      internalID: 1964432510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: S_SatisfactionGaugeNeedle
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3807fa31fdd75de4492fd84bef3fb7ef
+      internalID: 1020259682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: S_MacroSocial
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6f33cd8ed429c84785bb3b147b62b49
+      internalID: 786865815
       vertices: []
       indices: 
       edges: []
@@ -430,21 +535,26 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      S_StarBigEmpty: 537360032
-      S_IconQuit: 391295778
-      S_ChronoNeedle: -522669640
-      S_IconMoney: -544133106
-      S_IconRight: -1722912056
-      S_SatisfactionGaugeNeedle: -125354856
-      S_IconPlay: 1167895620
-      S_Chrono: 345587640
-      S_ButtonBig: -2074322231
-      S_IconArchive: -1914247619
-      S_StarBig: 151516239
-      S_IconBack: -526246259
-      S_SatisfactionGauge: 1539885005
-      S_IconSlider: 672680704
-      S_IconBin: -1764815240
+      S_StarBigEmpty: 1539885005
+      S_MacroSocial: 786865815
+      S_IconQuit: 151516239
+      S_MacroWish: -1914247619
+      S_MacroCollection: 391295778
+      S_ChronoNeedle: -1767454186
+      S_IconMoney: 345587640
+      S_IconRight: -522669640
+      S_MacroShop: -526246259
+      S_SatisfactionGaugeNeedle: 1020259682
+      S_IconPlay: -1722912056
+      S_Chrono: -110148391
+      S_ButtonBig: -544133106
+      S_IconArchive: 1167895620
+      S_StarBig: -125354856
+      S_MacroPlay: 672680704
+      S_IconBack: -2074322231
+      S_SatisfactionGauge: 1964432510
+      S_IconSlider: -1764815240
+      S_IconBin: 537360032
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
