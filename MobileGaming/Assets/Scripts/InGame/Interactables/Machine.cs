@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public abstract class Machine : MonoBehaviour, ILinkable
 {
     [Header("Feedback")]
-    [SerializeField] private Image feedbackImage;
+    [SerializeField] private Image[] feedbackImages;
     [SerializeField] private GameObject feedbackObject; //TODO Make only one object (one per product), not one per machine and teleport it
     [SerializeField] protected TextMeshProUGUI feedbackText;
     
@@ -36,8 +36,10 @@ public abstract class Machine : MonoBehaviour, ILinkable
 
     private void UpdateFeedbackImage(double amount)
     {
-        if(feedbackImage == null) return;
-        feedbackImage.fillAmount = (float)amount;
+        foreach (var feedbackImage in feedbackImages)
+        {
+            feedbackImage.fillAmount = (float)amount;
+        }
     }
 
     private void UpdateFeedbackObject()

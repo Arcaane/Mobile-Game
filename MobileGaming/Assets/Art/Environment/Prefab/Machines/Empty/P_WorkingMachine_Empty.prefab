@@ -68,7 +68,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 2034058294, guid: 800697ece10617c42a11b0d8789fe713, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -124,7 +124,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66abd8198c977404090887c78ba45a95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  feedbackImage: {fileID: 1215287360577816889}
+  feedbackImages:
+  - {fileID: 1619954197625377813}
+  - {fileID: 1215287360577816889}
   feedbackObject: {fileID: 0}
   feedbackText: {fileID: 0}
   baseTimeToProduce: 2
@@ -133,6 +135,9 @@ MonoBehaviour:
   targetColor: 2
   changeShape: 0
   targetShape: 0
+  changeTopping: 0
+  targetTopping: 0
+  nextLinksToUnload: []
 --- !u!135 &4886131500751828223
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -213,7 +218,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 15439256, guid: 800697ece10617c42a11b0d8789fe713, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

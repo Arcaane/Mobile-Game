@@ -3,11 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class MagicLinesManager : MonoBehaviour
 {
     #region Variables
+
+    [Header("Components")]
+    [SerializeField] private Button destroyLineButton;
+    private RectTransform buttonTr;
 
     [Header("Settings")]
     [SerializeField] private float slowedTime = 0.5f;
@@ -26,6 +30,8 @@ public class MagicLinesManager : MonoBehaviour
     private RaycastHit hit;
     private LayerMask linkLayer;
     private Link linkToDestroy;
+    private bool inDestroyMode;
+    private Vector3 buttonPos;
     
     private bool isDraging => InputService.deltaPosition.x != 0 && InputService.deltaPosition.y != 0;
 
@@ -40,6 +46,11 @@ public class MagicLinesManager : MonoBehaviour
     private void Start()
     {
         isInMagicMode = false;
+        inDestroyMode = false;
+
+        buttonTr = destroyLineButton.GetComponent<RectTransform>();
+        buttonPos = buttonTr.position;
+
         linkLayer = LayerMask.NameToLayer("Link");
         
         ToggleMagic();
@@ -49,33 +60,19 @@ public class MagicLinesManager : MonoBehaviour
     {
         if (!isDraging && !isInMagicMode) return;
 
+        if (inDestroyMode)
+        {
+            buttonTr.position = InputService.cursorPosition;
+            DestroySetLink(InputService.cursorPosition);
+            return;
+        }
+        
         if (isDraging)
         {
             GetClickMachine(InputService.cursorPosition);
         }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            StartLine();
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            if (linkToDestroy != null)
-            {
-                linkToDestroy.Destroy();
-                linkToDestroy = null;
-            }
-            
-            FinishLine();
-        }
-        
-        if (Input.GetKey(KeyCode.A))
-        {
-            DestroySetLink(InputService.cursorPosition);
-        }
     }
-
+    
     public void SetCameras(Camera camToSet)
     {
         cam = camToSet;
@@ -120,6 +117,24 @@ public class MagicLinesManager : MonoBehaviour
         isPressed = true;
         Time.timeScale = slowedTime;
         foreach (var t in shaderDarkness) t.SetInt("_Darkness", 1);
+        
+        if(SelectButton()) return;
+        
+        StartLine();
+    }
+
+    private bool SelectButton()
+    {
+        var pos = InputService.cursorPosition;
+        
+        if (pos.x > buttonPos.x + buttonTr.sizeDelta.x * 2) return false;
+        if (pos.y > buttonPos.y + buttonTr.sizeDelta.y * 2) return false;
+        if (pos.x < buttonPos.x) return false;
+        if (pos.y < buttonPos.y) return false;
+        
+        buttonTr.pivot = Vector2.one * 0.5f;
+        inDestroyMode = true;
+        return true;
     }
 
     private void OnScreenRelease(Vector2 obj)
@@ -128,6 +143,19 @@ public class MagicLinesManager : MonoBehaviour
         Time.timeScale = 1;
         
         foreach (var t in shaderDarkness) t.SetInt("_Darkness", 0);
+        
+        buttonTr.pivot = Vector2.zero;
+        inDestroyMode = false;
+        buttonTr.position = buttonPos;
+        
+        if (linkToDestroy != null)
+        {
+            linkToDestroy.Destroy();
+            linkToDestroy = null;
+            return;
+        }
+        
+        FinishLine();
         LinkMachines();
         
         currentLinkables.Clear();
