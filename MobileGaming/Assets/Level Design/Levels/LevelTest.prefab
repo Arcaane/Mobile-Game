@@ -1220,9 +1220,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a70c68433140d748bd40c37fb808550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <LevelPosition>k__BackingField: {x: 0, y: 0, z: 0}
+  currentChapter: 0
+  currentLevel: 0
+  <Camera>k__BackingField: {fileID: 0}
   levelDuration: 120
+  currentTime: 0
   scoreToWin: 10
+  currentScore: 0
   palier2: 0
   palier3: 0
   clientTimings:
@@ -1233,8 +1237,10 @@ MonoBehaviour:
       productDatas:
       - Color: 1
         Shape: 1
+        Topping: 0
       - Color: 1
         Shape: 3
+        Topping: 0
   - time: 5
     data:
       scriptableClient: {fileID: 11400000, guid: e736ac2dce757b74e89f6842601db770,
@@ -1242,6 +1248,7 @@ MonoBehaviour:
       productDatas:
       - Color: 3
         Shape: 1
+        Topping: 0
   - time: 10
     data:
       scriptableClient: {fileID: 11400000, guid: e736ac2dce757b74e89f6842601db770,
@@ -1249,6 +1256,7 @@ MonoBehaviour:
       productDatas:
       - Color: 3
         Shape: 0
+        Topping: 0
   clients:
   - {fileID: 0}
   - {fileID: 0}
@@ -13320,11 +13328,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d558eb498335be49887bab1e383e696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  feedbackGo: {fileID: 0}
   feedbackImage: {fileID: 0}
-  feedbackText: {fileID: 0}
+  contentImage: {fileID: 0}
+  shapeImage: {fileID: 0}
+  clientGraphsHandler: []
+  emotesFeedback: []
   data:
     scriptableClient: {fileID: 0}
     productDatas: []
+  currentSDebug: 0
 --- !u!1 &2148767382871867464
 GameObject:
   m_ObjectHideFlags: 0
@@ -15690,11 +15703,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d558eb498335be49887bab1e383e696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  feedbackGo: {fileID: 0}
   feedbackImage: {fileID: 0}
-  feedbackText: {fileID: 0}
+  contentImage: {fileID: 0}
+  shapeImage: {fileID: 0}
+  clientGraphsHandler: []
+  emotesFeedback: []
   data:
     scriptableClient: {fileID: 0}
     productDatas: []
+  currentSDebug: 0
 --- !u!1 &2148767383174439220
 GameObject:
   m_ObjectHideFlags: 0
@@ -16100,11 +16118,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d558eb498335be49887bab1e383e696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  feedbackGo: {fileID: 0}
   feedbackImage: {fileID: 0}
-  feedbackText: {fileID: 0}
+  contentImage: {fileID: 0}
+  shapeImage: {fileID: 0}
+  clientGraphsHandler: []
+  emotesFeedback: []
   data:
     scriptableClient: {fileID: 0}
     productDatas: []
+  currentSDebug: 0
 --- !u!1 &2148767383201184281
 GameObject:
   m_ObjectHideFlags: 0

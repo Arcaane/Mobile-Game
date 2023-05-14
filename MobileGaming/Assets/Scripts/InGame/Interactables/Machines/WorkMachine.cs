@@ -33,14 +33,12 @@ public class WorkMachine : Machine
         LoadNextLink();
     }
 
-    public override bool IsAvailable(Link link)
+    public override bool IsAvailable()
     {
-        if (nextLinksToUnload.Count <= 0) return false;
-        
         if (IsWorking) return false;
-        if (currentProduct != null) return false;
-        
-        return link == nextLinksToUnload[0];
+        if (nextLinksToUnload.Count <= 0) return currentProduct == null;
+        if (nextLinksToUnload[0].ProductInTreatment != null) return false;
+        return currentProduct == null;
     }
 
     private void LoadNextLink()
@@ -50,10 +48,11 @@ public class WorkMachine : Machine
         var nextLink = nextLinksToLoad[0];
         nextLinksToLoad.RemoveAt(0);
 
-        if (nextLink.EndLinkable.IsAvailable(nextLink))
+        if (nextLink.EndLinkable.IsAvailable())
         {
             nextLink.LoadProduct(currentProduct);
             currentProduct = null;
+            TriggerOnAvailable();
             return;
         }
 
@@ -61,11 +60,12 @@ public class WorkMachine : Machine
 
         void LoadProductInLink()
         {
-            if(!nextLink.EndLinkable.IsAvailable(nextLink)) return;
+            if(!nextLink.EndLinkable.IsAvailable()) return;
             
             nextLink.LoadProduct(currentProduct);
             currentProduct = null;
             nextLink.EndLinkable.OnAvailable -= LoadProductInLink;
+            TriggerOnAvailable();
         }
     }
     

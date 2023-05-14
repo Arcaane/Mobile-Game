@@ -22,11 +22,11 @@ public class Link : MonoBehaviour
     
     // Magic Transportation
     [Range(0,100)] [SerializeField] private int itemProgression = 0;
-    public float timeToCompleteTransportation = 5f;
-    public float currentTimer = 0f;
-    public TextMeshProUGUI lineGroupNumberText;
-    public int lineGroupNumber;
-    public Product productInTreatment { get; private set; }
+    [SerializeField] private float timeToCompleteTransportation = 5f;
+    private float currentTimer = 0f;
+    [SerializeField] private TextMeshProUGUI lineGroupNumberText;
+    [SerializeField] private int lineGroupNumber;
+    public Product ProductInTreatment { get; private set; }
     private List<Link> dependentLinks = new List<Link>();
     
     private static readonly int FilingValue = Shader.PropertyToID("_FilingValue");
@@ -53,10 +53,10 @@ public class Link : MonoBehaviour
     private void SetUIProduct()
     {
         // Forme de la bouteille
-        if(productInTreatment == null) return;
+        if(ProductInTreatment == null) return;
         
-        var shape = productInTreatment.data.Shape;
-        var color = productInTreatment.data.Color;
+        var shape = ProductInTreatment.data.Shape;
+        var color = ProductInTreatment.data.Color;
         var imageComponentShape = bottleImage.transform.GetChild(0).GetComponent<Image>();
         var imageComponent = bottleImage.transform.GetChild(1).GetComponent<Image>();
         var settings = ScriptableSettings.GlobalSettings;
@@ -103,9 +103,9 @@ public class Link : MonoBehaviour
 
     public void LoadProduct(Product product)
     {
-        productInTreatment = product;
+        ProductInTreatment = product;
         
-        if (productInTreatment == null) return;
+        if (ProductInTreatment == null) return;
         
         StartCoroutine(MoveProductRoutine());
     }
@@ -137,9 +137,9 @@ public class Link : MonoBehaviour
     {
         currentTimer = 0;
         
-        OnComplete?.Invoke(productInTreatment);
+        OnComplete?.Invoke(ProductInTreatment);
         
-        productInTreatment = null;
+        ProductInTreatment = null;
         
         Destroy();
         
@@ -155,7 +155,6 @@ public class Link : MonoBehaviour
         StartLinkable = startLink;
         EndLinkable = endLink;
         
-        Debug.Log($"Setting Links {StartLinkable},{EndLinkable}");
         EndLinkable.SetEndLinkable(this);
         StartLinkable.SetStartLinkable(this);
     }

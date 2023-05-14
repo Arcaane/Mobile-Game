@@ -225,7 +225,7 @@ public class Client : MonoBehaviour, ILinkable
         link.OnComplete += ReceiveProduct;
     }
 
-    public bool IsAvailable(Link link) => true;
+    public bool IsAvailable() => true;
 
     public event Action OnAvailable;
 

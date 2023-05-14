@@ -81,8 +81,8 @@ public abstract class Machine : MonoBehaviour, ILinkable
         IsWorking = false;
         
         EndWork();
-        
-        OnAvailable?.Invoke();
+
+        TriggerOnAvailable();
     }
     
     protected abstract void EndWork();
@@ -99,8 +99,12 @@ public abstract class Machine : MonoBehaviour, ILinkable
     #region Linkable
     public abstract void SetStartLinkable(Link link);
     public abstract void SetEndLinkable(Link link);
-    public abstract bool IsAvailable(Link link);
+    public abstract bool IsAvailable();
     public event Action OnAvailable;
+    protected void TriggerOnAvailable()
+    {
+        OnAvailable?.Invoke();
+    }
 
     #endregion
 }

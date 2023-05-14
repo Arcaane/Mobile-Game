@@ -24,7 +24,7 @@ public class GenerationMachine : Machine
 
     public override void SetStartLinkable(Link link)
     {
-        if (link.EndLinkable.IsAvailable(link))
+        if (link.EndLinkable.IsAvailable())
         {
             link.LoadProduct(new Product(data));
             return;
@@ -34,14 +34,14 @@ public class GenerationMachine : Machine
 
         void LoadProductInLink()
         {
-            if(!link.EndLinkable.IsAvailable(link)) return;
+            if(!link.EndLinkable.IsAvailable()) return;
             link.LoadProduct(new Product(data));
             link.EndLinkable.OnAvailable -= LoadProductInLink;
         }
     }
     
     public override void SetEndLinkable(Link link) { }
-    public override bool IsAvailable(Link link) => false;
+    public override bool IsAvailable() => false;
 
     #region Editor
 #if UNITY_EDITOR

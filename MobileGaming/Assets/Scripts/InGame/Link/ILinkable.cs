@@ -9,6 +9,6 @@ public interface ILinkable
     
     public void SetStartLinkable(Link link);
     public void SetEndLinkable(Link link);
-    public bool IsAvailable(Link link);
+    public bool IsAvailable();
     public event Action OnAvailable;
 }
