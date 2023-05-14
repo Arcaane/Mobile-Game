@@ -34,8 +34,6 @@ public class Link : MonoBehaviour
 
     private void Start()
     {
-        var myMaterial = GetComponent<LineRenderer>();
-        
         dependentLinks.Clear();
         lineGroupNumberText.text = lineGroupNumber.ToString();
         lineGroupNumberText.gameObject.transform.position = (StartLinkable.Position + EndLinkable.Position) / 2 + Vector3.up * 2;
@@ -157,6 +155,7 @@ public class Link : MonoBehaviour
         StartLinkable = startLink;
         EndLinkable = endLink;
         
+        Debug.Log($"Setting Links {StartLinkable},{EndLinkable}");
         EndLinkable.SetEndLinkable(this);
         StartLinkable.SetStartLinkable(this);
     }

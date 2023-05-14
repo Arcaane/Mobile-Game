@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class SorcererController : MonoBehaviour
 {
     public static SorcererController Instance;
-    
     [field: SerializeField] public TextMeshProUGUI timeLeftText { get; private set; }
     [field: SerializeField] public TextMeshProUGUI scoreText { get; private set; }
     [field: SerializeField] public TextMeshProUGUI endGameText { get; private set; }
