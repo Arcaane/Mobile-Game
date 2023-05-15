@@ -114,7 +114,7 @@ public class MagicLinesManager : MonoBehaviour
     {
         isPressed = true;
         Time.timeScale = slowedTime;
-        foreach (var t in shaderDarkness) t.SetInt("_Darkness", 1);
+        foreach (var t in shaderDarkness) t.SetFloat(Darkness2, 0.3f);
         
         if(SelectButton()) return;
         
@@ -141,7 +141,7 @@ public class MagicLinesManager : MonoBehaviour
         isPressed = false;
         Time.timeScale = 1;
         
-        foreach (var t in shaderDarkness) t.SetInt("_Darkness", 0);
+        foreach (var t in shaderDarkness) t.SetFloat(Darkness2, 1f);
         
         buttonTr.pivot = Vector2.zero;
         inDestroyMode = false;
@@ -327,7 +327,8 @@ public class MagicLinesManager : MonoBehaviour
     #region DrawLines&Mesh
     
     private Coroutine drawing;
-    
+    private static readonly int Darkness2 = Shader.PropertyToID("_Darkness2");
+
     private void StartLine()
     {
         if (drawing != null)
