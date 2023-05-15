@@ -45,6 +45,7 @@ public class LevelStartPannel : MonoBehaviour
         mySequence.AppendInterval(viewDuration);
         mySequence.Append(panel.DOLocalMoveY(1003, outDuration));
         mySequence.AppendCallback(() => myLevel.canRun = true);
+        mySequence.AppendCallback(() => myLevel.Run());
         mySequence.AppendCallback(() => SorcererController.Instance.hudCanvasGO.SetActive(true));
         mySequence.AppendCallback(() => gameObject.SetActive(false));
 

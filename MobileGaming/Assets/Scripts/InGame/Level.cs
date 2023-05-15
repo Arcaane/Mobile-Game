@@ -99,7 +99,6 @@ public partial class Level : MonoBehaviour
             queuedTimings.Enqueue(clientData);
             if (maxTime < clientData.time) maxTime = clientData.time;
         }
-        Debug.Log($"Enqueued {queuedTimings.Count} timings");
     }
 
     private void SubscribeClients()
@@ -151,8 +150,6 @@ public partial class Level : MonoBehaviour
                 FeedbackFx[fxIndex].Play();
             }
         }
-        
-        Debug.Log($"Enqueued {queuedClients.Count} clients");
     }
 
     public void SetUIComponents(TextMeshProUGUI newScoreText,TextMeshProUGUI newTimeText)

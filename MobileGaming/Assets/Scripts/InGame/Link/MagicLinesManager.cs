@@ -36,7 +36,7 @@ public class MagicLinesManager : MonoBehaviour
 
     private Camera cam;
 
-    public GameObject currentLineInDrawning;
+    private GameObject currentLineInDrawning;
 
     private List<ILinkable> currentLinkables = new List<ILinkable>();
 
@@ -124,7 +124,8 @@ public class MagicLinesManager : MonoBehaviour
     private bool SelectButton()
     {
         var pos = InputService.cursorPosition;
-        
+
+        if (buttonTr == null) return false;
         if (pos.x > buttonPos.x + buttonTr.sizeDelta.x * 2) return false;
         if (pos.y > buttonPos.y + buttonTr.sizeDelta.y * 2) return false;
         if (pos.x < buttonPos.x) return false;
@@ -331,6 +332,7 @@ public class MagicLinesManager : MonoBehaviour
     {
         if (drawing != null)
         {
+            Destroy(currentLineInDrawning);
             StopCoroutine(drawing);
         }
         
@@ -354,10 +356,13 @@ public class MagicLinesManager : MonoBehaviour
 
         while (true)
         {
-            var position = cam.ScreenToWorldPoint(Input.mousePosition);
-            position.y = .5f;
+            var ray = cam.ScreenPointToRay(Input.mousePosition);
+
+            if (!Physics.Raycast(ray, out hit)) continue;
+
+            var point = hit.point + ray.direction * (-1 * 2f);
             line.positionCount++;
-            line.SetPosition(line.positionCount - 1, position);
+            line.SetPosition(line.positionCount - 1, point);
             yield return null;
         }
     }

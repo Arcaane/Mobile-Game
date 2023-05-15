@@ -94,7 +94,7 @@ namespace Service
 
             magicLinesManager.SetCameras(level.Camera);
             
-            level.Run();
+            //level.Run();
         }
 
         private void UpdateEndGameText(int state)
