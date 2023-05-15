@@ -38,7 +38,9 @@ public partial class Level : MonoBehaviour
     private double maxTime = 0;
     
     private bool stopRefill;
-    private bool running;
+    private bool Running => canRun && loaded;
+    public bool canRun;
+    private bool loaded;
 
     private TextMeshProUGUI scoreText;
     private TextMeshProUGUI timeText;
@@ -52,8 +54,7 @@ public partial class Level : MonoBehaviour
         OnLevelLoad?.Invoke(this);
         OnLevelLoad = null;
     }
-
-
+    
     public void Run()
     {
         Setup();
@@ -61,7 +62,7 @@ public partial class Level : MonoBehaviour
         UpdateTimeUI();
         UpdateScoreUI();
         
-        running = true;
+        loaded = true;
     }
     
     
@@ -75,7 +76,7 @@ public partial class Level : MonoBehaviour
         currentTime = 0;
         currentScore = 0;
         stopRefill = false;
-        running = false;
+        loaded = false;
         
         SetupQueues();
         
@@ -162,7 +163,7 @@ public partial class Level : MonoBehaviour
 
     private void Update()
     {
-        if(!running) return;
+        if(!Running) return;
         UpdateQueue();
         IncreaseTime();
     }
@@ -213,7 +214,7 @@ public partial class Level : MonoBehaviour
 
     private void EndLevel(int state)
     {
-        running = false;
+        loaded = false;
         OnEndLevel?.Invoke(state);
     }
 
