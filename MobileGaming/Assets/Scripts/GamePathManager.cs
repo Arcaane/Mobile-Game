@@ -8,6 +8,9 @@ public class GamePathManager : MonoBehaviour
         get => Instance;
         set => Instance = value;
     }
+
+    public LevelSelectionContentHolder levelSelection;
+    public LevelPreScreenContentHolder preScreenLevel;
     
     public LevelOpener[] levels;
     public int unlockedLevels = 1;
@@ -22,13 +25,5 @@ public class GamePathManager : MonoBehaviour
         }
 
         Instance = this;
-    }
-
-    void Start()
-    {
-        for (int i = levels.Length - 1; i >= 0; i--)
-        {
-            levels[i].levelIndex = levels.Length - i;
-        }
     }
 }
