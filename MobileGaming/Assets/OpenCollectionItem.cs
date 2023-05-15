@@ -10,7 +10,10 @@ public class OpenCollectionItem : MonoBehaviour
     private void Start()
     {
         myItemImage = GetComponent<Image>();
-        myItemImage.sprite = thisScriptable.itemSprite;
+        if (thisScriptable != null)
+        {
+            myItemImage.sprite = thisScriptable.itemSprite;
+        }
     }
 
     public void ShowItem()
