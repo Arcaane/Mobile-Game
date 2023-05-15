@@ -14,6 +14,7 @@ public partial class Level : MonoBehaviour
     public int currentLevel;
     
     [field:SerializeField] public Camera Camera { get; private set; }
+    [field:SerializeField] public ParticleSystem[] FeedbackFx { get; private set; }
     
     [HideInInspector,SerializeField] public float levelDuration;
     [HideInInspector,SerializeField] private float currentTime;
@@ -81,6 +82,11 @@ public partial class Level : MonoBehaviour
         SubscribeClients();
         
         startTime = Time.time;
+
+        foreach (var fx in FeedbackFx)
+        {
+            fx.gameObject.SetActive(false);
+        }
     }
     
     private void SetupQueues()
@@ -122,10 +128,26 @@ public partial class Level : MonoBehaviour
             void IncreaseScore()
             {
                 var data = client.data;
+                var scriptable = data.scriptableClient;
         
                 if(client.Satisfaction > 0) currentScore += data.Reward;
         
                 UpdateScoreUI();
+                
+                foreach (var system in FeedbackFx)
+                {
+                    system.gameObject.SetActive(false);
+                }
+                
+                var fxIndex = 2;
+                var percent = (client.Satisfaction / data.Satisfaction);
+                if (percent <= 0f) fxIndex = 3;
+                if (percent >= scriptable.GoodPercent) fxIndex = 1;
+                if (percent > scriptable.BrewtifulPercent) fxIndex = 0;
+                
+
+                FeedbackFx[fxIndex].gameObject.SetActive(true);
+                FeedbackFx[fxIndex].Play();
             }
         }
         
@@ -188,7 +210,7 @@ public partial class Level : MonoBehaviour
     {
         scoreText.text = $"$$ : {currentScore}/{scoreToWin}";
     }
-    
+
     private void EndLevel(int state)
     {
         running = false;

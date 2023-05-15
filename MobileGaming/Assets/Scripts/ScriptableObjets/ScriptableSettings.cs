@@ -12,7 +12,7 @@ public class ScriptableSettings : ScriptableObject
     public void SetStartIndex(int index)
     {
         if (index < 0) index = 0;
-        if (index >= Levels.Length) index = Levels.Length - 1;
+        if (index >= LevelScenes.Length) index = LevelScenes.Length - 1;
         DefaultStartIndex = index;
     }
     
