@@ -10,9 +10,8 @@ public class MagicLinesManager : MonoBehaviour
     #region Variables
 
     [Header("Components")]
-    [SerializeField] private Button destroyLineButton;
-    private RectTransform buttonTr;
-
+    [SerializeField] private RectTransform buttonTr;
+    
     [Header("Settings")]
     [SerializeField] private float slowedTime = 0.5f;
     
@@ -47,8 +46,7 @@ public class MagicLinesManager : MonoBehaviour
     {
         isInMagicMode = false;
         inDestroyMode = false;
-
-        buttonTr = destroyLineButton.GetComponent<RectTransform>();
+        
         buttonPos = buttonTr.position;
 
         linkLayer = LayerMask.NameToLayer("Link");
