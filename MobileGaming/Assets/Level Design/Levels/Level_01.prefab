@@ -658,8 +658,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a70c68433140d748bd40c37fb808550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentChapter: 0
-  currentLevel: 0
+  currentChapter: 1
+  currentLevel: 1
   <Camera>k__BackingField: {fileID: 0}
   <FeedbackFx>k__BackingField:
   - {fileID: 4302479622755471095}
@@ -748,6 +748,8 @@ MonoBehaviour:
   - {fileID: 8145804125309639918}
   - {fileID: 4416799135220625107}
   canRun: 0
+  score: {fileID: 0}
+  timeText: {fileID: 0}
 --- !u!1 &5563308872164397872
 GameObject:
   m_ObjectHideFlags: 0
@@ -3061,10 +3063,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4651964764788466123}
     m_Modifications:
+    - target: {fileID: 2216301980111984242, guid: 20e209857363e524596f8438f60ef13f,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2606069117569014373, guid: 20e209857363e524596f8438f60ef13f,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6729162904771728863, guid: 20e209857363e524596f8438f60ef13f,
         type: 3}
       propertyPath: m_Name
       value: Expression Parent
+      objectReference: {fileID: 0}
+    - target: {fileID: 6749174504652600673, guid: 20e209857363e524596f8438f60ef13f,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6763764707513948604, guid: 20e209857363e524596f8438f60ef13f,
         type: 3}
@@ -3119,6 +3136,11 @@ PrefabInstance:
     - target: {fileID: 6763764707513948604, guid: 20e209857363e524596f8438f60ef13f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7183142011585997454, guid: 20e209857363e524596f8438f60ef13f,
+        type: 3}
+      propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

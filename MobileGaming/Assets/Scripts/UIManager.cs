@@ -1,6 +1,8 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class UIManager : MonoBehaviour
 
     private SorcererController sorcererController;
     private MagicLinesManager magicLinesManager;
-    
+
     private void Start()
     {
         sorcererController = GetComponent<SorcererController>();

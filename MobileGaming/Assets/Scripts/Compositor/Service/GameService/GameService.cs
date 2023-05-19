@@ -88,7 +88,7 @@ namespace Service
 
         private void OnLevelLoaded(Level level)
         {
-            level.SetUIComponents(sorcererController.scoreText,sorcererController.timeLeftText);
+            level.SetUIComponents(sorcererController.scoreSlider ,sorcererController.timeLeftText);
             level.OnEndLevel += UpdateEndGameText;
             level.OnEndLevel += NextLevel;
 
