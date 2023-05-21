@@ -142,7 +142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &900658432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,7 +212,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1024
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
@@ -369,6 +369,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Anouncement Level Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 2196336809782218883, guid: 917a63b7f3b4c85439b533890ac39777,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3274813198717657978, guid: 917a63b7f3b4c85439b533890ac39777,
         type: 3}
