@@ -63,13 +63,13 @@ public class Client : MonoBehaviour, ILinkable
         
         currentSDebug = (currentSatisfaction / data.Satisfaction);
         
-        if (clientSatisfactionEnum == ClientSatisfaction.NewClient && currentSatisfaction / data.Satisfaction < 0.9f)
+        if (clientSatisfactionEnum == ClientSatisfaction.NewClient && currentSatisfaction / data.Satisfaction < 0.75f)
         {
             emotesFeedback[0].Play();
             clientSatisfactionEnum = ClientSatisfaction.Interrogate;
         }
         
-        if (clientSatisfactionEnum == ClientSatisfaction.Interrogate && currentSatisfaction / data.Satisfaction < 0.6f)
+        if (clientSatisfactionEnum == ClientSatisfaction.Interrogate && currentSatisfaction / data.Satisfaction < 0.25f)
         {
             emotesFeedback[1].Play();
             clientSatisfactionEnum = ClientSatisfaction.Sleepy;
