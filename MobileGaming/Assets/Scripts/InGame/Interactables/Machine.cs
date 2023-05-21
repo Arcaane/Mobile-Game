@@ -56,6 +56,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
     protected void StartWork(Product product)
     {
         IsWorking = true;
+        if (feedbackObject != null ) { feedbackObject.SetActive(IsWorking); }
         currentProduct = product;
         waitDuration = baseTimeToProduce * 1f / timeMultiplier;
 
@@ -83,6 +84,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
         IsWorking = false;
         
         EndWork();
+        if (feedbackObject != null ) { feedbackObject.SetActive(IsWorking); }
 
         TriggerOnAvailable();
     }
