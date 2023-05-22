@@ -228,11 +228,9 @@ public class Compositor : MonoBehaviour
     // Add Services Here
     private void CreateAndWireObjects()
     {
-        AddService<IGameService>(new GameService(settings));
-        
-        AddService<IInputService>(new InputService());
-        
         AddService<ISceneService>(new SceneService());
+        AddService<IInputService>(new InputService());
+        AddService<IGameService>(new GameService(settings));
     }
 
     private void Awake()
