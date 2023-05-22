@@ -1,9 +1,11 @@
+using System;
 using Addressables;
 using Addressables.Components;
 using Attributes;
 using TMPro;
 using UnityEngine;
 using static UnityEngine.AddressableAssets.Addressables;
+using Object = UnityEngine.Object;
 
 namespace Service
 {
@@ -15,12 +17,15 @@ namespace Service
 
         private Transform levelParent;
         private int currentLevel;
-        
+
+        private GameObject _dialogueManagerGo;
         private SorcererController sorcererController;
         private MagicLinesManager magicLinesManager;
 
         private GameObject endGameCanvasGo;
         private TextMeshProUGUI endGameText;
+
+        private static event Action<int> OnLoadLevel;
 
         public GameService(ScriptableSettings baseSettings)
         {
@@ -31,19 +36,51 @@ namespace Service
         [ServiceInit]
         public void InitGame()
         {
-            LoadAssets();
+            LoadEventSystem();
+            
+            LoadMenu();
+
+            OnLoadLevel = LoadLevelI;
+
+            //LoadAssets();
         }
 
-        private void LoadAssets()
+        private void LoadEventSystem()
         {
-            //AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("Cameras", LoadCameras);
+            AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("EventSystem", DontDestroy);
+
+            void DontDestroy(GameObject go)
+            {
+                var eventsystem = Object.Instantiate(go);
+                Object.DontDestroyOnLoad(eventsystem);
+                Release(go);
+            }
+        }
+
+        private void LoadMenu()
+        {
+            sceneService.LoadScene(1);
+        }
+
+        public static void LoadLevel(int index)
+        {
+            OnLoadLevel?.Invoke(index);
+        }
+
+        public void LoadLevelI(int index)
+        {
+            if (_dialogueManagerGo != null)
+            {
+                AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("SorcererController", LoadSorcererController);
+                return;
+            }
             
             AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("DialogueCanvas", LoadDialogueManager);
             
             void LoadDialogueManager(GameObject dialogueManagerGo)
             {
-                var dialogueManager = Object.Instantiate(dialogueManagerGo);
-                DialogueManager.SetInstance(dialogueManager.GetComponent<DialogueManager>());
+                _dialogueManagerGo = Object.Instantiate(dialogueManagerGo);
+                DialogueManager.SetInstance(_dialogueManagerGo.GetComponent<DialogueManager>());
                 Release(dialogueManagerGo);
                 
                 AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("SorcererController", LoadSorcererController);
@@ -61,17 +98,11 @@ namespace Service
                     
                 sorcererController.endGameButton.onClick.AddListener(RestartGame);
 
-                currentLevel = settings.DefaultStartIndex - 1;
+                currentLevel = index - 1;
                 NextLevel();
             }
         }
         
-        private void LoadCameras(GameObject camerasGo)
-        {
-            var cameras = Object.Instantiate(camerasGo).GetComponent<CameraComponents>();
-            Release(camerasGo);
-        }
-
         private void NextLevel(int _)
         {
             NextLevel();

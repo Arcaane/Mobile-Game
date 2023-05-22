@@ -1,7 +1,7 @@
 using System;
+using Service;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
@@ -21,7 +21,7 @@ public class MainMenuManager : MonoBehaviour
     private int starCount;
     private int goldCount;
     
-    [SerializeField] public int StarCount
+    [field:SerializeField] public int StarCount
     {
         get => starCount;
         set
@@ -63,7 +63,7 @@ public class MainMenuManager : MonoBehaviour
     public void PlaceHolderGoToGameScene(int level)
     {
         settings.SetStartIndex(level-1);
-        SceneManager.LoadScene(1);
+        GameService.LoadLevel(level);
     }
 
     #region PlayerMethods
