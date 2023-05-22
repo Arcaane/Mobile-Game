@@ -135,8 +135,9 @@ public class Client : MonoBehaviour, ILinkable
     {
         if (product.data == expectedData)
         {
-            emotesFeedback[3].Play();
-            emotesFeedback[4].Play();
+            // TODO - wesh les emotes on fait kwa ?
+            //emotesFeedback[3].Play();
+            //emotesFeedback[4].Play();
             
             NextProduct();
             return;

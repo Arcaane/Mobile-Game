@@ -1,8 +1,5 @@
-using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -19,9 +16,9 @@ public class UIManager : MonoBehaviour
         sorcererController = GetComponent<SorcererController>();
         _magicLinesData = GetComponent<MagicLinesData>();
         
-        EventManager.AddListener<Level.LoadLevelEvent>(HideHudOnLevelInit);
+        EventManager.AddListener<LoadLevelEvent>(HideHudOnLevelInit);
 
-        void HideHudOnLevelInit(Level.LoadLevelEvent _)
+        void HideHudOnLevelInit(LoadLevelEvent _)
         {
             sorcererController.hudCanvasGO.SetActive(false);
             sorcererController.menuCanvasGO.SetActive(false);

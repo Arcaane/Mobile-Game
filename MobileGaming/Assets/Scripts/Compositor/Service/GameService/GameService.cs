@@ -111,23 +111,19 @@ namespace Service
             currentLevel++;
             if (currentLevel >= settings.LevelScenes.Length) currentLevel = 0;
 
-            EventManager.AddListener<Level.LoadLevelEvent>(OnLevelLoaded);
+            EventManager.AddListener<LoadLevelEvent>(OnLevelLoaded);
+            
             inputService.Disable();
             sceneService.LoadSceneAsync(settings.LevelScenes[currentLevel]);
         }
 
-        private void OnLevelLoaded(Level.LoadLevelEvent data)
+        private void OnLevelLoaded(LoadLevelEvent loadLevelEvent)
         {
-            levelService.InitLevel(data.Level);
-            
-            data.Level.SetUIComponents(sorcererController.scoreSlider ,sorcererController.timeLeftText);
+            levelService.InitLevel(loadLevelEvent.Level,sorcererController.scoreSlider ,sorcererController.timeLeftText);
             
             return;
-            
-            
-            Debug.Log("Level loaded");
-            data.Level.OnEndLevel += UpdateEndGameText;
-            data.Level.OnEndLevel += NextLevel;
+            levelService.OnEndLevel += UpdateEndGameText;
+            levelService.OnEndLevel += NextLevel;
         }
 
         private void UpdateEndGameText(int state)
