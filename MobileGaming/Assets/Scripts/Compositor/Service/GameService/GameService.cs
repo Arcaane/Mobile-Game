@@ -4,6 +4,7 @@ using Addressables.Components;
 using Attributes;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static UnityEngine.AddressableAssets.Addressables;
 using Object = UnityEngine.Object;
 
@@ -61,7 +62,7 @@ namespace Service
         {
             sceneService.LoadScene(1);
         }
-
+        
         public static void LoadLevel(int index)
         {
             OnLoadLevel?.Invoke(index);
