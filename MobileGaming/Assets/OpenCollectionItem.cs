@@ -18,8 +18,10 @@ public class OpenCollectionItem : MonoBehaviour
 
     public void ShowItem()
     {
-        _holder.FillAndShowItemCollectionDescription(thisScriptable.itemSprite,
-            thisScriptable.objectTitle, thisScriptable.descriptionText, thisScriptable.chapterNumber,
+        _holder.FillAndShowItemCollectionDescription(thisScriptable.itemSprite, 
+            thisScriptable.objectTitle, 
+            thisScriptable.descriptionText, 
+            thisScriptable.chapterNumber, 
             thisScriptable.rarety);
     }
 }
