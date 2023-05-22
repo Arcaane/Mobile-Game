@@ -49,7 +49,6 @@ public class Client : MonoBehaviour, ILinkable
         
         UpdateFeedbackImage();
         feedbackGo.SetActive(false);
-        feedbackImage.transform.rotation = Quaternion.Euler(0,0,90f);
     }
 
     #region Feedback
@@ -75,7 +74,7 @@ public class Client : MonoBehaviour, ILinkable
             clientSatisfactionEnum = ClientSatisfaction.Sleepy;
         }
         
-        feedbackImage.transform.rotation = Quaternion.Lerp(Quaternion.Euler(80,0,-90f), Quaternion.Euler(80,0,90f), (currentSatisfaction / data.Satisfaction));
+        feedbackImage.fillAmount = (currentSatisfaction / data.Satisfaction);
     }
     
     private void UpdateUIProductImage()

@@ -22,8 +22,8 @@ public partial class Level : MonoBehaviour
 
     [HideInInspector,SerializeField] public int scoreToWin;
     [HideInInspector,SerializeField] public int currentScore;
-    [HideInInspector,SerializeField] public float palier2;
-    [HideInInspector,SerializeField] public float palier3;
+    [HideInInspector,SerializeField] public int palier2;
+    [HideInInspector,SerializeField] public int palier3;
 
     [SerializeField] private List<ClientTiming> clientTimings = new ();
 
@@ -117,7 +117,12 @@ public partial class Level : MonoBehaviour
                 if (queuedTimings.Count <= 0 && queuedClients.Count == clients.Count)
                 {
                     Debug.Log("Ending Level");
-                    EndLevel((currentScore < scoreToWin) ? 0 : 1);
+                    var stars = 0;
+                    if (currentScore > scoreToWin) stars++;
+                    if (currentScore > palier2) stars++;
+                    if (currentScore > palier3) stars++;
+                    
+                    EndLevel(stars);
                 }
             }
             
@@ -208,44 +213,9 @@ public partial class Level : MonoBehaviour
         UpdateScoreUI();
     }
     
-    private bool isScoreToWinReach;
-    private bool isPalier2Reach;
-    private bool isPalier3Reach;
-    
     private void UpdateScoreUI()
     {
         score.value = (float)currentScore / palier3;
-
-        if (!isScoreToWinReach)
-        {
-            if (currentScore / scoreToWin >= 1)
-            {
-                isScoreToWinReach = true;
-                Debug.Log("isScoreToWinReach = " +  isScoreToWinReach);
-            }
-            return;
-        }
-
-        if (!isPalier2Reach)
-        {
-            if (currentScore / palier2 >= 1)
-            {
-                isPalier2Reach = true;
-                Debug.Log("isPalier2Reach = " +  isPalier2Reach);
-            }
-            return;
-        }
-
-        if (!isPalier3Reach)
-        {
-            if (currentScore / palier3 >= 1)
-            {
-                isPalier3Reach = true;
-                Debug.Log("isPalier3Reach = " +  isPalier3Reach);
-                
-                EndLevel(1);
-            }
-        }
     }
 
     private void EndLevel(int state)
@@ -294,8 +264,8 @@ public partial class Level : MonoBehaviour
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Paliers :");
             level.scoreToWin = EditorGUILayout.IntField(level.scoreToWin);
-            level.palier2 = EditorGUILayout.FloatField(level.palier2);
-            level.palier3 = EditorGUILayout.FloatField(level.palier3);
+            level.palier2 = EditorGUILayout.IntField(level.palier2);
+            level.palier3 = EditorGUILayout.IntField(level.palier3);
             EditorGUILayout.EndHorizontal();
 
             clientTimingCount = EditorGUILayout.IntField("Client Count", level.clientTimings.Count);
