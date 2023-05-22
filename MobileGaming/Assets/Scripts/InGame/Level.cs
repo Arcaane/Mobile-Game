@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -42,8 +43,8 @@ public partial class Level : MonoBehaviour
     public bool canRun;
     private bool loaded;
 
-    private TextMeshProUGUI scoreText;
-    private TextMeshProUGUI timeText;
+    public Slider score;
+    public TextMeshProUGUI timeText;
 
     public static event Action<Level> OnLevelLoad;
 
@@ -152,15 +153,16 @@ public partial class Level : MonoBehaviour
         }
     }
 
-    public void SetUIComponents(TextMeshProUGUI newScoreText,TextMeshProUGUI newTimeText)
+    public void SetUIComponents(Slider newScore,TextMeshProUGUI newTimeText)
     {
-        scoreText = newScoreText;
+        score = newScore;
         timeText = newTimeText;
     }
 
     private void Update()
     {
         if(!Running) return;
+        
         UpdateQueue();
         IncreaseTime();
     }
@@ -192,21 +194,58 @@ public partial class Level : MonoBehaviour
     private void UpdateTimeUI()
     {
         var time = levelDuration - currentTime;
-        timeText.text = $"Time Left : {(time >= 0 ? time : 0):f0}";
+        timeText.text = $"Time Left : {(time >= 0 ? time : "Extra time !"):f0}";
     }
     
     private void TryStopRefill()
     {
         if(currentTime < levelDuration) return;
         
+        // Fin du timer
         queuedClients.Clear();
-        
         stopRefill = true;
+        Debug.Log("Stop Refill");
+        UpdateScoreUI();
     }
+    
+    private bool isScoreToWinReach;
+    private bool isPalier2Reach;
+    private bool isPalier3Reach;
     
     private void UpdateScoreUI()
     {
-        scoreText.text = $"$$ : {currentScore}/{scoreToWin}";
+        score.value = (float)currentScore / palier3;
+
+        if (!isScoreToWinReach)
+        {
+            if (currentScore / scoreToWin >= 1)
+            {
+                isScoreToWinReach = true;
+                Debug.Log("isScoreToWinReach = " +  isScoreToWinReach);
+            }
+            return;
+        }
+
+        if (!isPalier2Reach)
+        {
+            if (currentScore / palier2 >= 1)
+            {
+                isPalier2Reach = true;
+                Debug.Log("isPalier2Reach = " +  isPalier2Reach);
+            }
+            return;
+        }
+
+        if (!isPalier3Reach)
+        {
+            if (currentScore / palier3 >= 1)
+            {
+                isPalier3Reach = true;
+                Debug.Log("isPalier3Reach = " +  isPalier3Reach);
+                
+                EndLevel(1);
+            }
+        }
     }
 
     private void EndLevel(int state)

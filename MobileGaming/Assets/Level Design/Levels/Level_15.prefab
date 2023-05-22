@@ -404,9 +404,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a70c68433140d748bd40c37fb808550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentChapter: 0
-  currentLevel: 0
+  currentChapter: 3
+  currentLevel: 15
   <Camera>k__BackingField: {fileID: 0}
+  <FeedbackFx>k__BackingField: []
   levelDuration: 120
   currentTime: 0
   scoreToWin: 1600
@@ -563,6 +564,9 @@ MonoBehaviour:
   - {fileID: 4140031799702396150}
   - {fileID: 3843345178425698796}
   - {fileID: 3423175022899187371}
+  canRun: 0
+  score: {fileID: 0}
+  timeText: {fileID: 0}
 --- !u!1 &2013425105401614717
 GameObject:
   m_ObjectHideFlags: 0

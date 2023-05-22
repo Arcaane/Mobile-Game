@@ -40,7 +40,7 @@ public class Client : MonoBehaviour, ILinkable
     private Coroutine satisfactionRoutine;
     private WaitForSeconds satisfactionWait = new (0.1f);
 
-    private enum ClientSatisfaction { NewClient, Interrogate, Sleepy, Anger}
+    private enum ClientSatisfaction { NewClient, Interrogate, Sleepy}
     private ClientSatisfaction clientSatisfactionEnum = ClientSatisfaction.NewClient;
     
     private void Start()
@@ -63,22 +63,16 @@ public class Client : MonoBehaviour, ILinkable
         
         currentSDebug = (currentSatisfaction / data.Satisfaction);
         
-        if (clientSatisfactionEnum == ClientSatisfaction.NewClient && currentSatisfaction / data.Satisfaction < 0.9f)
+        if (clientSatisfactionEnum == ClientSatisfaction.NewClient && currentSatisfaction / data.Satisfaction < 0.75f)
         {
             emotesFeedback[0].Play();
             clientSatisfactionEnum = ClientSatisfaction.Interrogate;
         }
         
-        if (clientSatisfactionEnum == ClientSatisfaction.Interrogate && currentSatisfaction / data.Satisfaction < 0.6f)
+        if (clientSatisfactionEnum == ClientSatisfaction.Interrogate && currentSatisfaction / data.Satisfaction < 0.25f)
         {
             emotesFeedback[1].Play();
             clientSatisfactionEnum = ClientSatisfaction.Sleepy;
-        }
-        
-        if (clientSatisfactionEnum == ClientSatisfaction.Sleepy && currentSatisfaction / data.Satisfaction < 0.3f)
-        {
-            emotesFeedback[2].Play();
-            clientSatisfactionEnum = ClientSatisfaction.Anger;
         }
         
         feedbackImage.transform.rotation = Quaternion.Lerp(Quaternion.Euler(80,0,-90f), Quaternion.Euler(80,0,90f), (currentSatisfaction / data.Satisfaction));
@@ -146,12 +140,13 @@ public class Client : MonoBehaviour, ILinkable
         if (product.data == expectedData)
         {
             emotesFeedback[3].Play();
+            emotesFeedback[4].Play();
             
             NextProduct();
             return;
         }
         
-        //Todo - Bad Product Feedback
+        emotesFeedback[2].Play();
     }
     
     private void NextProduct()
