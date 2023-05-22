@@ -3,6 +3,7 @@ using Service;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using NaughtyAttributes;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -27,25 +28,31 @@ public class MainMenuManager : MonoBehaviour
         set
         {
             starCount = value;
-            OnStarChangeValue.Invoke(value);
+            OnStarChangeValue?.Invoke(value);
         }
     }
-    [SerializeField] public int GoldCount
+    
+    [field:SerializeField] public int GoldCount
     {
         get => goldCount;
         set
         {
             goldCount = value;
-            OnGoldChangeValue.Invoke(value);
+            OnGoldChangeValue?.Invoke(value);
         }
     }
     
     // Start is called before the first frame update
     void Start()
     {
+        InitUIAction();
+        
         if (!PlayerPrefs.HasKey("Star")) PlayerPrefs.SetInt("Star", StarCount);
         if (!PlayerPrefs.HasKey("Gold")) PlayerPrefs.SetInt("Gold", GoldCount);
-        
+
+        StarCount = PlayerPrefs.GetInt("Star");
+        GoldCount = PlayerPrefs.GetInt("Gold");
+      
         settingsMenu.SetActive(isInSettingsMenu);
     }
     
@@ -95,8 +102,8 @@ public class MainMenuManager : MonoBehaviour
 
 
     #region UIMethods
-    private Action<int> OnGoldChangeValue;
-    private Action<int> OnStarChangeValue;
+    private event Action<int> OnGoldChangeValue;
+    private event Action<int> OnStarChangeValue;
 
     public void InitUIAction()
     {
