@@ -21,11 +21,10 @@ public class LevelStartPannel : MonoBehaviour
 
     [SerializeField] private Image[] starToActivate;
 
+    public event Action OnAnimationOver;
+    
     public void UpdateValues(Level level)
     {
-        //SorcererController.Instance.hudCanvasGO.SetActive(false);
-        //SorcererController.Instance.menuCanvasGO.SetActive(false);
-        
         Time.timeScale = 0f;
         
         Debug.Log($"Chapter : {level.currentChapter}, level {level.currentLevel}");
@@ -38,19 +37,47 @@ public class LevelStartPannel : MonoBehaviour
         oneStarNumberText.text = $"{level.scoreToWin}";
         twoStarNumberText.text = $"{level.palier2}";
         threeStarNumberText.text = $"{level.palier3}";
+        
+        Show();
     }
 
-    public void Show()
+    private void Show()
     {
-        var mySequence = DOTween.Sequence();
-        mySequence.Append(panel.DOLocalMoveY(385, inDuration));
-        mySequence.AppendInterval(viewDuration);
-        mySequence.Append(panel.DOLocalMoveY(1003, outDuration));
-        //mySequence.AppendCallback(() => level.canRun = true);
-        //mySequence.AppendCallback(() => level.Run());
-        mySequence.AppendCallback(() => SorcererController.Instance.hudCanvasGO.SetActive(true));
-        mySequence.AppendCallback(() => gameObject.SetActive(false));
+        var moveDownSequence = DOTween.Sequence();
+        moveDownSequence.Append(panel.DOLocalMoveY(385, inDuration));
+        moveDownSequence.AppendCallback(AllowSkip);
+        moveDownSequence.AppendInterval(viewDuration);
+        moveDownSequence.AppendCallback(RemoveSkipAndMoveUp);
+        
+        moveDownSequence.Play().SetUpdate(true);
 
-        mySequence.Play().SetUpdate(true);
+        void AllowSkip()
+        {
+            InputService.OnPress += SkipSequence;
+        }
+        
+        void RemoveSkipAndMoveUp()
+        {
+            InputService.OnPress -= SkipSequence;
+
+            var moveUpAnimation = DOTween.Sequence();
+            moveUpAnimation.Append(panel.DOLocalMoveY(1003, outDuration));
+            moveUpAnimation.AppendCallback(EndAnimation);
+            moveUpAnimation.Play().SetUpdate(true);
+        }
+        
+        void SkipSequence(Vector2 _)
+        {
+            if(!moveDownSequence.IsPlaying()) return;
+            moveDownSequence.Complete(true);
+            RemoveSkipAndMoveUp();
+        }
+
+        void EndAnimation()
+        {
+            OnAnimationOver?.Invoke();
+            gameObject.SetActive(false);
+        }
     }
 }
+

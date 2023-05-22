@@ -18,6 +18,14 @@ public class UIManager : MonoBehaviour
     {
         sorcererController = GetComponent<SorcererController>();
         _magicLinesData = GetComponent<MagicLinesData>();
+        
+        EventManager.AddListener<Level.LoadLevelEvent>(HideHudOnLevelInit);
+
+        void HideHudOnLevelInit(Level.LoadLevelEvent _)
+        {
+            sorcererController.hudCanvasGO.SetActive(false);
+            sorcererController.menuCanvasGO.SetActive(false);
+        }
     }
 
     public void EnablePauseMenu()

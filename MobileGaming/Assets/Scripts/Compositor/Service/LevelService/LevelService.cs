@@ -1,21 +1,23 @@
 using System.Collections.Generic;
 using Attributes;
 using Service;
+using UnityEngine;
 
 public class LevelService : ILevelService
 {
-    [DependsOnService] private IInputService inputService;
+
     [DependsOnService] private IMagicLineService magicLineService;
     
     private Level currentLevel;
 
     private Queue<Client> clients = new ();
     
-    
     public void InitLevel(Level level)
     {
         currentLevel = level;
-     
+
+        currentLevel.StartPanel.OnAnimationOver += StartLevel;
+
         ResetVariables();
         
         LinkStuff();
@@ -35,9 +37,9 @@ public class LevelService : ILevelService
     
     public void StartLevel()
     {
-        magicLineService.Enable();
+        SorcererController.Instance.hudCanvasGO.SetActive(true);
         
-        inputService.Enable();
+        magicLineService.Enable();
     }
 
     public void EndLevel()

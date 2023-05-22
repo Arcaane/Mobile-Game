@@ -50,13 +50,21 @@ public class Level : MonoBehaviour
 
     public Slider score;
     public TextMeshProUGUI timeText;
+    
+    public class LoadLevelEvent
+    {
+        public Level Level { get; private set; }
 
-    public static event Action<Level> OnLevelLoad;
+        public LoadLevelEvent(Level level)
+        {
+            Level = level;
+        }
+    }
 
     private void Start()
     {
-        OnLevelLoad?.Invoke(this);
-        OnLevelLoad = null;
+        EventManager.Trigger(new LoadLevelEvent(this));
+        EventManager.RemoveListeners<LoadLevelEvent>();
     }
     
     public void Run()

@@ -40,9 +40,9 @@ public class MagicLineService : SwitchableService, IMagicLineService
     
     public void SetData(MagicLinesData data)
     {
-        Disable();
-
         magicLinesData = data;
+        
+        Debug.Log($"Data has been set ({magicLinesData})");
         
         inDestroyMode = false;
 
@@ -56,19 +56,25 @@ public class MagicLineService : SwitchableService, IMagicLineService
     public void SetCamera(Camera camera)
     {
         cam = camera;
-        var camPos = cam.transform.position;
         
-        var height = 2.0f * Mathf.Tan(0.5f * cam.fieldOfView * Mathf.Deg2Rad) * camPos.y;
-        var width = height * Screen.width / Screen.height;
+        UpdateLevelGroundCollider();
 
-        magicLinesData.CollisionPlane.position = new Vector3(camPos.x, 0, camPos.y);
-        magicLinesData.CollisionPlane.localScale = new Vector3(width, height, 1f);
+        void UpdateLevelGroundCollider()
+        {
+            var camPos = cam.transform.position;
+        
+            var height = 2.0f * Mathf.Tan(0.5f * cam.fieldOfView * Mathf.Deg2Rad) * camPos.y;
+            var width = height * Screen.width / Screen.height;
+
+            magicLinesData.CollisionPlane.position = new Vector3(camPos.x, 0, camPos.y);
+            magicLinesData.CollisionPlane.localScale = new Vector3(width, height, 1f);
+        }
     }
 
 
     public override void Enable()
     {
-        Debug.Log("Enable Service");
+        Debug.Log($"Adding Callbacks, data is {magicLinesData}");
         
         InputService.OnPress += OnScreenTouch;
         InputService.OnRelease += OnScreenRelease;
@@ -80,6 +86,8 @@ public class MagicLineService : SwitchableService, IMagicLineService
     {
         InputService.OnPress -= OnScreenTouch;
         InputService.OnRelease -= OnScreenRelease;
+        
+        base.Enable();
         
         if(drawing != null) magicLinesData.StopCoroutine(drawing);
         

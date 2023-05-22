@@ -32,7 +32,7 @@ public class EventManager : AddressableSingleton<EventManager>
 
     public static void RemoveListeners<T>()
     {
-        if (!Instance.m_events.TryGetValue(typeof(T), out var listeners)) return;
+        if (!Instance.m_events.TryGetValue(typeof(T), out _)) return;
 
         Instance.m_events.Remove(typeof(T));
     }
