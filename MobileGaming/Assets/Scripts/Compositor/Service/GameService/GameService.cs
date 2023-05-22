@@ -1,6 +1,5 @@
 using System;
 using Addressables;
-using Addressables.Components;
 using Attributes;
 using TMPro;
 using UnityEngine;
@@ -51,8 +50,8 @@ namespace Service
 
             void DontDestroy(GameObject go)
             {
-                var eventsystem = Object.Instantiate(go);
-                Object.DontDestroyOnLoad(eventsystem);
+                var obj = Object.Instantiate(go);
+                Object.DontDestroyOnLoad(obj);
                 Release(go);
             }
         }
