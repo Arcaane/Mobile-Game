@@ -24,8 +24,6 @@ public class Link : MonoBehaviour
     [Range(0,100)] [SerializeField] private int itemProgression = 0;
     [SerializeField] private float timeToCompleteTransportation = 5f;
     private float currentTimer = 0f;
-    [SerializeField] private TextMeshProUGUI lineGroupNumberText;
-    [SerializeField] private int lineGroupNumber;
     public Product ProductInTreatment { get; private set; }
     private List<Link> dependentLinks = new List<Link>();
     
@@ -35,8 +33,6 @@ public class Link : MonoBehaviour
     private void Start()
     {
         dependentLinks.Clear();
-        lineGroupNumberText.text = lineGroupNumber.ToString();
-        lineGroupNumberText.gameObject.transform.position = (StartLinkable.Position + EndLinkable.Position) / 2 + Vector3.up * 2;
     }
     
     #region Feedback

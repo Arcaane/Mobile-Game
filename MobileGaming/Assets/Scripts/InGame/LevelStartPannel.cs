@@ -25,11 +25,14 @@ public class LevelStartPannel : MonoBehaviour
     
     private void Start()
     {
+        
+        
         SorcererController.Instance.hudCanvasGO.SetActive(false);
         SorcererController.Instance.menuCanvasGO.SetActive(false);
         
         Time.timeScale = 0f;
         
+        Debug.Log($"Chapter : {myLevel.currentChapter}, level {myLevel.currentLevel}");
         chapterNumberText.text = $"Chapter {myLevel.currentChapter}";
         levelNumberText.text = $"Level {myLevel.currentLevel}";
         

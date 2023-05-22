@@ -365,7 +365,11 @@ public class MagicLinesManager : MonoBehaviour
         {
             var ray = cam.ScreenPointToRay(Input.mousePosition);
 
-            if (!Physics.Raycast(ray, out hit)) continue;
+            if (!Physics.Raycast(ray, out hit))
+            {
+                yield return null;
+                continue;
+            }
 
             var point = hit.point + ray.direction * (-1 * 2f);
             line.positionCount++;

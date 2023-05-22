@@ -98,7 +98,7 @@ namespace Service
                     
                 sorcererController.endGameButton.onClick.AddListener(RestartGame);
 
-                currentLevel = index - 1;
+                currentLevel = index - 2;
                 NextLevel();
             }
         }
@@ -119,6 +119,7 @@ namespace Service
 
         private void OnLevelLoaded(Level level)
         {
+            Debug.Log("Level loaded");
             level.SetUIComponents(sorcererController.scoreSlider ,sorcererController.timeLeftText);
             level.OnEndLevel += UpdateEndGameText;
             level.OnEndLevel += NextLevel;
