@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using NaughtyAttributes;
+using UnityEngine;
 
 public class CollectionItem : ScriptableObject
 {
@@ -6,5 +7,6 @@ public class CollectionItem : ScriptableObject
     public string objectTitle;
     public string chapterNumber;
     public string rarety;
-    public string descriptionText;
+    [ResizableTextArea] public string descriptionText;
+    [ResizableTextArea] public string powerUpText;
 }

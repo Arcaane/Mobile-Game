@@ -1,6 +1,7 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using NaughtyAttributes;
 
 public class ScriptableForSagaWindow : EditorWindow
 {
@@ -11,15 +12,13 @@ public class ScriptableForSagaWindow : EditorWindow
     }
     
     private string title;
-    private string areaText1; 
-    private string areaText2;
+    [ResizableTextArea] private string areaText1; 
+    [ResizableTextArea] private string areaText2;
     
     private int currentLevel;
     private int levelObjective;
     private int gearCountPlayerCanEquip;
     
-    //private Sprite levelSelectionBackground;
-    //private Sprite preScreenLevelBackground;
     private Sprite fragementReward;
     private Sprite potionToUseSprite;
 
@@ -92,8 +91,6 @@ public class ScriptableForSagaWindow : EditorWindow
         temp.currentLevel = currentLevel;
         temp.levelObjective = levelObjective;
         temp.gearCountPlayerCanEquip = gearCountPlayerCanEquip;
-        //temp.levelSelectionBackground = levelSelectionBackground;
-        //temp.preScreenLevelBackground = preScreenLevelBackground;
         temp.fragementReward = fragementReward;
         temp.potionToUseSprite = potionToUseSprite;
         

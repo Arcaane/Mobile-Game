@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using System;
+using NaughtyAttributes;
 
 public class ScriptableForItemCollection : EditorWindow
 {
@@ -11,8 +12,9 @@ public class ScriptableForItemCollection : EditorWindow
     }
     
     public Sprite itemSprite;
-    public string objectTitle;
-    public string descriptionText;
+    [ResizableTextArea] public string objectTitle;
+    [ResizableTextArea] public string descriptionText;
+    [ResizableTextArea] public string powerUpText;
     public int chapterNumber;
     public ItemRarety rarety;
     
@@ -25,10 +27,11 @@ public class ScriptableForItemCollection : EditorWindow
         itemSprite = EditorGUILayout.ObjectField("NPC 1 Image", itemSprite, typeof(Sprite), false) as Sprite;
         objectTitle = EditorGUILayout.TextField("Item Title", objectTitle);
         descriptionText = EditorGUILayout.TextField("Item Description", descriptionText);
+        powerUpText = EditorGUILayout.TextField("Item powerUp", powerUpText);
         chapterNumber = EditorGUILayout.IntField("Chapter Number", chapterNumber);
         rarety = (ItemRarety)EditorGUILayout.EnumPopup("Chapter for current item", rarety);
         
-        GUI.enabled = itemSprite != null && objectTitle != String.Empty && descriptionText != String.Empty && chapterNumber != 0;
+        GUI.enabled = objectTitle != String.Empty && descriptionText != String.Empty;
         if (GUILayout.Button("Create Scriptable"))
         {
             GenerateScriptable();
@@ -49,6 +52,7 @@ public class ScriptableForItemCollection : EditorWindow
         temp.descriptionText = this.descriptionText;
         temp.chapterNumber = $"Chapter {this.chapterNumber}";
         temp.rarety = $"Rarety : {Enum.GetName(typeof(ItemRarety), this.rarety)}";
+        temp.powerUpText = this.powerUpText;
         
         AssetDatabase.CreateAsset(temp, assetPath);
         Debug.Log($"Asset {objectTitle}_Item.asset well created !");
