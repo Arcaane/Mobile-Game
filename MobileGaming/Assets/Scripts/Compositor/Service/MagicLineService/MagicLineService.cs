@@ -2,41 +2,29 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Attributes;
 using UnityEngine;
-using UnityEngine.UI;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
-public class MagicLinesManager : MonoBehaviour
+public class MagicLineService : SwitchableService, IMagicLineService
 {
-    #region Variables
+    private MagicLinesData magicLinesData;
 
-    [Header("Components")]
-    [SerializeField] private RectTransform buttonTr;
+    private RectTransform buttonTr;
+    private LayerMask machineLayerMask;
     
-    [Header("Settings")]
-    [SerializeField] private float slowedTime = 0.5f;
+    private Vector3[] points;
+    private List<Link> magicLinks = new List<Link>();
     
-    [Header("Variables")]
-    [SerializeField] private LayerMask machineLayerMask;
-    [SerializeField] private LayerMask linkLayerMask;
-    [SerializeField] private bool isInMagicMode;
-    
-    [SerializeField] private Link linkPrefab;
-    [SerializeField] private Vector3[] points;
-    [SerializeField] private List<Link> magicLinks;
-
-    // Private
     private bool isPressed;
     private RaycastHit hit;
     private LayerMask linkLayer;
     private Link linkToDestroy;
     private bool inDestroyMode;
     private Vector3 buttonPos;
+    
+    private Coroutine drawing;
+    private static readonly int Darkness2 = Shader.PropertyToID("_Darkness2");
     
     private bool isDraging => InputService.deltaPosition.x != 0 && InputService.deltaPosition.y != 0;
 
@@ -45,24 +33,65 @@ public class MagicLinesManager : MonoBehaviour
     private GameObject currentLineInDrawning;
 
     private List<ILinkable> currentLinkables = new List<ILinkable>();
-
-    #endregion
     
-    private void Start()
+    public MagicLineService(bool startState) : base(startState)
     {
-        isInMagicMode = false;
-        inDestroyMode = false;
-        
-        buttonPos = buttonTr.position;
-
-        linkLayer = LayerMask.NameToLayer("Link");
-        
-        ToggleMagic();
     }
     
+    public void SetData(MagicLinesData data)
+    {
+        Disable();
+
+        magicLinesData = data;
+        
+        inDestroyMode = false;
+
+        buttonTr = magicLinesData.buttonTr;
+        buttonPos = buttonTr.position;
+
+        machineLayerMask = magicLinesData.machineLayerMask;
+        linkLayer = LayerMask.NameToLayer("Link");
+    }
+
+    public void SetCamera(Camera camera)
+    {
+        cam = camera;
+        var camPos = cam.transform.position;
+        
+        var height = 2.0f * Mathf.Tan(0.5f * cam.fieldOfView * Mathf.Deg2Rad) * camPos.y;
+        var width = height * Screen.width / Screen.height;
+
+        magicLinesData.CollisionPlane.position = new Vector3(camPos.x, 0, camPos.y);
+        magicLinesData.CollisionPlane.localScale = new Vector3(width, height, 1f);
+    }
+
+
+    public override void Enable()
+    {
+        Debug.Log("Enable Service");
+        
+        InputService.OnPress += OnScreenTouch;
+        InputService.OnRelease += OnScreenRelease;
+        
+        base.Enable();
+    }
+
+    public override void Disable()
+    {
+        InputService.OnPress -= OnScreenTouch;
+        InputService.OnRelease -= OnScreenRelease;
+        
+        if(drawing != null) magicLinesData.StopCoroutine(drawing);
+        
+        if (currentLineInDrawning != null) Object.Destroy(currentLineInDrawning);
+    }
+
+    [OnTick]
     private void Update()
     {
-        if (!isDraging && !isInMagicMode) return;
+        if(!enable) return;
+        
+        if (!isDraging) return;
 
         if (inDestroyMode)
         {
@@ -77,50 +106,11 @@ public class MagicLinesManager : MonoBehaviour
         }
     }
     
-    public void SetCameras(Camera camToSet)
-    {
-        cam = camToSet;
-        
-        Debug.Log($"Cam was set to {cam}");
-        
-        EnableMagicMode();
-    }
-
-    private void ToggleMagic()
-    {
-        isInMagicMode = !isInMagicMode;
-        
-        if (isInMagicMode) EnableMagicMode();
-        else DisableMagicMode();
-    }
-    
-    private void EnableMagicMode()
-    {
-        // Inputs 
-        InputService.OnPress += OnScreenTouch;
-        InputService.OnRelease += OnScreenRelease;
-    }
-
-    private void DisableMagicMode()
-    {
-        // Inputs
-        InputService.OnPress -= OnScreenTouch;
-        InputService.OnRelease -= OnScreenRelease;
-        
-        if(drawing != null) StopCoroutine(drawing);
-        
-        if (currentLineInDrawning != null) Destroy(currentLineInDrawning);
-    }
-
-    #region Drag & Drop
-
-    public Material[] shaderDarkness;
-    
     private void OnScreenTouch(Vector2 obj)
     {
         isPressed = true;
-        Time.timeScale = slowedTime;
-        foreach (var t in shaderDarkness) t.SetFloat(Darkness2, 0.3f);
+        Time.timeScale = magicLinesData.slowedTime;
+        foreach (var t in magicLinesData.shaderDarkness) t.SetFloat(Darkness2, 0.3f);
         
         if(SelectButton()) return;
         
@@ -147,7 +137,7 @@ public class MagicLinesManager : MonoBehaviour
         isPressed = false;
         Time.timeScale = 1;
         
-        foreach (var t in shaderDarkness) t.SetFloat(Darkness2, 1f);
+        foreach (var t in magicLinesData.shaderDarkness) t.SetFloat(Darkness2, 1f);
         
         buttonTr.pivot = Vector2.zero;
         inDestroyMode = false;
@@ -187,7 +177,7 @@ public class MagicLinesManager : MonoBehaviour
             
             //if(magicLinks.Any(link => /*link.CompareLinks(startLinkable,endLinkable) ||*/ link.CompareLinks(endLinkable,startLinkable))) return;
             
-            var link = Instantiate(linkPrefab, Vector3.zero, Quaternion.identity);
+            var link = Object.Instantiate(magicLinesData.linkPrefab, Vector3.zero, Quaternion.identity);
             
             var lr = link.LineRenderer;
 
@@ -328,35 +318,30 @@ public class MagicLinesManager : MonoBehaviour
         linkToDestroy = link != null ? link : null;
     }
 
-    #endregion
-
     #region DrawLines&Mesh
     
-    private Coroutine drawing;
-    private static readonly int Darkness2 = Shader.PropertyToID("_Darkness2");
-
     private void StartLine()
     {
         if (drawing != null)
         {
-            Destroy(currentLineInDrawning);
-            StopCoroutine(drawing);
+            Object.Destroy(currentLineInDrawning);
+            magicLinesData.StopCoroutine(drawing);
         }
         
-        drawing = StartCoroutine(DrawLine());
+        drawing = magicLinesData.StartCoroutine(DrawLine());
     }
 
-    public void FinishLine()
+    private void FinishLine()
     {
         if (drawing == null) return;
-        StopCoroutine(drawing);
-        Destroy(currentLineInDrawning);
+        magicLinesData.StopCoroutine(drawing);
+        Object.Destroy(currentLineInDrawning);
         currentLineInDrawning = null;
     }
 
     IEnumerator DrawLine()
     {
-        currentLineInDrawning = Instantiate(Resources.Load("Line") as GameObject,
+        currentLineInDrawning = Object.Instantiate(Resources.Load("Line") as GameObject,
             new Vector3(0, 0, 0), Quaternion.identity);
         LineRenderer line = currentLineInDrawning.GetComponent<LineRenderer>();
         line.positionCount = 0;
@@ -364,6 +349,7 @@ public class MagicLinesManager : MonoBehaviour
         while (true)
         {
             var ray = cam.ScreenPointToRay(Input.mousePosition);
+            Debug.DrawRay(ray.origin,ray.direction * 100f,Color.yellow);
 
             if (!Physics.Raycast(ray, out hit))
             {

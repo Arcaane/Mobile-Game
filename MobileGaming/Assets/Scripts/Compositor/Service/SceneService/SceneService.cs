@@ -11,6 +11,10 @@ namespace Service.SceneService
         public GameObject LoadingCanvasGo => loadingCanvasGo != null ? loadingCanvasGo : LoadLoadingCanvas();
         private GameObject loadingCanvasGo;
         
+        public SceneService(bool startState) : base(startState)
+        {
+        }
+        
         private GameObject LoadLoadingCanvas()
         {
             var op = LoadAssetAsync<GameObject>("LoadingCanvas");

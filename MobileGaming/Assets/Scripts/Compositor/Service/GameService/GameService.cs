@@ -3,7 +3,6 @@ using Addressables;
 using Attributes;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using static UnityEngine.AddressableAssets.Addressables;
 using Object = UnityEngine.Object;
 
@@ -13,6 +12,8 @@ namespace Service
     {
         [DependsOnService] private ISceneService sceneService;
         [DependsOnService] private IInputService inputService;
+        [DependsOnService] private ILevelService levelService;
+        [DependsOnService] private IMagicLineService magicLineService;
         private ScriptableSettings settings;
 
         private Transform levelParent;
@@ -20,7 +21,7 @@ namespace Service
 
         private GameObject _dialogueManagerGo;
         private SorcererController sorcererController;
-        private MagicLinesManager magicLinesManager;
+        private MagicLinesData magicLinesData;
 
         private GameObject endGameCanvasGo;
         private TextMeshProUGUI endGameText;
@@ -41,8 +42,6 @@ namespace Service
             LoadMenu();
 
             OnLoadLevel = LoadLevelI;
-
-            //LoadAssets();
         }
 
         private void LoadEventSystem()
@@ -67,7 +66,7 @@ namespace Service
             OnLoadLevel?.Invoke(index);
         }
 
-        public void LoadLevelI(int index)
+        private void LoadLevelI(int index)
         {
             if (_dialogueManagerGo != null)
             {
@@ -89,9 +88,8 @@ namespace Service
             void LoadSorcererController(GameObject sorcererControllerGo)
             {
                 sorcererController = Object.Instantiate(sorcererControllerGo).GetComponent<SorcererController>();
-                magicLinesManager = sorcererController.GetComponent<MagicLinesManager>();
-                // TODO - apply materials, then release
-                //Release(sorcererControllerGo);
+                magicLinesData = sorcererController.GetComponent<MagicLinesData>();
+                magicLineService.SetData(magicLinesData);
                 
                 endGameText = sorcererController.endGameText;
                 endGameCanvasGo = sorcererController.endGameCanvasGo;
@@ -114,17 +112,23 @@ namespace Service
             if (currentLevel >= settings.LevelScenes.Length) currentLevel = 0;
 
             Level.OnLevelLoad += OnLevelLoaded;
+            inputService.Disable();
             sceneService.LoadSceneAsync(settings.LevelScenes[currentLevel]);
         }
 
         private void OnLevelLoaded(Level level)
         {
+            levelService.InitLevel(level);
+            
+            levelService.StartLevel();
+            
+            return;
+            
+            
             Debug.Log("Level loaded");
             level.SetUIComponents(sorcererController.scoreSlider ,sorcererController.timeLeftText);
             level.OnEndLevel += UpdateEndGameText;
             level.OnEndLevel += NextLevel;
-
-            magicLinesManager.SetCameras(level.Camera);
             
             //level.Run();
         }

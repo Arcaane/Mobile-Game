@@ -4,7 +4,7 @@ using Service;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputService : IInputService
+public class InputService : SwitchableService,IInputService
 {
     public PlayerControls controls { get; private set; }
     private InputAction positonAction;
@@ -14,6 +14,13 @@ public class InputService : IInputService
     public static Vector2 movement;
     public static Vector2 cursorPosition;
     public static Vector2 deltaPosition;
+    
+    
+    public InputService(bool startState) : base(startState)
+    {
+        OnPress = null;
+        OnRelease = null;
+    }
     
     [ServiceInit]
     private void InitControls()
@@ -32,12 +39,14 @@ public class InputService : IInputService
     
     private void Press(InputAction.CallbackContext ctx)
     {
+        if(!enable) return;
         cursorPosition = positonAction.ReadValue<Vector2>();
         OnPress?.Invoke(cursorPosition);
     }
 
     private void Release(InputAction.CallbackContext ctx)
     {
+        if(!enable) return;
         cursorPosition = positonAction.ReadValue<Vector2>();
         OnRelease?.Invoke(cursorPosition);
     }
@@ -45,11 +54,12 @@ public class InputService : IInputService
     [OnUpdate]
     private void UpdateInputs()
     {
-        movement = moveAction.ReadValue<Vector2>();
-        cursorPosition = positonAction.ReadValue<Vector2>();
-        deltaPosition = deltaAction.ReadValue<Vector2>();
+        movement = enable ? moveAction.ReadValue<Vector2>() : Vector2.zero;
+        cursorPosition = enable ? positonAction.ReadValue<Vector2>() : Vector2.zero;
+        deltaPosition = enable ? deltaAction.ReadValue<Vector2>() : Vector2.zero;
     }
 
     public static event Action<Vector2> OnPress;
     public static event Action<Vector2> OnRelease;
+
 }

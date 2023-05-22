@@ -9,11 +9,14 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
 
-public partial class Level : MonoBehaviour
+public class Level : MonoBehaviour
 {
     public int currentChapter;
     public int currentLevel;
     
+    
+    [field:Header("Components")]
+    [field:SerializeField] public LevelStartPannel StartPanel { get; private set; }
     [field:SerializeField] public Camera Camera { get; private set; }
     [field:SerializeField] public ParticleSystem[] FeedbackFx { get; private set; }
     
@@ -29,6 +32,8 @@ public partial class Level : MonoBehaviour
 
     [Header("Setup with tool automatically")]
     public List<Client> clients = new ();
+    
+    //will remove
     
     private Queue<ClientTiming> queuedTimings = new ();
     private Queue<Client> queuedClients = new();
@@ -50,8 +55,6 @@ public partial class Level : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log($"Spawned level {this}");
-        
         OnLevelLoad?.Invoke(this);
         OnLevelLoad = null;
     }
