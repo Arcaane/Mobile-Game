@@ -285,7 +285,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8115900737664986083
 Transform:
   m_ObjectHideFlags: 0
@@ -924,12 +924,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentChapter: 2
   currentLevel: 8
+  <StartPanel>k__BackingField: {fileID: 0}
   <Camera>k__BackingField: {fileID: 0}
   <FeedbackFx>k__BackingField: []
   levelDuration: 120
-  currentTime: 0
   scoreToWin: 1600
-  currentScore: 0
   palier2: 2000
   palier3: 2400
   clientTimings:
@@ -1057,9 +1056,6 @@ MonoBehaviour:
   - {fileID: 6655908708362886110}
   - {fileID: 7534727699170460718}
   - {fileID: 7986294486209499029}
-  canRun: 0
-  score: {fileID: 0}
-  timeText: {fileID: 0}
 --- !u!1 &7730842552665777203
 GameObject:
   m_ObjectHideFlags: 0
@@ -2184,7 +2180,7 @@ PrefabInstance:
     - target: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
         type: 3}
@@ -7293,7 +7289,7 @@ PrefabInstance:
     - target: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
         type: 3}

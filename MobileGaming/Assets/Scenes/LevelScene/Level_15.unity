@@ -97,8 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: b26a499195546854f96a6cff1ac74ef5,
-    type: 2}
+  m_LightingDataAsset: {fileID: 0}
   m_LightingSettings: {fileID: 4890085278179872738, guid: e58d89a0ae0149b478bbf6bece016444,
     type: 2}
 --- !u!196 &4
@@ -254,6 +253,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Anouncement Level Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 2196336809782218883, guid: 917a63b7f3b4c85439b533890ac39777,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3274813198717657978, guid: 917a63b7f3b4c85439b533890ac39777,
         type: 3}
@@ -501,16 +505,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 938876353645210069, guid: f5ba8011641f2574d86dd6fbb334e1af,
-        type: 3}
-      propertyPath: m_Intensity
-      value: 2.42
-      objectReference: {fileID: 0}
-    - target: {fileID: 938876353645210069, guid: f5ba8011641f2574d86dd6fbb334e1af,
-        type: 3}
-      propertyPath: m_ColorTemperature
-      value: 10313
-      objectReference: {fileID: 0}
     - target: {fileID: 1649679151022111426, guid: f5ba8011641f2574d86dd6fbb334e1af,
         type: 3}
       propertyPath: m_RootOrder
@@ -570,46 +564,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level_15
-      objectReference: {fileID: 0}
-    - target: {fileID: 2325877790194692473, guid: f5ba8011641f2574d86dd6fbb334e1af,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.86
-      objectReference: {fileID: 0}
-    - target: {fileID: 2325877790194692473, guid: f5ba8011641f2574d86dd6fbb334e1af,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -6.39
-      objectReference: {fileID: 0}
-    - target: {fileID: 3800418847998622676, guid: f5ba8011641f2574d86dd6fbb334e1af,
-        type: 3}
-      propertyPath: m_Intensity
-      value: 2.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 3920021877497089767, guid: f5ba8011641f2574d86dd6fbb334e1af,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3955603940079960717, guid: f5ba8011641f2574d86dd6fbb334e1af,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 5.13
-      objectReference: {fileID: 0}
-    - target: {fileID: 3955603940079960717, guid: f5ba8011641f2574d86dd6fbb334e1af,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.43
-      objectReference: {fileID: 0}
-    - target: {fileID: 4078987895453271441, guid: f5ba8011641f2574d86dd6fbb334e1af,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.47
-      objectReference: {fileID: 0}
-    - target: {fileID: 5447023766460491336, guid: f5ba8011641f2574d86dd6fbb334e1af,
-        type: 3}
-      propertyPath: m_ColorTemperature
-      value: 11788
       objectReference: {fileID: 0}
     - target: {fileID: 6442455205330484825, guid: f5ba8011641f2574d86dd6fbb334e1af,
         type: 3}
