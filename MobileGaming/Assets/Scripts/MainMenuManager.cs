@@ -21,8 +21,10 @@ public class MainMenuManager : MonoBehaviour
     
     private int starCount;
     private int goldCount;
+    private int collectionLevel;
     
-    [field:SerializeField] public int StarCount
+    [field:SerializeField] 
+    public int StarCount
     {
         get => starCount;
         set
@@ -32,7 +34,8 @@ public class MainMenuManager : MonoBehaviour
         }
     }
     
-    [field:SerializeField] public int GoldCount
+    [field:SerializeField] 
+    public int GoldCount
     {
         get => goldCount;
         set
@@ -41,7 +44,18 @@ public class MainMenuManager : MonoBehaviour
             OnGoldChangeValue?.Invoke(value);
         }
     }
-    
+
+    [field: SerializeField]
+    public int CollectionLevel
+    {
+        get => collectionLevel;
+        set
+        {
+            collectionLevel = value;
+            OnCollectionLevelChange?.Invoke(value);
+        }
+    }
+     
     // Start is called before the first frame update
     void Start()
     {
@@ -49,8 +63,10 @@ public class MainMenuManager : MonoBehaviour
         
         if (!PlayerPrefs.HasKey("Star")) PlayerPrefs.SetInt("Star", StarCount);
         if (!PlayerPrefs.HasKey("Gold")) PlayerPrefs.SetInt("Gold", GoldCount);
+        if (!PlayerPrefs.HasKey("CollectionLevel")) PlayerPrefs.SetInt("CollectionLevel", 0);
 
         StarCount = PlayerPrefs.GetInt("Star");
+        GoldCount = PlayerPrefs.GetInt("Gold");
         GoldCount = PlayerPrefs.GetInt("Gold");
       
         settingsMenu.SetActive(isInSettingsMenu);
@@ -98,12 +114,14 @@ public class MainMenuManager : MonoBehaviour
         PlayerPrefs.SetInt("Gold", goldCount);
         PlayerPrefs.Save();
     }
+
+    public void LevelCollectionButton(int i) =>  CollectionLevel = i;
     #endregion
-
-
+    
     #region UIMethods
     private event Action<int> OnGoldChangeValue;
     private event Action<int> OnStarChangeValue;
+    private event Action<int> OnCollectionLevelChange;
 
     public void InitUIAction()
     {
@@ -115,9 +133,14 @@ public class MainMenuManager : MonoBehaviour
         {
             starCountText.text = i.ToString();
         }
+        void DebugCollectionLevel(int i)
+        {
+            Debug.Log($"Level Collection : {collectionLevel}");
+        }        
 
         OnGoldChangeValue = InitUIGold;
         OnStarChangeValue = InitUIStar;
+        OnCollectionLevelChange = DebugCollectionLevel;
     }
     #endregion
 }
