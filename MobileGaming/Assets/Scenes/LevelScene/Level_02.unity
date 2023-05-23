@@ -97,8 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 39e1e7d5a3cfea046ab48c7dafb1d009,
-    type: 2}
+  m_LightingDataAsset: {fileID: 0}
   m_LightingSettings: {fileID: 4890085278179872738, guid: e58d89a0ae0149b478bbf6bece016444,
     type: 2}
 --- !u!196 &4
@@ -343,6 +342,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Anouncement Level Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 2196336809782218883, guid: 917a63b7f3b4c85439b533890ac39777,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3274813198717657978, guid: 917a63b7f3b4c85439b533890ac39777,
         type: 3}
       propertyPath: myLevel
@@ -578,7 +582,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1321997575}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 4.5, y: 9.01, z: 5.46}
+  m_LocalPosition: {x: 4.5, y: 8.15, z: 3.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

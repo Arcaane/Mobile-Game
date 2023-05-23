@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3985955874084742810
 Transform:
   m_ObjectHideFlags: 0
@@ -754,9 +754,7 @@ MonoBehaviour:
   <Camera>k__BackingField: {fileID: 0}
   <FeedbackFx>k__BackingField: []
   levelDuration: 120
-  currentTime: 0
   scoreToWin: 1600
-  currentScore: 0
   palier2: 2000
   palier3: 2400
   clientTimings:
@@ -861,9 +859,6 @@ MonoBehaviour:
   - {fileID: 247340129575605222}
   - {fileID: 4096345716262391838}
   - {fileID: 6717791834294828695}
-  canRun: 0
-  score: {fileID: 0}
-  timeText: {fileID: 0}
 --- !u!1 &3677314903100838162
 GameObject:
   m_ObjectHideFlags: 0
@@ -8162,7 +8157,7 @@ PrefabInstance:
     - target: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10
+      value: 9.5
       objectReference: {fileID: 0}
     - target: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
         type: 3}
@@ -12200,7 +12195,7 @@ PrefabInstance:
     - target: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
         type: 3}
@@ -13974,7 +13969,7 @@ PrefabInstance:
     - target: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
         type: 3}

@@ -666,6 +666,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentChapter: 1
   currentLevel: 1
+  <StartPanel>k__BackingField: {fileID: 0}
   <Camera>k__BackingField: {fileID: 0}
   <FeedbackFx>k__BackingField:
   - {fileID: 4302479622755471095}
@@ -673,9 +674,7 @@ MonoBehaviour:
   - {fileID: 8948725026558311964}
   - {fileID: 4771007529080824307}
   levelDuration: 120
-  currentTime: 0
   scoreToWin: 1600
-  currentScore: 0
   palier2: 2000
   palier3: 2400
   clientTimings:
@@ -753,9 +752,6 @@ MonoBehaviour:
   - {fileID: 2453304263045335136}
   - {fileID: 8145804125309639918}
   - {fileID: 4416799135220625107}
-  canRun: 0
-  score: {fileID: 0}
-  timeText: {fileID: 0}
 --- !u!1 &5563308872164397872
 GameObject:
   m_ObjectHideFlags: 0
@@ -8660,7 +8656,7 @@ PrefabInstance:
     - target: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
         type: 3}
@@ -10592,7 +10588,7 @@ PrefabInstance:
     - target: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
         type: 3}
