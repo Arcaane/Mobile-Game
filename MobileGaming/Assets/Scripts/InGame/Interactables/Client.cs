@@ -198,6 +198,7 @@ public class Client : MonoBehaviour, ILinkable
     private void StopClient()
     {
         OnClientAvailable?.Invoke();
+        EventManager.Trigger(new ClientAvailableEvent(this));
         
         if(satisfactionRoutine != null) StopCoroutine(satisfactionRoutine);
         satisfactionRoutine = null;
@@ -287,6 +288,16 @@ public class Client : MonoBehaviour, ILinkable
     }
 #endif
     #endregion
+}
+
+public class ClientAvailableEvent
+{
+    public Client Client { get; private set; }
+
+    public ClientAvailableEvent(Client client)
+    {
+        Client = client;
+    }
 }
 
 [Serializable]

@@ -22,8 +22,9 @@ public class LevelService : ILevelService
     private int palier2;
     private int palier3;
     
-    private Queue<ClientTiming> queuedTimings = new();
-    private Queue<Client> queuedClients = new();
+    private Queue<ClientTiming> queuedTimings = new(); //Tout les timings, si le temps correspond au timing, les data vont dans la queue data
+    private Queue<ClientData> queuedData = new(); //Tout les data qui sont dispo, va quand le client dispo de queue client ou bien,quand un client est libre il prend la data dispo
+    private Queue<Client> queuedClient = new(); //Tout les client qui ont pas de travail et pas de data
 
     private ClientTiming nextTiming;
     private Client availableClient;
@@ -63,30 +64,28 @@ public class LevelService : ILevelService
         palier3 = currentLevel.palier3;
         
         queuedTimings.Clear();
-        queuedClients.Clear();
+        queuedData.Clear();
+        queuedClient.Clear();
 
         currentTime = 0;
         currentScore = 0;
         stopRefill = false;
         running = false;
 
-        SetupQueues();
+        FillQueuedTimings();
         
-        startTime = Time.time;
-
         foreach (var fx in currentLevel.FeedbackFx)
         {
             fx.gameObject.SetActive(false);
         }
 
-        void SetupQueues()
+        void FillQueuedTimings()
         {
             clientTimings.Sort();
-            maxTime = 0;
-            foreach (var clientData in clientTimings)
+
+            foreach (var clientTiming in clientTimings)
             {
-                queuedTimings.Enqueue(clientData);
-                if (maxTime < clientData.time) maxTime = clientData.time;
+                queuedTimings.Enqueue(clientTiming);
             }
         }
     }
@@ -101,8 +100,21 @@ public class LevelService : ILevelService
         
         void SubscribeClients()
         {
+            EventManager.AddListener<ClientAvailableEvent>(TryDequeueClient);
+
+            void TryDequeueClient(ClientAvailableEvent clientAvailableEvent)
+            {
+                if (queuedData.Count > 0) // data is available
+                {
+                    var data = queuedData.Dequeue();
+                    clientAvailableEvent.Client.SetData(data);  
+                }
+            }
+            
             foreach (var client in clients)
             {
+                
+                
                 client.OnClientAvailable += UpdateAvailableClient;
                 client.OnClientAvailable += TryEndLevel;
                 client.OnClientAvailable += IncreaseScore;
@@ -111,7 +123,7 @@ public class LevelService : ILevelService
 
                 void TryEndLevel()
                 {
-                    if (queuedTimings.Count <= 0 && queuedClients.Count == clients.Count)
+                    if (queuedTimings.Count <= 0 && queuedData.Count == clients.Count)
                     {
                         Debug.Log("Ending Level");
                         var stars = 0;
@@ -125,7 +137,7 @@ public class LevelService : ILevelService
 
                 void UpdateAvailableClient()
                 {
-                    queuedClients.Enqueue(client);
+                    // queuedData.Enqueue(client);
                 }
 
                 void IncreaseScore()
@@ -160,12 +172,14 @@ public class LevelService : ILevelService
     {
         SorcererController.Instance.hudCanvasGO.SetActive(true);
         
+        startTime = Time.time;
+        
         UpdateTimeUI();
         UpdateScoreUI();
 
         magicLineService.Enable();
-
-        running = true;
+        
+        //running = true;
     }
     
     [OnTick]
@@ -185,12 +199,12 @@ public class LevelService : ILevelService
     
     private void UpdateQueue()
     {
-        if (!queuedTimings.TryPeek(out nextTiming) || !queuedClients.TryPeek(out availableClient)) return;
+        //if (!queuedTimings.TryPeek(out nextTiming) || !queuedData.TryPeek(out availableClient)) return;
         
         if(Time.time - startTime < nextTiming.time) return;
         
         queuedTimings.Dequeue();
-        queuedClients.Dequeue();
+        queuedData.Dequeue();
         availableClient.SetData(nextTiming.data);  
 
         nextTiming.time += (float) maxTime;
@@ -217,7 +231,7 @@ public class LevelService : ILevelService
         if(currentTime < levelDuration) return;
         
         // Fin du timer
-        queuedClients.Clear();
+        queuedData.Clear();
         stopRefill = true;
         Debug.Log("Stop Refill");
         UpdateScoreUI();

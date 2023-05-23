@@ -214,7 +214,7 @@ public class ClientTiming : IComparable<ClientTiming>
 
     public override string ToString()
     {
-        return $"Timing at {time}";
+        return $"Timing at {time} ({data})";
     }
 }
 
