@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class LevelStartPannel : MonoBehaviour
 {
-    #region MyRegion
-    [SerializeField] private Level myLevel;
     [SerializeField] private GameObject startLevelUI;
     [SerializeField] private TextMeshProUGUI chapterNumberText;
     [SerializeField] private TextMeshProUGUI levelNumberText;
@@ -22,38 +20,64 @@ public class LevelStartPannel : MonoBehaviour
     [SerializeField] private float viewDuration;
 
     [SerializeField] private Image[] starToActivate;
+
+    public event Action OnAnimationOver;
     
-    private void Start()
+    public void UpdateValues(Level level)
     {
-        
-        
-        SorcererController.Instance.hudCanvasGO.SetActive(false);
-        SorcererController.Instance.menuCanvasGO.SetActive(false);
-        
         Time.timeScale = 0f;
         
-        Debug.Log($"Chapter : {myLevel.currentChapter}, level {myLevel.currentLevel}");
-        chapterNumberText.text = $"Chapter {myLevel.currentChapter}";
-        levelNumberText.text = $"Level {myLevel.currentLevel}";
+        Debug.Log($"Chapter : {level.currentChapter}, level {level.currentLevel}");
+        chapterNumberText.text = $"Chapter {level.currentChapter}";
+        levelNumberText.text = $"Level {level.currentLevel}";
         
-        TimeSpan time = TimeSpan.FromSeconds(myLevel.levelDuration);
+        var time = TimeSpan.FromSeconds(level.levelDuration);
         timerText.text = time.ToString(@"mm\:ss");
         
-        oneStarNumberText.text = $"{myLevel.scoreToWin}";
-        twoStarNumberText.text = $"{myLevel.palier2}";
-        threeStarNumberText.text = $"{myLevel.palier3}";
-
-        var mySequence = DOTween.Sequence();
-        mySequence.Append(panel.DOLocalMoveY(385, inDuration));
-        mySequence.AppendInterval(viewDuration);
-        mySequence.Append(panel.DOLocalMoveY(1003, outDuration));
-        mySequence.AppendCallback(() => myLevel.canRun = true);
-        mySequence.AppendCallback(() => myLevel.Run());
-        mySequence.AppendCallback(() => SorcererController.Instance.hudCanvasGO.SetActive(true));
-        mySequence.AppendCallback(() => gameObject.SetActive(false));
-
-        mySequence.Play().SetUpdate(true);
+        oneStarNumberText.text = $"{level.scoreToWin}";
+        twoStarNumberText.text = $"{level.palier2}";
+        threeStarNumberText.text = $"{level.palier3}";
+        
+        Show();
     }
-    
-    #endregion
+
+    private void Show()
+    {
+        var moveDownSequence = DOTween.Sequence();
+        moveDownSequence.Append(panel.DOLocalMoveY(385, inDuration));
+        moveDownSequence.AppendCallback(AllowSkip);
+        moveDownSequence.AppendInterval(viewDuration);
+        moveDownSequence.AppendCallback(RemoveSkipAndMoveUp);
+        
+        moveDownSequence.Play().SetUpdate(true);
+
+        void AllowSkip()
+        {
+            InputService.OnPress += SkipSequence;
+        }
+        
+        void RemoveSkipAndMoveUp()
+        {
+            InputService.OnPress -= SkipSequence;
+
+            var moveUpAnimation = DOTween.Sequence();
+            moveUpAnimation.Append(panel.DOLocalMoveY(1003, outDuration));
+            moveUpAnimation.AppendCallback(EndAnimation);
+            moveUpAnimation.Play().SetUpdate(true);
+        }
+        
+        void SkipSequence(Vector2 _)
+        {
+            if(!moveDownSequence.IsPlaying()) return;
+            moveDownSequence.Complete(true);
+            RemoveSkipAndMoveUp();
+        }
+
+        void EndAnimation()
+        {
+            OnAnimationOver?.Invoke();
+            gameObject.SetActive(false);
+        }
+    }
 }
+

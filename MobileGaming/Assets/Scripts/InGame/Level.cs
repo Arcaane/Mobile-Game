@@ -9,223 +9,33 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
 
-public partial class Level : MonoBehaviour
+public class Level : MonoBehaviour
 {
     public int currentChapter;
     public int currentLevel;
     
+    
+    [field:Header("Components")]
+    [field:SerializeField] public LevelStartPannel StartPanel { get; private set; }
     [field:SerializeField] public Camera Camera { get; private set; }
     [field:SerializeField] public ParticleSystem[] FeedbackFx { get; private set; }
     
     [HideInInspector,SerializeField] public float levelDuration;
-    [HideInInspector,SerializeField] private float currentTime;
 
     [HideInInspector,SerializeField] public int scoreToWin;
-    [HideInInspector,SerializeField] public int currentScore;
     [HideInInspector,SerializeField] public int palier2;
     [HideInInspector,SerializeField] public int palier3;
 
-    [SerializeField] private List<ClientTiming> clientTimings = new ();
+    public List<ClientTiming> clientTimings = new ();
 
     [Header("Setup with tool automatically")]
     public List<Client> clients = new ();
-    
-    private Queue<ClientTiming> queuedTimings = new ();
-    private Queue<Client> queuedClients = new();
-
-    private ClientTiming nextTiming;
-    private Client availableClient;
-    private double startTime;
-    private double maxTime = 0;
-    
-    private bool stopRefill;
-    private bool Running => canRun && loaded;
-    public bool canRun;
-    private bool loaded;
-
-    public Slider score;
-    public TextMeshProUGUI timeText;
-
-    public static event Action<Level> OnLevelLoad;
-
     private void Start()
     {
-        Debug.Log($"Spawned level {this}");
-        
-        OnLevelLoad?.Invoke(this);
-        OnLevelLoad = null;
+        EventManager.Trigger(new LoadLevelEvent(this));
+        EventManager.RemoveListeners<LoadLevelEvent>();
     }
     
-    public void Run()
-    {
-        Setup();
-        
-        UpdateTimeUI();
-        UpdateScoreUI();
-        
-        loaded = true;
-    }
-    
-    
-    private void Setup()
-    {
-        OnEndLevel = null;
-        
-        queuedTimings.Clear();
-        queuedClients.Clear();
-
-        currentTime = 0;
-        currentScore = 0;
-        stopRefill = false;
-        loaded = false;
-        
-        SetupQueues();
-        
-        SubscribeClients();
-        
-        startTime = Time.time;
-
-        foreach (var fx in FeedbackFx)
-        {
-            fx.gameObject.SetActive(false);
-        }
-    }
-    
-    private void SetupQueues()
-    {
-        clientTimings.Sort();
-        maxTime = 0;
-        foreach (var clientData in clientTimings)
-        {
-            queuedTimings.Enqueue(clientData);
-            if (maxTime < clientData.time) maxTime = clientData.time;
-        }
-    }
-
-    private void SubscribeClients()
-    {
-        foreach (var client in clients)
-        {
-            client.OnClientAvailable += UpdateAvailableClient;
-            client.OnClientAvailable += TryEndLevel;
-            client.OnClientAvailable += IncreaseScore;
-            
-            UpdateAvailableClient();
-            
-            void TryEndLevel()
-            {
-                if (queuedTimings.Count <= 0 && queuedClients.Count == clients.Count)
-                {
-                    Debug.Log("Ending Level");
-                    var stars = 0;
-                    if (currentScore > scoreToWin) stars++;
-                    if (currentScore > palier2) stars++;
-                    if (currentScore > palier3) stars++;
-                    
-                    EndLevel(stars);
-                }
-            }
-            
-            void UpdateAvailableClient()
-            {
-                queuedClients.Enqueue(client);
-            }
-            
-            void IncreaseScore()
-            {
-                var data = client.data;
-                var scriptable = data.scriptableClient;
-        
-                if(client.Satisfaction > 0) currentScore += data.Reward;
-        
-                UpdateScoreUI();
-                
-                foreach (var system in FeedbackFx)
-                {
-                    system.gameObject.SetActive(false);
-                }
-                
-                var fxIndex = 2;
-                var percent = (client.Satisfaction / data.Satisfaction);
-                if (percent <= 0f) fxIndex = 3;
-                if (percent >= scriptable.GoodPercent) fxIndex = 1;
-                if (percent > scriptable.BrewtifulPercent) fxIndex = 0;
-                
-
-                FeedbackFx[fxIndex].gameObject.SetActive(true);
-                FeedbackFx[fxIndex].Play();
-            }
-        }
-    }
-
-    public void SetUIComponents(Slider newScore,TextMeshProUGUI newTimeText)
-    {
-        score = newScore;
-        timeText = newTimeText;
-    }
-
-    private void Update()
-    {
-        if(!Running) return;
-        
-        UpdateQueue();
-        IncreaseTime();
-    }
-
-    //TODO - Sortir de l'update + clear la queue quand le timer arrive (y'a un truc qui marche mais ca peut etre mieu)
-    private void UpdateQueue()
-    {
-        if (!queuedTimings.TryPeek(out nextTiming) || !queuedClients.TryPeek(out availableClient)) return;
-        
-        if(Time.time - startTime < nextTiming.time) return;
-        
-        queuedTimings.Dequeue();
-        queuedClients.Dequeue();
-        availableClient.SetData(nextTiming.data);  
-
-        nextTiming.time += (float) maxTime;
-        if(!stopRefill) queuedTimings.Enqueue(nextTiming);
-    }
-
-    private void IncreaseTime()
-    {
-        currentTime += Time.deltaTime;
-
-        UpdateTimeUI();
-        
-        if(!stopRefill) TryStopRefill();
-    }
-
-    private void UpdateTimeUI()
-    {
-        var time = levelDuration - currentTime;
-        timeText.text = $"Time Left : {(time >= 0 ? time : "Extra time !"):f0}";
-    }
-    
-    private void TryStopRefill()
-    {
-        if(currentTime < levelDuration) return;
-        
-        // Fin du timer
-        queuedClients.Clear();
-        stopRefill = true;
-        Debug.Log("Stop Refill");
-        UpdateScoreUI();
-    }
-    
-    private void UpdateScoreUI()
-    {
-        score.value = (float)currentScore / palier3;
-    }
-
-    private void EndLevel(int state)
-    {
-        loaded = false;
-        OnEndLevel?.Invoke(state);
-    }
-
-    public event Action<int> OnEndLevel;
-
     #region Editor
 #if UNITY_EDITOR
     [CustomEditor(typeof(Level)),CanEditMultipleObjects]
@@ -252,14 +62,8 @@ public partial class Level : MonoBehaviour
             EditorGUILayout.LabelField("Level Settings",EditorStyles.boldLabel);
 
             level.levelDuration = EditorGUILayout.FloatField("Level Duration", level.levelDuration);
-
-            GUI.enabled = false;
-            EditorGUILayout.FloatField("Current Duration", level.currentTime);
-            GUI.enabled = true;
+            
             level.scoreToWin = EditorGUILayout.IntField("Score to Win", level.scoreToWin);
-            GUI.enabled = false;
-            EditorGUILayout.IntField("Current Score", level.currentScore);
-            GUI.enabled = true;
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Paliers :");

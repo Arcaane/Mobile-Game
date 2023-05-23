@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ public class FpsCounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        frameDeltaTimeArray[lastFrameIndex] = Time.deltaTime;
+        frameDeltaTimeArray[lastFrameIndex] = Time.unscaledDeltaTime;
         lastFrameIndex = (lastFrameIndex + 1) % frameDeltaTimeArray.Length;
 
         fpsText.text = Mathf.RoundToInt(CalculationFPS()).ToString();
@@ -28,11 +29,7 @@ public class FpsCounter : MonoBehaviour
 
     private float CalculationFPS()
     {
-        float total = 0f;
-        foreach (var deltaTime in frameDeltaTimeArray)
-        {
-            total += deltaTime;
-        }
+        var total = frameDeltaTimeArray.Sum();
 
         return frameDeltaTimeArray.Length / total;
     }

@@ -1,8 +1,5 @@
-using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,28 +9,36 @@ public class UIManager : MonoBehaviour
     //[SerializeField] private GameObject pauseMenu;
 
     private SorcererController sorcererController;
-    private MagicLinesManager magicLinesManager;
+    private MagicLinesData _magicLinesData;
 
     private void Start()
     {
         sorcererController = GetComponent<SorcererController>();
-        magicLinesManager = GetComponent<MagicLinesManager>();
+        _magicLinesData = GetComponent<MagicLinesData>();
+        
+        EventManager.AddListener<LoadLevelEvent>(HideHudOnLevelInit);
+
+        void HideHudOnLevelInit(LoadLevelEvent _)
+        {
+            sorcererController.hudCanvasGO.SetActive(false);
+            sorcererController.menuCanvasGO.SetActive(false);
+        }
     }
 
     public void EnablePauseMenu()
     {
-        magicLinesManager.FinishLine();
+        //_magicLinesData.FinishLine();
         sorcererController.enabled = false;
-        magicLinesManager.enabled = false;
+        _magicLinesData.enabled = false;
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
     }
 
     public void EnableInfoMenu()
     {
-        magicLinesManager.FinishLine();
+        //_magicLinesData.FinishLine();
         sorcererController.enabled = false;
-        magicLinesManager.enabled = false;
+        _magicLinesData.enabled = false;
         levelMenu.SetActive(true);
         Time.timeScale = 0f;
     }
@@ -44,7 +49,7 @@ public class UIManager : MonoBehaviour
         levelMenu.SetActive(false);
         Time.timeScale = 1f;
         sorcererController.enabled = false;
-        magicLinesManager.enabled = false;
+        _magicLinesData.enabled = false;
     }
 
     public void ReloadLevel()
