@@ -13,5 +13,4 @@ public class MagicLinesData : MonoBehaviour
     [field: SerializeField] public LayerMask machineLayerMask{ get; private set; }
     [field: SerializeField] public Link linkPrefab{ get; private set; }
     public Material[] shaderDarkness;
-
 }

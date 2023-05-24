@@ -13,6 +13,8 @@ using Service.SceneService;
 public class Compositor : MonoBehaviour
 {
     [SerializeField] private float ticksPerSecond = 60;
+    public static float TicksPerSecond { get; private set; }
+    public static float DeltaTick => 1f / TicksPerSecond;
     [SerializeField] private ScriptableSettings settings;
     private double currentTime = 0;
     
@@ -228,6 +230,8 @@ public class Compositor : MonoBehaviour
     // Add Services Here
     private void CreateAndWireObjects()
     {
+        TicksPerSecond = ticksPerSecond;
+        
         AddService<ILevelService>(new LevelService());
         AddService<ISceneService>(new SceneService(true));
         AddService<IInputService>(new InputService(true));

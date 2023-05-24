@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
-public class Client : MonoBehaviour, ILinkable
+public class ClientSlot : MonoBehaviour, ILinkable
 {
     [Header("Feedback")]
     [SerializeField] private GameObject feedbackGo;
@@ -61,13 +61,13 @@ public class Client : MonoBehaviour, ILinkable
         
         if (clientSatisfactionEnum == ClientSatisfaction.NewClient && currentSatisfaction / data.Satisfaction < 0.75f)
         {
-            emotesFeedback[0].Play();
+            //emotesFeedback[0].Play();
             clientSatisfactionEnum = ClientSatisfaction.Interrogate;
         }
         
         if (clientSatisfactionEnum == ClientSatisfaction.Interrogate && currentSatisfaction / data.Satisfaction < 0.25f)
         {
-            emotesFeedback[1].Play();
+            //emotesFeedback[1].Play();
             clientSatisfactionEnum = ClientSatisfaction.Sleepy;
         }
         
@@ -126,41 +126,34 @@ public class Client : MonoBehaviour, ILinkable
     public void SetData(ClientData newData)
     {
         data = newData;
-        currentDataIndex = -1;
+        currentDataIndex = 0;
         
-        NextProduct();
+        satisfactionRoutine = StartCoroutine(WaitForProductionRoutine());
     }
     
-    public void ReceiveProduct(Product product)
+    private IEnumerator WaitForProductionRoutine()
     {
-        if (product.data == expectedData)
-        {
-            // TODO - wesh les emotes on fait kwa ?
-            //emotesFeedback[3].Play();
-            //emotesFeedback[4].Play();
-            
-            NextProduct();
-            return;
-        }
-        
-        emotesFeedback[2].Play();
-    }
-    
-    private void NextProduct()
-    {
-        canReceiveProduct = false;
-        
-        currentDataIndex++;
-        
-        if (currentDataIndex >= data.productDatas.Length)
-        {
-            StopClient();
-            return;
-        }
+        yield return new WaitForSeconds(0.5f);
         
         currentSatisfaction = data.Satisfaction;
-        clientSatisfactionEnum = ClientSatisfaction.NewClient;
+
+        canReceiveProduct = true;
+        OnAvailable?.Invoke();
         
+        SetVisual();
+        
+        while (currentSatisfaction > 0)
+        {
+            yield return satisfactionWait;
+            currentSatisfaction -= 0.1f * data.SatisfactionDecayPerSecond;
+            UpdateFeedbackImage();
+        }
+        
+        CompleteClient();
+    }
+
+    private void SetVisual()
+    {
         foreach (var t in emotesFeedback)
         {
             t.Stop();
@@ -168,45 +161,55 @@ public class Client : MonoBehaviour, ILinkable
         
         feedbackGo.SetActive(false);
         
-        StartCoroutine(NewProductDelayRoutine());
-        
-        IEnumerator NewProductDelayRoutine()
+        foreach (var t in clientGraphsHandler)
         {
-            yield return new WaitForSeconds(0.5f); // TODO - prob mettre l'expected data a null pendant cette periode
-            canReceiveProduct = true;
-            
-            foreach (var t in clientGraphsHandler) { t.SetActive(false); }
-            clientGraphsHandler[(int)ClientLook.Parse(data.scriptableClient.clientType.GetType(), data.scriptableClient.clientType.ToString())].SetActive(true);
-            
-            satisfactionRoutine = StartCoroutine(SatisfactionRoutine());
-            
-            UpdateUIProductImage();
+            t.SetActive(false);
         }
-
-        IEnumerator SatisfactionRoutine()
+        clientGraphsHandler[(int)Enum.Parse(data.scriptableClient.clientType.GetType(), data.scriptableClient.clientType.ToString())].SetActive(true);
+        
+        UpdateUIProductImage();
+    }
+    
+    private void ReceiveProduct(Product product)
+    {
+        if (product.data == expectedData)
         {
-            while (currentSatisfaction > 0)
+            // TODO - wesh les emotes on fait kwa ?
+            //emotesFeedback[3].Play();
+            //emotesFeedback[4].Play();
+            
+            currentDataIndex++;
+            
+            if (currentDataIndex >= data.productDatas.Length)
             {
-                yield return satisfactionWait;
-                currentSatisfaction -= 0.1f * data.SatisfactionDecayPerSecond;
-                UpdateFeedbackImage();
+                CompleteClient();
+                return;
             }
             
-            StopClient();
+            currentSatisfaction = data.Satisfaction;
+            clientSatisfactionEnum = ClientSatisfaction.NewClient;
+            
+            return;
         }
-    }
-    private void StopClient()
-    {
-        OnClientAvailable?.Invoke();
-        EventManager.Trigger(new ClientAvailableEvent(this));
         
-        if(satisfactionRoutine != null) StopCoroutine(satisfactionRoutine);
-        satisfactionRoutine = null;
+        // TODO - EMOTE GAMING
+        //emotesFeedback[2].Play();
+    }
+    
+    private void CompleteClient()
+    {
+        if (satisfactionRoutine != null)
+        {
+            StopCoroutine(satisfactionRoutine);
+        }
+
+        EventManager.Trigger(new ClientSlotAvailableEvent(this));
+        
         currentSatisfaction = 0;
+
         UpdateFeedbackImage();
     }
     
-    public event Action OnClientAvailable;
     #endregion
     
     #region Linkable
@@ -218,7 +221,7 @@ public class Client : MonoBehaviour, ILinkable
         link.OnComplete += ReceiveProduct;
     }
 
-    public bool IsAvailable() => true;
+    public bool IsAvailable() => canReceiveProduct;
 
     public event Action OnAvailable;
 
@@ -226,7 +229,7 @@ public class Client : MonoBehaviour, ILinkable
     
     #region Editor
 #if UNITY_EDITOR
-    [CustomEditor(typeof(Client)),CanEditMultipleObjects]
+    [CustomEditor(typeof(ClientSlot)),CanEditMultipleObjects]
     public class ClientEditor : Editor
     {
         private int productDataCount = 0;
@@ -235,7 +238,7 @@ public class Client : MonoBehaviour, ILinkable
         {
             base.OnInspectorGUI();
             
-            var client = (Client)target;
+            var client = (ClientSlot)target;
             
             EditorGUILayout.LabelField("Product Settings",EditorStyles.boldLabel);
             
@@ -290,13 +293,17 @@ public class Client : MonoBehaviour, ILinkable
     #endregion
 }
 
-public class ClientAvailableEvent
+public class ClientSlotAvailableEvent
 {
-    public Client Client { get; private set; }
+    public ClientSlot ClientSlot { get;}
+    public ClientData Data { get;}
+    public float Satisfaction { get;}
 
-    public ClientAvailableEvent(Client client)
+    public ClientSlotAvailableEvent(ClientSlot clientSlot)
     {
-        Client = client;
+        ClientSlot = clientSlot;
+        Data = clientSlot.data;
+        Satisfaction = clientSlot.Satisfaction;
     }
 }
 

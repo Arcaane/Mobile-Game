@@ -29,7 +29,7 @@ public class LevelCreator : MonoBehaviour
    [Space]
    [Header("Client List")]
    [Tooltip("Liste des clients présent dans le niveau")]
-   public List<Client> clientList;
+   public List<ClientSlot> clientList;
    
    [Space]
    [Header("Client List")]

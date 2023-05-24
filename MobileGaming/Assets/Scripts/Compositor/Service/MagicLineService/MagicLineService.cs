@@ -8,10 +8,12 @@ using Object = UnityEngine.Object;
 
 public class MagicLineService : SwitchableService, IMagicLineService
 {
+    //private MagicLinesData magicLinesData => MagicLinesData.data;
     private MagicLinesData magicLinesData;
 
     private RectTransform buttonTr;
     private LayerMask machineLayerMask;
+    private Transform collisionPlane;
     
     private Vector3[] points;
     private List<Link> magicLinks = new List<Link>();
@@ -19,6 +21,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
     private bool isPressed;
     private RaycastHit hit;
     private LayerMask linkLayer;
+    private LayerMask floorLayer;
     private Link linkToDestroy;
     private bool inDestroyMode;
     private Vector3 buttonPos;
@@ -37,45 +40,53 @@ public class MagicLineService : SwitchableService, IMagicLineService
     public MagicLineService(bool startState) : base(startState)
     {
     }
+
+    [ServiceInit]
+    private void SetListeners()
+    {
+        EventManager.AddListener<LoadLevelEvent>(SetCamera);
+
+        void SetCamera(LoadLevelEvent loadLevelEvent)
+        {
+            cam = loadLevelEvent.Level.Camera;
+            
+            Debug.Log($"Camera : {cam}");
+        
+            var camPos = cam.transform.position;
+        
+            var height = 2.0f * Mathf.Tan(0.5f * cam.fieldOfView * Mathf.Deg2Rad) * camPos.y;
+            var width = height * Screen.width / Screen.height;
+            
+            SetColliderSize(new Vector3(camPos.x, 0, camPos.y),new Vector3(width, height, 1f));
+        
+            Debug.Log($"Successfully change size of {magicLinesData.CollisionPlane}");
+
+            void SetColliderSize(Vector3 pos, Vector3 scale)
+            {
+                magicLinesData.CollisionPlane.position = pos;
+                magicLinesData.CollisionPlane.localScale = scale;
+            }
+        }
+    }
     
     public void SetData(MagicLinesData data)
     {
         magicLinesData = data;
         
-        Debug.Log($"Data has been set ({magicLinesData})");
-        
         inDestroyMode = false;
 
         buttonTr = magicLinesData.buttonTr;
         buttonPos = buttonTr.position;
+        collisionPlane = magicLinesData.CollisionPlane;
 
         machineLayerMask = magicLinesData.machineLayerMask;
         linkLayer = LayerMask.NameToLayer("Link");
-    }
-
-    public void SetCamera(Camera camera)
-    {
-        cam = camera;
-        
-        UpdateLevelGroundCollider();
-
-        void UpdateLevelGroundCollider()
-        {
-            var camPos = cam.transform.position;
-        
-            var height = 2.0f * Mathf.Tan(0.5f * cam.fieldOfView * Mathf.Deg2Rad) * camPos.y;
-            var width = height * Screen.width / Screen.height;
-
-            magicLinesData.CollisionPlane.position = new Vector3(camPos.x, 0, camPos.y);
-            magicLinesData.CollisionPlane.localScale = new Vector3(width, height, 1f);
-        }
+        floorLayer = LayerMask.NameToLayer("Collisions");
     }
 
 
     public override void Enable()
     {
-        Debug.Log($"Adding Callbacks, data is {magicLinesData}");
-        
         InputService.OnPress += OnScreenTouch;
         InputService.OnRelease += OnScreenRelease;
         
@@ -87,7 +98,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         InputService.OnPress -= OnScreenTouch;
         InputService.OnRelease -= OnScreenRelease;
         
-        base.Enable();
+        base.Disable();
         
         if(drawing != null) magicLinesData.StopCoroutine(drawing);
         
@@ -108,10 +119,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
             return;
         }
         
-        if (isDraging)
-        {
-            GetClickMachine(InputService.cursorPosition);
-        }
+        GetClickMachine(InputService.cursorPosition);
     }
     
     private void OnScreenTouch(Vector2 obj)
@@ -309,8 +317,9 @@ public class MagicLineService : SwitchableService, IMagicLineService
 
         if (!Physics.Raycast(ray, out hit, machineLayerMask)) return;
         var linkable = hit.transform.GetComponent<ILinkable>();
-            
         if (linkable == null) return;
+        
+        Debug.DrawLine(ray.origin,hit.point,Color.red);
             
         if(!currentLinkables.Contains(linkable)){ currentLinkables.Add(linkable);}
     }
@@ -322,7 +331,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         linkToDestroy = null;
         if (!Physics.Raycast(ray, out hit, linkLayer)) return;
         var link = hit.transform.GetComponent<Link>();
-        
+
         linkToDestroy = link != null ? link : null;
     }
 
@@ -356,7 +365,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
 
         while (true)
         {
-            var ray = cam.ScreenPointToRay(Input.mousePosition);
+            var ray = cam.ScreenPointToRay(InputService.cursorPosition);
             Debug.DrawRay(ray.origin,ray.direction * 100f,Color.yellow);
 
             if (!Physics.Raycast(ray, out hit))

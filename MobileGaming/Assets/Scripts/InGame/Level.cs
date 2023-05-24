@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -29,11 +27,10 @@ public class Level : MonoBehaviour
     public List<ClientTiming> clientTimings = new ();
 
     [Header("Setup with tool automatically")]
-    public List<Client> clients = new ();
+    public List<ClientSlot> clients = new ();
     private void Start()
     {
         EventManager.Trigger(new LoadLevelEvent(this));
-        EventManager.RemoveListeners<LoadLevelEvent>();
     }
     
     #region Editor

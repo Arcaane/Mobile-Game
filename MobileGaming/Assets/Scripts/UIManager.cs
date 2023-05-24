@@ -1,5 +1,8 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,17 +14,42 @@ public class UIManager : MonoBehaviour
     private SorcererController sorcererController;
     private MagicLinesData _magicLinesData;
 
+    private Slider scoreSlider;
+    private TextMeshProUGUI timerText;
+
     private void Start()
     {
         sorcererController = GetComponent<SorcererController>();
         _magicLinesData = GetComponent<MagicLinesData>();
+        timerText = sorcererController.timeLeftText;
+        scoreSlider = sorcererController.scoreSlider;
+
+        HideHud();
         
         EventManager.AddListener<LoadLevelEvent>(HideHudOnLevelInit);
+        EventManager.AddListener<LevelScoreUpdatedEvent>(UpdateScore);
+        EventManager.AddListener<LevelTimeUpdatedEvent>(UpdateTime);
 
-        void HideHudOnLevelInit(LoadLevelEvent _)
+        void HideHud()
         {
             sorcererController.hudCanvasGO.SetActive(false);
             sorcererController.menuCanvasGO.SetActive(false);
+        }
+
+        void HideHudOnLevelInit(LoadLevelEvent _)
+        {
+            HideHud();
+        }
+        
+        void UpdateScore(LevelScoreUpdatedEvent scoreUpdatedEvent)
+        {
+            scoreSlider.value = ((float)scoreUpdatedEvent.Score) / scoreUpdatedEvent.Palier3;
+        }
+
+        void UpdateTime(LevelTimeUpdatedEvent timeUpdatedEvent)
+        {
+            var time = timeUpdatedEvent.MaxTime - timeUpdatedEvent.CurrentTime;
+            timerText.text = $"Time Left : {(time >= 0 ? time : "Extra time !"):f0}";
         }
     }
 

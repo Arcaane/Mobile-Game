@@ -25,8 +25,6 @@ public class LevelStartPannel : MonoBehaviour
     
     public void UpdateValues(Level level)
     {
-        Time.timeScale = 0f;
-        
         Debug.Log($"Chapter : {level.currentChapter}, level {level.currentLevel}");
         chapterNumberText.text = $"Chapter {level.currentChapter}";
         levelNumberText.text = $"Level {level.currentLevel}";
@@ -47,30 +45,35 @@ public class LevelStartPannel : MonoBehaviour
         moveDownSequence.Append(panel.DOLocalMoveY(385, inDuration));
         moveDownSequence.AppendCallback(AllowSkip);
         moveDownSequence.AppendInterval(viewDuration);
-        moveDownSequence.AppendCallback(RemoveSkipAndMoveUp);
+        moveDownSequence.AppendCallback(RemoveSkip);
+        moveDownSequence.AppendCallback(MoveUp);
         
         moveDownSequence.Play().SetUpdate(true);
 
         void AllowSkip()
         {
-            InputService.OnPress += SkipSequence;
+            InputService.OnRelease += SkipSequence;
         }
-        
-        void RemoveSkipAndMoveUp()
-        {
-            InputService.OnPress -= SkipSequence;
 
-            var moveUpAnimation = DOTween.Sequence();
-            moveUpAnimation.Append(panel.DOLocalMoveY(1003, outDuration));
-            moveUpAnimation.AppendCallback(EndAnimation);
-            moveUpAnimation.Play().SetUpdate(true);
+        void RemoveSkip()
+        {
+            InputService.OnRelease -= SkipSequence;
         }
         
         void SkipSequence(Vector2 _)
         {
+            InputService.OnRelease -= SkipSequence;
+            
             if(!moveDownSequence.IsPlaying()) return;
             moveDownSequence.Complete(true);
-            RemoveSkipAndMoveUp();
+        }
+
+        void MoveUp()
+        {
+            var moveUpAnimation = DOTween.Sequence();
+            moveUpAnimation.Append(panel.DOLocalMoveY(1003, outDuration));
+            moveUpAnimation.AppendCallback(EndAnimation);
+            moveUpAnimation.Play().SetUpdate(true);
         }
 
         void EndAnimation()
