@@ -27,8 +27,6 @@ public class MagicLineService : SwitchableService, IMagicLineService
     private Vector3 buttonPos;
     
     private Coroutine drawing;
-    private static readonly int Darkness2 = Shader.PropertyToID("_Darkness2");
-    
     private bool isDraging => InputService.deltaPosition.x != 0 && InputService.deltaPosition.y != 0;
 
     private Camera cam;
@@ -126,7 +124,8 @@ public class MagicLineService : SwitchableService, IMagicLineService
     {
         isPressed = true;
         Time.timeScale = magicLinesData.slowedTime;
-        foreach (var t in magicLinesData.shaderDarkness) t.SetFloat(Darkness2, 0.3f);
+        
+        EventManager.Trigger(new ActivateDarkmodeEvent(true));
         
         if(SelectButton()) return;
         
@@ -153,7 +152,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         isPressed = false;
         Time.timeScale = 1;
         
-        foreach (var t in magicLinesData.shaderDarkness) t.SetFloat(Darkness2, 1f);
+        EventManager.Trigger(new ActivateDarkmodeEvent(false));
         
         buttonTr.pivot = Vector2.zero;
         inDestroyMode = false;
@@ -382,4 +381,14 @@ public class MagicLineService : SwitchableService, IMagicLineService
     }
     
     #endregion
+}
+
+public class ActivateDarkmodeEvent
+{
+    public bool Value { get; }
+
+    public ActivateDarkmodeEvent(bool value)
+    {
+        Value = value;
+    }
 }
