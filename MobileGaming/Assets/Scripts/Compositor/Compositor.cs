@@ -9,6 +9,9 @@ using UnityEngine;
 using System.Runtime.CompilerServices;
 using Cysharp.Threading.Tasks;
 using Service.SceneService;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class Compositor : MonoBehaviour
 {
@@ -28,6 +31,14 @@ public class Compositor : MonoBehaviour
     protected readonly Dictionary<Type, List<FieldEntry>> m_dependencySlots = new Dictionary<Type, List<FieldEntry>>();
     protected event Action OnTickAction;
     protected event Action OnUpdateAction;
+
+#if UNITY_EDITOR
+    [ContextMenu("Reload Assembly")]
+    private void ReloadAssembly()
+    {
+        EditorUtility.RequestScriptReload();
+    }
+#endif
 
     private bool ResolveDependencies()
     {

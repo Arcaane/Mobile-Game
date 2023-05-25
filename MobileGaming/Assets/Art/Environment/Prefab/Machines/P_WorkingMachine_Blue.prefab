@@ -14,8 +14,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2902326654720978917, guid: a6c49da48f81c6549b26d4c6cadaf207,
         type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2902326654720978917, guid: a6c49da48f81c6549b26d4c6cadaf207,
+        type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5361083762782781888, guid: a6c49da48f81c6549b26d4c6cadaf207,
         type: 3}
@@ -89,6 +94,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6c49da48f81c6549b26d4c6cadaf207, type: 3}
+--- !u!23 &734116473972200218 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 775365514845040650, guid: a6c49da48f81c6549b26d4c6cadaf207,
+    type: 3}
+  m_PrefabInstance: {fileID: 68325683088925456}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2933426035037277429 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2902326654720978917, guid: a6c49da48f81c6549b26d4c6cadaf207,
@@ -184,6 +195,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ccc246e066ecff6408bd4e207734e535,
         type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ccc246e066ecff6408bd4e207734e535,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -201,6 +217,16 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2774670960995332478, guid: 3014312edbc4d1243851e70eb1e13b75,
+        type: 3}
+      propertyPath: fxGo
+      value: 
+      objectReference: {fileID: 2933426035037277429}
+    - target: {fileID: 2774670960995332478, guid: 3014312edbc4d1243851e70eb1e13b75,
+        type: 3}
+      propertyPath: fxRenderer
+      value: 
+      objectReference: {fileID: 734116473972200218}
     - target: {fileID: 2774670960995332478, guid: 3014312edbc4d1243851e70eb1e13b75,
         type: 3}
       propertyPath: changeColor
@@ -388,6 +414,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 88adecc5a31633a4b8ad1ffcaa153d9f,
         type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 88adecc5a31633a4b8ad1ffcaa153d9f,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -406,6 +437,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5625230907452454495}
     m_Modifications:
+    - target: {fileID: 426545952474910694, guid: fd6bdeec7e436694fba8e692a48be54f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 4380361478315263120, guid: fd6bdeec7e436694fba8e692a48be54f,
         type: 3}
       propertyPath: m_RootOrder
@@ -465,6 +501,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: VFX_BLUEBubble
+      objectReference: {fileID: 0}
+    - target: {fileID: 4468899053478794287, guid: fd6bdeec7e436694fba8e692a48be54f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8436981435111604427, guid: fd6bdeec7e436694fba8e692a48be54f,
         type: 3}

@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -8,6 +7,9 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject levelMenu;
+    [SerializeField] private GameObject darkmodeCanvasGo;
+    [SerializeField] private Canvas darkmodeCanvas;
+    [SerializeField] private Canvas hudCanvas;
     
     //[SerializeField] private GameObject pauseMenu;
 
@@ -23,12 +25,15 @@ public class UIManager : MonoBehaviour
         _magicLinesData = GetComponent<MagicLinesData>();
         timerText = sorcererController.timeLeftText;
         scoreSlider = sorcererController.scoreSlider;
+        darkmodeCanvasGo.SetActive(false);
 
         HideHud();
         
         EventManager.AddListener<LoadLevelEvent>(HideHudOnLevelInit);
+        EventManager.AddListener<EndLevelEvent>(HideHudOnLevelEnd);
         EventManager.AddListener<LevelScoreUpdatedEvent>(UpdateScore);
         EventManager.AddListener<LevelTimeUpdatedEvent>(UpdateTime);
+        EventManager.AddListener<ActivateDarkmodeEvent>(ActivateDarkmodeCanvas);
 
         void HideHud()
         {
@@ -36,8 +41,18 @@ public class UIManager : MonoBehaviour
             sorcererController.menuCanvasGO.SetActive(false);
         }
 
-        void HideHudOnLevelInit(LoadLevelEvent _)
+        void HideHudOnLevelEnd(EndLevelEvent _)
         {
+            HideHud();
+        }
+
+        void HideHudOnLevelInit(LoadLevelEvent loadLevelEvent)
+        {
+            darkmodeCanvas.worldCamera = loadLevelEvent.Level.Camera;
+            darkmodeCanvas.planeDistance = 2f;
+            hudCanvas.worldCamera = loadLevelEvent.Level.Camera;
+            hudCanvas.planeDistance = 2f;
+            
             HideHud();
         }
         
@@ -50,6 +65,11 @@ public class UIManager : MonoBehaviour
         {
             var time = timeUpdatedEvent.MaxTime - timeUpdatedEvent.CurrentTime;
             timerText.text = $"Time Left : {(time >= 0 ? time : "Extra time !"):f0}";
+        }
+
+        void ActivateDarkmodeCanvas(ActivateDarkmodeEvent darkmodeEvent)
+        {
+            darkmodeCanvasGo.SetActive(darkmodeEvent.Value);
         }
     }
 

@@ -7,6 +7,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6322015576561354051}
     m_Modifications:
+    - target: {fileID: 426545952474910694, guid: 889d4199f54fbf648a44a0d7dfe3e92a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 4380361478315263120, guid: 889d4199f54fbf648a44a0d7dfe3e92a,
         type: 3}
       propertyPath: m_RootOrder
@@ -66,6 +71,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: VFX_REDBubble
+      objectReference: {fileID: 0}
+    - target: {fileID: 4468899053478794287, guid: 889d4199f54fbf648a44a0d7dfe3e92a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8436981435111604427, guid: 889d4199f54fbf648a44a0d7dfe3e92a,
         type: 3}
@@ -155,6 +165,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ME_Cauldront_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 88adecc5a31633a4b8ad1ffcaa153d9f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 88adecc5a31633a4b8ad1ffcaa153d9f,
         type: 3}
@@ -258,6 +273,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ccc246e066ecff6408bd4e207734e535,
         type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ccc246e066ecff6408bd4e207734e535,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -275,6 +295,16 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2774670960995332478, guid: 3014312edbc4d1243851e70eb1e13b75,
+        type: 3}
+      propertyPath: fxGo
+      value: 
+      objectReference: {fileID: 6045207496377518760}
+    - target: {fileID: 2774670960995332478, guid: 3014312edbc4d1243851e70eb1e13b75,
+        type: 3}
+      propertyPath: fxRenderer
+      value: 
+      objectReference: {fileID: 8169917115482756423}
     - target: {fileID: 2774670960995332478, guid: 3014312edbc4d1243851e70eb1e13b75,
         type: 3}
       propertyPath: changeColor
@@ -397,6 +427,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2902326654720978917, guid: a6c49da48f81c6549b26d4c6cadaf207,
         type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2902326654720978917, guid: a6c49da48f81c6549b26d4c6cadaf207,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -475,6 +510,12 @@ PrefabInstance:
 --- !u!1 &6045207496377518760 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2902326654720978917, guid: a6c49da48f81c6549b26d4c6cadaf207,
+    type: 3}
+  m_PrefabInstance: {fileID: 8909182773069538637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8169917115482756423 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 775365514845040650, guid: a6c49da48f81c6549b26d4c6cadaf207,
     type: 3}
   m_PrefabInstance: {fileID: 8909182773069538637}
   m_PrefabAsset: {fileID: 0}

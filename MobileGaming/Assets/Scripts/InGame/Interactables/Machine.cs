@@ -8,7 +8,6 @@ public abstract class Machine : MonoBehaviour, ILinkable
 {
     [Header("Feedback")]
     [SerializeField] private Image[] feedbackImages;
-    [SerializeField] private GameObject feedbackObject; //TODO Make only one object (one per product), not one per machine and teleport it
     [SerializeField] protected TextMeshProUGUI feedbackText;
     
     [Header("Production Settings")]
@@ -26,27 +25,29 @@ public abstract class Machine : MonoBehaviour, ILinkable
 
     private void Start()
     {
-        UpdateFeedbackObject();
-        UpdateFeedbackImage(0);
+        ShowProduct(false);
         
         Setup();
     }
 
     #region Feedback
 
-    private void UpdateFeedbackImage(double amount)
+    protected void ShowProduct(bool value)
     {
-        foreach (var feedbackImage in feedbackImages)
+        if (currentProduct == null || !value)
         {
-            feedbackImage.fillAmount = (float)amount;
+            foreach (var feedbackImage in feedbackImages)
+            {
+                feedbackImage.color = Color.clear;
+            }
+            return;
         }
+        
+        currentProduct.data.ApplySpriteIndexes(feedbackImages[0],feedbackImages[1],feedbackImages[2]);
+        
+        
     }
-
-    private void UpdateFeedbackObject()
-    {
-        if(feedbackObject == null) return;
-        feedbackObject.SetActive(currentProduct != null);
-    }
+    
     protected abstract void Setup();
 
     #endregion
@@ -56,47 +57,44 @@ public abstract class Machine : MonoBehaviour, ILinkable
     protected void StartWork(Product product)
     {
         IsWorking = true;
-        if (feedbackObject != null ) { feedbackObject.SetActive(IsWorking); }
         currentProduct = product;
         waitDuration = baseTimeToProduce * 1f / timeMultiplier;
-
+        
         StartCoroutine(WorkProduct());
+    }
+
+    protected virtual void OnStartWork()
+    {
+        
+    }
+
+    protected virtual void WorkUpdate()
+    {
+        
     }
     
     private IEnumerator WorkProduct()
     {
         timer = 0;
         
-        UpdateFeedback();
+        OnStartWork();
         
         while (timer < waitDuration)
         {
             yield return null;
             timer += Time.deltaTime;
-            
-            UpdateFeedbackImage(1 - timer/waitDuration);
-            
-            UpdateFeedbackObject();
+            WorkUpdate();
         }
         
-        UpdateFeedback();
-
         IsWorking = false;
         
         EndWork();
-        if (feedbackObject != null ) { feedbackObject.SetActive(IsWorking); }
 
         TriggerOnAvailable();
     }
     
     protected abstract void EndWork();
     
-    private void UpdateFeedback()
-    {
-        UpdateFeedbackImage(0);
-        
-        UpdateFeedbackObject();
-    }
  
     #endregion
 
