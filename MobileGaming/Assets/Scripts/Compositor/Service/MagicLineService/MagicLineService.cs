@@ -48,17 +48,13 @@ public class MagicLineService : SwitchableService, IMagicLineService
         {
             cam = loadLevelEvent.Level.Camera;
             
-            Debug.Log($"Camera : {cam}");
-        
             var camPos = cam.transform.position;
         
             var height = 2.0f * Mathf.Tan(0.5f * cam.fieldOfView * Mathf.Deg2Rad) * camPos.y;
             var width = height * Screen.width / Screen.height;
             
             SetColliderSize(new Vector3(camPos.x, 0, camPos.y),new Vector3(width, height, 1f));
-        
-            Debug.Log($"Successfully change size of {magicLinesData.CollisionPlane}");
-
+            
             void SetColliderSize(Vector3 pos, Vector3 scale)
             {
                 magicLinesData.CollisionPlane.position = pos;

@@ -372,6 +372,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6c49da48f81c6549b26d4c6cadaf207, type: 3}
+--- !u!23 &5926974364924528983 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 775365514845040650, guid: a6c49da48f81c6549b26d4c6cadaf207,
+    type: 3}
+  m_PrefabInstance: {fileID: 6377784385994848605}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8125993103838140088 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2902326654720978917, guid: a6c49da48f81c6549b26d4c6cadaf207,
@@ -390,6 +396,16 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2774670960995332478, guid: 3014312edbc4d1243851e70eb1e13b75,
+        type: 3}
+      propertyPath: fxGo
+      value: 
+      objectReference: {fileID: 8125993103838140088}
+    - target: {fileID: 2774670960995332478, guid: 3014312edbc4d1243851e70eb1e13b75,
+        type: 3}
+      propertyPath: fxRenderer
+      value: 
+      objectReference: {fileID: 5926974364924528983}
     - target: {fileID: 2774670960995332478, guid: 3014312edbc4d1243851e70eb1e13b75,
         type: 3}
       propertyPath: changeColor

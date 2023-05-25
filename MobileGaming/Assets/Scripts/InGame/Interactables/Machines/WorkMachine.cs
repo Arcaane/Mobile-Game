@@ -13,22 +13,55 @@ public class WorkMachine : Machine
     [SerializeField] private ProductShape targetShape;
     [HideInInspector] public bool changeTopping;
     [SerializeField] private ProductTopping targetTopping;
+
+    [Header("Components")]
+    [SerializeField] private GameObject fxGo;
+    [SerializeField] private MeshRenderer fxRenderer;
+    private Material mat;
+    private static readonly int Length = Shader.PropertyToID("_Length");
     
     private List<Link> nextLinksToLoad = new ();
-    [SerializeField] private List<Link> nextLinksToUnload = new ();
+    private List<Link> nextLinksToUnload = new ();
     private bool hasProductToLoad => !IsWorking && currentProduct != null;
 
     protected override void Setup()
     {
+        if (fxRenderer != null)
+        {
+            mat = new Material(fxRenderer.material);
+            fxRenderer.material = mat;
+        }
+        if(fxGo != null) fxGo.SetActive(false);
+        
         nextLinksToLoad.Clear();
         nextLinksToUnload.Clear();
     }
 
+    private void UpdateProgressFx(bool value)
+    {
+        if(fxGo != null) fxGo.SetActive(value);
+        if(fxRenderer != null) fxRenderer.material.SetFloat(Length,(float)(timer/waitDuration));
+    }
+
+    protected override void OnStartWork()
+    {
+        UpdateProgressFx(true);
+    }
+
+    protected override void WorkUpdate()
+    {
+        UpdateProgressFx(true);
+    }
+
     protected override void EndWork()
     {
+        UpdateProgressFx(false);
+        
         if (changeColor) currentProduct.data.Color = targetColor;
         if (changeShape) currentProduct.data.Shape = targetShape;
         if (changeTopping) currentProduct.data.Topping = targetTopping;
+        
+        ShowProduct(true);
         
         LoadNextLink();
     }
@@ -52,6 +85,7 @@ public class WorkMachine : Machine
         {
             nextLink.LoadProduct(currentProduct);
             currentProduct = null;
+            ShowProduct(false);
             TriggerOnAvailable();
             return;
         }
@@ -64,6 +98,7 @@ public class WorkMachine : Machine
             
             nextLink.LoadProduct(currentProduct);
             currentProduct = null;
+            ShowProduct(false);
             nextLink.EndLinkable.OnAvailable -= LoadProductInLink;
             TriggerOnAvailable();
         }
