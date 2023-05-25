@@ -282,7 +282,8 @@ public class Compositor : MonoBehaviour
         
         currentTime += Time.deltaTime;
         
-        if (currentTime < 1 / ticksPerSecond) return;
+        
+        if(ticksPerSecond != 0) if (currentTime < 1 / ticksPerSecond) return;
         
         currentTime = 0;
         OnTickAction?.Invoke();

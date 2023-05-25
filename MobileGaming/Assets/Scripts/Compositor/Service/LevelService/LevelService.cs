@@ -183,7 +183,7 @@ public class LevelService : ILevelService
     
     private void IncreaseTime()
     {
-        currentTime += Compositor.DeltaTick;
+        currentTime += Time.deltaTime;
 
         DequeueTimings();
 
