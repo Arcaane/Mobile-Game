@@ -7,7 +7,9 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject levelMenu;
-    [SerializeField] private GameObject darkmodeCanvas;
+    [SerializeField] private GameObject darkmodeCanvasGo;
+    [SerializeField] private Canvas darkmodeCanvas;
+    [SerializeField] private Canvas hudCanvas;
     
     //[SerializeField] private GameObject pauseMenu;
 
@@ -23,7 +25,7 @@ public class UIManager : MonoBehaviour
         _magicLinesData = GetComponent<MagicLinesData>();
         timerText = sorcererController.timeLeftText;
         scoreSlider = sorcererController.scoreSlider;
-        darkmodeCanvas.SetActive(false);
+        darkmodeCanvasGo.SetActive(false);
 
         HideHud();
         
@@ -44,8 +46,13 @@ public class UIManager : MonoBehaviour
             HideHud();
         }
 
-        void HideHudOnLevelInit(LoadLevelEvent _)
+        void HideHudOnLevelInit(LoadLevelEvent loadLevelEvent)
         {
+            darkmodeCanvas.worldCamera = loadLevelEvent.Level.Camera;
+            darkmodeCanvas.planeDistance = 2f;
+            hudCanvas.worldCamera = loadLevelEvent.Level.Camera;
+            hudCanvas.planeDistance = 2f;
+            
             HideHud();
         }
         
@@ -62,7 +69,7 @@ public class UIManager : MonoBehaviour
 
         void ActivateDarkmodeCanvas(ActivateDarkmodeEvent darkmodeEvent)
         {
-            darkmodeCanvas.SetActive(darkmodeEvent.Value);
+            darkmodeCanvasGo.SetActive(darkmodeEvent.Value);
         }
     }
 

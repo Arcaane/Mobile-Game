@@ -1662,7 +1662,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 1465804879494087405}
   levelMenu: {fileID: 8888757723507461739}
-  darkmodeCanvas: {fileID: 6674374018427242175}
+  darkmodeCanvasGo: {fileID: 6674374018427242175}
+  darkmodeCanvas: {fileID: 7012732833092882416}
+  hudCanvas: {fileID: 6327865464220123759}
 --- !u!1 &3002462592151194860
 GameObject:
   m_ObjectHideFlags: 0
@@ -3521,7 +3523,7 @@ Canvas:
   m_GameObject: {fileID: 5164538161023667903}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -3833,7 +3835,7 @@ GameObject:
   - component: {fileID: 5925056508154080438}
   - component: {fileID: 8129004285658501317}
   - component: {fileID: 1930234770410314744}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5234,7 +5236,7 @@ GameObject:
   - component: {fileID: 7012732833092882416}
   - component: {fileID: 7041545035035308496}
   - component: {fileID: 2542704265139391576}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Darkness Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5271,7 +5273,7 @@ Canvas:
   m_GameObject: {fileID: 6674374018427242175}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -5281,7 +5283,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!114 &7041545035035308496
 MonoBehaviour:
@@ -5802,7 +5804,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7863095319636041348
 RectTransform:
   m_ObjectHideFlags: 0
