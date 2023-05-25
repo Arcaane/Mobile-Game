@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 #if UNITY_EDITOR
@@ -10,18 +11,20 @@ using UnityEditor;
 public class ClientSlot : MonoBehaviour, ILinkable
 {
     [Header("Feedback")]
-    [SerializeField] private GameObject feedbackGo;
+    [SerializeField] private GameObject bottlesToBuyUIGo;
+    [SerializeField] private GameObject satisfactionBarGo;
     [SerializeField] private Image feedbackImage;
     [SerializeField] private Image contentImage;
     [SerializeField] private Image shapeImage;
-    
+    [SerializeField] private Image topingImage;
+
     [SerializeField] private GameObject[] clientGraphsHandler;
-    [SerializeField] private ParticleSystem[] emotesFeedback; 
-    
+    [SerializeField] private ParticleSystem[] emotesFeedback;
+
     [HideInInspector] public ClientData data;
-    
+
     [SerializeField] private float currentSDebug;
-    
+
     private ProductData expectedData => data.productDatas[currentDataIndex];
     public Vector3 Position => transform.position;
     public bool Inputable => true;
@@ -30,93 +33,89 @@ public class ClientSlot : MonoBehaviour, ILinkable
     private float currentSatisfaction = 0;
     public float Satisfaction => currentSatisfaction;
     private bool canReceiveProduct = false;
-    
+
     private int currentDataIndex = 0;
     private Product feedbackProduct;
 
     private Coroutine satisfactionRoutine;
-    private WaitForSeconds satisfactionWait = new (0.1f);
+    private WaitForSeconds satisfactionWait = new(0.1f);
 
-    private enum ClientSatisfaction { NewClient, Interrogate, Sleepy}
+    private enum ClientSatisfaction
+    {
+        NewClient,
+        Interrogate,
+        Sleepy
+    }
+
     private ClientSatisfaction clientSatisfactionEnum = ClientSatisfaction.NewClient;
-    
+
     private void Start()
     {
-        foreach (var t in clientGraphsHandler) t.SetActive(false);
         
+
+        foreach (var system in emotesFeedback)
+        {
+            system.Stop();
+        }
+
         UpdateFeedbackImage();
-        feedbackGo.SetActive(false);
+        ShowFeedbacks(false);
     }
 
     #region Feedback
-    
-     private void UpdateFeedbackImage()
+
+    private void ShowFeedbacks(bool value)
     {
-        if (data.scriptableClient is null)
+        bottlesToBuyUIGo.SetActive(value);
+        satisfactionBarGo.SetActive(value);
+
+        if (!value)
         {
+            foreach (var t in clientGraphsHandler) t.SetActive(false);
             return;
         }
         
+        clientGraphsHandler[
+                (int) Enum.Parse(data.scriptableClient.clientType.GetType(),
+                    data.scriptableClient.clientType.ToString())]
+            .SetActive(true);
+    }
+
+    private void UpdateFeedbackImage()
+    {
+        if (data.scriptableClient is null)
+        {
+            ShowFeedbacks(false);
+            return;
+        }
+
         currentSDebug = (currentSatisfaction / data.Satisfaction);
-        
+
         if (clientSatisfactionEnum == ClientSatisfaction.NewClient && currentSatisfaction / data.Satisfaction < 0.75f)
         {
             //emotesFeedback[0].Play();
             clientSatisfactionEnum = ClientSatisfaction.Interrogate;
         }
-        
+
         if (clientSatisfactionEnum == ClientSatisfaction.Interrogate && currentSatisfaction / data.Satisfaction < 0.25f)
         {
             //emotesFeedback[1].Play();
             clientSatisfactionEnum = ClientSatisfaction.Sleepy;
         }
-        
+
         feedbackImage.fillAmount = (currentSatisfaction / data.Satisfaction);
     }
-    
+
+    public void PlayFeedback(int index)
+    {
+        emotesFeedback[index+1].Play();
+    }
+
     private void UpdateUIProductImage()
     {
-        feedbackGo.SetActive(true);
+        ShowFeedbacks(true);
         
-        var shape = expectedData.Shape;
-        var color = expectedData.Color;
-        var imageComponent = contentImage;
-        var imageComponentShape = shapeImage;
-        var settings = ScriptableSettings.GlobalSettings;
-        
-        switch (shape)
-        {
-            case ProductShape.Hearth: 
-                imageComponentShape.sprite = settings.bottleShapesSprites[0];
-                switch (color)
-                {
-                    case ProductColor.Transparent: Debug.Log("Heart Shape without content"); break;
-                    case ProductColor.Blue: imageComponent.sprite = settings.bottleContentSprites[0]; break;
-                    case ProductColor.Green: imageComponent.sprite = settings.bottleContentSprites[1]; break;
-                    case ProductColor.Red: imageComponent.sprite = settings.bottleContentSprites[2]; break;
-                }
-                break;
-            case ProductShape.Cross: 
-                imageComponentShape.sprite = settings.bottleShapesSprites[1];
-                switch (color)
-                {
-                    case ProductColor.Transparent: break;
-                    case ProductColor.Blue: imageComponent.sprite = settings.bottleContentSprites[3]; break;
-                    case ProductColor.Green: imageComponent.sprite = settings.bottleContentSprites[4]; break;
-                    case ProductColor.Red: imageComponent.sprite = settings.bottleContentSprites[5]; break;
-                }
-                break;
-            case ProductShape.Moon:
-                imageComponentShape.sprite = settings.bottleShapesSprites[2];
-                switch (color)
-                {
-                    case ProductColor.Transparent: break;
-                    case ProductColor.Blue: imageComponent.sprite = settings.bottleContentSprites[6]; break;
-                    case ProductColor.Green: imageComponent.sprite = settings.bottleContentSprites[7]; break;
-                    case ProductColor.Red: imageComponent.sprite = settings.bottleContentSprites[8]; break;
-                }
-                break;
-        }
+        expectedData.ApplySpriteIndexes(shapeImage, contentImage, topingImage);
     }
 
     #endregion
@@ -127,28 +126,28 @@ public class ClientSlot : MonoBehaviour, ILinkable
     {
         data = newData;
         currentDataIndex = 0;
-        
+
         satisfactionRoutine = StartCoroutine(WaitForProductionRoutine());
     }
-    
+
     private IEnumerator WaitForProductionRoutine()
     {
         yield return new WaitForSeconds(0.5f);
-        
+
         currentSatisfaction = data.Satisfaction;
 
         canReceiveProduct = true;
         OnAvailable?.Invoke();
-        
+
         SetVisual();
-        
+
         while (currentSatisfaction > 0)
         {
             yield return satisfactionWait;
             currentSatisfaction -= 0.1f * data.SatisfactionDecayPerSecond;
             UpdateFeedbackImage();
         }
-        
+
         CompleteClient();
     }
 
@@ -158,18 +157,17 @@ public class ClientSlot : MonoBehaviour, ILinkable
         {
             t.Stop();
         }
-        
-        feedbackGo.SetActive(false);
-        
+
+        ShowFeedbacks(false);
+
         foreach (var t in clientGraphsHandler)
         {
             t.SetActive(false);
         }
-        clientGraphsHandler[(int)Enum.Parse(data.scriptableClient.clientType.GetType(), data.scriptableClient.clientType.ToString())].SetActive(true);
         
         UpdateUIProductImage();
     }
-    
+
     private void ReceiveProduct(Product product)
     {
         if (product.data == expectedData)
@@ -177,44 +175,48 @@ public class ClientSlot : MonoBehaviour, ILinkable
             // TODO - wesh les emotes on fait kwa ?
             //emotesFeedback[3].Play();
             //emotesFeedback[4].Play();
-            
+
             currentDataIndex++;
-            
+
             if (currentDataIndex >= data.productDatas.Length)
             {
                 CompleteClient();
                 return;
             }
-            
+
             currentSatisfaction = data.Satisfaction;
             clientSatisfactionEnum = ClientSatisfaction.NewClient;
-            
+
             return;
         }
-        
+
         // TODO - EMOTE GAMING
         //emotesFeedback[2].Play();
     }
-    
+
     private void CompleteClient()
     {
+        ShowFeedbacks(false);
+        
         if (satisfactionRoutine != null)
         {
             StopCoroutine(satisfactionRoutine);
         }
 
         EventManager.Trigger(new ClientSlotAvailableEvent(this));
-        
+
         currentSatisfaction = 0;
 
         UpdateFeedbackImage();
     }
-    
+
     #endregion
-    
+
     #region Linkable
 
-    public void SetStartLinkable(Link link) { }
+    public void SetStartLinkable(Link link)
+    {
+    }
 
     public void SetEndLinkable(Link link)
     {
@@ -226,36 +228,39 @@ public class ClientSlot : MonoBehaviour, ILinkable
     public event Action OnAvailable;
 
     #endregion
-    
+
     #region Editor
+
 #if UNITY_EDITOR
-    [CustomEditor(typeof(ClientSlot)),CanEditMultipleObjects]
+    [CustomEditor(typeof(ClientSlot)), CanEditMultipleObjects]
     public class ClientEditor : Editor
     {
         private int productDataCount = 0;
-        
+
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            
-            var client = (ClientSlot)target;
-            
-            EditorGUILayout.LabelField("Product Settings",EditorStyles.boldLabel);
-            
+
+            var client = (ClientSlot) target;
+
+            EditorGUILayout.LabelField("Product Settings", EditorStyles.boldLabel);
+
             EditorGUILayout.BeginHorizontal();
-            client.data.scriptableClient = EditorGUILayout.ObjectField("Client", client.data.scriptableClient,typeof(ScriptableClient),true) as ScriptableClient;
+            client.data.scriptableClient =
+                EditorGUILayout.ObjectField("Client", client.data.scriptableClient, typeof(ScriptableClient), true) as
+                    ScriptableClient;
             EditorGUILayout.EndHorizontal();
-            
+
             productDataCount = EditorGUILayout.IntField("Product Count", productDataCount);
 
             if (client.data.scriptableClient is null) return;
-            
+
             var currentLenght = client.data.productDatas.Length;
-            
+
             if (currentLenght != productDataCount)
             {
                 var data = new ProductData[productDataCount];
-                
+
                 for (int i = 0; i < (currentLenght < productDataCount ? currentLenght : productDataCount); i++)
                 {
                     data[i] = client.data.productDatas[i];
@@ -269,35 +274,37 @@ public class ClientSlot : MonoBehaviour, ILinkable
                 var productData = client.data.productDatas[index];
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.PrefixLabel($"Product {index}");
-                productData.Color = (ProductColor)EditorGUILayout.EnumPopup(productData.Color);
-                productData.Shape = (ProductShape)EditorGUILayout.EnumPopup(productData.Shape);
+                productData.Color = (ProductColor) EditorGUILayout.EnumPopup(productData.Color);
+                productData.Shape = (ProductShape) EditorGUILayout.EnumPopup(productData.Shape);
                 EditorGUILayout.EndHorizontal();
                 client.data.productDatas[index] = productData;
             }
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.Space(15);
-            if (GUILayout.Button("+",GUILayout.Width(25)))
+            if (GUILayout.Button("+", GUILayout.Width(25)))
             {
                 productDataCount++;
             }
-            if (GUILayout.Button("-",GUILayout.Width(25)))
+
+            if (GUILayout.Button("-", GUILayout.Width(25)))
             {
-                if(productDataCount>= 1) productDataCount--;
+                if (productDataCount >= 1) productDataCount--;
             }
+
             EditorGUILayout.EndHorizontal();
-            
         }
     }
 #endif
+
     #endregion
 }
 
 public class ClientSlotAvailableEvent
 {
-    public ClientSlot ClientSlot { get;}
-    public ClientData Data { get;}
-    public float Satisfaction { get;}
+    public ClientSlot ClientSlot { get; }
+    public ClientData Data { get; }
+    public float Satisfaction { get; }
 
     public ClientSlotAvailableEvent(ClientSlot clientSlot)
     {
@@ -314,9 +321,15 @@ public struct ClientData
     public ScriptableClient scriptableClient;
     public ProductData[] productDatas;
 
-    public float Satisfaction => scriptableClient.BaseTimer + (productDatas.Length > 1 ? (productDatas.Length - 1) * scriptableClient.IncrementalTimer : 0);
+    public float Satisfaction => scriptableClient.BaseTimer +
+                                 (productDatas.Length > 1
+                                     ? (productDatas.Length - 1) * scriptableClient.IncrementalTimer
+                                     : 0);
+
     public float SatisfactionDecayPerSecond => scriptableClient.TimerDecayPerSecond;
-    public int Reward => scriptableClient.BaseReward + (productDatas.Length > 1 ? (productDatas.Length - 1) * scriptableClient.IncrementalReward : 0);
+
+    public int Reward => scriptableClient.BaseReward +
+                         (productDatas.Length > 1 ? (productDatas.Length - 1) * scriptableClient.IncrementalReward : 0);
 }
 
 public enum ClientLook

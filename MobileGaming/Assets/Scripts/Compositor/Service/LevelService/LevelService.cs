@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Attributes;
 using Service;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LevelService : ILevelService
 {
@@ -76,7 +74,8 @@ public class LevelService : ILevelService
             if (percent >= scriptable.GoodPercent) fxIndex = 1;
             if (percent > scriptable.BrewtifulPercent) fxIndex = 0;
 
-
+            clientAvailableEvent.ClientSlot.PlayFeedback(fxIndex);
+            
             if (fxIndex > 0 && fxIndex < currentLevel.FeedbackFx.Length)
             {
                 currentLevel.FeedbackFx[fxIndex].gameObject.SetActive(true);

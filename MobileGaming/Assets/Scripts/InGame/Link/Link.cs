@@ -50,50 +50,11 @@ public class Link : MonoBehaviour
         // Forme de la bouteille
         if(ProductInTreatment == null) return;
         
-        //var shape = ProductInTreatment.data.Shape;
-        //var color = ProductInTreatment.data.Color;
         var shapeImage = bottleImage.transform.GetChild(0).GetComponent<Image>();
         var contentImage = bottleImage.transform.GetChild(1).GetComponent<Image>();
         var topingImage = bottleImage.transform.GetChild(2).GetComponent<Image>();
-        //var settings = ScriptableSettings.GlobalSettings;
 
         ProductInTreatment.data.ApplySpriteIndexes(shapeImage,contentImage,topingImage);
-
-        /*
-        switch (shape)
-        {
-            case ProductShape.Hearth: 
-                
-                switch (color)
-                {
-                    case ProductColor.Transparent: break;
-                    case ProductColor.Blue: contentImage.sprite = settings.bottleContentSprites[0]; break;
-                    case ProductColor.Green: contentImage.sprite = settings.bottleContentSprites[1]; break;
-                    case ProductColor.Red: contentImage.sprite = settings.bottleContentSprites[2]; break;
-                }
-                break;
-            case ProductShape.Cross: 
-                shapeImage.sprite = settings.bottleShapesSprites[1];
-                switch (color)
-                {
-                    case ProductColor.Transparent: break;
-                    case ProductColor.Blue: contentImage.sprite = settings.bottleContentSprites[3]; break;
-                    case ProductColor.Green: contentImage.sprite = settings.bottleContentSprites[4]; break;
-                    case ProductColor.Red: contentImage.sprite = settings.bottleContentSprites[5]; break;
-                }
-                break;
-            case ProductShape.Moon:
-                shapeImage.sprite = settings.bottleShapesSprites[2];
-                switch (color)
-                {
-                    case ProductColor.Transparent: break;
-                    case ProductColor.Blue: contentImage.sprite = settings.bottleContentSprites[6]; break;
-                    case ProductColor.Green: contentImage.sprite = settings.bottleContentSprites[7]; break;
-                    case ProductColor.Red: contentImage.sprite = settings.bottleContentSprites[8]; break;
-                }
-                break;
-        }
-        */
     }
 
     #endregion
