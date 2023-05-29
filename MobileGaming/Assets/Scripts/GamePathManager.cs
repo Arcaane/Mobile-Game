@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GamePathManager : MonoBehaviour
 {
@@ -28,4 +30,19 @@ public class GamePathManager : MonoBehaviour
 
         Instance = this;
     }
+
+    private void Start()
+    {
+        UpdateBoutonsColor();
+    }
+
+    public void UpdateBoutonsColor()
+    {
+        for (int i = 0; i < levels.Length; i++)
+        {
+            levels[i].GetComponent<Image>().sprite = levels[i].isLevelLock ? boutonSprite[1] : boutonSprite[0];
+        }
+        
+    }
 }
+
