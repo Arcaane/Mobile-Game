@@ -11,6 +11,7 @@ public class ItemCollectionManager : MonoBehaviour
     public Sprite lockSprite;
     public Sprite emptySprite;
 
+    public OpenCollectionItem[] items;
     private void Start()
     {
         UpdateCollectionSlots(menuManager.CollectionLevel);

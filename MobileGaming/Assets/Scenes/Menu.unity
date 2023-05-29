@@ -332,7 +332,7 @@ GameObject:
   - component: {fileID: 38159539}
   - component: {fileID: 38159540}
   m_Layer: 5
-  m_Name: Mid Slot
+  m_Name: Item2_Mid Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1125,7 +1125,7 @@ GameObject:
   - component: {fileID: 72937004}
   - component: {fileID: 72937005}
   m_Layer: 5
-  m_Name: Left Slot
+  m_Name: Item4_Left Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27397,7 +27397,7 @@ GameObject:
   - component: {fileID: 546523767}
   - component: {fileID: 546523768}
   m_Layer: 5
-  m_Name: Right Slot
+  m_Name: Item3_Right Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27715,7 +27715,7 @@ GameObject:
   - component: {fileID: 553757476}
   - component: {fileID: 553757477}
   m_Layer: 5
-  m_Name: Right Slot
+  m_Name: Item6_Right Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28775,7 +28775,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 360, y: 800}
+  m_SizeDelta: {x: 364.875, y: 793.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &622880108
 CanvasRenderer:
@@ -29638,7 +29638,7 @@ GameObject:
   - component: {fileID: 677582575}
   - component: {fileID: 677582576}
   m_Layer: 5
-  m_Name: Right Slot
+  m_Name: Item12_Right Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31640,7 +31640,7 @@ GameObject:
   - component: {fileID: 822775655}
   - component: {fileID: 822775656}
   m_Layer: 5
-  m_Name: Mid Slot
+  m_Name: Item5_Mid Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33652,7 +33652,7 @@ GameObject:
   - component: {fileID: 987946499}
   - component: {fileID: 987946500}
   m_Layer: 5
-  m_Name: Left Slot
+  m_Name: Item7_Left Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34184,7 +34184,7 @@ GameObject:
   - component: {fileID: 1026388604}
   - component: {fileID: 1026388605}
   m_Layer: 5
-  m_Name: Right Slot
+  m_Name: Item9_Right Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34608,6 +34608,19 @@ MonoBehaviour:
       type: 3}
   lockSprite: {fileID: -1006129681, guid: 601e4e00f7a6d7d439f8c1e420685bc6, type: 3}
   emptySprite: {fileID: -725785206, guid: 601e4e00f7a6d7d439f8c1e420685bc6, type: 3}
+  items:
+  - {fileID: 1921326614}
+  - {fileID: 38159539}
+  - {fileID: 546523767}
+  - {fileID: 72937004}
+  - {fileID: 822775655}
+  - {fileID: 553757476}
+  - {fileID: 987946499}
+  - {fileID: 1995982019}
+  - {fileID: 1026388604}
+  - {fileID: 2133320680}
+  - {fileID: 1089054471}
+  - {fileID: 677582575}
 --- !u!1 &1042516145
 GameObject:
   m_ObjectHideFlags: 0
@@ -35081,8 +35094,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1440197108}
   m_HandleRect: {fileID: 1440197107}
   m_Direction: 0
-  m_Value: 0.5
-  m_Size: 0.2
+  m_Value: 0.74870795
+  m_Size: 0.200784
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -35545,7 +35558,7 @@ GameObject:
   - component: {fileID: 1089054471}
   - component: {fileID: 1089054472}
   m_Layer: 5
-  m_Name: Mid Slot
+  m_Name: Item11_Mid Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38442,8 +38455,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 360, y: 650}
+  m_AnchoredPosition: {x: -1.1974, y: 0}
+  m_SizeDelta: {x: 362.39, y: 650}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1251180648
 MonoBehaviour:
@@ -42414,8 +42427,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 360, y: 640}
+  m_AnchoredPosition: {x: 3.0685, y: 0}
+  m_SizeDelta: {x: 353.8629, y: 640}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1665499267
 MonoBehaviour:
@@ -44267,7 +44280,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -720, y: 0}
+  m_AnchoredPosition: {x: -1080, y: 0}
   m_SizeDelta: {x: 0, y: 653}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1804109644
@@ -45136,7 +45149,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0000046616, y: -36.154953}
+  m_AnchoredPosition: {x: -0.0000046616, y: -82.304}
   m_SizeDelta: {x: 257.38, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1868773573
@@ -45270,7 +45283,7 @@ GameObject:
   - component: {fileID: 1921326614}
   - component: {fileID: 1921326615}
   m_Layer: 5
-  m_Name: Left Slot
+  m_Name: Item1_Left Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46413,7 +46426,7 @@ GameObject:
   - component: {fileID: 1995982019}
   - component: {fileID: 1995982020}
   m_Layer: 5
-  m_Name: Mid Slot
+  m_Name: Item8_Mid Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48156,7 +48169,7 @@ GameObject:
   - component: {fileID: 2133320680}
   - component: {fileID: 2133320681}
   m_Layer: 5
-  m_Name: Left Slot
+  m_Name: Item10_Left Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
