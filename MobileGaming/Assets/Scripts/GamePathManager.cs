@@ -14,6 +14,8 @@ public class GamePathManager : MonoBehaviour
     
     public LevelOpener[] levels;
     public int unlockedLevels = 1;
+
+    public Sprite[] boutonSprite;
     
     // Start is called before the first frame update
 

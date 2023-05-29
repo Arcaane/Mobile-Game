@@ -12,7 +12,7 @@ public class MainMenuManager : MonoBehaviour
     public bool isInSettingsMenu;
     public GameObject settingsMenu;
     [SerializeField] private ScriptableSettings settings;
-
+    [SerializeField] private ItemCollectionManager _collectionManager;
     public RectTransform levelPanelRectTransform;
 
     [Space(10)] [Header("User variables")] 
@@ -121,7 +121,7 @@ public class MainMenuManager : MonoBehaviour
     #region UIMethods
     private event Action<int> OnGoldChangeValue;
     private event Action<int> OnStarChangeValue;
-    private event Action<int> OnCollectionLevelChange;
+    public event Action<int> OnCollectionLevelChange;
 
     public void InitUIAction()
     {
@@ -133,14 +133,10 @@ public class MainMenuManager : MonoBehaviour
         {
             starCountText.text = i.ToString();
         }
-        void DebugCollectionLevel(int i)
-        {
-            Debug.Log($"Level Collection : {collectionLevel}");
-        }        
 
         OnGoldChangeValue = InitUIGold;
         OnStarChangeValue = InitUIStar;
-        OnCollectionLevelChange = DebugCollectionLevel;
+        OnCollectionLevelChange = _collectionManager.UpdateCollectionSlots;
     }
     #endregion
 }

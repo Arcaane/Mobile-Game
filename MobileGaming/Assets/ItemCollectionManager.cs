@@ -11,17 +11,32 @@ public class ItemCollectionManager : MonoBehaviour
     public Sprite lockSprite;
     public Sprite emptySprite;
 
-    public event Action<int> OnCollectionScoreChange;
-
     private void Start()
     {
-        OnCollectionScoreChange = null;
+        UpdateCollectionSlots(menuManager.CollectionLevel);
     }
 
-    private void UpdateCollectionSlots(int score)
+    public void UpdateCollectionSlots(int score)
     {
-        for (int i = 0; i < score; i++)
+        Debug.Log( $"Collection score {score}");
+        for (int i = 0; i < slots.Length; i++)
         {
+            if (score == 0)
+            {
+                for (int j = 0; j < slots.Length; j++)
+                {
+                    slots[i].itemSlotImage.sprite = lockSprite;
+                }
+            }
+            
+            if (i < score)
+            {
+                slots[i].itemSlotImage.sprite = slots[i].itemInSlotSprite;
+            }
+            else
+            {
+                slots[i].itemSlotImage.sprite = lockSprite;
+            }
             
         }
     }

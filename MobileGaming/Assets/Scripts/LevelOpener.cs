@@ -14,7 +14,7 @@ public class LevelOpener : MonoBehaviour
     {
         if (levelScriptable == null) return; 
         levelText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        levelText.text = $"Level: {levelScriptable.currentLevel}";
+        levelText.text = $"{levelScriptable.currentLevel}";
     }
 
     public void AccessLevel()
