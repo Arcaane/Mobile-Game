@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelOpener : MonoBehaviour
 {
@@ -10,11 +11,17 @@ public class LevelOpener : MonoBehaviour
 
     public bool isLevelLock;
     
-    private void OnEnable()
+    private void Start()
     {
         if (levelScriptable == null) return; 
         levelText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        levelText.text = $"Level: {levelScriptable.currentLevel}";
+        levelText.text = $"{levelScriptable.currentLevel}";
+
+        if (!isLevelLock)
+        {
+            GetComponent<Image>().sprite = isLevelLock ? GamePathManager.instance.boutonSprite[1] : GamePathManager.instance.boutonSprite[0];
+            GetComponent<Button>().enabled = isLevelLock;
+        }
     }
 
     public void AccessLevel()
