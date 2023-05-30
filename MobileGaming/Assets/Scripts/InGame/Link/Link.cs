@@ -20,7 +20,10 @@ public class Link : MonoBehaviour
     public Vector2[] Points { get; private set; }
     
     // Magic Transportation
-    [SerializeField] private float timeToCompleteTransportation = 5f;
+    [field: SerializeField] public float BaseTimeToCompleteTransportation { get; private set; } = 1.5f;
+    private float extraTimeToComplete = 0f;
+    private float TimeToCompleteTransportation => BaseTimeToCompleteTransportation * 1f / (BaseTimeToCompleteTransportation+extraTimeToComplete);
+    
     private float currentTimer = 0f;
     public Product ProductInTreatment { get; private set; }
     private List<Link> dependentLinks = new List<Link>();
@@ -32,15 +35,21 @@ public class Link : MonoBehaviour
     {
         dependentLinks.Clear();
     }
+
+    public void IncreaseExtraTimeToComplete(float amount)
+    {
+        extraTimeToComplete += amount;
+        Debug.Log($"Time to complete is now {TimeToCompleteTransportation} (base is {BaseTimeToCompleteTransportation})");
+    }
     
     #region Feedback
 
     private void Feedback()
     {
-        myMaterial.SetFloat(FilingValue, 1 - currentTimer / timeToCompleteTransportation);
+        myMaterial.SetFloat(FilingValue, 1 - currentTimer / TimeToCompleteTransportation);
         
         bottleImage.position = Vector3.Lerp(StartLinkable.Position + Vector3.up, 
-            EndLinkable.Position + Vector3.up, currentTimer / timeToCompleteTransportation);
+            EndLinkable.Position + Vector3.up, currentTimer / TimeToCompleteTransportation);
         
     }
     
@@ -66,6 +75,8 @@ public class Link : MonoBehaviour
         
         if (ProductInTreatment == null) return;
         
+        EventManager.Trigger(new LinkCreatedEvent(this));
+        
         StartCoroutine(MoveProductRoutine());
     }
     
@@ -74,11 +85,11 @@ public class Link : MonoBehaviour
         currentTimer = 0f;
         
         bottleImage.position = Vector3.Lerp(StartLinkable.Position + Vector3.up, 
-            EndLinkable.Position + Vector3.up, currentTimer / timeToCompleteTransportation);
+            EndLinkable.Position + Vector3.up, currentTimer / TimeToCompleteTransportation);
         SetUIProduct();
         
         currentTimer += Time.deltaTime;
-        while (currentTimer < timeToCompleteTransportation)
+        while (currentTimer < TimeToCompleteTransportation)
         {
             currentTimer += Time.deltaTime;
             
@@ -113,7 +124,9 @@ public class Link : MonoBehaviour
         
         StartLinkable = startLink;
         EndLinkable = endLink;
-        
+
+        extraTimeToComplete = 0f;
+
         EndLinkable.SetEndLinkable(this);
         StartLinkable.SetStartLinkable(this);
     }
@@ -170,5 +183,15 @@ public class Link : MonoBehaviour
             point.y = vec3[index].z;
             Points[index] = point;
         }
+    }
+}
+
+public class LinkCreatedEvent
+{
+    public Link Link { get; }
+
+    public LinkCreatedEvent(Link link)
+    {
+        Link = link;
     }
 }

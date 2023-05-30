@@ -4,6 +4,7 @@ using UnityEngine;
 public class ScriptableItemIncreaseMachineWorkSpeed : ScriptableItemEffect
 {
     [field: SerializeField,Tooltip("Increases Speed by X of the Base Time")] public float TimeMultiplier { get; private set; } = 1f;
+    [Header("Machine Work")]
     [SerializeField] private ProductShape shape;
     [SerializeField] private ProductColor color;
     [SerializeField] private ProductTopping topping;
