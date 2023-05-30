@@ -64,7 +64,7 @@ public struct ProductData
         topingImage.color = Topping != ProductTopping.None ? UnityEngine.Color.clear : UnityEngine.Color.white;
         switch (Shape)
         {
-            case ProductShape.Hearth:
+            case ProductShape.Heart:
                 shapeSpriteIndex = 0;
                 switch (Color)
                 {
@@ -137,7 +137,7 @@ public struct ProductData
     }
 }
 
-public enum ProductShape {Hearth, Moon, Cross}
+public enum ProductShape {Base,Heart, Moon, Cross}
 public enum ProductColor {Transparent, Red, Blue, Green}
 public enum ProductTopping {None, Yes}
 
