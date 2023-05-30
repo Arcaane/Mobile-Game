@@ -10,7 +10,7 @@ public class CollectionItem : ScriptableObject
     [field: SerializeField] public ItemRarity Rarity { get; private set; }
     [ResizableTextArea] public string descriptionText;
     [ResizableTextArea] public string powerUpText;
-    [field: SerializeField] public ScriptableItemEffect ScriptableItemEffect { get; private set; }
+    [field: SerializeField] public List<ScriptableItemEffect> ScriptableItemEffects { get; private set; }
     [field: SerializeField] private List<ItemFragment> fragments = new List<ItemFragment>();
     public List<ItemFragment> Fragments => fragments;
     public bool isEquiped;
