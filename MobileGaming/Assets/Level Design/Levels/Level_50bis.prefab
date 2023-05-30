@@ -697,69 +697,69 @@ MonoBehaviour:
   palier2: 2000
   palier3: 2400
   clientTimings:
-  - time: 1
+  - time: 1.5
     data:
       scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
         type: 2}
       productDatas:
-      - Color: 1
-        Shape: 0
+      - Color: 2
+        Shape: 1
+        Topping: 1
+  - time: 3.5
+    data:
+      scriptableClient: {fileID: 11400000, guid: 93ec90eeed011be4a822e5d24496ea29,
+        type: 2}
+      productDatas:
+      - Color: 4
+        Shape: 8
         Topping: 0
-  - time: 3
+  - time: 6.5
     data:
       scriptableClient: {fileID: 11400000, guid: 93ec90eeed011be4a822e5d24496ea29,
         type: 2}
       productDatas:
       - Color: 2
-        Shape: 2
-        Topping: 0
-  - time: 2
+        Shape: 4
+        Topping: 1
+  - time: 10
     data:
       scriptableClient: {fileID: 11400000, guid: 93ec90eeed011be4a822e5d24496ea29,
         type: 2}
       productDatas:
-      - Color: 1
-        Shape: 1
-        Topping: 0
-  - time: 5
-    data:
-      scriptableClient: {fileID: 11400000, guid: 93ec90eeed011be4a822e5d24496ea29,
-        type: 2}
-      productDatas:
-      - Color: 3
-        Shape: 1
-        Topping: 0
+      - Color: 8
+        Shape: 4
+        Topping: 1
   - time: 4
     data:
       scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
         type: 2}
       productDatas:
-      - Color: 1
-        Shape: 2
+      - Color: 2
+        Shape: 8
         Topping: 0
   - time: 3
     data:
       scriptableClient: {fileID: 11400000, guid: 068882ee2637de442806aad8765d5ceb,
         type: 2}
       productDatas:
-      - Color: 1
-        Shape: 0
+      - Color: 8
+        Shape: 4
         Topping: 0
   - time: 3
     data:
       scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
         type: 2}
       productDatas:
-      - Color: 3
+      - Color: 8
         Shape: 1
-        Topping: 0
+        Topping: 1
   - time: 2
     data:
       scriptableClient: {fileID: 11400000, guid: 068882ee2637de442806aad8765d5ceb,
         type: 2}
       productDatas:
-      - Color: 3
-        Shape: 0
+      - Color: 4
+        Shape: 1
         Topping: 0
   - time: 1
     data:
@@ -767,16 +767,16 @@ MonoBehaviour:
         type: 2}
       productDatas:
       - Color: 2
-        Shape: 0
+        Shape: 1
         Topping: 0
   - time: 3
     data:
       scriptableClient: {fileID: 11400000, guid: 068882ee2637de442806aad8765d5ceb,
         type: 2}
       productDatas:
-      - Color: 1
-        Shape: 0
-        Topping: 0
+      - Color: 4
+        Shape: 4
+        Topping: 1
   - time: 2.5
     data:
       scriptableClient: {fileID: 11400000, guid: 93ec90eeed011be4a822e5d24496ea29,
@@ -790,14 +790,11 @@ MonoBehaviour:
       scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
         type: 2}
       productDatas:
-      - Color: 3
-        Shape: 2
-        Topping: 0
-  clients:
-  - {fileID: 4459366562248724607}
-  - {fileID: 247340129575605222}
-  - {fileID: 4096345716262391838}
-  - {fileID: 6717791834294828695}
+      - Color: 8
+        Shape: 8
+        Topping: 1
+  machines: []
+  clientSlots: []
 --- !u!1 &3677314903100838162
 GameObject:
   m_ObjectHideFlags: 0
@@ -9203,18 +9200,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4258564525374300746}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6717791834294828695 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7359745783021329629, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
-    type: 3}
-  m_PrefabInstance: {fileID: 4258564525374300746}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d558eb498335be49887bab1e383e696, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &4289353692365848515
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13535,18 +13520,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9166bb4b10ccd54d95f97ebf1cf3e72, type: 3}
---- !u!114 &4459366562248724607 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7359745783021329629, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
-    type: 3}
-  m_PrefabInstance: {fileID: 6611789518036880546}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d558eb498335be49887bab1e383e696, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &4881823561329523281 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
@@ -14404,18 +14377,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9166bb4b10ccd54d95f97ebf1cf3e72, type: 3}
---- !u!114 &4096345716262391838 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7359745783021329629, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
-    type: 3}
-  m_PrefabInstance: {fileID: 6843841349451058371}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d558eb498335be49887bab1e383e696, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &5081263600672832048 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
@@ -15564,18 +15525,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9166bb4b10ccd54d95f97ebf1cf3e72, type: 3}
---- !u!114 &247340129575605222 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7359745783021329629, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,
-    type: 3}
-  m_PrefabInstance: {fileID: 7299678872472637243}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d558eb498335be49887bab1e383e696, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &9021792396475054536 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1764974688692401907, guid: d9166bb4b10ccd54d95f97ebf1cf3e72,

@@ -376,21 +376,37 @@ MonoBehaviour:
   palier2: 1200
   palier3: 1600
   clientTimings:
-  - time: 3
+  - time: 1.5
     data:
       scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
         type: 2}
       productDatas:
-      - Color: 1
-        Shape: 0
+      - Color: 2
+        Shape: 1
+        Topping: 0
+  - time: 3.5
+    data:
+      scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
+        type: 2}
+      productDatas:
+      - Color: 4
+        Shape: 1
+        Topping: 0
+  - time: 8
+    data:
+      scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
+        type: 2}
+      productDatas:
+      - Color: 2
+        Shape: 1
         Topping: 0
   - time: 3
     data:
       scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
         type: 2}
       productDatas:
-      - Color: 1
-        Shape: 0
+      - Color: 4
+        Shape: 1
         Topping: 0
   - time: 3
     data:
@@ -398,25 +414,10 @@ MonoBehaviour:
         type: 2}
       productDatas:
       - Color: 2
-        Shape: 0
+        Shape: 1
         Topping: 0
-  - time: 3
-    data:
-      scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
-        type: 2}
-      productDatas:
-      - Color: 1
-        Shape: 0
-        Topping: 0
-  - time: 3
-    data:
-      scriptableClient: {fileID: 11400000, guid: ed55d6b540136e548aca9fe9d899486c,
-        type: 2}
-      productDatas:
-      - Color: 2
-        Shape: 0
-        Topping: 0
-  clients: []
+  machines: []
+  clientSlots: []
 --- !u!1 &4757193045376362831
 GameObject:
   m_ObjectHideFlags: 0
