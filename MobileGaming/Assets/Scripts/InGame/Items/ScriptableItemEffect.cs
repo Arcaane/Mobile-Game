@@ -3,12 +3,12 @@ using UnityEngine;
 
 public abstract class ScriptableItemEffect : ScriptableObject
 {
-    public void ActivateEffect()
+    public void ActivateEffect(LevelService levelService)
     {
-        Effect();
+        Effect(levelService);
     }
 
-    protected abstract void Effect();
+    protected abstract void Effect(LevelService levelService);
 }
 
 [Serializable]

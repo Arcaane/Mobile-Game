@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -25,16 +26,34 @@ public class Level : MonoBehaviour
     [HideInInspector,SerializeField] public int palier3;
 
     public List<ClientTiming> clientTimings = new ();
+    public List<Machine> machines = new();
 
-    [Header("Setup with tool automatically")]
-    public List<ClientSlot> clients = new ();
+    [Header("Setup with tool automatically")] public List<ClientSlot> clientSlots = new ();
     private void Start()
     {
         EventManager.Trigger(new LoadLevelEvent(this));
     }
-    
+
     #region Editor
 #if UNITY_EDITOR
+
+    [ContextMenu("Auto Set Machines and Clients")]
+    private void SetMachinesAndClients()
+    {
+        machines.Clear();
+        clientSlots.Clear();
+
+        foreach (var machine in FindObjectsOfType<Machine>())
+        {
+            machines.Add(machine);
+        }
+
+        foreach (var clientSlot in FindObjectsOfType<ClientSlot>())
+        {
+            clientSlots.Add(clientSlot);
+        }
+    }
+    
     [CustomEditor(typeof(Level)),CanEditMultipleObjects]
     public class LevelEditor : Editor
     {

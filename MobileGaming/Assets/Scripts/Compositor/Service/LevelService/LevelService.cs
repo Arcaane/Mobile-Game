@@ -9,10 +9,12 @@ public class LevelService : ILevelService
 {
     [DependsOnService] private IMagicLineService magicLineService;
 
-    private Level currentLevel;
+    public Level CurrentLevel { get; private set; }
 
     private List<ClientTiming> clientTimings = new();
-    private float levelDuration;
+    private float LevelDuration => extraLevelDuration + baseLevelDuration;
+    private float baseLevelDuration;
+    private float extraLevelDuration;
     private int scoreToWin;
     private int palier2;
     private int palier3;
@@ -63,7 +65,7 @@ public class LevelService : ILevelService
 
             UpdateScoreUI();
 
-            foreach (var system in currentLevel.FeedbackFx)
+            foreach (var system in CurrentLevel.FeedbackFx)
             {
                 system.gameObject.SetActive(false);
             }
@@ -76,16 +78,16 @@ public class LevelService : ILevelService
 
             clientAvailableEvent.ClientSlot.PlayFeedback(fxIndex);
             
-            if (fxIndex > 0 && fxIndex < currentLevel.FeedbackFx.Length)
+            if (fxIndex > 0 && fxIndex < CurrentLevel.FeedbackFx.Length)
             {
-                currentLevel.FeedbackFx[fxIndex].gameObject.SetActive(true);
-                currentLevel.FeedbackFx[fxIndex].Play();
+                CurrentLevel.FeedbackFx[fxIndex].gameObject.SetActive(true);
+                CurrentLevel.FeedbackFx[fxIndex].Play();
             }
         }
 
         void TryEndLevel(ClientSlotAvailableEvent clientAvailableEvent)
         {
-            if (currentTime < levelDuration) return;
+            if (currentTime < LevelDuration) return;
 
             if(queuedSlots.Count < clientCount) return;
 
@@ -99,11 +101,16 @@ public class LevelService : ILevelService
         }
     }
 
+    public void IncreaseLevelDuration(float amount)
+    {
+        extraLevelDuration = amount;
+    }
+
     public void InitLevel(Level level)
     {
-        currentLevel = level;
+        CurrentLevel = level;
 
-        currentLevel.StartPanel.OnAnimationOver += StartLevel;
+        CurrentLevel.StartPanel.OnAnimationOver += StartLevel;
         
         ResetVariables();
 
@@ -112,12 +119,18 @@ public class LevelService : ILevelService
 
     private void ResetVariables()
     {
-        clientTimings = currentLevel.clientTimings.ToList();
-        levelDuration = currentLevel.levelDuration;
-        scoreToWin = currentLevel.scoreToWin;
-        palier2 = currentLevel.palier2;
-        palier3 = currentLevel.palier3;
-        clientCount = currentLevel.clients.Count;
+        clientTimings = CurrentLevel.clientTimings.ToList();
+        baseLevelDuration = CurrentLevel.levelDuration;
+        extraLevelDuration = 0f;
+        scoreToWin = CurrentLevel.scoreToWin;
+        palier2 = CurrentLevel.palier2;
+        palier3 = CurrentLevel.palier3;
+        clientCount = CurrentLevel.clientSlots.Count;
+
+        foreach (var machine in CurrentLevel.machines)
+        {
+            machine.ResetVariables();
+        }
         
         queuedTimings.Clear();
         queuedData.Clear();
@@ -130,7 +143,7 @@ public class LevelService : ILevelService
         FillQueuedTimings();
         FillQueuedClients();
 
-        foreach (var fx in currentLevel.FeedbackFx)
+        foreach (var fx in CurrentLevel.FeedbackFx)
         {
             fx.gameObject.SetActive(false);
         }
@@ -147,7 +160,7 @@ public class LevelService : ILevelService
 
         void FillQueuedClients()
         {
-            foreach (var client in currentLevel.clients)
+            foreach (var client in CurrentLevel.clientSlots)
             {
                 queuedSlots.Enqueue(client);
             }
@@ -156,12 +169,14 @@ public class LevelService : ILevelService
 
     private void LinkStuff()
     {
-        currentLevel.StartPanel.UpdateValues(currentLevel);
+        CurrentLevel.StartPanel.UpdateValues(CurrentLevel);
     }
 
     public void StartLevel()
     {
         SorcererController.Instance.hudCanvasGO.SetActive(true);
+        var equippedItem = ScriptableSettings.EquippedItemEffect;
+        if(equippedItem != null) equippedItem.ActivateEffect(this);
 
         UpdateTimeUI();
         UpdateScoreUI();
@@ -176,7 +191,7 @@ public class LevelService : ILevelService
     {
         if (!running) return;
         
-        if(currentTime > levelDuration) return;
+        if(currentTime > LevelDuration) return;
         
         IncreaseTime();
     }
@@ -189,7 +204,7 @@ public class LevelService : ILevelService
 
         UpdateTimeUI();
 
-        if (currentTime > levelDuration)
+        if (currentTime > LevelDuration)
         {
             queuedData.Clear();
         }
@@ -217,7 +232,7 @@ public class LevelService : ILevelService
 
     private void UpdateTimeUI()
     {
-        EventManager.Trigger(new LevelTimeUpdatedEvent(currentTime,levelDuration));
+        EventManager.Trigger(new LevelTimeUpdatedEvent(currentTime,LevelDuration));
     }
     
     private void UpdateScoreUI()
@@ -229,8 +244,8 @@ public class LevelService : ILevelService
     {
         running = false;
         magicLineService.Disable();
-        EventManager.Trigger(new EndLevelEvent(currentLevel,state));
-        currentLevel = null;
+        EventManager.Trigger(new EndLevelEvent(CurrentLevel,state));
+        CurrentLevel = null;
     }
 }
 

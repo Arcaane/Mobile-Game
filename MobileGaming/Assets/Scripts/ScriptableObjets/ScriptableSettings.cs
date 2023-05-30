@@ -33,8 +33,8 @@ public class ScriptableSettings : ScriptableObject
         Debug.Log($"Global Settings set to {GlobalSettings}");
     }
 
-    public static void EquipItem(ScriptableItemEffect itemEffect)
+    public static void EquipItem(CollectionItem item)
     {
-        GlobalSettings.equippedItemEffect = itemEffect;
+        GlobalSettings.equippedItemEffect = item.ScriptableItemEffect;
     }
 }

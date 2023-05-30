@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public abstract class Machine : MonoBehaviour, ILinkable
@@ -9,10 +10,11 @@ public abstract class Machine : MonoBehaviour, ILinkable
     [Header("Feedback")]
     [SerializeField] private Image[] feedbackImages;
     [SerializeField] protected TextMeshProUGUI feedbackText;
-    
+
     [Header("Production Settings")]
     [SerializeField] private float baseTimeToProduce = 5f;
-    [SerializeField] private float timeMultiplier = 1f;
+    [SerializeField] private float baseTimeMultiplier = 1f;
+    private float timeMultiplier = 1f;
     
     public Vector3 Position => transform.position;
     public virtual bool Inputable => true;
@@ -26,8 +28,18 @@ public abstract class Machine : MonoBehaviour, ILinkable
     private void Start()
     {
         ShowProduct(false);
+    }
+
+    public void ResetVariables()
+    {
+        timeMultiplier = 1f;
         
         Setup();
+    }
+
+    public void IncreaseTimeMultiplier(float time)
+    {
+        timeMultiplier = time;
     }
 
     #region Feedback
@@ -58,7 +70,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
     {
         IsWorking = true;
         currentProduct = product;
-        waitDuration = baseTimeToProduce * 1f / timeMultiplier;
+        waitDuration = baseTimeToProduce * 1f / (baseTimeMultiplier*timeMultiplier);
         
         StartCoroutine(WorkProduct());
     }
