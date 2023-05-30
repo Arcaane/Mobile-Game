@@ -61,7 +61,7 @@ public struct ProductData
         var contentSpriteIndex = 0;
         contentImage.color = UnityEngine.Color.white;
         shapeImage.color = UnityEngine.Color.white;
-        topingImage.color = Topping != ProductTopping.None ? UnityEngine.Color.clear : UnityEngine.Color.white;
+        topingImage.color = Topping != ProductTopping.No ? UnityEngine.Color.clear : UnityEngine.Color.white;
         switch (Shape)
         {
             case ProductShape.Heart:
@@ -158,6 +158,6 @@ public struct ProductData
     }
 }
 
-[Flags] public enum ProductShape {Base = 1,Heart = 2, Moon = 4, Cross = 8}
-[Flags] public enum ProductColor {Transparent = 1, Red = 2, Blue = 4, Green = 8}
-[Flags] public enum ProductTopping {None = 1, Yes = 2}
+[Flags] public enum ProductShape {None = 0,Base = 1,Heart = 2, Moon = 4, Cross = 8}
+[Flags] public enum ProductColor {Nothing = 0,Transparent = 1, Red = 2, Blue = 4, Green = 8}
+[Flags] public enum ProductTopping {No = 0, Yes = 1}
