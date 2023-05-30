@@ -9,4 +9,5 @@ public class CollectionItem : ScriptableObject
     public string rarety;
     [ResizableTextArea] public string descriptionText;
     [ResizableTextArea] public string powerUpText;
+    public bool isEquiped;
 }

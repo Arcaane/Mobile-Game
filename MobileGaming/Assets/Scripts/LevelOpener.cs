@@ -11,7 +11,7 @@ public class LevelOpener : MonoBehaviour
 
     public bool isLevelLock;
     
-    private void OnEnable()
+    private void Start()
     {
         if (levelScriptable == null) return; 
         levelText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
@@ -20,7 +20,7 @@ public class LevelOpener : MonoBehaviour
         if (!isLevelLock)
         {
             GetComponent<Image>().sprite = isLevelLock ? GamePathManager.instance.boutonSprite[1] : GamePathManager.instance.boutonSprite[0];
-            GetComponent<Button>().enabled = isLevelLock ? true : false;
+            GetComponent<Button>().enabled = isLevelLock;
         }
     }
 
