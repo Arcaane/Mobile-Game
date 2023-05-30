@@ -11,14 +11,22 @@ public class ShowCollectionItemHolder : MonoBehaviour
     public TextMeshProUGUI chapterText;
     public TextMeshProUGUI raretyText;
     public GameObject[] GO;
-
-    public void FillAndShowItemCollectionDescription(Sprite _sprite, string _title, string _description, string _chapter, ItemRarity _rarety)
+    public GameObject equipItemPart;
+    public ItemCollectionManager itemCollectionManager;
+    
+    [SerializeField] private Image[] items;
+    [SerializeField] private Button[] buttons;
+    
+    private CollectionItem lastScriptableOpened;
+    public void FillAndShowItemCollectionDescription(CollectionItem itemScriptable)
     {
-        itemImage.sprite = _sprite;
-        titleText.text = _title;
-        descriptionText.text = _description;
-        chapterText.text = _chapter;
-        raretyText.text = _rarety switch
+        lastScriptableOpened = itemScriptable;
+        
+        itemImage.sprite = itemScriptable.itemSprite;
+        titleText.text = itemScriptable.objectTitle;
+        descriptionText.text = itemScriptable.descriptionText;
+        chapterText.text = itemScriptable.chapterNumber;
+        raretyText.text = itemScriptable.Rarity switch
         {
             ItemRarity.Rare => "Rare",
             ItemRarity.Epic => "Epic",
@@ -30,5 +38,30 @@ public class ShowCollectionItemHolder : MonoBehaviour
         {
             t.SetActive(true);
         }
+
+        if (itemScriptable.isEquiped) return;
+        
+        equipItemPart.SetActive(true);
+
+        for (int i = 0; i < itemCollectionManager.slots.Length; i++)
+        {
+            items[i].sprite = itemCollectionManager.slots[i].itemSlotImage.sprite;
+        }
+
+        if (itemCollectionManager.menuManager.CollectionLevel == 1) buttons[0].interactable = true;
+        if (itemCollectionManager.menuManager.CollectionLevel == 2) buttons[1].interactable = true;
+        if (itemCollectionManager.menuManager.CollectionLevel == 2) buttons[2].interactable = true;
+    }
+
+    public void SetItemInSlot(int i)
+    {
+        if (itemCollectionManager.slots[i].item != null) itemCollectionManager.slots[i].item.isEquiped = false;
+        
+        lastScriptableOpened.isEquiped = true;
+        itemCollectionManager.slots[i].item = lastScriptableOpened;
+        itemCollectionManager.slots[i].itemInSlotSprite = lastScriptableOpened.itemSprite;
+        equipItemPart.SetActive(false);
+        
+        itemCollectionManager.UpdateCollectionSlots(itemCollectionManager.menuManager.CollectionLevel);
     }
 }
