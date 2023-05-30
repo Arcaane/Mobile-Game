@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -23,8 +25,8 @@ public class ScriptableSettings : ScriptableObject
     
     [field:Header("Items")]
     [field: SerializeField] public ScriptableItemDatabase itemDB { get; private set; }
-    [field: SerializeField] private ScriptableItemEffect equippedItemEffect;
-    public static ScriptableItemEffect EquippedItemEffect => GlobalSettings.equippedItemEffect;
+    [field: SerializeField] private List<ScriptableItemEffect> equippedItemEffects;
+    public static List<ScriptableItemEffect> EquippedItemEffects => GlobalSettings.equippedItemEffects;
     public static ScriptableSettings GlobalSettings { get; private set; }
 
     public void SetAsGlobalSettings()
@@ -33,8 +35,12 @@ public class ScriptableSettings : ScriptableObject
         Debug.Log($"Global Settings set to {GlobalSettings}");
     }
 
-    public static void EquipItem(CollectionItem item)
+    public static void EquipItems(List<CollectionItem> items)
     {
-        GlobalSettings.equippedItemEffect = item.ScriptableItemEffect;
+        GlobalSettings.equippedItemEffects.Clear();
+        foreach (var item in items)
+        {
+            GlobalSettings.equippedItemEffects.AddRange(item.ScriptableItemEffects);
+        }
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Effect/IncreaseTimer")]
+[CreateAssetMenu(menuName = "Effect/Increase Level Duration")]
 public class ScriptableItemIncreaseTimer : ScriptableItemEffect
 {
     [field: SerializeField,Tooltip("Percent of Base Duration")] public float TimerIncreaseAmount { get; private set; } = 10f;

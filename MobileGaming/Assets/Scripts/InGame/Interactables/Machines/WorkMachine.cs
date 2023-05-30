@@ -13,6 +13,10 @@ public class WorkMachine : Machine
     [SerializeField] private ProductShape targetShape;
     [HideInInspector] public bool changeTopping;
     [SerializeField] private ProductTopping targetTopping;
+    public override ProductShape MachineShape => changeShape ? targetShape : 0;
+    public override ProductColor MachineColor => changeColor ? targetColor : 0;
+    public override ProductTopping machineTopping => changeTopping ? targetTopping : 0;
+    
 
     [Header("Components")]
     [SerializeField] private GameObject fxGo;

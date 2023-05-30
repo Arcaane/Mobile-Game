@@ -11,6 +11,10 @@ public class GenerationMachine : Machine
     private float timer;
 
     public override bool Inputable => false;
+    
+    public override ProductShape MachineShape => data.Shape;
+    public override ProductColor MachineColor => data.Color;
+    public override ProductTopping machineTopping => data.Topping;
 
     protected override void Setup()
     {

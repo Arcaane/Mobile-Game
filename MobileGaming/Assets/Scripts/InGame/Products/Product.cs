@@ -158,6 +158,6 @@ public struct ProductData
     }
 }
 
-public enum ProductShape {Base,Heart, Moon, Cross}
-public enum ProductColor {Transparent, Red, Blue, Green}
-public enum ProductTopping {None, Yes}
+[Flags] public enum ProductShape {Base = 1,Heart = 2, Moon = 4, Cross = 8}
+[Flags] public enum ProductColor {Transparent = 1, Red = 2, Blue = 4, Green = 8}
+[Flags] public enum ProductTopping {None = 1, Yes = 2}

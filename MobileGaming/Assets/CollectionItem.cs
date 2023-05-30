@@ -11,7 +11,7 @@ public class CollectionItem : ScriptableObject
     [ResizableTextArea] public string descriptionText;
     [ResizableTextArea] public string powerUpText;
 
-    [field: SerializeField] public ScriptableItemEffect ScriptableItemEffect { get; private set; }
+    [field: SerializeField] public ScriptableItemEffect[] ScriptableItemEffects { get; private set; }
     [field: SerializeField] private List<ItemFragment> fragments = new List<ItemFragment>();
     public List<ItemFragment> Fragments => fragments;
 }

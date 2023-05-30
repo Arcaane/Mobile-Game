@@ -20,7 +20,6 @@ public class Link : MonoBehaviour
     public Vector2[] Points { get; private set; }
     
     // Magic Transportation
-    [Range(0,100)] [SerializeField] private int itemProgression = 0;
     [SerializeField] private float timeToCompleteTransportation = 5f;
     private float currentTimer = 0f;
     public Product ProductInTreatment { get; private set; }

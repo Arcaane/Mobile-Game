@@ -675,7 +675,7 @@ PrefabInstance:
     - target: {fileID: 4011043854238429436, guid: be2e641e74550604fbc8a377d79c0cb4,
         type: 3}
       propertyPath: m_Name
-      value: P_GenerationMachine_Moon
+      value: P_GenerationMachine_None
       objectReference: {fileID: 0}
     - target: {fileID: 4011043854238429436, guid: be2e641e74550604fbc8a377d79c0cb4,
         type: 3}
@@ -689,7 +689,22 @@ PrefabInstance:
       objectReference: {fileID: 397298545409976069}
     - target: {fileID: 5982880247390205783, guid: be2e641e74550604fbc8a377d79c0cb4,
         type: 3}
+      propertyPath: newProduct.data.Color
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5982880247390205783, guid: be2e641e74550604fbc8a377d79c0cb4,
+        type: 3}
       propertyPath: newProduct.data.Shape
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5982880247390205783, guid: be2e641e74550604fbc8a377d79c0cb4,
+        type: 3}
+      propertyPath: newProduct.data.Topping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5982880247390205783, guid: be2e641e74550604fbc8a377d79c0cb4,
+        type: 3}
+      propertyPath: <BaseTimeToProduce>k__BackingField
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8863337194420465959, guid: be2e641e74550604fbc8a377d79c0cb4,

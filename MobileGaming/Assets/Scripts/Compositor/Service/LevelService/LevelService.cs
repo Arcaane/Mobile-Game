@@ -103,7 +103,7 @@ public class LevelService : ILevelService
 
     public void IncreaseLevelDuration(float amount)
     {
-        extraLevelDuration = amount;
+        extraLevelDuration += amount;
     }
 
     public void InitLevel(Level level)
@@ -126,7 +126,9 @@ public class LevelService : ILevelService
         palier2 = CurrentLevel.palier2;
         palier3 = CurrentLevel.palier3;
         clientCount = CurrentLevel.clientSlots.Count;
-
+        
+        EventManager.RemoveListeners<MachineStartWorkEvent>();
+        EventManager.RemoveListeners<MachineEndWorkEvent>();
         foreach (var machine in CurrentLevel.machines)
         {
             machine.ResetVariables();
@@ -175,8 +177,14 @@ public class LevelService : ILevelService
     public void StartLevel()
     {
         SorcererController.Instance.hudCanvasGO.SetActive(true);
-        var equippedItem = ScriptableSettings.EquippedItemEffect;
-        if(equippedItem != null) equippedItem.ActivateEffect(this);
+        var equippedItems = ScriptableSettings.EquippedItemEffects;
+        if (equippedItems.Count > 0)
+        {
+            foreach (var effect in equippedItems)
+            {
+                effect.ActivateEffect(this);
+            }
+        }
 
         UpdateTimeUI();
         UpdateScoreUI();
