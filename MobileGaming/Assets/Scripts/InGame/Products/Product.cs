@@ -84,8 +84,8 @@ public struct ProductData
                         contentSpriteIndex = contentSpriteIndex;
                         break;
                 }
-
                 break;
+            
             case ProductShape.Cross: 
                 shapeSpriteIndex = 1;
                 switch (Color)
@@ -106,8 +106,8 @@ public struct ProductData
                         contentSpriteIndex = contentSpriteIndex;
                         break;
                 }
-
                 break;
+            
             case ProductShape.Moon:
                 shapeSpriteIndex = 2;
                 switch (Color)
@@ -128,7 +128,28 @@ public struct ProductData
                         contentSpriteIndex = contentSpriteIndex;
                         break;
                 }
-
+                break;
+            
+            case ProductShape.Base:
+                shapeSpriteIndex = 3;
+                switch (Color)
+                {
+                    case ProductColor.Transparent:
+                        contentImage.color = UnityEngine.Color.clear;
+                        break;
+                    case ProductColor.Blue:
+                        contentSpriteIndex = 9;
+                        break;
+                    case ProductColor.Green:
+                        contentSpriteIndex = 10;
+                        break;
+                    case ProductColor.Red:
+                        contentSpriteIndex = 11;
+                        break;
+                    default:
+                        contentSpriteIndex = contentSpriteIndex;
+                        break;
+                }
                 break;
         }
 

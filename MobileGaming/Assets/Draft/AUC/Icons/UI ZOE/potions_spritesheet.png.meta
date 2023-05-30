@@ -101,11 +101,23 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: potions_spritesheet_0
+      name: S_potionCoeur
       rect:
         serializedVersion: 2
         x: 0
@@ -126,7 +138,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: potions_spritesheet_1
+      name: S_potionCoeurBleu
       rect:
         serializedVersion: 2
         x: 128
@@ -147,7 +159,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: potions_spritesheet_2
+      name: S_potionCoeurVert
       rect:
         serializedVersion: 2
         x: 256
@@ -168,7 +180,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: potions_spritesheet_3
+      name: S_potionCoeurRouge
       rect:
         serializedVersion: 2
         x: 384
@@ -189,7 +201,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: potions_spritesheet_4
+      name: S_potionCroix
       rect:
         serializedVersion: 2
         x: 0
@@ -210,10 +222,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: potions_spritesheet_5
+      name: S_potionCroixBleu
       rect:
         serializedVersion: 2
-        x: 128
+        x: 126
         y: 512
         width: 128
         height: 256
@@ -231,7 +243,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: potions_spritesheet_6
+      name: S_potionCroixVert
       rect:
         serializedVersion: 2
         x: 256
@@ -252,7 +264,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: potions_spritesheet_7
+      name: S_potionCroixRouge
       rect:
         serializedVersion: 2
         x: 384
@@ -273,7 +285,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: potions_spritesheet_8
+      name: S_potionLune
       rect:
         serializedVersion: 2
         x: 0
@@ -294,7 +306,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: potions_spritesheet_9
+      name: S_potionLuneBleu
       rect:
         serializedVersion: 2
         x: 128
@@ -315,7 +327,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: potions_spritesheet_10
+      name: S_potionLuneVert
       rect:
         serializedVersion: 2
         x: 256
@@ -336,7 +348,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: potions_spritesheet_11
+      name: S_potionLuneRouge
       rect:
         serializedVersion: 2
         x: 384
@@ -357,7 +369,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: potions_spritesheet_12
+      name: S_potionTopping
       rect:
         serializedVersion: 2
         x: 0
@@ -388,19 +400,19 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      potions_spritesheet_3: -404263817
-      potions_spritesheet_6: 859231104
-      potions_spritesheet_8: -1217404695
-      potions_spritesheet_5: 1164308184
-      potions_spritesheet_7: -1969706588
-      potions_spritesheet_12: -1262490212
-      potions_spritesheet_9: -719217488
-      potions_spritesheet_2: 2010091434
-      potions_spritesheet_11: 1847673032
-      potions_spritesheet_0: -1426059977
-      potions_spritesheet_1: 783010066
-      potions_spritesheet_4: 2048094751
-      potions_spritesheet_10: 1614534744
+      S_potionCroixVert: 859231104
+      S_potionLuneRouge: 1847673032
+      S_potionLuneVert: 1614534744
+      S_potionCoeur: -1426059977
+      S_potionLuneBleu: -719217488
+      S_potionCroixRouge: -1969706588
+      S_potionCoeurVert: 2010091434
+      S_potionCroixBleu: 1164308184
+      S_potionCoeurBleu: 783010066
+      S_potionLune: -1217404695
+      S_potionTopping: -1262490212
+      S_potionCroix: 2048094751
+      S_potionCoeurRouge: -404263817
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
