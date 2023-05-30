@@ -11,10 +11,14 @@ public abstract class Machine : MonoBehaviour, ILinkable
     [SerializeField] private Image[] feedbackImages;
     [SerializeField] protected TextMeshProUGUI feedbackText;
 
-    [Header("Production Settings")]
-    [SerializeField] private float baseTimeToProduce = 5f;
-    [SerializeField] private float baseTimeMultiplier = 1f;
-    private float timeMultiplier = 1f;
+    [field:Header("Production Settings")]
+    [field: SerializeField] public float BaseTimeToProduce { get; private set; } = 5f;
+    public abstract ProductShape MachineShape { get; }
+    public abstract ProductColor MachineColor { get; }
+    public abstract ProductTopping machineTopping { get; }
+
+    [field: SerializeField] public float BaseTimeMultiplier { get; private set; } = 1f;
+    private float extraTime = 0;
     
     public Vector3 Position => transform.position;
     public virtual bool Inputable => true;
@@ -32,14 +36,14 @@ public abstract class Machine : MonoBehaviour, ILinkable
 
     public void ResetVariables()
     {
-        timeMultiplier = 1f;
+        extraTime = 0f;
         
         Setup();
     }
 
-    public void IncreaseTimeMultiplier(float time)
+    public void IncreaseTimeMultiplier(float amount)
     {
-        timeMultiplier = time;
+        extraTime += amount;
     }
 
     #region Feedback
@@ -70,8 +74,9 @@ public abstract class Machine : MonoBehaviour, ILinkable
     {
         IsWorking = true;
         currentProduct = product;
-        waitDuration = baseTimeToProduce * 1f / (baseTimeMultiplier*timeMultiplier);
-        
+        EventManager.Trigger(new MachineStartWorkEvent(this));
+        waitDuration = BaseTimeToProduce * 1f / (BaseTimeMultiplier+extraTime);
+
         StartCoroutine(WorkProduct());
     }
 
@@ -101,6 +106,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
         IsWorking = false;
         
         EndWork();
+        EventManager.Trigger(new MachineEndWorkEvent(this));
 
         TriggerOnAvailable();
     }
@@ -121,4 +127,24 @@ public abstract class Machine : MonoBehaviour, ILinkable
     }
 
     #endregion
+}
+
+public class MachineStartWorkEvent
+{
+    public Machine Machine { get; }
+    
+    public MachineStartWorkEvent(Machine machine)
+    {
+        Machine = machine;
+    }
+}
+
+public class MachineEndWorkEvent
+{
+    public Machine Machine { get; }
+    
+    public MachineEndWorkEvent(Machine machine)
+    {
+        Machine = machine;
+    }
 }

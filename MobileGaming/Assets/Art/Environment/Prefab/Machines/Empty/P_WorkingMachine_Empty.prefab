@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1285170923502874856}
   - component: {fileID: 2116128560571851646}
   - component: {fileID: 8095887000506673990}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Bottle Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 6095379896724725623}
   - component: {fileID: 3573897308418817634}
   - component: {fileID: 4746867372911612885}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Bottle Zip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 603669157221589784}
   - component: {fileID: 520832710959288438}
   - component: {fileID: 6450118447871541510}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Bottle Shape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,10 +281,10 @@ MonoBehaviour:
   - {fileID: 8095887000506673990}
   - {fileID: 4746867372911612885}
   feedbackText: {fileID: 0}
-  baseTimeToProduce: 2
-  timeMultiplier: 1
+  <BaseTimeToProduce>k__BackingField: 2
+  <BaseTimeMultiplier>k__BackingField: 1
   changeColor: 0
-  targetColor: 2
+  targetColor: 0
   changeShape: 0
   targetShape: 0
   changeTopping: 0
@@ -313,7 +313,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1049445303873061026}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Bottle Debug Pos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -413,7 +413,7 @@ GameObject:
   - component: {fileID: 8166859463921817232}
   - component: {fileID: 8912405604511609952}
   - component: {fileID: 2456148591524348069}
-  m_Layer: 7
+  m_Layer: 11
   m_Name: Feedback Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -514,7 +514,7 @@ GameObject:
   - component: {fileID: 8816206594964698486}
   - component: {fileID: 8780967028083180726}
   - component: {fileID: 4328452756032662056}
-  m_Layer: 7
+  m_Layer: 11
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
