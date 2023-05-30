@@ -140,5 +140,3 @@ public struct ProductData
 public enum ProductShape {Base,Heart, Moon, Cross}
 public enum ProductColor {Transparent, Red, Blue, Green}
 public enum ProductTopping {None, Yes}
-
-

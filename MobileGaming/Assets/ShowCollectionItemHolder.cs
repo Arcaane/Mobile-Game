@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,13 +12,19 @@ public class ShowCollectionItemHolder : MonoBehaviour
     public TextMeshProUGUI raretyText;
     public GameObject[] GO;
 
-    public void FillAndShowItemCollectionDescription(Sprite _sprite, string _title, string _description, string _chapter, string _rarety)
+    public void FillAndShowItemCollectionDescription(Sprite _sprite, string _title, string _description, string _chapter, ItemRarity _rarety)
     {
         itemImage.sprite = _sprite;
         titleText.text = _title;
         descriptionText.text = _description;
         chapterText.text = _chapter;
-        raretyText.text = _rarety;
+        raretyText.text = _rarety switch
+        {
+            ItemRarity.Rare => "Rare",
+            ItemRarity.Epic => "Epic",
+            ItemRarity.Legendary => "Legendary",
+            _ => raretyText.text
+        };
 
         foreach (var t in GO)
         {

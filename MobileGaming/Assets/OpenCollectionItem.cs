@@ -22,6 +22,6 @@ public class OpenCollectionItem : MonoBehaviour
             thisScriptable.objectTitle, 
             thisScriptable.descriptionText, 
             thisScriptable.chapterNumber, 
-            thisScriptable.rarety);
+            thisScriptable.Rarity);
     }
 }

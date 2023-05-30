@@ -10,18 +10,18 @@ public class ScriptableItemDatabase : ScriptableObject
     [Serializable]
     public struct ItemsPerLevel
     {
-        [field: SerializeField] public List<ScriptableItem> items { get; private set; }
+        [field: SerializeField] public List<ScriptableItemEffect> items { get; private set; }
     }
     
     [SerializeField] private List<ItemsPerLevel> allItems = new ();
     [SerializeField] private List<ItemFragment> availableFragments = new ();
     [SerializeField] private List<ItemFragment> obtainedFragments = new ();
-    [SerializeField] private List<ScriptableItem> obtainedItems = new ();
+    [SerializeField] private List<CollectionItem> obtainedItems = new ();
     
     private int currency;
     public int Currency => currency;
     
-    public void AddItemToGacha(params ScriptableItem[] items)
+    public void AddItemToGacha(params CollectionItem[] items)
     {
         foreach (var item in items)
         {
@@ -50,23 +50,23 @@ public class ScriptableItemDatabase : ScriptableObject
         TryGetItem(fragment.AssociatedItem);
     }
 
-    private void TryGetItem(ScriptableItem item)
+    private void TryGetItem(CollectionItem itemEffect)
     {
-        if(obtainedItems.Contains(item)) return;
+        if(obtainedItems.Contains(itemEffect)) return;
 
-        if (item.Fragments.Count < ObtainedFragments(item)) return;
+        if (itemEffect.Fragments.Count < ObtainedFragments(itemEffect)) return;
 
-        GetItem(item);
+        GetItem(itemEffect);
     }
 
-    private void GetItem(ScriptableItem item)
+    private void GetItem(CollectionItem itemEffect)
     {
-        obtainedItems.Add(item);
+        obtainedItems.Add(itemEffect);
     }
 
-    public int ObtainedFragments(ScriptableItem item)
+    public int ObtainedFragments(CollectionItem itemEffect)
     {
-        return obtainedFragments.Count(fragment => fragment.AssociatedItem == item);
+        return obtainedFragments.Count(fragment => fragment.AssociatedItem == itemEffect);
     }
 
     public void GainCurrency(int amount)

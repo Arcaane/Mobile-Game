@@ -51,7 +51,7 @@ public class ScriptableForItemCollection : EditorWindow
         temp.objectTitle = this.objectTitle;
         temp.descriptionText = this.descriptionText;
         temp.chapterNumber = $"Chapter {this.chapterNumber}";
-        temp.rarety = $"Rarety : {Enum.GetName(typeof(ItemRarety), this.rarety)}";
+        //temp.Rarity = $"Rarety : {Enum.GetName(typeof(ItemRarety), this.rarety)}";
         temp.powerUpText = this.powerUpText;
         
         AssetDatabase.CreateAsset(temp, assetPath);
