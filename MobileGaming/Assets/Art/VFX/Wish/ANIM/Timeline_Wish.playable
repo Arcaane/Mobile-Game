@@ -33,7 +33,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15e0374501f39d54eb30235764636e0e, type: 3}
-  m_Name: Control Track (2)
+  m_Name: Smoke
   m_EditorClassIdentifier: 
   m_Version: 3
   m_AnimClip: {fileID: 0}
@@ -155,9 +155,9 @@ MonoBehaviour:
   m_EulerAngles: {x: 0, y: 0, z: 0}
   m_UseTrackMatchFields: 1
   m_MatchTargetFields: 63
-  m_RemoveStartOffset: 1
+  m_RemoveStartOffset: 0
   m_ApplyFootIK: 1
-  m_Loop: 0
+  m_Loop: 2
   m_Version: 1
   m_Rotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &-625056137942339462
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_MatchTargetFields: 63
   m_RemoveStartOffset: 1
   m_ApplyFootIK: 1
-  m_Loop: 0
+  m_Loop: 2
   m_Version: 1
   m_Rotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &11400000
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15e0374501f39d54eb30235764636e0e, type: 3}
-  m_Name: Control Track
+  m_Name: Charge Hat
   m_EditorClassIdentifier: 
   m_Version: 3
   m_AnimClip: {fileID: 0}
@@ -324,7 +324,7 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: -1626285869062316685}
-    m_Duration: 10
+    m_Duration: 10.633333333333333
     m_TimeScale: 1
     m_ParentTrack: {fileID: 1533626705608929435}
     m_EaseInDuration: 0
@@ -434,7 +434,7 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: -625056137942339462}
-    m_Duration: 10
+    m_Duration: 10.633333333333333
     m_TimeScale: 1
     m_ParentTrack: {fileID: 5190781307391772975}
     m_EaseInDuration: 0
@@ -529,7 +529,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15e0374501f39d54eb30235764636e0e, type: 3}
-  m_Name: Control Track (1)
+  m_Name: Image
   m_EditorClassIdentifier: 
   m_Version: 3
   m_AnimClip: {fileID: 0}
@@ -544,7 +544,7 @@ MonoBehaviour:
     m_Start: 3.9499999999999997
     m_ClipIn: 0
     m_Asset: {fileID: -5368031999280816270}
-    m_Duration: 5.977914796769619
+    m_Duration: 6.683333333333334
     m_TimeScale: 1
     m_ParentTrack: {fileID: 5410640777481945550}
     m_EaseInDuration: 0
