@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1199524039470891736}
   - component: {fileID: 6979325171627222308}
   - component: {fileID: 5068758773806887343}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Bottle Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 1682817880434802403}
   - component: {fileID: 5794098496450927937}
   - component: {fileID: 1226038893613559237}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Bottle Shape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -315,11 +315,9 @@ MonoBehaviour:
   <LineRenderer>k__BackingField: {fileID: 1722924855489795752}
   <Collider>k__BackingField: {fileID: 4699740080010411168}
   bottleImage: {fileID: 9189563112177039142}
-  myMaterial: {fileID: 2100000, guid: af792047dc8912c4cb5b45b483283e2f, type: 2}
+  myMaterial: {fileID: 2100000, guid: 0959cc127d57d7d49b13cb5436f6ac42, type: 2}
   itemProgression: 0
   timeToCompleteTransportation: 1.5
-  lineGroupNumberText: {fileID: 0}
-  lineGroupNumber: 0
 --- !u!1 &7990441087891660444
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,7 +329,7 @@ GameObject:
   - component: {fileID: 4331244109403343314}
   - component: {fileID: 2563490602838450383}
   - component: {fileID: 7933800591448564306}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Bottle Zip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -408,7 +406,7 @@ GameObject:
   - component: {fileID: 7003373788337819860}
   - component: {fileID: 3022641100341651059}
   - component: {fileID: 851455934048744951}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -506,7 +504,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9189563112177039142}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Bottle Debug Pos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
