@@ -239,10 +239,10 @@ PlayableDirector:
     value: {fileID: 0}
   m_ExposedReferences:
     m_References:
-    - c79b03fc5e396e04180d817243a2fd77: {fileID: 0}
-    - f6511faf36dffa741b3db3ab8ae3b8a2: {fileID: 0}
+    - c79b03fc5e396e04180d817243a2fd77: {fileID: 231806162}
+    - f6511faf36dffa741b3db3ab8ae3b8a2: {fileID: 137570744}
     - c417edcfb294fbe41966274021e15a57: {fileID: 0}
-    - a3d318ffc328170488b20595590ae7f6: {fileID: 0}
+    - a3d318ffc328170488b20595590ae7f6: {fileID: 4558893361996435939}
     - 0f00a88479ad52a44b26d50d10349bb1: {fileID: 0}
     - 66de154cb58556f4f8eab748c6dc38fc: {fileID: 878942156}
 --- !u!4 &16949600
@@ -2673,7 +2673,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 56038a4e59902aa4aa546a8acb5dc576, type: 2}
+  - {fileID: 2100000, guid: 00149ac6f1919614ca2834ace4deb9d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2741,7 +2741,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 0
   startDelay:
@@ -9448,7 +9448,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 0
   startDelay:
@@ -17244,7 +17244,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 0
   startDelay:
@@ -22457,7 +22457,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 0
   startDelay:
@@ -29115,8 +29115,8 @@ Transform:
   m_Children:
   - {fileID: 2034991612}
   - {fileID: 484477455}
-  - {fileID: 878942158}
   - {fileID: 543450652645850015}
+  - {fileID: 878942158}
   - {fileID: 16949600}
   - {fileID: 214630075}
   m_Father: {fileID: 0}
@@ -32744,32 +32744,32 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8af1a311b1ac8604d82679c051697bd8,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.419747
+      value: 10.330527
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8af1a311b1ac8604d82679c051697bd8,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.419747
+      value: 10.330527
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8af1a311b1ac8604d82679c051697bd8,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.4197469
+      value: 10.330527
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8af1a311b1ac8604d82679c051697bd8,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 21.480904
+      value: -0.07502205
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8af1a311b1ac8604d82679c051697bd8,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -10.387308
+      value: 3.86
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8af1a311b1ac8604d82679c051697bd8,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.0080385
+      value: -0.16115999
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8af1a311b1ac8604d82679c051697bd8,
         type: 3}
@@ -32815,6 +32815,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SM_Stars_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8af1a311b1ac8604d82679c051697bd8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8af1a311b1ac8604d82679c051697bd8, type: 3}
@@ -39915,7 +39920,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 10
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -50445,7 +50450,7 @@ Transform:
   - {fileID: 8112745269615780871}
   - {fileID: 9169482006987645241}
   m_Father: {fileID: 631098550}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &751565810775455023
 GameObject:
@@ -61768,9 +61773,9 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
-  prewarm: 1
-  playOnAwake: 1
+  looping: 0
+  prewarm: 0
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 0
   startDelay:
