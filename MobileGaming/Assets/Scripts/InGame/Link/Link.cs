@@ -27,6 +27,8 @@ public class Link : MonoBehaviour
     private float currentTimer = 0f;
     public Product ProductInTreatment { get; private set; }
     private List<Link> dependentLinks = new List<Link>();
+
+    private bool flaggedForDestruction = false;
     
     private static readonly int FilingValue = Shader.PropertyToID("_FilingValue");
     #endregion
@@ -73,8 +75,6 @@ public class Link : MonoBehaviour
         ProductInTreatment = product;
         
         if (ProductInTreatment == null) return;
-        
-        EventManager.Trigger(new LinkCreatedEvent(this));
         
         StartCoroutine(MoveProductRoutine());
     }
@@ -123,7 +123,11 @@ public class Link : MonoBehaviour
         
         StartLinkable = startLink;
         EndLinkable = endLink;
-
+        
+        EventManager.Trigger(new LinkCreatedEvent(this));
+        
+        if(flaggedForDestruction) return;
+        
         extraTimeToComplete = 0f;
 
         EndLinkable.SetEndLinkable(this);
@@ -153,6 +157,7 @@ public class Link : MonoBehaviour
     public void Destroy()
     {
         OnDestroyed?.Invoke();
+        flaggedForDestruction = true;
         
         Destroy(gameObject);
     }

@@ -44,10 +44,10 @@ public class LevelService : ILevelService
         {
             var slot = clientAvailableEvent.ClientSlot;
             
+            queuedData.Enqueue(slot.data);
             if (queuedData.Count > 0) // data is available
             {
                 var data = queuedData.Dequeue();
-                queuedData.Enqueue(data);
                 slot.SetData(data);
                 return;
             }
@@ -90,8 +90,7 @@ public class LevelService : ILevelService
             if (currentTime < LevelDuration) return;
 
             if(queuedSlots.Count < clientCount) return;
-
-            Debug.Log("Ending Level");
+            
             var stars = 0;
             if (currentScore > scoreToWin) stars++;
             if (currentScore > palier2) stars++;
@@ -190,6 +189,9 @@ public class LevelService : ILevelService
         UpdateScoreUI();
         
         magicLineService.Enable();
+
+
+        EventManager.Trigger(new StartLevelEvent(CurrentLevel));
         
         running = true;
     }
@@ -262,6 +264,16 @@ public class LoadLevelEvent
     public Level Level { get;}
 
     public LoadLevelEvent(Level level)
+    {
+        Level = level;
+    }
+}
+
+public class StartLevelEvent
+{
+    public Level Level { get;}
+
+    public StartLevelEvent(Level level)
     {
         Level = level;
     }
