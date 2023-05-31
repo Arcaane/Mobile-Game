@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -133,8 +134,7 @@ public class WorkMachine : Machine
             if (nextLinksToUnload.Contains(link)) nextLinksToUnload.Remove(link);
         }
     }
-
-
+    
     #region Editor
 #if UNITY_EDITOR
     [CustomEditor(typeof(WorkMachine)),CanEditMultipleObjects]
