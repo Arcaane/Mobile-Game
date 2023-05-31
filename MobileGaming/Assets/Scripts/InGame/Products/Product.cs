@@ -61,7 +61,7 @@ public struct ProductData
         var contentSpriteIndex = 0;
         contentImage.color = UnityEngine.Color.white;
         shapeImage.color = UnityEngine.Color.white;
-        topingImage.color = Topping != ProductTopping.No ? UnityEngine.Color.clear : UnityEngine.Color.white;
+        topingImage.color = Topping == ProductTopping.No ? UnityEngine.Color.clear : UnityEngine.Color.white;
         switch (Shape)
         {
             case ProductShape.Heart:
@@ -155,6 +155,11 @@ public struct ProductData
 
         shapeImage.sprite = ScriptableSettings.GlobalSettings.bottleShapesSprites[shapeSpriteIndex];
         contentImage.sprite = ScriptableSettings.GlobalSettings.bottleContentSprites[contentSpriteIndex];
+    }
+
+    public override string ToString()
+    {
+        return $"Data : {Shape},{Color},{Topping}";
     }
 }
 

@@ -29,6 +29,7 @@ public class Level : MonoBehaviour
     public List<Machine> machines = new();
 
     [Header("Setup with tool automatically")] public List<ClientSlot> clientSlots = new ();
+    
     private void Start()
     {
         EventManager.Trigger(new LoadLevelEvent(this));

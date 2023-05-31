@@ -190,6 +190,9 @@ public class LevelService : ILevelService
         UpdateScoreUI();
         
         magicLineService.Enable();
+
+
+        EventManager.Trigger(new StartLevelEvent(CurrentLevel));
         
         running = true;
     }
@@ -262,6 +265,16 @@ public class LoadLevelEvent
     public Level Level { get;}
 
     public LoadLevelEvent(Level level)
+    {
+        Level = level;
+    }
+}
+
+public class StartLevelEvent
+{
+    public Level Level { get;}
+
+    public StartLevelEvent(Level level)
     {
         Level = level;
     }

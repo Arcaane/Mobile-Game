@@ -34,9 +34,12 @@ public class UIManager : MonoBehaviour
         EventManager.AddListener<LevelScoreUpdatedEvent>(UpdateScore);
         EventManager.AddListener<LevelTimeUpdatedEvent>(UpdateTime);
         EventManager.AddListener<ActivateDarkmodeEvent>(ActivateDarkmodeCanvas);
+        
+        EventManager.AddListener<LoadTutorialEvent>(HideTimerOnTutorial);
 
         void HideHud()
         {
+            EnableTimer(true);
             sorcererController.hudCanvasGO.SetActive(false);
             sorcererController.menuCanvasGO.SetActive(false);
         }
@@ -71,6 +74,16 @@ public class UIManager : MonoBehaviour
         {
             darkmodeCanvasGo.SetActive(darkmodeEvent.Value);
         }
+
+        void HideTimerOnTutorial(LoadTutorialEvent _)
+        {
+            EnableTimer(false);
+        }
+    }
+
+    public void EnableTimer(bool value)
+    {
+        timerText.gameObject.SetActive(value);
     }
 
     public void EnablePauseMenu()

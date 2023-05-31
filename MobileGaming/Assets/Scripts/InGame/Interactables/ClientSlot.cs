@@ -51,8 +51,6 @@ public class ClientSlot : MonoBehaviour, ILinkable
 
     private void Start()
     {
-        
-
         foreach (var system in emotesFeedback)
         {
             system.Stop();
@@ -170,6 +168,8 @@ public class ClientSlot : MonoBehaviour, ILinkable
 
     private void ReceiveProduct(Product product)
     {
+        Debug.Log($"Received {product.data} (expecting {expectedData}) ({product.data == expectedData})");
+        
         if (product.data == expectedData)
         {
             // TODO - wesh les emotes on fait kwa ?
