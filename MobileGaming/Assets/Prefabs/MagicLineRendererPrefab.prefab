@@ -198,7 +198,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!120 &1722924855489795752
@@ -316,8 +316,7 @@ MonoBehaviour:
   <Collider>k__BackingField: {fileID: 4699740080010411168}
   bottleImage: {fileID: 9189563112177039142}
   myMaterial: {fileID: 2100000, guid: 0959cc127d57d7d49b13cb5436f6ac42, type: 2}
-  itemProgression: 0
-  timeToCompleteTransportation: 1.5
+  <BaseTimeToCompleteTransportation>k__BackingField: 1.5
 --- !u!1 &7990441087891660444
 GameObject:
   m_ObjectHideFlags: 0

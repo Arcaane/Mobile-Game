@@ -172,7 +172,7 @@ public class Link : MonoBehaviour
         LineRenderer.BakeMesh(mesh,cam);
 
         Collider.sharedMesh = mesh;
-        
+
         Points = new Vector2[LineRenderer.positionCount];
 
         var vec3 = new Vector3[Points.Length];

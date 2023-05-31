@@ -13,8 +13,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
 
     private RectTransform buttonTr;
     private LayerMask linkableMask;
-    private Transform collisionPlane;
-    
+
     private Vector3[] points;
     private List<Link> magicLinks = new List<Link>();
     
@@ -71,13 +70,11 @@ public class MagicLineService : SwitchableService, IMagicLineService
 
         buttonTr = magicLinesData.buttonTr;
         buttonPos = buttonTr.position;
-        collisionPlane = magicLinesData.CollisionPlane;
-
+        
         linkableMask = magicLinesData.linkableMask;
         linkLayer = magicLinesData.linkLayerMask;
         floorLayer = magicLinesData.floorLayerMask;
     }
-
 
     public override void Enable()
     {
@@ -98,49 +95,33 @@ public class MagicLineService : SwitchableService, IMagicLineService
         
         if (currentLineInDrawning != null) Object.Destroy(currentLineInDrawning);
     }
-
-    [OnTick]
-    private void Update()
-    {
-        if(!enable) return;
-        
-        if (!isDraging) return;
-
-        if (inDestroyMode)
-        {
-            buttonTr.position = InputService.cursorPosition;
-            DestroySetLink();
-            
-        }
-        
-        //GetClickMachine();
-    }
     
     private void OnScreenTouch(Vector2 obj)
     {
+        if(!enable) return;
+        
         isPressed = true;
         Time.timeScale = magicLinesData.slowedTime;
         
         EventManager.Trigger(new ActivateDarkmodeEvent(true));
-        
-        if(SelectButton()) return;
+
+        SelectButton();
         
         StartLine();
     }
 
-    private bool SelectButton()
+    private void SelectButton()
     {
         var pos = InputService.cursorPosition;
 
-        if (buttonTr == null) return false;
-        if (pos.x > buttonPos.x + buttonTr.sizeDelta.x * 2) return false;
-        if (pos.y > buttonPos.y + buttonTr.sizeDelta.y * 2) return false;
-        if (pos.x < buttonPos.x) return false;
-        if (pos.y < buttonPos.y) return false;
+        if (buttonTr == null) return;
+        if (pos.x > buttonPos.x + buttonTr.sizeDelta.x * 2) return;
+        if (pos.y > buttonPos.y + buttonTr.sizeDelta.y * 2) return;
+        if (pos.x < buttonPos.x) return;
+        if (pos.y < buttonPos.y) return;
         
         buttonTr.pivot = Vector2.one * 0.5f;
         inDestroyMode = true;
-        return true;
     }
 
     private void OnScreenRelease(Vector2 obj)
@@ -201,9 +182,6 @@ public class MagicLineService : SwitchableService, IMagicLineService
 
             magicLinks.Add(link);
             link.OnDestroyed += RemoveLinkFromList;
-            
-            
-            
             
             link.SetLinks(startLinkable,endLinkable);
 
@@ -331,13 +309,18 @@ public class MagicLineService : SwitchableService, IMagicLineService
         
         if(!currentLinkables.Contains(linkable)){ currentLinkables.Add(linkable);}
     }
-
-    private void DestroySetLink()
+    
+    private void GetLinkToDestroy(Vector3 position)
     {
-        var ray = cam.ScreenPointToRay(InputService.cursorPosition);
-
+        position -= Vector3.up;
+        if (!Physics.Raycast(position, Vector3.up, out hit, 3f, linkLayer))
+        {
+            //Debug.DrawRay(position,Vector3.up*3f,Color.red);
+            return;
+        }
+        
+        //Debug.DrawRay(position,Vector3.up*3f,Color.green);
         linkToDestroy = null;
-        if (!Physics.Raycast(ray, out hit, linkLayer)) return;
         var link = hit.transform.GetComponent<Link>();
 
         linkToDestroy = link != null ? link : null;
@@ -377,14 +360,20 @@ public class MagicLineService : SwitchableService, IMagicLineService
 
             if (Physics.Raycast(ray.origin,ray.direction, out hit,100f, floorLayer))
             {
-                //Debug.DrawLine(ray.origin,hit.point,Color.red);
-                
-                var point = hit.point + ray.direction * (-1 * 1f);  
-                line.positionCount++;
-                line.SetPosition(line.positionCount-1, point);
-                
-                GetLinkable(hit.point);
+                if (inDestroyMode)
+                {
+                    buttonTr.position = InputService.cursorPosition;
+                    GetLinkToDestroy(hit.point);
+                }
+                else
+                {
+                    var point = hit.point + ray.direction * (-1 * 1f);  
+                    line.positionCount++;
+                    line.SetPosition(line.positionCount-1, point);
+                    GetLinkable(hit.point);
+                }
             }
+            
             yield return null;
         }
     }

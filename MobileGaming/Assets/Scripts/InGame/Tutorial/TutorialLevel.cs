@@ -25,9 +25,9 @@ public class TutorialLevel : Level
         EventManager.AddListener<StartLevelEvent>(StartTutorial);
         EventManager.AddListener<EndLevelEvent>(RemoveTutorialModifications);
         
-        EventManager.AddListener<LinkCreatedEvent>(DestroyIfInvalidLink);
-        EventManager.AddListener<LinkCreatedEvent>(DestroyIfGeneratorToClientLink);
-        EventManager.AddListener<LinkDestroyedEvent>(GoToNextStepOnCompleteLink);
+        //EventManager.AddListener<LinkCreatedEvent>(DestroyIfInvalidLink);
+        //EventManager.AddListener<LinkCreatedEvent>(DestroyIfGeneratorToClientLink);
+        //EventManager.AddListener<LinkDestroyedEvent>(GoToNextStepOnCompleteLink);
         
         EventManager.AddListener<LevelTimeUpdatedEvent>(DelayTimer);
 
@@ -138,8 +138,6 @@ public class TutorialLevel : Level
     {
         expectedStartLinkables.Clear();
         expectedEndLinkables.Clear();
-        
-        
         
         tutorialCanvas.PlayFourthSequence();
         
