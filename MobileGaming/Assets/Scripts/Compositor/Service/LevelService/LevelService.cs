@@ -90,8 +90,7 @@ public class LevelService : ILevelService
             if (currentTime < LevelDuration) return;
 
             if(queuedSlots.Count < clientCount) return;
-
-            Debug.Log("Ending Level");
+            
             var stars = 0;
             if (currentScore > scoreToWin) stars++;
             if (currentScore > palier2) stars++;

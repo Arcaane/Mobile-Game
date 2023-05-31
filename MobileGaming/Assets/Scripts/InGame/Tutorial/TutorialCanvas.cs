@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.InputSystem.Interactions;
 
 public class TutorialCanvas : MonoBehaviour
 {
@@ -52,42 +49,48 @@ public class TutorialCanvas : MonoBehaviour
         StopSequence();
         
         sequence = DOTween.Sequence();
+        sequence.AppendCallback(() => ShowCursor(true));
         sequence.AppendCallback(() => CursorTr.position = generatorStartPosition);
         sequence.AppendInterval(0.1f);
         sequence.Append(CursorTr.DOMove(generatorPosition, 1f));
         sequence.AppendInterval(0.1f);
         sequence.Append(CursorTr.DOMove(redMachinePosition, 1f));
-        sequence.AppendInterval(2f);
+        sequence.AppendInterval(1f);
+        sequence.AppendCallback(() => ShowCursor(false));
+        sequence.AppendInterval(1f);
 
+        
         sequence.SetLoops(-1);
 
         sequence.Play();
     }
     
-    [ContextMenu("Complete sequence 1")]
     public void PlaySecondSequence()
     {
         StopSequence();
         
         sequence = DOTween.Sequence();
+        sequence.AppendCallback(() => ShowCursor(true));
         sequence.AppendCallback(() => CursorTr.position = redMachineStartPosition);
         sequence.AppendInterval(0.1f);
         sequence.Append(CursorTr.DOMove(redMachinePosition, 1f));
         sequence.AppendInterval(0.1f);
         sequence.Append(CursorTr.DOMove(clientPosition, 1f));
-        sequence.AppendInterval(2f);
+        sequence.AppendInterval(1f);
+        sequence.AppendCallback(() => ShowCursor(false));
+        sequence.AppendInterval(1f);
 
         sequence.SetLoops(-1);
 
         sequence.Play();
     }
     
-    [ContextMenu("Complete sequence 2")]
     public void PlayThirdSequence()
     {
         StopSequence();
         
         sequence = DOTween.Sequence();
+        sequence.AppendCallback(() => ShowCursor(true));
         sequence.AppendCallback(() => CursorTr.position = generatorStartPosition);
         sequence.AppendInterval(0.1f);
         sequence.Append(CursorTr.DOMove(generatorPosition, 1f));
@@ -95,21 +98,31 @@ public class TutorialCanvas : MonoBehaviour
         sequence.Append(CursorTr.DOMove(blueMachinePosition, 1f));
         sequence.AppendInterval(0.1f);
         sequence.Append(CursorTr.DOMove(clientPosition, 1f));
-        sequence.AppendInterval(2f);
+        sequence.AppendInterval(1f);
+        sequence.AppendCallback(() => ShowCursor(false));
+        sequence.AppendInterval(1f);
 
         sequence.SetLoops(-1);
 
         sequence.Play();
     }
-
-    [ContextMenu("Complete Sequence 3")]
+    
     public void PlayFourthSequence()
     {
         StopSequence();
+        
         CursorTr.position = scissorsPosition;
+        sequence = DOTween.Sequence();
+        sequence.AppendCallback(() => ShowCursor(true));
+        sequence.AppendInterval(1f);
+        sequence.AppendCallback(() => ShowCursor(false));
+        sequence.AppendInterval(1f);
+        
+        sequence.SetLoops(-1);
+        
+        sequence.Play();
     }
-
-    [ContextMenu("Stop Sequence")]
+    
     public void StopSequence()
     {
         sequence.Kill();

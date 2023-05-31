@@ -110,7 +110,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         {
             buttonTr.position = InputService.cursorPosition;
             DestroySetLink();
-            return;
+            
         }
         
         //GetClickMachine();
@@ -200,10 +200,13 @@ public class MagicLineService : SwitchableService, IMagicLineService
             var lr = link.LineRenderer;
 
             magicLinks.Add(link);
-
+            link.OnDestroyed += RemoveLinkFromList;
+            
+            
+            
+            
             link.SetLinks(startLinkable,endLinkable);
 
-            link.OnDestroyed += RemoveMachine;
             
             var startLinkablePos = startLinkable.Position;
             var endLinkablePos = endLinkable.Position;
@@ -238,7 +241,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
             
             CheckLinkCollisions(link);
             
-            void RemoveMachine()
+            void RemoveLinkFromList()
             {
                 if (magicLinks.Contains(link)) magicLinks.Remove(link);
             }
