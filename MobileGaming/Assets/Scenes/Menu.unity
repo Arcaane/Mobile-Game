@@ -6952,7 +6952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelScriptable: {fileID: 11400000, guid: 9ea48a1701f793d44827a57eb7d437f7, type: 2}
   levelText: {fileID: 2070272638}
-  isLevelLock: 0
+  isLevelLock: 1
 --- !u!114 &139738989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14265,7 +14265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelScriptable: {fileID: 11400000, guid: 2822ce2d9fba95c4d8ff2503caf07602, type: 2}
   levelText: {fileID: 1843938480}
-  isLevelLock: 0
+  isLevelLock: 1
 --- !u!114 &449855651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36166,7 +36166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelScriptable: {fileID: 11400000, guid: c72267e0c46385a43bbbb2928d31419b, type: 2}
   levelText: {fileID: 1420896334}
-  isLevelLock: 0
+  isLevelLock: 1
 --- !u!114 &1726541022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38116,7 +38116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelScriptable: {fileID: 11400000, guid: be0916af62b2c464fb01369154c60894, type: 2}
   levelText: {fileID: 495677247}
-  isLevelLock: 0
+  isLevelLock: 1
 --- !u!114 &1998509952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40699,18 +40699,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2676340976435063749}
-        m_TargetAssemblyTypeName: LevelPreScreenContentHolder, Assembly-CSharp
-        m_MethodName: LaunchLevel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 2676340976650285803}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -40727,6 +40715,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2676340976435063749}
+        m_TargetAssemblyTypeName: LevelPreScreenContentHolder, Assembly-CSharp
+        m_MethodName: LaunchLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

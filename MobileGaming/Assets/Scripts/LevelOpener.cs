@@ -23,12 +23,6 @@ public class LevelOpener : MonoBehaviour
             GetComponent<Button>().enabled = isLevelLock;
         }
     }
-
-    public void AccessLevel()
-    {
-        if (isLevelLock) return;
-        SceneManager.LoadScene("TestScene");
-    }
     
     public void LevelSelectionBuild()
     {
