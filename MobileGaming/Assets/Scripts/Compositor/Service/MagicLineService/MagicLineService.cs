@@ -315,13 +315,14 @@ public class MagicLineService : SwitchableService, IMagicLineService
 
     private void GetLinkable(Vector3 position)
     {
-        if (!Physics.Raycast(position, Vector3.up, out hit, 1f, linkableMask))
+        position -= Vector3.up;
+        if (!Physics.Raycast(position, Vector3.up, out hit, 3f, linkableMask))
         {
-            //Debug.DrawRay(position,Vector3.up*2f,Color.red);
+            //Debug.DrawRay(position,Vector3.up*3f,Color.red);
             return;
         }
         
-        //Debug.DrawRay(position,Vector3.up*2f,Color.green);
+        //Debug.DrawRay(position,Vector3.up*3f,Color.green);
         var linkable = hit.transform.GetComponent<ILinkable>();
         if (linkable == null) return;
         
@@ -371,7 +372,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         {
             var ray = cam.ScreenPointToRay(InputService.cursorPosition);
 
-            if (Physics.Raycast(ray.origin,ray.direction, out hit, 15f, floorLayer))
+            if (Physics.Raycast(ray.origin,ray.direction, out hit,100f, floorLayer))
             {
                 //Debug.DrawLine(ray.origin,hit.point,Color.red);
                 
