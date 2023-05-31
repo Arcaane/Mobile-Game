@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "Settings")]
 public class ScriptableSettings : ScriptableObject
@@ -35,12 +34,22 @@ public class ScriptableSettings : ScriptableObject
         Debug.Log($"Global Settings set to {GlobalSettings}");
     }
 
-    public static void EquipItems(List<CollectionItem> items)
+    public static void EquipItem(CollectionItem item)
+    {
+        GlobalSettings.equippedItemEffects.AddRange(item.ScriptableItemEffects);
+    }
+    
+    public static void RemoveItem(CollectionItem item)
+    {
+        foreach (var effect in item.ScriptableItemEffects.Where(effect => GlobalSettings.equippedItemEffects.Contains(effect)))
+        {
+            GlobalSettings.equippedItemEffects.Remove(effect);
+        }
+    }
+    
+    [ContextMenu("Reset")]
+    private void Reset()
     {
         GlobalSettings.equippedItemEffects.Clear();
-        foreach (var item in items)
-        {
-            GlobalSettings.equippedItemEffects.AddRange(item.ScriptableItemEffects);
-        }
     }
 }
