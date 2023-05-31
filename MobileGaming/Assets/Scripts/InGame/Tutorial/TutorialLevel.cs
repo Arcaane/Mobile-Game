@@ -24,11 +24,24 @@ public class TutorialLevel : Level
         
         EventManager.AddListener<StartLevelEvent>(StartTutorial);
         EventManager.AddListener<EndLevelEvent>(RemoveTutorialModifications);
-        //EventManager.AddListener<LinkCreatedEvent>(DestroyIfInvalidLink);
+        
+        EventManager.AddListener<LinkCreatedEvent>(DestroyIfInvalidLink);
+        EventManager.AddListener<LinkCreatedEvent>(DestroyIfGeneratorToClientLink);
+        EventManager.AddListener<LinkDestroyedEvent>(GoToNextStepOnCompleteLink);
+        
         EventManager.AddListener<LevelTimeUpdatedEvent>(DelayTimer);
 
         EventManager.Trigger(new LoadLevelEvent(this));
         EventManager.Trigger(new LoadTutorialEvent());
+    }
+    
+    private void StartTutorial(StartLevelEvent startLevelEvent)
+    {
+        EventManager.RemoveListener<StartLevelEvent>(StartTutorial);
+        
+        sequenceQueue.Enqueue(PlayFirstSequence);
+        
+        NextSequence();
     }
 
     private void RemoveTutorialModifications(EndLevelEvent _)
@@ -38,21 +51,41 @@ public class TutorialLevel : Level
         
         tutorialCanvas.StopSequence();
     }
+    
+    private void DestroyIfInvalidLink(LinkCreatedEvent linkCreatedEvent)
+    {
+        var link = linkCreatedEvent.Link;
+        
+        if (expectedStartLinkables.Contains(link.StartLinkable) && expectedEndLinkables.Contains(link.EndLinkable)) return;
+        
+        link.DestroyLink();
+    }
+    
+    private void DestroyIfGeneratorToClientLink(LinkCreatedEvent linkCreatedEvent)
+    {
+        var link = linkCreatedEvent.Link;
+        
+        if(link.StartLinkable is not Machine machine) return;
+        if(link.EndLinkable is not ClientSlot client) return;
+        
+        if(machine == machines[0] && client == clientSlots[0]) link.DestroyLink();
+    }
 
+    private void GoToNextStepOnCompleteLink(LinkDestroyedEvent linkDestroyedEvent)
+    {
+        if(!linkDestroyedEvent.CompletedTransfer) return;
+
+        var link = linkDestroyedEvent.Link;
+        expectedStartLinkables.Remove(link.StartLinkable);
+        expectedEndLinkables.Remove(link.EndLinkable);
+        if(expectedStartLinkables.Count <= 0 && expectedEndLinkables.Count <= 0) NextSequence();
+    }
+    
     private void DelayTimer(LevelTimeUpdatedEvent levelTimeUpdatedEvent)
     {
-        
+        levelTimeUpdatedEvent.Service.IncreaseLevelDuration(Time.deltaTime);
     }
-
-    private void StartTutorial(StartLevelEvent startLevelEvent)
-    {
-        EventManager.RemoveListener<StartLevelEvent>(StartTutorial);
-        
-        sequenceQueue.Enqueue(PlayFirstSequence);
-        
-    }
-
-    [ContextMenu("Next")]
+    
     private void NextSequence()
     {
         if(sequenceQueue.Count <= 0) return;
@@ -106,6 +139,8 @@ public class TutorialLevel : Level
         expectedStartLinkables.Clear();
         expectedEndLinkables.Clear();
         
+        
+        
         tutorialCanvas.PlayFourthSequence();
         
         sequenceQueue.Enqueue(EndTutorial);
@@ -113,16 +148,7 @@ public class TutorialLevel : Level
 
     private void EndTutorial()
     {
-        
-    }
-
-    private void DestroyIfInvalidLink(LinkCreatedEvent linkCreatedEvent)
-    {
-        var link = linkCreatedEvent.Link;
-        
-        if (expectedStartLinkables.Contains(link.StartLinkable) && expectedEndLinkables.Contains(link.EndLinkable)) return;
-        
-        link.Destroy();
+        EventManager.RemoveListener<LevelTimeUpdatedEvent>(DelayTimer);
     }
 }
 

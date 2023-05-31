@@ -29,7 +29,6 @@ public class ScriptableItemIncreaseMachineWorkSpeed : ScriptableItemEffect
 
             var amount = machine.BaseTimeMultiplier*(TimeMultiplier-1);
             
-            Debug.Log("Proc");
             machine.IncreaseTimeMultiplier(amount);
             
             EventManager.AddListener<MachineEndWorkEvent>(RemoveMultiplierOnEndWork);

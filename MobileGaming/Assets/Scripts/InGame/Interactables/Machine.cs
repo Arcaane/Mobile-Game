@@ -10,6 +10,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
     [Header("Feedback")]
     [SerializeField] private Image[] feedbackImages;
     [SerializeField] protected TextMeshProUGUI feedbackText;
+    [SerializeField] protected GameObject selectedFeedbackGo;
 
     [field:Header("Production Settings")]
     [field: SerializeField] public float BaseTimeToProduce { get; private set; } = 5f;
@@ -37,7 +38,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
     public void ResetVariables()
     {
         extraTime = 0f;
-        
+        selectedFeedbackGo.SetActive(false);
         Setup();
     }
 

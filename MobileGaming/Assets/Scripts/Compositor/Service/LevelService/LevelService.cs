@@ -44,7 +44,8 @@ public class LevelService : ILevelService
         {
             var slot = clientAvailableEvent.ClientSlot;
             
-            queuedData.Enqueue(slot.data);
+            if (currentTime < LevelDuration) queuedData.Enqueue(slot.data);
+            
             if (queuedData.Count > 0) // data is available
             {
                 var data = queuedData.Dequeue();
@@ -200,8 +201,11 @@ public class LevelService : ILevelService
     private void Update()
     {
         if (!running) return;
-        
-        if(currentTime > LevelDuration) return;
+
+        if (currentTime > LevelDuration)
+        {
+            return;
+        }
         
         IncreaseTime();
     }
@@ -216,6 +220,7 @@ public class LevelService : ILevelService
 
         if (currentTime > LevelDuration)
         {
+            queuedTimings.Clear();
             queuedData.Clear();
         }
 
@@ -242,7 +247,7 @@ public class LevelService : ILevelService
 
     private void UpdateTimeUI()
     {
-        EventManager.Trigger(new LevelTimeUpdatedEvent(currentTime,LevelDuration));
+        EventManager.Trigger(new LevelTimeUpdatedEvent(currentTime,LevelDuration,this));
     }
     
     private void UpdateScoreUI()
@@ -306,9 +311,11 @@ public class LevelTimeUpdatedEvent
 {
     public float CurrentTime { get; }
     public float MaxTime { get; }
-    public LevelTimeUpdatedEvent(float time, float maxTime)
+    public LevelService Service { get; }
+    public LevelTimeUpdatedEvent(float time, float maxTime,LevelService service)
     {
         CurrentTime = time;
         MaxTime = maxTime;
+        Service = service;
     }
 }

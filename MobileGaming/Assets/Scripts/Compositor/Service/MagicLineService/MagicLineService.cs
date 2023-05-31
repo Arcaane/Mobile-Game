@@ -156,7 +156,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         
         if (linkToDestroy != null)
         {
-            linkToDestroy.Destroy();
+            linkToDestroy.DestroyLink();
             linkToDestroy = null;
             return;
         }

@@ -51,12 +51,10 @@ public class Link : MonoBehaviour
         
         bottleImage.position = Vector3.Lerp(StartLinkable.Position + Vector3.up, 
             EndLinkable.Position + Vector3.up, currentTimer / TimeToCompleteTransportation);
-        
     }
     
     private void SetUIProduct()
     {
-        // Forme de la bouteille
         if(ProductInTreatment == null) return;
         
         var shapeImage = bottleImage.transform.GetChild(0).GetComponent<Image>();
@@ -110,9 +108,7 @@ public class Link : MonoBehaviour
         
         ProductInTreatment = null;
         
-        Destroy();
-        
-        Destroy(gameObject);
+        DestroyLink(true);
     }
 
     #endregion
@@ -154,9 +150,11 @@ public class Link : MonoBehaviour
     public event Action<Product> OnComplete;
     public event Action OnDestroyed;
 
-    public void Destroy()
+    public void DestroyLink(bool completedTransfer = false)
     {
         OnDestroyed?.Invoke();
+        var startedTransfer = (ProductInTreatment == null) || completedTransfer;
+        EventManager.Trigger(new LinkDestroyedEvent(this,startedTransfer,completedTransfer));
         flaggedForDestruction = true;
         
         Destroy(gameObject);
@@ -197,5 +195,19 @@ public class LinkCreatedEvent
     public LinkCreatedEvent(Link link)
     {
         Link = link;
+    }
+}
+
+public class LinkDestroyedEvent
+{
+    public Link Link { get; }
+    public bool StartedTransfer { get; }
+    public bool CompletedTransfer { get; }
+
+    public LinkDestroyedEvent(Link link,bool startedTransfer,bool completedTransfer)
+    {
+        Link = link;
+        StartedTransfer = startedTransfer;
+        CompletedTransfer = startedTransfer && completedTransfer;
     }
 }
