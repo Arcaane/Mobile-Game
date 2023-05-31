@@ -6,6 +6,7 @@ using UnityEngine;
 public class TutorialLevel : Level
 {
     [SerializeField] private TutorialCanvas tutorialCanvas;
+    [SerializeField] private LineRenderer tutorialLine;
 
     private List<ILinkable> expectedStartLinkables = new List<ILinkable>();
     private List<ILinkable> expectedEndLinkables = new List<ILinkable>();
@@ -18,6 +19,7 @@ public class TutorialLevel : Level
         Debug.Log("Starting tutorial");
         
         levelDuration = 2f;
+        tutorialLine.positionCount = 0;
         
         sequenceQueue.Clear();
         tutorialCanvas.ShowCursor(false);
@@ -27,8 +29,7 @@ public class TutorialLevel : Level
         
         EventManager.AddListener<LinkCreatedEvent>(DestroyIfInvalidLink);
         EventManager.AddListener<LinkCreatedEvent>(DestroyIfGeneratorToClientLink);
-        EventManager.AddListener<LinkDestroyedEvent>(GoToNextStepOnCompleteLink);
-        
+
         EventManager.AddListener<LevelTimeUpdatedEvent>(DelayTimer);
 
         EventManager.Trigger(new LoadLevelEvent(this));
@@ -50,6 +51,7 @@ public class TutorialLevel : Level
         EventManager.RemoveListener<LinkCreatedEvent>(DestroyIfInvalidLink);
         EventManager.RemoveListener<LinkCreatedEvent>(DestroyIfGeneratorToClientLink);
         EventManager.RemoveListener<LinkDestroyedEvent>(GoToNextStepOnCompleteLink);
+        EventManager.RemoveListener<MachineEndWorkEvent>(GoToNextStepOnWorkComplete);
         EventManager.RemoveListener<LevelTimeUpdatedEvent>(DelayTimer);
         EventManager.RemoveListener<LinkDestroyedEvent>(GoToNextStepOnLinkDestroyed);
         
@@ -75,6 +77,11 @@ public class TutorialLevel : Level
         if(machine == machines[0] && client == clientSlots[0]) link.DestroyLink();
     }
 
+    private void GoToNextStepOnWorkComplete(MachineEndWorkEvent machineEndWorkEvent)
+    {
+        NextSequence();
+    }
+
     private void GoToNextStepOnCompleteLink(LinkDestroyedEvent linkDestroyedEvent)
     {
         if(!linkDestroyedEvent.CompletedTransfer) return;
@@ -98,6 +105,10 @@ public class TutorialLevel : Level
     
     private void NextSequence()
     {
+        EventManager.RemoveListener<MachineEndWorkEvent>(GoToNextStepOnWorkComplete);
+        EventManager.RemoveListener<LinkDestroyedEvent>(GoToNextStepOnCompleteLink);
+        EventManager.RemoveListener<LinkDestroyedEvent>(GoToNextStepOnLinkDestroyed);
+        
         if(sequenceQueue.Count <= 0) return;
         
         sequenceQueue.Dequeue().Invoke();
@@ -111,6 +122,10 @@ public class TutorialLevel : Level
         expectedStartLinkables.Add(machines[0]);
         expectedEndLinkables.Add(machines[1]);
         
+        CreateLine(machines[0], machines[1]);
+        
+        EventManager.AddListener<MachineEndWorkEvent>(GoToNextStepOnWorkComplete);
+        
         tutorialCanvas.PlayFirstSequence();
         
         sequenceQueue.Enqueue(PlaySecondSequence);
@@ -123,6 +138,9 @@ public class TutorialLevel : Level
         
         expectedStartLinkables.Add(machines[1]);
         expectedEndLinkables.Add(clientSlots[0]);
+        
+        CreateLine(machines[1], clientSlots[0]);
+        EventManager.AddListener<LinkDestroyedEvent>(GoToNextStepOnCompleteLink);
         
         tutorialCanvas.PlaySecondSequence();
         
@@ -138,6 +156,9 @@ public class TutorialLevel : Level
         expectedStartLinkables.Add(machines[2]);
         expectedEndLinkables.Add(machines[2]);
         expectedEndLinkables.Add(clientSlots[0]);
+        
+        CreateLine(machines[0], machines[2], clientSlots[0]);
+        EventManager.AddListener<LinkDestroyedEvent>(GoToNextStepOnCompleteLink);
         
         tutorialCanvas.PlayThirdSequence();
         
@@ -157,6 +178,8 @@ public class TutorialLevel : Level
         expectedEndLinkables.Clear();
         
         EventManager.AddListener<LinkDestroyedEvent>(GoToNextStepOnLinkDestroyed);
+
+        tutorialLine.enabled = false;
         
         tutorialCanvas.PlayFourthSequence();
         
@@ -168,6 +191,17 @@ public class TutorialLevel : Level
         EventManager.Trigger(new EndTutorialEvent());
         tutorialCanvas.ShowCursor(false);
         RemoveTutorialModifications(null);
+    }
+
+    private void CreateLine(params ILinkable[] linkables)
+    {
+        tutorialLine.positionCount = linkables.Length;
+        for (int i = 0; i < tutorialLine.positionCount; i++)
+        {
+            var pos = linkables[i].Position;
+            pos.y = 1.5f;
+            tutorialLine.SetPosition(i,pos);
+        }
     }
 }
 

@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class TutorialCanvas : MonoBehaviour
 {
+    [Header("Cursor")]
     [SerializeField] private GameObject cursorGo;
     [field:SerializeField] public RectTransform CursorTr { get; private set; }
     [SerializeField] private Animator cursorAnimator;
-
     [SerializeField] private RectTransform[] waypoints;
+    
     private Vector3 generatorStartPosition => waypoints[0].position;
     private Vector3 redMachineStartPosition => waypoints[7].position;
     private Vector3 generatorPosition => waypoints[1].position;
