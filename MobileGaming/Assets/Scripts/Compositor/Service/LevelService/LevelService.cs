@@ -44,10 +44,10 @@ public class LevelService : ILevelService
         {
             var slot = clientAvailableEvent.ClientSlot;
             
+            queuedData.Enqueue(slot.data);
             if (queuedData.Count > 0) // data is available
             {
                 var data = queuedData.Dequeue();
-                queuedData.Enqueue(data);
                 slot.SetData(data);
                 return;
             }
