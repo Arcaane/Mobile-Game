@@ -137,6 +137,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         
         if (linkToDestroy != null)
         {
+            magicLinesData.OpenScissors(false);
             linkToDestroy.DestroyLink();
             linkToDestroy = null;
             return;
@@ -316,6 +317,8 @@ public class MagicLineService : SwitchableService, IMagicLineService
         if (!Physics.Raycast(position, Vector3.up, out hit, 3f, linkLayer))
         {
             //Debug.DrawRay(position,Vector3.up*3f,Color.red);
+            magicLinesData.OpenScissors(false);
+            linkToDestroy = null;
             return;
         }
         
@@ -324,6 +327,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         var link = hit.transform.GetComponent<Link>();
 
         linkToDestroy = link != null ? link : null;
+        magicLinesData.OpenScissors(true);
     }
 
     #region DrawLines&Mesh

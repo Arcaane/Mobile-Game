@@ -1633,6 +1633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <buttonTr>k__BackingField: {fileID: 3808404713572148011}
+  <deleteButtonAnimator>k__BackingField: {fileID: 1650426183223966426}
   <CollisionPlane>k__BackingField: {fileID: 8229045456995528134}
   <slowedTime>k__BackingField: 0.5
   <linkableMask>k__BackingField:
@@ -6783,6 +6784,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b915d47749d71774a984c1353ced93af, type: 3}
+--- !u!95 &1650426183223966426 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8197637877446879611, guid: b915d47749d71774a984c1353ced93af,
+    type: 3}
+  m_PrefabInstance: {fileID: 7432243311354794913}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3808404713572148011 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6052426687087865994, guid: b915d47749d71774a984c1353ced93af,

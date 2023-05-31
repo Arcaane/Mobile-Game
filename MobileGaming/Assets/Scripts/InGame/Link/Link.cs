@@ -32,12 +32,7 @@ public class Link : MonoBehaviour
     
     private static readonly int FilingValue = Shader.PropertyToID("_FilingValue");
     #endregion
-
-    private void Start()
-    {
-        dependentLinks.Clear();
-    }
-
+    
     public void IncreaseExtraTimeToComplete(float amount)
     {
         extraTimeToComplete += amount;
@@ -56,6 +51,7 @@ public class Link : MonoBehaviour
     private void SetUIProduct()
     {
         if(ProductInTreatment == null) return;
+        bottleImage.gameObject.SetActive(true);
         
         var shapeImage = bottleImage.transform.GetChild(0).GetComponent<Image>();
         var contentImage = bottleImage.transform.GetChild(1).GetComponent<Image>();
