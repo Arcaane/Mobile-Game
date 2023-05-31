@@ -46,16 +46,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31874cae9bd33444db4c80a1b308a233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  feedbackImage: {fileID: 0}
-  feedbackObject: {fileID: 0}
+  feedbackImages: []
   feedbackText: {fileID: 0}
-  baseTimeToProduce: 5
-  timeMultiplier: 1
+  <BaseTimeToProduce>k__BackingField: 5
+  <BaseTimeMultiplier>k__BackingField: 1
   newProduct:
     data:
       Color: 0
       Shape: 0
-  timeUntilRefresh: 2
+      Topping: 0
 --- !u!65 &8848783579804282980
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -67,8 +66,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.2, y: 3, z: 2.2}
-  m_Center: {x: 0, y: 1.45, z: 0}
+  m_Size: {x: 2.45, y: 0.4, z: 2.5}
+  m_Center: {x: 0.06, y: 0.10000001, z: 0}
 --- !u!1 &7457948869411325158
 GameObject:
   m_ObjectHideFlags: 0

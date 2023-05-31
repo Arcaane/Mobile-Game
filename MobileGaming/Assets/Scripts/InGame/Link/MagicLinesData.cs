@@ -10,7 +10,9 @@ public class MagicLinesData : MonoBehaviour
     [field: SerializeField] public float slowedTime { get; private set; } = 0.5f; 
     
     [field: Header("Variables")]
-    [field: SerializeField] public LayerMask machineLayerMask{ get; private set; }
+    [field: SerializeField] public LayerMask linkableMask{ get; private set; }
+    [field: SerializeField] public LayerMask linkLayerMask{ get; private set; }
+    [field: SerializeField] public LayerMask floorLayerMask{ get; private set; }
     [field: SerializeField] public Link linkPrefab{ get; private set; }
     public Material[] shaderDarkness;
 }

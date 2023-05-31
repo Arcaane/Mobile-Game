@@ -24,7 +24,7 @@ public class ScriptableSettings : ScriptableObject
     
     [field:Header("Items")]
     [field: SerializeField] public ScriptableItemDatabase itemDB { get; private set; }
-    [field: SerializeField] private List<ScriptableItemEffect> equippedItemEffects;
+    [field: SerializeField] private List<ScriptableItemEffect> equippedItemEffects = new List<ScriptableItemEffect>();
     public static List<ScriptableItemEffect> EquippedItemEffects => GlobalSettings.equippedItemEffects;
     public static ScriptableSettings GlobalSettings { get; private set; }
 
