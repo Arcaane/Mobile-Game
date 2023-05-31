@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   <LevelScenes>k__BackingField: 0300000004000000050000000600000007000000
-  <DefaultStartIndex>k__BackingField: 0
+  <DefaultStartIndex>k__BackingField: 1
   <bottleShapesSprites>k__BackingField:
   - {fileID: -1426059977, guid: aed75903643729a4c9611b5baefc1900, type: 3}
   - {fileID: 2048094751, guid: aed75903643729a4c9611b5baefc1900, type: 3}
@@ -34,4 +34,5 @@ MonoBehaviour:
   - {fileID: 1659271634, guid: b35986313f4571b4bacf8cf62bc12032, type: 3}
   <itemDB>k__BackingField: {fileID: 11400000, guid: 9f53fe865ed76a64684e7eeacb2da4af,
     type: 2}
-  equippedItemEffects: []
+  equippedItemEffects:
+  - {fileID: 11400000, guid: aee53da718d789442b153fb0b41a6977, type: 2}
