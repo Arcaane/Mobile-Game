@@ -150,7 +150,11 @@ public class MagicLineService : SwitchableService, IMagicLineService
         
         FinishLine();
         LinkMachines();
-        
+
+        foreach (var linkable in currentLinkables)
+        {
+            linkable.ShowHighlight(false);
+        }
         currentLinkables.Clear();
     }
     
@@ -327,8 +331,11 @@ public class MagicLineService : SwitchableService, IMagicLineService
         //Debug.DrawRay(position,Vector3.up*3f,Color.green);
         var linkable = hit.transform.GetComponent<ILinkable>();
         if (linkable == null) return;
+
+        if (currentLinkables.Contains(linkable)) return;
         
-        if(!currentLinkables.Contains(linkable)){ currentLinkables.Add(linkable);}
+        linkable.ShowHighlight(true);
+        currentLinkables.Add(linkable);
     }
     
     private void GetLinkToDestroy(Vector3 position)

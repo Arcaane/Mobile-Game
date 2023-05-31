@@ -13,6 +13,7 @@ public class ClientSlot : MonoBehaviour, ILinkable
     [Header("Feedback")]
     [SerializeField] private GameObject bottlesToBuyUIGo;
     [SerializeField] private GameObject satisfactionBarGo;
+    [SerializeField] private GameObject selectedHighlightGo;
     [SerializeField] private Image feedbackImage;
     [SerializeField] private Image contentImage;
     [SerializeField] private Image shapeImage;
@@ -51,6 +52,8 @@ public class ClientSlot : MonoBehaviour, ILinkable
 
     private void Start()
     {
+        ShowHighlight(false);
+        
         foreach (var system in emotesFeedback)
         {
             system.Stop();
@@ -213,6 +216,11 @@ public class ClientSlot : MonoBehaviour, ILinkable
     #endregion
 
     #region Linkable
+
+    public void ShowHighlight(bool value)
+    {
+        selectedHighlightGo.SetActive(value);
+    }
 
     public void SetStartLinkable(Link link)
     {

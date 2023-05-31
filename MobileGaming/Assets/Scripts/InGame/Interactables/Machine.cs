@@ -118,6 +118,12 @@ public abstract class Machine : MonoBehaviour, ILinkable
     #endregion
 
     #region Linkable
+
+    public void ShowHighlight(bool value)
+    {
+        selectedFeedbackGo.SetActive(value);
+    }
+
     public abstract void SetStartLinkable(Link link);
     public abstract void SetEndLinkable(Link link);
     public abstract bool IsAvailable();
