@@ -8,6 +8,7 @@ using UnityEngine;
 public class LevelService : ILevelService
 {
     [DependsOnService] private IMagicLineService magicLineService;
+    public IMagicLineService MagicLineService => magicLineService;
 
     public Level CurrentLevel { get; private set; }
 

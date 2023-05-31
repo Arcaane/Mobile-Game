@@ -16,16 +16,17 @@ public class MagicLineService : SwitchableService, IMagicLineService
 
     private Vector3[] points;
     private List<Link> magicLinks = new List<Link>();
-    
+
     private bool isPressed;
     private RaycastHit hit;
     private LayerMask linkLayer;
     private LayerMask floorLayer;
     private Link linkToDestroy;
+    private bool canDestroy = true;
     private bool inDestroyMode;
     private Vector3 buttonPos;
-    
     private Coroutine drawing;
+    private bool InDestroyMode => canDestroy && inDestroyMode;
     private bool isDraging => InputService.deltaPosition.x != 0 && InputService.deltaPosition.y != 0;
 
     private Camera cam;
@@ -42,6 +43,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
     private void SetListeners()
     {
         EventManager.AddListener<LoadLevelEvent>(SetCamera);
+        EventManager.AddListener<LoadTutorialEvent>(DeactivateLinkDestructionInTutorial);
 
         void SetCamera(LoadLevelEvent loadLevelEvent)
         {
@@ -65,7 +67,8 @@ public class MagicLineService : SwitchableService, IMagicLineService
     public void SetData(MagicLinesData data)
     {
         magicLinesData = data;
-        
+
+        canDestroy = true;
         inDestroyMode = false;
 
         buttonTr = magicLinesData.buttonTr;
@@ -75,7 +78,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         linkLayer = magicLinesData.linkLayerMask;
         floorLayer = magicLinesData.floorLayerMask;
     }
-
+    
     public override void Enable()
     {
         InputService.OnPress += OnScreenTouch;
@@ -112,6 +115,8 @@ public class MagicLineService : SwitchableService, IMagicLineService
 
     private void SelectButton()
     {
+        if(!canDestroy) return;
+        
         var pos = InputService.cursorPosition;
 
         if (buttonTr == null) return;
@@ -173,57 +178,61 @@ public class MagicLineService : SwitchableService, IMagicLineService
             var startLinkable = currentLinkables[index1];
             var endLinkable = currentLinkables[index2];
             
-            if(!startLinkable.Outputable || !endLinkable.Inputable) return;
-            
             //if(magicLinks.Any(link => /*link.CompareLinks(startLinkable,endLinkable) ||*/ link.CompareLinks(endLinkable,startLinkable))) return;
             
-            var link = Object.Instantiate(magicLinesData.linkPrefab, Vector3.zero, Quaternion.identity);
-            
-            var lr = link.LineRenderer;
+            CreateLink(startLinkable,endLinkable);
+        }
+    }
 
-            magicLinks.Add(link);
-            link.OnDestroyed += RemoveLinkFromList;
+    public void CreateLink(ILinkable startLinkable,ILinkable endLinkable)
+    {
+        if(!startLinkable.Outputable || !endLinkable.Inputable) return;
+        
+        var link = Object.Instantiate(magicLinesData.linkPrefab, Vector3.zero, Quaternion.identity);
             
-            link.SetLinks(startLinkable,endLinkable);
-
+        var lr = link.LineRenderer;
             
-            var startLinkablePos = startLinkable.Position;
-            var endLinkablePos = endLinkable.Position;
-            var pos1 = startLinkablePos + (endLinkablePos - startLinkablePos).normalized * 0.7f;
-            var pos2 = endLinkablePos + (startLinkablePos - endLinkablePos).normalized * 0.7f;
-
-            var start = new Vector3(pos1.x, .5f, pos1.z);
-            var end = new Vector3(pos2.x, .5f, pos2.z);
+        link.OnDestroyed += RemoveLinkFromList;
+        magicLinks.Add(link);
             
-            var hits = Physics.RaycastAll(start, end - start, Vector3.Distance(start, end), linkLayer);
+        link.SetLinks(startLinkable,endLinkable);
+        
+        var startLinkablePos = startLinkable.Position;
+        var endLinkablePos = endLinkable.Position;
+        var pos1 = startLinkablePos + (endLinkablePos - startLinkablePos).normalized * 0.7f;
+        var pos2 = endLinkablePos + (startLinkablePos - endLinkablePos).normalized * 0.7f;
 
-            if (hits.Length > 0)
+        var start = new Vector3(pos1.x, .5f, pos1.z);
+        var end = new Vector3(pos2.x, .5f, pos2.z);
+            
+        var hits = Physics.RaycastAll(start, end - start, Vector3.Distance(start, end), linkLayer);
+
+        if (hits.Length > 0)
+        {
+            foreach (var t in hits)
             {
-                foreach (var t in hits)
-                {
-                    var hitLink = t.transform.GetComponent<Link>();
-                    if (hitLink == null) continue;
+                var hitLink = t.transform.GetComponent<Link>();
+                if (hitLink == null) continue;
                     
-                    link.AddDependency(hitLink);
-                    link.enabled = false;
-                }
+                link.AddDependency(hitLink);
+                link.enabled = false;
             }
+        }
             
-            points = new[] { pos1, pos2 };
-            lr.positionCount = points.Length;
-            for (int i = 0; i < points.Length; i++)
-            {
-                lr.SetPosition(i, points[i] + Vector3.up);
-            }
+        points = new[] { pos1, pos2 };
+        lr.positionCount = points.Length;
+        for (int i = 0; i < points.Length; i++)
+        {
+            lr.SetPosition(i, points[i] + Vector3.up);
+        }
             
-            link.SetPoints(cam);
+        link.SetPoints(cam);
             
-            CheckLinkCollisions(link);
+        CheckLinkCollisions(link);
             
-            void RemoveLinkFromList()
-            {
-                if (magicLinks.Contains(link)) magicLinks.Remove(link);
-            }
+        void RemoveLinkFromList()
+        {
+            if (magicLinks.Contains(link)) magicLinks.Remove(link);
         }
     }
 
@@ -295,6 +304,17 @@ public class MagicLineService : SwitchableService, IMagicLineService
         }
     }
 
+    private void DeactivateLinkDestructionInTutorial(LoadTutorialEvent _)
+    {
+        CanDestroyLinks(false);
+    }
+
+    public void CanDestroyLinks(bool value)
+    {
+        canDestroy = value;
+        buttonTr.gameObject.SetActive(canDestroy);
+    }
+
     private void GetLinkable(Vector3 position)
     {
         position -= Vector3.up;
@@ -364,7 +384,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
 
             if (Physics.Raycast(ray.origin,ray.direction, out hit,100f, floorLayer))
             {
-                if (inDestroyMode)
+                if (InDestroyMode)
                 {
                     buttonTr.position = InputService.cursorPosition;
                     GetLinkToDestroy(hit.point);

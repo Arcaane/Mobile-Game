@@ -35,7 +35,8 @@ public class UIManager : MonoBehaviour
         EventManager.AddListener<LevelTimeUpdatedEvent>(UpdateTime);
         EventManager.AddListener<ActivateDarkmodeEvent>(ActivateDarkmodeCanvas);
         
-        EventManager.AddListener<LoadTutorialEvent>(HideTimerOnTutorial);
+        EventManager.AddListener<LoadTutorialEvent>(HideTutorialElements);
+        EventManager.AddListener<EndTutorialEvent>(ShowTutorialElements);
 
         void HideHud()
         {
@@ -75,9 +76,14 @@ public class UIManager : MonoBehaviour
             darkmodeCanvasGo.SetActive(darkmodeEvent.Value);
         }
 
-        void HideTimerOnTutorial(LoadTutorialEvent _)
+        void HideTutorialElements(LoadTutorialEvent _)
         {
             EnableTimer(false);
+        }
+
+        void ShowTutorialElements(EndTutorialEvent _)
+        {
+            EnableTimer(true);
         }
     }
 

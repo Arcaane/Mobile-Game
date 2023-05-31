@@ -16,6 +16,7 @@ public class TutorialCanvas : MonoBehaviour
     private Vector3 clientPosition => waypoints[4].position;
     private Vector3 endPosition => waypoints[5].position;
     private Vector3 scissorsPosition => waypoints[6].position;
+    private Vector3 linePosition => waypoints[8].position;
 
     private Sequence sequence;
         
@@ -57,10 +58,8 @@ public class TutorialCanvas : MonoBehaviour
         sequence.Append(CursorTr.DOMove(redMachinePosition, 1f));
         sequence.AppendInterval(1f);
         sequence.AppendCallback(() => ShowCursor(false));
-        sequence.AppendInterval(1f);
 
-        
-        sequence.SetLoops(-1);
+        sequence.SetLoops(-1).SetDelay(1f);
 
         sequence.Play();
     }
@@ -78,9 +77,8 @@ public class TutorialCanvas : MonoBehaviour
         sequence.Append(CursorTr.DOMove(clientPosition, 1f));
         sequence.AppendInterval(1f);
         sequence.AppendCallback(() => ShowCursor(false));
-        sequence.AppendInterval(1f);
 
-        sequence.SetLoops(-1);
+        sequence.SetLoops(-1).SetDelay(1f);
 
         sequence.Play();
     }
@@ -90,8 +88,8 @@ public class TutorialCanvas : MonoBehaviour
         StopSequence();
         
         sequence = DOTween.Sequence();
-        sequence.AppendCallback(() => ShowCursor(true));
         sequence.AppendCallback(() => CursorTr.position = generatorStartPosition);
+        sequence.AppendCallback(() => ShowCursor(true));
         sequence.AppendInterval(0.1f);
         sequence.Append(CursorTr.DOMove(generatorPosition, 1f));
         sequence.AppendInterval(0.1f);
@@ -100,9 +98,8 @@ public class TutorialCanvas : MonoBehaviour
         sequence.Append(CursorTr.DOMove(clientPosition, 1f));
         sequence.AppendInterval(1f);
         sequence.AppendCallback(() => ShowCursor(false));
-        sequence.AppendInterval(1f);
 
-        sequence.SetLoops(-1);
+        sequence.SetLoops(-1).SetDelay(1f);
 
         sequence.Play();
     }
@@ -115,16 +112,18 @@ public class TutorialCanvas : MonoBehaviour
         sequence = DOTween.Sequence();
         sequence.AppendCallback(() => ShowCursor(true));
         sequence.AppendInterval(1f);
-        sequence.AppendCallback(() => ShowCursor(false));
+        sequence.Append(CursorTr.DOMove(linePosition, 1f));
         sequence.AppendInterval(1f);
-        
-        sequence.SetLoops(-1);
+        sequence.AppendCallback(() => ShowCursor(false));
+
+        sequence.SetLoops(-1).SetDelay(1f);
         
         sequence.Play();
     }
     
     public void StopSequence()
     {
+        ShowCursor(false);
         sequence.Kill();
     }
 }
