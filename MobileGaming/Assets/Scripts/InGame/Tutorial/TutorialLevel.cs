@@ -26,7 +26,6 @@ public class TutorialLevel : Level
         
         EventManager.AddListener<StartLevelEvent>(StartTutorial);
         EventManager.AddListener<EndLevelEvent>(RemoveTutorialModifications);
-        
         EventManager.AddListener<LinkCreatedEvent>(DestroyIfInvalidLink);
         EventManager.AddListener<LinkCreatedEvent>(DestroyIfGeneratorToClientLink);
 
@@ -50,10 +49,9 @@ public class TutorialLevel : Level
         EventManager.RemoveListener<EndLevelEvent>(RemoveTutorialModifications);
         EventManager.RemoveListener<LinkCreatedEvent>(DestroyIfInvalidLink);
         EventManager.RemoveListener<LinkCreatedEvent>(DestroyIfGeneratorToClientLink);
-        EventManager.RemoveListener<LinkDestroyedEvent>(GoToNextStepOnCompleteLink);
-        EventManager.RemoveListener<MachineEndWorkEvent>(GoToNextStepOnWorkComplete);
         EventManager.RemoveListener<LevelTimeUpdatedEvent>(DelayTimer);
         EventManager.RemoveListener<LinkDestroyedEvent>(GoToNextStepOnLinkDestroyed);
+        NextSequence();
         
         tutorialCanvas.StopSequence();
     }
@@ -76,7 +74,7 @@ public class TutorialLevel : Level
         
         if(machine == machines[0] && client == clientSlots[0]) link.DestroyLink();
     }
-
+    
     private void GoToNextStepOnWorkComplete(MachineEndWorkEvent machineEndWorkEvent)
     {
         NextSequence();
