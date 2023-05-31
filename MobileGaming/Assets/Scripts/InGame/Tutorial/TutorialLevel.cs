@@ -12,6 +12,8 @@ public class TutorialLevel : Level
         Debug.Log("Starting tutorial");
         
         cursorTr = tutorialCanvas.CursorTr;
+        levelDuration = 420f;
+        
         
         tutorialCanvas.ShowCursor(false);
         

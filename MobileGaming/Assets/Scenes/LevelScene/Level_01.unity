@@ -315,6 +315,18 @@ Camera:
     type: 3}
   m_PrefabInstance: {fileID: 1610908459}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1634076070 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6843652283440080069, guid: e35841bb3cd759a46b484442e692cd11,
+    type: 3}
+  m_PrefabInstance: {fileID: 2045343165}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31874cae9bd33444db4c80a1b308a233, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1910537973
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -477,17 +489,17 @@ PrefabInstance:
         type: 3}
       propertyPath: machines.Array.data[0]
       value: 
-      objectReference: {fileID: 2045343172}
+      objectReference: {fileID: 1634076070}
     - target: {fileID: 4591369749376023720, guid: e35841bb3cd759a46b484442e692cd11,
         type: 3}
       propertyPath: machines.Array.data[1]
       value: 
-      objectReference: {fileID: 2045343171}
+      objectReference: {fileID: 2045343170}
     - target: {fileID: 4591369749376023720, guid: e35841bb3cd759a46b484442e692cd11,
         type: 3}
       propertyPath: machines.Array.data[2]
       value: 
-      objectReference: {fileID: 2045343170}
+      objectReference: {fileID: 2045343171}
     - target: {fileID: 4591369749376023720, guid: e35841bb3cd759a46b484442e692cd11,
         type: 3}
       propertyPath: <Camera>k__BackingField
@@ -497,7 +509,7 @@ PrefabInstance:
         type: 3}
       propertyPath: clientSlots.Array.data[0]
       value: 
-      objectReference: {fileID: 2045343169}
+      objectReference: {fileID: 2045343167}
     - target: {fileID: 4591369749376023720, guid: e35841bb3cd759a46b484442e692cd11,
         type: 3}
       propertyPath: clientSlots.Array.data[1]
@@ -507,12 +519,17 @@ PrefabInstance:
         type: 3}
       propertyPath: clientSlots.Array.data[2]
       value: 
-      objectReference: {fileID: 2045343167}
+      objectReference: {fileID: 2045343169}
     - target: {fileID: 4591369749376023720, guid: e35841bb3cd759a46b484442e692cd11,
         type: 3}
       propertyPath: <StartPanel>k__BackingField
       value: 
       objectReference: {fileID: 1910537974}
+    - target: {fileID: 4591369749376023720, guid: e35841bb3cd759a46b484442e692cd11,
+        type: 3}
+      propertyPath: <FeedbackFx>k__BackingField.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4651964764788466122, guid: e35841bb3cd759a46b484442e692cd11,
         type: 3}
       propertyPath: m_Name
@@ -645,17 +662,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66abd8198c977404090887c78ba45a95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2045343172 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 925306672903797687, guid: e35841bb3cd759a46b484442e692cd11,
-    type: 3}
-  m_PrefabInstance: {fileID: 2045343165}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31874cae9bd33444db4c80a1b308a233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
