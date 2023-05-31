@@ -140,6 +140,11 @@ public class MagicLineService : SwitchableService, IMagicLineService
         inDestroyMode = false;
         buttonTr.position = buttonPos;
         
+        foreach (var linkable in currentLinkables)
+        {
+            linkable.ShowHighlight(false);
+        }
+        
         if (linkToDestroy != null)
         {
             magicLinesData.OpenScissors(false);
@@ -151,10 +156,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         FinishLine();
         LinkMachines();
 
-        foreach (var linkable in currentLinkables)
-        {
-            linkable.ShowHighlight(false);
-        }
+        
         currentLinkables.Clear();
     }
     
@@ -385,7 +387,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         var line = currentLineInDrawning.GetComponent<LineRenderer>();
         line.positionCount = 0;
 
-        while (true)
+        while (isPressed)
         {
             var ray = cam.ScreenPointToRay(InputService.cursorPosition);
 

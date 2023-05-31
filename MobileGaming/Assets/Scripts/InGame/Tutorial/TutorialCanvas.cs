@@ -24,20 +24,15 @@ public class TutorialCanvas : MonoBehaviour
     {
         cursorGo.SetActive(value);
     }
-
+    
     public void PlayClickAnimationHold()
     {
-        
+        cursorAnimator.Play("ANIM_Pointer_OnPress");
     }
-
-    public void PlayTapAnimation()
-    {
-        
-    }
-
+    
     public void PlayReleaseAnimation()
     {
-        
+        cursorAnimator.Play("ANIM_Pointer_Release");
     }
     
     // start, generator, red (loops)
@@ -54,8 +49,10 @@ public class TutorialCanvas : MonoBehaviour
         sequence.AppendCallback(() => CursorTr.position = generatorStartPosition);
         sequence.AppendInterval(0.1f);
         sequence.Append(CursorTr.DOMove(generatorPosition, 1f));
-        sequence.AppendInterval(0.1f);
+        sequence.AppendCallback(PlayClickAnimationHold);
+        sequence.AppendInterval(0.5f);
         sequence.Append(CursorTr.DOMove(redMachinePosition, 1f));
+        sequence.AppendCallback(PlayReleaseAnimation);
         sequence.AppendInterval(1f);
         sequence.AppendCallback(() => ShowCursor(false));
 
@@ -73,8 +70,10 @@ public class TutorialCanvas : MonoBehaviour
         sequence.AppendCallback(() => CursorTr.position = redMachineStartPosition);
         sequence.AppendInterval(0.1f);
         sequence.Append(CursorTr.DOMove(redMachinePosition, 1f));
-        sequence.AppendInterval(0.1f);
+        sequence.AppendCallback(PlayClickAnimationHold);
+        sequence.AppendInterval(0.5f);
         sequence.Append(CursorTr.DOMove(clientPosition, 1f));
+        sequence.AppendCallback(PlayReleaseAnimation);
         sequence.AppendInterval(1f);
         sequence.AppendCallback(() => ShowCursor(false));
 
@@ -92,10 +91,12 @@ public class TutorialCanvas : MonoBehaviour
         sequence.AppendCallback(() => ShowCursor(true));
         sequence.AppendInterval(0.1f);
         sequence.Append(CursorTr.DOMove(generatorPosition, 1f));
-        sequence.AppendInterval(0.1f);
+        sequence.AppendCallback(PlayClickAnimationHold);
+        sequence.AppendInterval(0.5f);
         sequence.Append(CursorTr.DOMove(blueMachinePosition, 1f));
         sequence.AppendInterval(0.1f);
         sequence.Append(CursorTr.DOMove(clientPosition, 1f));
+        sequence.AppendCallback(PlayReleaseAnimation);
         sequence.AppendInterval(1f);
         sequence.AppendCallback(() => ShowCursor(false));
 
@@ -110,9 +111,13 @@ public class TutorialCanvas : MonoBehaviour
         
         CursorTr.position = scissorsPosition;
         sequence = DOTween.Sequence();
+        sequence.AppendCallback(() => CursorTr.position = scissorsPosition);
         sequence.AppendCallback(() => ShowCursor(true));
         sequence.AppendInterval(1f);
+        sequence.AppendCallback(PlayClickAnimationHold);
+        sequence.AppendInterval(0.5f);
         sequence.Append(CursorTr.DOMove(linePosition, 1f));
+        sequence.AppendCallback(PlayReleaseAnimation);
         sequence.AppendInterval(1f);
         sequence.AppendCallback(() => ShowCursor(false));
 
