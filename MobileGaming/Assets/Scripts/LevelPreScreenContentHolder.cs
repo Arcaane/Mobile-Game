@@ -31,6 +31,6 @@ public class LevelPreScreenContentHolder : MonoBehaviour
         levelItemToDisplayImage.sprite = _scriptableObject.potionToUseSprite;
         levelItemRewardImage.sprite = _scriptableObject.fragementReward;
 
-        currentLevelToLaunch = _scriptableObject.currentLevel;  
+        currentLevelToLaunch = _scriptableObject.indexInSaga;  
     }
 }

@@ -7,6 +7,7 @@ public class ScriptableLevelInSagaMap : ScriptableObject
     [Header("Common to two parts")]
     public string title = $"Level title";
     public int currentLevel = 1;
+    public int indexInSaga = 1;
 
     [Space(5)] [Header("Level Selection Section")]
     public int levelObjective;
