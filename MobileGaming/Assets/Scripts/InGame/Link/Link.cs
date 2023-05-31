@@ -39,7 +39,6 @@ public class Link : MonoBehaviour
     public void IncreaseExtraTimeToComplete(float amount)
     {
         extraTimeToComplete += amount;
-        Debug.Log($"Time to complete is now {TimeToCompleteTransportation} (base is {BaseTimeToCompleteTransportation})");
     }
     
     #region Feedback

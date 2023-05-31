@@ -1635,9 +1635,15 @@ MonoBehaviour:
   <buttonTr>k__BackingField: {fileID: 3808404713572148011}
   <CollisionPlane>k__BackingField: {fileID: 8229045456995528134}
   <slowedTime>k__BackingField: 0.5
-  <machineLayerMask>k__BackingField:
+  <linkableMask>k__BackingField:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 1152
+  <linkLayerMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 512
+  <floorLayerMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 256
   <linkPrefab>k__BackingField: {fileID: 7874292455044214023, guid: 97fb3b5f6dc24ed419b3fc518cd4f3b3,
     type: 3}
   shaderDarkness:

@@ -12,7 +12,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
     private MagicLinesData magicLinesData;
 
     private RectTransform buttonTr;
-    private LayerMask machineLayerMask;
+    private LayerMask linkableMask;
     private Transform collisionPlane;
     
     private Vector3[] points;
@@ -73,9 +73,9 @@ public class MagicLineService : SwitchableService, IMagicLineService
         buttonPos = buttonTr.position;
         collisionPlane = magicLinesData.CollisionPlane;
 
-        machineLayerMask = magicLinesData.machineLayerMask;
-        linkLayer = LayerMask.NameToLayer("Link");
-        floorLayer = LayerMask.NameToLayer("Collisions");
+        linkableMask = magicLinesData.linkableMask;
+        linkLayer = magicLinesData.linkLayerMask;
+        floorLayer = magicLinesData.floorLayerMask;
     }
 
 
@@ -109,11 +109,11 @@ public class MagicLineService : SwitchableService, IMagicLineService
         if (inDestroyMode)
         {
             buttonTr.position = InputService.cursorPosition;
-            DestroySetLink(InputService.cursorPosition);
+            DestroySetLink();
             return;
         }
         
-        GetClickMachine(InputService.cursorPosition);
+        //GetClickMachine();
     }
     
     private void OnScreenTouch(Vector2 obj)
@@ -169,7 +169,14 @@ public class MagicLineService : SwitchableService, IMagicLineService
     
     private void LinkMachines()
     {
+        CleanupCurrentLinkables();
+        
         CreateMagicLines();
+    }
+
+    private void CleanupCurrentLinkables()
+    {
+        
     }
 
     private void CreateMagicLines()
@@ -306,22 +313,25 @@ public class MagicLineService : SwitchableService, IMagicLineService
         }
     }
 
-    private void GetClickMachine(Vector2 mousePos)
+    private void GetLinkable(Vector3 position)
     {
-        var ray = cam.ScreenPointToRay(mousePos);
-
-        if (!Physics.Raycast(ray, out hit, machineLayerMask)) return;
+        position -= Vector3.up;
+        if (!Physics.Raycast(position, Vector3.up, out hit, 3f, linkableMask))
+        {
+            //Debug.DrawRay(position,Vector3.up*3f,Color.red);
+            return;
+        }
+        
+        //Debug.DrawRay(position,Vector3.up*3f,Color.green);
         var linkable = hit.transform.GetComponent<ILinkable>();
         if (linkable == null) return;
         
-        Debug.DrawLine(ray.origin,hit.point,Color.red);
-            
         if(!currentLinkables.Contains(linkable)){ currentLinkables.Add(linkable);}
     }
 
-    private void DestroySetLink(Vector2 mousePos)
+    private void DestroySetLink()
     {
-        var ray = cam.ScreenPointToRay(mousePos);
+        var ray = cam.ScreenPointToRay(InputService.cursorPosition);
 
         linkToDestroy = null;
         if (!Physics.Raycast(ray, out hit, linkLayer)) return;
@@ -355,23 +365,23 @@ public class MagicLineService : SwitchableService, IMagicLineService
     {
         currentLineInDrawning = Object.Instantiate(Resources.Load("Line") as GameObject,
             new Vector3(0, 0, 0), Quaternion.identity);
-        LineRenderer line = currentLineInDrawning.GetComponent<LineRenderer>();
+        var line = currentLineInDrawning.GetComponent<LineRenderer>();
         line.positionCount = 0;
 
         while (true)
         {
             var ray = cam.ScreenPointToRay(InputService.cursorPosition);
-            Debug.DrawRay(ray.origin,ray.direction * 100f,Color.yellow);
 
-            if (!Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray.origin,ray.direction, out hit,100f, floorLayer))
             {
-                yield return null;
-                continue;
+                //Debug.DrawLine(ray.origin,hit.point,Color.red);
+                
+                var point = hit.point + ray.direction * (-1 * 1f);  
+                line.positionCount++;
+                line.SetPosition(line.positionCount-1, point);
+                
+                GetLinkable(hit.point);
             }
-
-            var point = hit.point + ray.direction * (-1 * 2f);
-            line.positionCount++;
-            line.SetPosition(line.positionCount - 1, point);
             yield return null;
         }
     }
