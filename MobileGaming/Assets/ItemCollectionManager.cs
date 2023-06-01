@@ -66,7 +66,7 @@ public class ItemCollectionManager : MonoBehaviour
         {
             if (items[i].isUnlocked)
             {
-                items[i].myLockImage.enabled = false;
+                //items[i].myLockImage.enabled = false;
                 items[i].GetComponent<Button>().interactable = true;
                 items[i].myItemImage.color = Color.white;
             }
@@ -74,7 +74,7 @@ public class ItemCollectionManager : MonoBehaviour
             {
                 items[i].myItemImage.color = new Color(0.2f,0.2f,0.2f,1);
                 items[i].GetComponent<Button>().interactable = false;
-                items[i].myLockImage.enabled = true;
+                //items[i].myLockImage.enabled = true;
             }
         }
     }
