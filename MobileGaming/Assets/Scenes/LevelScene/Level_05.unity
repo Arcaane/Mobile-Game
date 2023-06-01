@@ -175,7 +175,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.5
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -232,14 +232,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 900658431}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 4.482007, y: 1.9253752, z: 3.3285115}
+  m_LocalRotation: {x: 0.42261827, y: 0, z: 0, w: 0.9063079}
+  m_LocalPosition: {x: 4.482007, y: 4.89, z: 3.3285115}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: 0, z: 0}
 --- !u!1001 &1610908459
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -265,7 +265,7 @@ PrefabInstance:
     - target: {fileID: 8844096908580075498, guid: 494afe7bddb29ae458938e8f0f2e79a5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.15
+      value: 8.91
       objectReference: {fileID: 0}
     - target: {fileID: 8844096908580075498, guid: 494afe7bddb29ae458938e8f0f2e79a5,
         type: 3}
@@ -463,16 +463,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4591369749376023720, guid: e35841bb3cd759a46b484442e692cd11,
-        type: 3}
-      propertyPath: scoreToWin
-      value: 1600
-      objectReference: {fileID: 0}
-    - target: {fileID: 4591369749376023720, guid: e35841bb3cd759a46b484442e692cd11,
-        type: 3}
-      propertyPath: levelDuration
-      value: 90
-      objectReference: {fileID: 0}
     - target: {fileID: 4591369749376023720, guid: e35841bb3cd759a46b484442e692cd11,
         type: 3}
       propertyPath: <Camera>k__BackingField
