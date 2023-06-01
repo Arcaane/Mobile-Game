@@ -25,6 +25,11 @@ public class Link : MonoBehaviour
     [field: SerializeField] public float BaseTimeToCompleteTransportation { get; private set; } = 1.5f;
     private float extraTimeToComplete = 0f;
     private float TimeToCompleteTransportation => BaseTimeToCompleteTransportation + extraTimeToComplete;
+    
+    [field: SerializeField] public float BaseCollidingLinksSlowAmount { get; private set; } = 1.5f;
+    private float extraCollidingLinksSlowAmount = 0f;
+    private float CollidingLinksSlowAmount => BaseCollidingLinksSlowAmount + extraCollidingLinksSlowAmount;
+    
     private float currentTimer = 0f;
     
     public Product ProductInTreatment { get; private set; }
@@ -40,6 +45,11 @@ public class Link : MonoBehaviour
         var ratio = currentTimer / TimeToCompleteTransportation;
         extraTimeToComplete += amount;
         currentTimer = TimeToCompleteTransportation * ratio;
+    }
+    
+    public void IncreaseExtraTimeInCollision(float amount)
+    {
+        extraCollidingLinksSlowAmount += amount;
     }
     
     #region Feedback
@@ -111,7 +121,7 @@ public class Link : MonoBehaviour
 
     #endregion
     
-    public void SetLinks(ILinkable startLink,ILinkable endLink)
+    public void SetLinks(ILinkable startLink,ILinkable endLink,float slowAmount)
     {
         collisionLinks.Clear();
 
@@ -126,7 +136,9 @@ public class Link : MonoBehaviour
         if(FlaggedForDestruction) return;
         
         extraTimeToComplete = 0f;
-
+        extraCollidingLinksSlowAmount = 0f;
+        BaseCollidingLinksSlowAmount = slowAmount;
+        
         EventManager.AddListener<LinkCollisionEvent>(SlowIfCollision);
 
         canvasTr.SetParent(null);
@@ -140,7 +152,7 @@ public class Link : MonoBehaviour
         if(linkCollisionEvent.Link != this) return;
         ChangeColor(colors[1]);
 
-        var increasedTime = BaseTimeToCompleteTransportation * ScriptableSettings.GlobalSettings.collideExtraTime;
+        var increasedTime = BaseTimeToCompleteTransportation * CollidingLinksSlowAmount;
         IncreaseExtraTimeToComplete(increasedTime);
         
         EventManager.AddListener<LinkDestroyedEvent>(RemoveListenerOnDestroyed);

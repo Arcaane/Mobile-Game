@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,6 @@ using Object = UnityEngine.Object;
 
 public class MagicLineService : SwitchableService, IMagicLineService
 {
-    //private MagicLinesData magicLinesData => MagicLinesData.data;
     private MagicLinesData magicLinesData;
 
     private RectTransform buttonTr;
@@ -201,7 +199,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         link.OnDestroyed += RemoveLinkFromList;
         magicLinks.Add(link);
             
-        link.SetLinks(startLinkable,endLinkable);
+        link.SetLinks(startLinkable,endLinkable,ScriptableSettings.GlobalSettings.collideExtraTime);
         if(link.FlaggedForDestruction) return;
         
         var startLinkablePos = startLinkable.Position;
