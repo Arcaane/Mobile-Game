@@ -117,15 +117,6 @@ namespace Service
             EventManager.AddListener<EndLevelEvent>(UpdateEndGameText);
         }
         
-        private void NextLevel()
-        {
-            currentLevel++;
-            if (currentLevel >= settings.LevelScenes.Length) currentLevel = 0;
-            
-            inputService.Disable();
-            sceneService.LoadSceneAsync(settings.LevelScenes[currentLevel]);
-        }
-
         private void OnLevelLoaded(LoadLevelEvent loadLevelEvent)
         {
             levelService.InitLevel(loadLevelEvent.Level);
@@ -138,13 +129,18 @@ namespace Service
             endGameSorcererImage.sprite = endLevelEvent.State == 0 ? _sorcererSprites[0] : _sorcererSprites[1];
             sorcererController.endGameButton.onClick.AddListener(endLevelEvent.State == 0 ?  ReloadScene : NextLevel);
             
-            // TODO Afficher les étoiles gagnés
+            // Afficher les étoiles gagnés
             if (GamePathManager.instance.levels[currentLevel].starsClaimedCount > endLevelEvent.State)
                 GamePathManager.instance.levels[currentLevel].starsClaimedCount = endLevelEvent.State;
             
+            Debug.Log($"Level {GamePathManager.instance.levels[currentLevel]}, étoiles gagnés : {endLevelEvent.State}");
+            
             // Débloque le niveau suivant
             if (endLevelEvent.State == 1 && !GamePathManager.instance.levels[currentLevel + 1].isLevelUnlock)
+            {
                 GamePathManager.instance.unlockedLevels++;
+                Debug.Log($"Level {GamePathManager.instance.levels[currentLevel + 1]} unlocked");
+            }
             
             endGameCanvasGo.SetActive(true);
         }
@@ -160,5 +156,16 @@ namespace Service
             endGameCanvasGo.SetActive(false);
             sceneService.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         }
+        
+        private void NextLevel()
+        {
+            endGameCanvasGo.SetActive(false);
+            currentLevel++;
+            if (currentLevel >= settings.LevelScenes.Length) currentLevel = 0;
+            
+            inputService.Disable();
+            sceneService.LoadSceneAsync(settings.LevelScenes[currentLevel]);
+        }
+
     }
 }
