@@ -37,7 +37,9 @@ public class Link : MonoBehaviour
     
     public void IncreaseExtraTimeToComplete(float amount)
     {
+        var ratio = currentTimer / TimeToCompleteTransportation;
         extraTimeToComplete += amount;
+        currentTimer = TimeToCompleteTransportation * ratio;
     }
     
     #region Feedback
