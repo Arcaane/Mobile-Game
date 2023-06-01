@@ -24,6 +24,8 @@ public class TutorialLevel : Level
         sequenceQueue.Clear();
         tutorialCanvas.ShowCursor(false);
         
+        EventManager.Trigger(new LoadLevelEvent(this));
+        
         EventManager.AddListener<StartLevelEvent>(StartTutorial);
         EventManager.AddListener<EndLevelEvent>(RemoveTutorialModifications);
         EventManager.AddListener<LinkCreatedEvent>(DestroyIfInvalidLink);
@@ -31,7 +33,6 @@ public class TutorialLevel : Level
 
         EventManager.AddListener<LevelTimeUpdatedEvent>(DelayTimer);
 
-        EventManager.Trigger(new LoadLevelEvent(this));
         EventManager.Trigger(new LoadTutorialEvent());
     }
     

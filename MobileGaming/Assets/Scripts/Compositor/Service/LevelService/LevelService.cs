@@ -126,6 +126,8 @@ public class LevelService : ILevelService
 
     private void ResetVariables()
     {
+        Debug.Log("Reseting Variables");
+        
         clientTimings = CurrentLevel.clientTimings.ToList();
         baseLevelDuration = CurrentLevel.levelDuration;
         extraLevelDuration = 0f;

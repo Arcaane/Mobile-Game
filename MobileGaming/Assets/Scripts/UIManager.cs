@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject darkmodeCanvasGo;
     [SerializeField] private Canvas darkmodeCanvas;
     [SerializeField] private Canvas hudCanvas;
+    [SerializeField] private RectTransform chroneNeedleTr;
+    [SerializeField] private Vector3 needleRotation = new Vector3(0,0,10f);
     
     //[SerializeField] private GameObject pauseMenu;
 
@@ -71,7 +73,10 @@ public class UIManager : MonoBehaviour
             var duration = timeUpdatedEvent.MaxTime - timeUpdatedEvent.CurrentTime;
             var minutes = Mathf.Floor(duration / 60);
             var seconds = duration % 60;
-            timerText.text = $"{(duration >= 0 ? $"{minutes:00}:{seconds:00}" : "Extra time !")}";
+            var inExtraTime = duration < 0;
+            timerText.text = $"{(!inExtraTime ? $"{minutes:00}:{seconds:00}" : "Extra time !")}";
+            if(inExtraTime) return;
+            chroneNeedleTr.Rotate(needleRotation);
         }
 
         void ActivateDarkmodeCanvas(ActivateDarkmodeEvent darkmodeEvent)
