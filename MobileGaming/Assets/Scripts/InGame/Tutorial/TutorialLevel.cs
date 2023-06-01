@@ -50,7 +50,8 @@ public class TutorialLevel : Level
         EventManager.RemoveListener<LinkCreatedEvent>(DestroyIfInvalidLink);
         EventManager.RemoveListener<LinkCreatedEvent>(DestroyIfGeneratorToClientLink);
         EventManager.RemoveListener<LevelTimeUpdatedEvent>(DelayTimer);
-        EventManager.RemoveListener<LinkDestroyedEvent>(GoToNextStepOnLinkDestroyed);
+        EventManager.RemoveListener<LinkDestroyedEvent>(NoLineDuringWork);
+        sequenceQueue.Clear();
         NextSequence();
         
         tutorialCanvas.StopSequence();
@@ -73,6 +74,13 @@ public class TutorialLevel : Level
         if(link.EndLinkable is not ClientSlot client) return;
         
         if(machine == machines[0] && client == clientSlots[0]) link.DestroyLink();
+    }
+
+    private void NoLineDuringWork(LinkDestroyedEvent linkDestroyedEvent)
+    {
+        if(!linkDestroyedEvent.CompletedTransfer) return;
+        expectedStartLinkables.Clear();
+        expectedEndLinkables.Clear();
     }
     
     private void GoToNextStepOnWorkComplete(MachineEndWorkEvent machineEndWorkEvent)
@@ -123,6 +131,7 @@ public class TutorialLevel : Level
         CreateLine(machines[0], machines[1]);
         
         EventManager.AddListener<MachineEndWorkEvent>(GoToNextStepOnWorkComplete);
+        EventManager.AddListener<LinkDestroyedEvent>(NoLineDuringWork);
         
         tutorialCanvas.PlayFirstSequence();
         
@@ -138,6 +147,7 @@ public class TutorialLevel : Level
         expectedEndLinkables.Add(clientSlots[0]);
         
         CreateLine(machines[1], clientSlots[0]);
+        EventManager.RemoveListener<LinkDestroyedEvent>(NoLineDuringWork);
         EventManager.AddListener<LinkDestroyedEvent>(GoToNextStepOnCompleteLink);
         
         tutorialCanvas.PlaySecondSequence();

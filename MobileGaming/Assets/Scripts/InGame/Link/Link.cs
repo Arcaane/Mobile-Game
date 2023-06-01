@@ -8,9 +8,11 @@ using UnityEngine.UI;
 public class Link : MonoBehaviour
 {
     #region Variables
-    
+
+    [SerializeField] private float height = 1.5f;
+    [SerializeField] private Transform canvasTr;
     [field:SerializeField] public LineRenderer LineRenderer { get; private set; }
-    [field:SerializeField] public MeshCollider Collider { get; private set; }
+    [field:SerializeField] public BoxCollider Collider { get; private set; }
     [FormerlySerializedAs("debugImage")] public Transform bottleImage;
     private DrawMagicLine lineInCollision;
     public Material myMaterial;
@@ -122,6 +124,7 @@ public class Link : MonoBehaviour
         
         extraTimeToComplete = 0f;
 
+        canvasTr.SetParent(null);
         EndLinkable.SetEndLinkable(this);
         StartLinkable.SetStartLinkable(this);
     }
@@ -148,11 +151,13 @@ public class Link : MonoBehaviour
 
     public void DestroyLink(bool completedTransfer = false)
     {
+        if(flaggedForDestruction) return;
         OnDestroyed?.Invoke();
         var startedTransfer = (ProductInTreatment == null) || completedTransfer;
         EventManager.Trigger(new LinkDestroyedEvent(this,startedTransfer,completedTransfer));
         flaggedForDestruction = true;
         
+        Destroy(canvasTr.gameObject);
         Destroy(gameObject);
     }
 
@@ -161,26 +166,16 @@ public class Link : MonoBehaviour
         return (StartLinkable == start && EndLinkable == end);
     }
 
-    public void SetPoints(Camera cam)
+    public void CreateMesh()
     {
-        var mesh = new Mesh();
+        var tr = transform;
+        tr.position = (StartLinkable.Position + EndLinkable.Position) / 2f;
+        tr.forward = (tr.position - StartLinkable.Position).normalized;
         
-        LineRenderer.BakeMesh(mesh,cam);
-
-        Collider.sharedMesh = mesh;
-
-        Points = new Vector2[LineRenderer.positionCount];
-
-        var vec3 = new Vector3[Points.Length];
-        
-        LineRenderer.GetPositions(vec3);
-
-        for (var index = 0; index < Points.Length; index++)
-        {
-            var point = Points[index];
-            point.y = vec3[index].z;
-            Points[index] = point;
-        }
+        var distance = (StartLinkable.Position - EndLinkable.Position).magnitude - StartLinkable.Width - EndLinkable.Width;
+        var offset = StartLinkable.Width/2f - EndLinkable.Width/2f;
+        Collider.center = new Vector3(0, 0, offset);
+        Collider.size = new Vector3(0.5f, 0.5f, distance);
     }
 }
 

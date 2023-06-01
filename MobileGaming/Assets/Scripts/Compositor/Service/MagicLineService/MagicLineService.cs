@@ -205,16 +205,16 @@ public class MagicLineService : SwitchableService, IMagicLineService
         
         var startLinkablePos = startLinkable.Position;
         var endLinkablePos = endLinkable.Position;
-        var pos1 = startLinkablePos + (endLinkablePos - startLinkablePos).normalized * 0.7f;
-        var pos2 = endLinkablePos + (startLinkablePos - endLinkablePos).normalized * 0.7f;
 
-        var start = new Vector3(pos1.x, .5f, pos1.z);
-        var end = new Vector3(pos2.x, .5f, pos2.z);
+        var start = new Vector3(startLinkablePos.x, .5f, startLinkablePos.z);
+        var end = new Vector3(endLinkablePos.x, .5f, endLinkablePos.z);
             
         var hits = Physics.RaycastAll(start, end - start, Vector3.Distance(start, end), linkLayer);
 
         if (hits.Length > 0)
         {
+            Debug.Log($"DEPENDANT HITS ({hits.Length})");
+            
             foreach (var t in hits)
             {
                 var hitLink = t.transform.GetComponent<Link>();
@@ -225,91 +225,22 @@ public class MagicLineService : SwitchableService, IMagicLineService
             }
         }
             
-        points = new[] { pos1, pos2 };
+        points = new[] { start, end };
         lr.positionCount = points.Length;
         for (int i = 0; i < points.Length; i++)
         {
             lr.SetPosition(i, points[i] + Vector3.up);
         }
             
-        link.SetPoints(cam);
+        link.CreateMesh();
             
-        CheckLinkCollisions(link);
-            
+        
         void RemoveLinkFromList()
         {
             if (magicLinks.Contains(link)) magicLinks.Remove(link);
         }
     }
-
-    private void CheckLinkCollisions(Link createdLink)
-    {
-        var intersectingLinks = new List<Link>();
-        
-        foreach (var link in magicLinks.Where(link => link != createdLink))
-        {
-            for (int i = 1; i < createdLink.Points.Length; i++)
-            {
-                var p = createdLink.Points[i - 1];
-                var q = createdLink.Points[i];
-                if (IntersectWithArray(p, q, link.Points)) intersectingLinks.Add(link);
-            }
-        }
-        
-        bool IntersectWithArray(Vector2 p,Vector2 q,Vector2[] array)
-        {
-            if (array.Length < 1) return false;
-            for (int i = 1; i < array.Length; i++)
-            {
-                if (Intersect(p, q, array[i - 1], array[i])) return true;
-            }
-            return false;
-        }
-
-        // Given three collinear points p, q, r, the function checks if
-        // point q lies on line segment 'pr'
-        bool OnSegment(Vector2 p, Vector2 q, Vector2 r)
-        {
-            return q.x <= Math.Max(p.x, r.x) && q.x >= Math.Min(p.x, r.x) &&
-                   q.y <= Math.Max(p.y, r.y) && q.y >= Math.Min(p.y, r.y);
-        }
-
-        int Orientation(Vector2 p, Vector2 q, Vector2 r)
-        {
-            var val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
-  
-            if (val == 0) return 0; // collinear
-  
-            return (val > 0)? 1: 2; // clock or counterclock wise
-        }
-
-        bool Intersect(Vector2 p1,Vector2 q1, Vector2 p2, Vector2 q2)
-        {
-            var o1 = Orientation(p1, q1, p2);
-            var o2 = Orientation(p1, q1, q2);
-            var o3 = Orientation(p2, q2, p1);
-            var o4 = Orientation(p2, q2, q1);
-  
-            // General case
-            if (o1 != o2 && o3 != o4) return true;
-  
-            // Special Cases
-            // p1, q1 and p2 are collinear and p2 lies on segment p1q1
-            if (o1 == 0 && OnSegment(p1, p2, q1)) return true;
-  
-            // p1, q1 and q2 are collinear and q2 lies on segment p1q1
-            if (o2 == 0 && OnSegment(p1, q2, q1)) return true;
-  
-            // p2, q2 and p1 are collinear and p1 lies on segment p2q2
-            if (o3 == 0 && OnSegment(p2, p1, q2)) return true;
-  
-            // p2, q2 and q1 are collinear and q1 lies on segment p2q2
-            if (o4 == 0 && OnSegment(p2, q1, q2)) return true;
-  
-            return false; // Doesn't fall in any of the above cases
-        }
-    }
-
+    
     private void DeactivateLinkDestructionInTutorial(LoadTutorialEvent _)
     {
         CanDestroyLinks(false);

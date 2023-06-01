@@ -10,6 +10,10 @@ using UnityEditor;
 
 public class ClientSlot : MonoBehaviour, ILinkable
 {
+    [Header("Linkable")]
+    [SerializeField] private float width;
+    public float Width => width;
+    
     [Header("Feedback")]
     [SerializeField] private GameObject bottlesToBuyUIGo;
     [SerializeField] private GameObject satisfactionBarGo;
@@ -23,8 +27,6 @@ public class ClientSlot : MonoBehaviour, ILinkable
     [SerializeField] private ParticleSystem[] emotesFeedback;
 
     [HideInInspector] public ClientData data;
-
-    [SerializeField] private float currentSDebug;
 
     private ProductData expectedData => data.productDatas[currentDataIndex];
     public Vector3 Position => transform.position;
@@ -89,9 +91,7 @@ public class ClientSlot : MonoBehaviour, ILinkable
             ShowFeedbacks(false);
             return;
         }
-
-        currentSDebug = (currentSatisfaction / data.Satisfaction);
-
+        
         if (clientSatisfactionEnum == ClientSatisfaction.NewClient && currentSatisfaction / data.Satisfaction < 0.75f)
         {
             //emotesFeedback[0].Play();

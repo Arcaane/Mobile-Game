@@ -2,11 +2,14 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public abstract class Machine : MonoBehaviour, ILinkable
 {
+    [Header("Linkable")]
+    [SerializeField] private float width;
+    public float Width => width;
+    
     [Header("Feedback")]
     [SerializeField] private Image[] feedbackImages;
     [SerializeField] protected TextMeshProUGUI feedbackText;
