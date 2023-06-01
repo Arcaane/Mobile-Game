@@ -42,9 +42,7 @@ public class Link : MonoBehaviour
     {
         var ratio = currentTimer / TimeToCompleteTransportation;
         extraSpeed += amount;
-        Debug.Log($"Increasing extraSpeed by {amount}");
         currentTimer = TimeToCompleteTransportation * ratio;
-        Debug.Log($"Current Timer is at {currentTimer} (ration was {ratio})");
     }
     
     public void IncreaseExtraTimeInCollision(float amount)
