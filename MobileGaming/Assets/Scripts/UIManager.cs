@@ -69,7 +69,7 @@ public class UIManager : MonoBehaviour
         void UpdateTime(LevelTimeUpdatedEvent timeUpdatedEvent)
         {
             var duration = timeUpdatedEvent.MaxTime - timeUpdatedEvent.CurrentTime;
-            var minutes = duration / 60;
+            var minutes = Mathf.Floor(duration / 60);
             var seconds = duration % 60;
             timerText.text = $"{(duration >= 0 ? $"{minutes:00}:{seconds:00}" : "Extra time !")}";
         }
