@@ -206,8 +206,8 @@ public class MagicLineService : SwitchableService, IMagicLineService
         var startLinkablePos = startLinkable.Position;
         var endLinkablePos = endLinkable.Position;
 
-        var start = new Vector3(startLinkablePos.x, .5f, startLinkablePos.z);
-        var end = new Vector3(endLinkablePos.x, .5f, endLinkablePos.z);
+        var start = new Vector3(startLinkablePos.x, 0, startLinkablePos.z);
+        var end = new Vector3(endLinkablePos.x, 0, endLinkablePos.z);
             
         var hits = Physics.RaycastAll(start, end - start, Vector3.Distance(start, end), linkLayer);
 
@@ -224,12 +224,14 @@ public class MagicLineService : SwitchableService, IMagicLineService
                 link.enabled = false;
             }
         }
-            
+
+        start.y = 0.5f;
+        end.y = 0.5f;
         points = new[] { start, end };
         lr.positionCount = points.Length;
         for (int i = 0; i < points.Length; i++)
         {
-            lr.SetPosition(i, points[i] + Vector3.up);
+            lr.SetPosition(i, points[i]);
         }
             
         link.CreateMesh();
