@@ -17,19 +17,19 @@ public abstract class Machine : MonoBehaviour, ILinkable
 
     [field:Header("Production Settings")]
     [field: SerializeField] public float BaseTimeToProduce { get; private set; } = 5f;
+    public float TimeToProduce => BaseTimeToProduce - bonusTime;
     public abstract ProductShape MachineShape { get; }
     public abstract ProductColor MachineColor { get; }
     public abstract ProductTopping machineTopping { get; }
 
     [field: SerializeField] public float BaseTimeMultiplier { get; private set; } = 1f;
-    private float extraTime = 0;
+    private float bonusTime = 0;
     
     public Vector3 Position => transform.position;
     public virtual bool Inputable => true;
     public virtual bool Outputable => true;
     
     protected double timer { get; private set; }
-    protected double waitDuration { get; private set; }
     public Product currentProduct { get; protected set; } = null;
     public bool IsWorking { get; protected set; } = false;
 
@@ -40,14 +40,16 @@ public abstract class Machine : MonoBehaviour, ILinkable
 
     public void ResetVariables()
     {
-        extraTime = 0f;
+        bonusTime = 0f;
         selectedFeedbackGo.SetActive(false);
         Setup();
     }
 
-    public void IncreaseTimeMultiplier(float amount)
+    public void IncreaseBonusTime(float amount)
     {
-        extraTime += amount;
+        var ratio = timer / TimeToProduce;
+        bonusTime += amount;
+        timer = TimeToProduce * ratio;
     }
 
     #region Feedback
@@ -79,7 +81,6 @@ public abstract class Machine : MonoBehaviour, ILinkable
         IsWorking = true;
         currentProduct = product;
         EventManager.Trigger(new MachineStartWorkEvent(this));
-        waitDuration = BaseTimeToProduce * 1f / (BaseTimeMultiplier+extraTime);
 
         StartCoroutine(WorkProduct());
     }
@@ -100,7 +101,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
         
         OnStartWork();
         
-        while (timer < waitDuration)
+        while (timer < TimeToProduce)
         {
             yield return null;
             timer += Time.deltaTime;

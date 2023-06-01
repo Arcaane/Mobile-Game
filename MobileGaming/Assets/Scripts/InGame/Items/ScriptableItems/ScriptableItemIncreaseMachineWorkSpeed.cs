@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Effect/Change Machine Work Speed")]
 public class ScriptableItemIncreaseMachineWorkSpeed : ScriptableItemEffect
 {
-    [field: SerializeField,Tooltip("Increases Speed by X of the Base Time")] public float TimeMultiplier { get; private set; } = 1f;
+    [field: SerializeField,Tooltip("Decreases Time Speed by X of the Base Time")] public float TimeMultiplier { get; private set; } = 1f;
     [Header("Machine Work")]
     [SerializeField] private ProductShape shape;
     [SerializeField] private ProductColor color;
@@ -33,15 +33,15 @@ public class ScriptableItemIncreaseMachineWorkSpeed : ScriptableItemEffect
             
         if (!allMatch) return;
 
-        var amount = machine.BaseTimeMultiplier*(TimeMultiplier-1);
+        var amount = machine.BaseTimeToProduce*TimeMultiplier;
             
-        machine.IncreaseTimeMultiplier(amount);
+        machine.IncreaseBonusTime(amount);
             
         EventManager.AddListener<MachineEndWorkEvent>(RemoveMultiplierOnEndWork);
             
         void RemoveMultiplierOnEndWork(MachineEndWorkEvent endWorkData)
         {
-            machine.IncreaseTimeMultiplier(-amount);
+            machine.IncreaseBonusTime(-amount);
             EventManager.RemoveListener<MachineEndWorkEvent>(RemoveMultiplierOnEndWork);
         }
     }

@@ -45,7 +45,7 @@ public class WorkMachine : Machine
     private void UpdateProgressFx(bool value)
     {
         if(fxGo != null) fxGo.SetActive(value);
-        if(fxRenderer != null) fxRenderer.material.SetFloat(Length,(float)(timer/waitDuration));
+        if(fxRenderer != null) fxRenderer.material.SetFloat(Length,(float)(timer/TimeToProduce));
     }
 
     protected override void OnStartWork()

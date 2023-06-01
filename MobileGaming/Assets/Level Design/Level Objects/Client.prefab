@@ -89,6 +89,7 @@ MonoBehaviour:
   satisfactionBarGo: {fileID: 5913738389520546109}
   selectedHighlightGo: {fileID: 5258073512220342345}
   feedbackImage: {fileID: 7538617828200322825}
+  fillOffset: 0.04
   contentImage: {fileID: 7491782696218135930}
   shapeImage: {fileID: 3848462526984984262}
   topingImage: {fileID: 8983456614169221627}
@@ -104,6 +105,8 @@ MonoBehaviour:
   data:
     scriptableClient: {fileID: 0}
     productDatas: []
+    extraSatisfaction: 0
+    extraReward: 0
 --- !u!1 &2072201412335529212
 GameObject:
   m_ObjectHideFlags: 0
