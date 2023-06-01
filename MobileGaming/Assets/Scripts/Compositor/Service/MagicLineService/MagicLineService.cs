@@ -215,6 +215,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         {
             Debug.Log($"DEPENDANT HITS ({hits.Length})");
             
+            /*
             foreach (var t in hits)
             {
                 var hitLink = t.transform.GetComponent<Link>();
@@ -223,6 +224,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
                 link.AddDependency(hitLink);
                 link.enabled = false;
             }
+            */
         }
 
         start.y = 0.5f;

@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -67,8 +68,10 @@ public class UIManager : MonoBehaviour
 
         void UpdateTime(LevelTimeUpdatedEvent timeUpdatedEvent)
         {
-            var time = timeUpdatedEvent.MaxTime - timeUpdatedEvent.CurrentTime;
-            timerText.text = $"Time Left : {(time >= 0 ? time : "Extra time !"):f0}";
+            var duration = timeUpdatedEvent.MaxTime - timeUpdatedEvent.CurrentTime;
+            var minutes = duration / 60;
+            var seconds = duration % 60;
+            timerText.text = $"{(duration >= 0 ? $"{minutes:00}:{seconds:00}" : "Extra time !")}";
         }
 
         void ActivateDarkmodeCanvas(ActivateDarkmodeEvent darkmodeEvent)
@@ -87,7 +90,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void EnableTimer(bool value)
+    private void EnableTimer(bool value)
     {
         timerText.gameObject.SetActive(value);
     }
