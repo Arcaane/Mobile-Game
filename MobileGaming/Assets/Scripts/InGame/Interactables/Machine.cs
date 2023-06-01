@@ -17,13 +17,13 @@ public abstract class Machine : MonoBehaviour, ILinkable
 
     [field:Header("Production Settings")]
     [field: SerializeField] public float BaseTimeToProduce { get; private set; } = 5f;
-    public float TimeToProduce => BaseTimeToProduce - bonusTime;
+    public float TimeToProduce => BaseTimeToProduce * 1/(BaseSpeed+bonusSpeed);
     public abstract ProductShape MachineShape { get; }
     public abstract ProductColor MachineColor { get; }
     public abstract ProductTopping machineTopping { get; }
 
-    [field: SerializeField] public float BaseTimeMultiplier { get; private set; } = 1f;
-    private float bonusTime = 0;
+    [field: SerializeField] public float BaseSpeed { get; private set; } = 1f;
+    private float bonusSpeed = 0;
     
     public Vector3 Position => transform.position;
     public virtual bool Inputable => true;
@@ -40,15 +40,15 @@ public abstract class Machine : MonoBehaviour, ILinkable
 
     public void ResetVariables()
     {
-        bonusTime = 0f;
+        bonusSpeed = 0f;
         selectedFeedbackGo.SetActive(false);
         Setup();
     }
 
-    public void IncreaseBonusTime(float amount)
+    public void IncreaseBonusSpeed(float amount)
     {
         var ratio = timer / TimeToProduce;
-        bonusTime += amount;
+        bonusSpeed += amount;
         timer = TimeToProduce * ratio;
     }
 

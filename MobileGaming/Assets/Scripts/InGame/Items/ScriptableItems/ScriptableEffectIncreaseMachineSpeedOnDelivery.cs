@@ -48,7 +48,7 @@ public class ScriptableEffectIncreaseMachineSpeedOnDelivery : ScriptableItemEffe
         void IncreaseMachineSpeed(Machine machine)
         {
             var bonusTime = machine.BaseTimeToProduce * speedIncrease;
-            machine.IncreaseBonusTime(bonusTime);
+            machine.IncreaseBonusSpeed(bonusTime);
             
             var startTime = service.CurrentTime;
             
@@ -63,7 +63,7 @@ public class ScriptableEffectIncreaseMachineSpeedOnDelivery : ScriptableItemEffe
             void RemoveSpeed()
             {
                 actionsToCleanup.Remove(RemoveSpeed);
-                machine.IncreaseBonusTime(-bonusTime);
+                machine.IncreaseBonusSpeed(-bonusTime);
                 EventManager.RemoveListener<LevelTimeUpdatedEvent>(DecreaseMachineSpeedOnDurationEnd);
             }
             

@@ -3,7 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Effect/Change Line Work Speed")]
 public class ScriptableItemIncreaseLineSpeed : ScriptableItemEffect
 {
-    [field: SerializeField,Tooltip("Increases Speed by X of the Base Time")] public float TimeMultiplier { get; private set; } = 1f;
+    [SerializeField,Tooltip("Decreases Line Duration by X of the Base Time")] private float decreasedTime;
+    [SerializeField] private int maxUses = 0;
+    private int currentUses;
     [Header("Start Machine Work")]
     [SerializeField] private ProductShape shape;
     [SerializeField] private ProductColor color;
@@ -11,6 +13,7 @@ public class ScriptableItemIncreaseLineSpeed : ScriptableItemEffect
     
     protected override void Effect(LevelService levelService)
     {
+        currentUses = 0;
         EventManager.AddListener<LinkCreatedEvent>(ChangeMultiplierLinkCreated);
     }
 
@@ -36,8 +39,14 @@ public class ScriptableItemIncreaseLineSpeed : ScriptableItemEffect
             
         if (!allMatch) return;
             
-        var amount = link.BaseTimeToCompleteTransportation*(TimeMultiplier-1);
-            
-        link.IncreaseExtraTimeToComplete(amount);
+        var amount = link.BaseTimeToCompleteTransportation*decreasedTime;
+        link.IncreaseExtraSpeed(amount);
+        
+        if(maxUses <= 0) return;
+        
+        currentUses++;
+        if(currentUses < maxUses) return;
+        
+        EventManager.RemoveListener<LinkCreatedEvent>(ChangeMultiplierLinkCreated);
     }
 }
