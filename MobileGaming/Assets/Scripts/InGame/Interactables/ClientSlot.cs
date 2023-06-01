@@ -19,6 +19,7 @@ public class ClientSlot : MonoBehaviour, ILinkable
     [SerializeField] private GameObject satisfactionBarGo;
     [SerializeField] private GameObject selectedHighlightGo;
     [SerializeField] private Image feedbackImage;
+    [SerializeField] private float fillOffset = 0.4f;
     [SerializeField] private Image contentImage;
     [SerializeField] private Image shapeImage;
     [SerializeField] private Image topingImage;
@@ -104,7 +105,7 @@ public class ClientSlot : MonoBehaviour, ILinkable
             clientSatisfactionEnum = ClientSatisfaction.Sleepy;
         }
 
-        feedbackImage.fillAmount = (currentSatisfaction / data.Satisfaction);
+        feedbackImage.fillAmount = fillOffset + (currentSatisfaction / data.Satisfaction) * (1-fillOffset*2);
     }
 
     public void PlayFeedback(int index)

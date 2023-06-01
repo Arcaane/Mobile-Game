@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,6 @@ using Object = UnityEngine.Object;
 
 public class MagicLineService : SwitchableService, IMagicLineService
 {
-    //private MagicLinesData magicLinesData => MagicLinesData.data;
     private MagicLinesData magicLinesData;
 
     private RectTransform buttonTr;
@@ -201,7 +199,8 @@ public class MagicLineService : SwitchableService, IMagicLineService
         link.OnDestroyed += RemoveLinkFromList;
         magicLinks.Add(link);
             
-        link.SetLinks(startLinkable,endLinkable);
+        link.SetLinks(startLinkable,endLinkable,ScriptableSettings.GlobalSettings.collideExtraTime);
+        if(link.FlaggedForDestruction) return;
         
         var startLinkablePos = startLinkable.Position;
         var endLinkablePos = endLinkable.Position;
@@ -213,18 +212,9 @@ public class MagicLineService : SwitchableService, IMagicLineService
 
         if (hits.Length > 0)
         {
-            Debug.Log($"DEPENDANT HITS ({hits.Length})");
-            
-            /*
-            foreach (var t in hits)
-            {
-                var hitLink = t.transform.GetComponent<Link>();
-                if (hitLink == null) continue;
-                    
-                link.AddDependency(hitLink);
-                link.enabled = false;
-            }
-            */
+            var collidingLinks = hits.Where(h => h.transform.GetComponent<Link>() != null)
+                .Select(h => h.transform.GetComponent<Link>()).ToArray();
+            if(collidingLinks.Length > 0) EventManager.Trigger(new LinkCollisionEvent(link,collidingLinks));
         }
 
         start.y = 0.5f;
@@ -237,7 +227,6 @@ public class MagicLineService : SwitchableService, IMagicLineService
         }
             
         link.CreateMesh();
-            
         
         void RemoveLinkFromList()
         {
@@ -356,5 +345,17 @@ public class ActivateDarkmodeEvent
     public ActivateDarkmodeEvent(bool value)
     {
         Value = value;
+    }
+}
+
+public class LinkCollisionEvent
+{
+    public Link Link { get; }
+    public Link[] CollidingLinks { get; }
+
+    public LinkCollisionEvent(Link link, Link[] collidingLinks)
+    {
+        Link = link;
+        CollidingLinks = collidingLinks;
     }
 }

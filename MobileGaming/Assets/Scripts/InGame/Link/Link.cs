@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -9,13 +10,12 @@ public class Link : MonoBehaviour
 {
     #region Variables
 
-    [SerializeField] private float height = 1.5f;
+    [SerializeField,ColorUsage(true,true)] private List<Color> colors = new List<Color>();
     [SerializeField] private Transform canvasTr;
     [field:SerializeField] public LineRenderer LineRenderer { get; private set; }
     [field:SerializeField] public BoxCollider Collider { get; private set; }
     [FormerlySerializedAs("debugImage")] public Transform bottleImage;
     private DrawMagicLine lineInCollision;
-    public Material myMaterial;
 
     public ILinkable StartLinkable { get; private set; }
     public ILinkable EndLinkable { get; private set; }
@@ -24,28 +24,38 @@ public class Link : MonoBehaviour
     // Magic Transportation
     [field: SerializeField] public float BaseTimeToCompleteTransportation { get; private set; } = 1.5f;
     private float extraTimeToComplete = 0f;
-    private float TimeToCompleteTransportation => BaseTimeToCompleteTransportation * 1f / (BaseTimeToCompleteTransportation+extraTimeToComplete);
+    private float TimeToCompleteTransportation => BaseTimeToCompleteTransportation + extraTimeToComplete;
+    
+    [field: SerializeField] public float BaseCollidingLinksSlowAmount { get; private set; } = 1.5f;
+    private float extraCollidingLinksSlowAmount = 0f;
+    private float CollidingLinksSlowAmount => BaseCollidingLinksSlowAmount + extraCollidingLinksSlowAmount;
     
     private float currentTimer = 0f;
-    public Product ProductInTreatment { get; private set; }
-    private List<Link> dependentLinks = new List<Link>();
-
-    private bool flaggedForDestruction = false;
     
-    private static readonly int FilingValue = Shader.PropertyToID("_FilingValue");
+    public Product ProductInTreatment { get; private set; }
+    public bool FlaggedForDestruction { get; private set; } = false;
+    
+    public Material material;
+
+    private List<Link> collisionLinks = new List<Link>();
     #endregion
     
     public void IncreaseExtraTimeToComplete(float amount)
     {
+        var ratio = currentTimer / TimeToCompleteTransportation;
         extraTimeToComplete += amount;
+        currentTimer = TimeToCompleteTransportation * ratio;
+    }
+    
+    public void IncreaseExtraTimeInCollision(float amount)
+    {
+        extraCollidingLinksSlowAmount += amount;
     }
     
     #region Feedback
 
     private void Feedback()
     {
-        myMaterial.SetFloat(FilingValue, 1 - currentTimer / TimeToCompleteTransportation);
-        
         bottleImage.position = Vector3.Lerp(StartLinkable.Position + Vector3.up, 
             EndLinkable.Position + Vector3.up, currentTimer / TimeToCompleteTransportation);
     }
@@ -111,39 +121,80 @@ public class Link : MonoBehaviour
 
     #endregion
     
-    public void SetLinks(ILinkable startLink,ILinkable endLink)
+    public void SetLinks(ILinkable startLink,ILinkable endLink,float slowAmount)
     {
+        collisionLinks.Clear();
+
         if(!startLink.Outputable || !endLink.Inputable) return;
         
         StartLinkable = startLink;
         EndLinkable = endLink;
         
+        ChangeColor(colors[0]);
         EventManager.Trigger(new LinkCreatedEvent(this));
-        
-        if(flaggedForDestruction) return;
+
+        if(FlaggedForDestruction) return;
         
         extraTimeToComplete = 0f;
+        extraCollidingLinksSlowAmount = 0f;
+        BaseCollidingLinksSlowAmount = slowAmount;
+        
+        EventManager.AddListener<LinkCollisionEvent>(SlowIfCollision);
 
         canvasTr.SetParent(null);
         EndLinkable.SetEndLinkable(this);
         StartLinkable.SetStartLinkable(this);
+        
     }
-    
-    public void AddDependency(Link link)
+
+    private void SlowIfCollision(LinkCollisionEvent linkCollisionEvent)
     {
-        if(dependentLinks.Contains(link)) return;
+        if(linkCollisionEvent.Link != this) return;
+        ChangeColor(colors[1]);
+
+        var increasedTime = BaseTimeToCompleteTransportation * CollidingLinksSlowAmount;
+        IncreaseExtraTimeToComplete(increasedTime);
         
-        dependentLinks.Add(link);
+        EventManager.AddListener<LinkDestroyedEvent>(RemoveListenerOnDestroyed);
+        EventManager.AddListener<LinkDestroyedEvent>(OnCollisionLinkDestroyed);
         
-        link.OnDestroyed += RemoveDependency;
-        
-        void RemoveDependency()
+        foreach (var collidingLink in linkCollisionEvent.CollidingLinks)
         {
-            if(!dependentLinks.Contains(link)) return;
-            dependentLinks.Remove(link);
-            if(dependentLinks.Count > 0) return;
-            enabled = true;
+            if(!CommonLinkables(collidingLink)) collisionLinks.Add(collidingLink);
         }
+        
+        TryReturnToNormal();
+
+        void OnCollisionLinkDestroyed(LinkDestroyedEvent linkDestroyedEvent)
+        {
+            if(!collisionLinks.Contains(linkDestroyedEvent.Link)) return;
+
+            collisionLinks.Remove(linkDestroyedEvent.Link);
+            
+            TryReturnToNormal();
+        }
+        
+        void TryReturnToNormal()
+        {
+            if(collisionLinks.Count > 0) return;
+            
+            ChangeColor(colors[0]);
+            IncreaseExtraTimeToComplete(-increasedTime);
+            EventManager.RemoveListener<LinkDestroyedEvent>(OnCollisionLinkDestroyed);
+        }
+
+        void RemoveListenerOnDestroyed(LinkDestroyedEvent linkDestroyedEvent)
+        {
+            if(linkDestroyedEvent.Link != this) return;
+            EventManager.RemoveListener<LinkDestroyedEvent>(OnCollisionLinkDestroyed);
+        }
+    }
+
+    private void ChangeColor(Color color)
+    {
+        material = LineRenderer.material;
+        material.color = color;
+        LineRenderer.material = material;
     }
     
     public event Action<Product> OnComplete;
@@ -151,11 +202,11 @@ public class Link : MonoBehaviour
 
     public void DestroyLink(bool completedTransfer = false)
     {
-        if(flaggedForDestruction) return;
+        if(FlaggedForDestruction) return;
         OnDestroyed?.Invoke();
         var startedTransfer = (ProductInTreatment == null) || completedTransfer;
         EventManager.Trigger(new LinkDestroyedEvent(this,startedTransfer,completedTransfer));
-        flaggedForDestruction = true;
+        FlaggedForDestruction = true;
         
         Destroy(canvasTr.gameObject);
         Destroy(gameObject);
@@ -166,13 +217,22 @@ public class Link : MonoBehaviour
         return (StartLinkable == start && EndLinkable == end);
     }
 
+    public bool CommonLinkables(Link other)
+    {
+        return (EndLinkable == other.StartLinkable || EndLinkable == other.EndLinkable) || (StartLinkable == other.StartLinkable || StartLinkable == other.EndLinkable);
+    }
+
     public void CreateMesh()
     {
         var tr = transform;
-        tr.position = (StartLinkable.Position + EndLinkable.Position) / 2f;
-        tr.forward = (tr.position - StartLinkable.Position).normalized;
+        var startPos = StartLinkable.Position;
+        var endPos = EndLinkable.Position;
+        startPos.y = 0;
+        endPos.y = 0;
+        tr.position = (startPos + endPos) / 2f;
+        tr.forward = (tr.position - startPos).normalized;
         
-        var distance = (StartLinkable.Position - EndLinkable.Position).magnitude - StartLinkable.Width - EndLinkable.Width;
+        var distance = (startPos - endPos).magnitude - StartLinkable.Width - EndLinkable.Width;
         var offset = StartLinkable.Width/2f - EndLinkable.Width/2f;
         Collider.center = new Vector3(0, 0, offset);
         Collider.size = new Vector3(1f, 0.5f, distance);

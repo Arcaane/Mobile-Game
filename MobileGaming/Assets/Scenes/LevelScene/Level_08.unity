@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17743884, g: 0.22214253, b: 0.30436155, a: 1}
+  m_IndirectSpecularColor: {r: 0.17407061, g: 0.21766992, b: 0.29985845, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -269,11 +269,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8388862757311762612, guid: ef3009e391f6edc429a8700932901350,
         type: 3}
-      propertyPath: levelDuration
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 8388862757311762612, guid: ef3009e391f6edc429a8700932901350,
-        type: 3}
       propertyPath: <Camera>k__BackingField
       value: 
       objectReference: {fileID: 135621044}
@@ -487,7 +482,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -544,11 +539,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2060846574}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.42261827, y: 0, z: 0, w: 0.9063079}
   m_LocalPosition: {x: 6.108153, y: 1.3152606, z: 3.468988}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: 0, z: 0}
