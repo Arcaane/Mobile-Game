@@ -175,7 +175,7 @@ public class Link : MonoBehaviour
         var distance = (StartLinkable.Position - EndLinkable.Position).magnitude - StartLinkable.Width - EndLinkable.Width;
         var offset = StartLinkable.Width/2f - EndLinkable.Width/2f;
         Collider.center = new Vector3(0, 0, offset);
-        Collider.size = new Vector3(0.5f, 0.5f, distance);
+        Collider.size = new Vector3(1f, 0.5f, distance);
     }
 }
 
