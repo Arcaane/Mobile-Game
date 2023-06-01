@@ -5,6 +5,7 @@ public class TutorialCanvas : MonoBehaviour
 {
     [Header("Cursor")]
     [SerializeField] private GameObject cursorGo;
+    [SerializeField] private ParticleSystem cursorParticleSystem;
     [field:SerializeField] public RectTransform CursorTr { get; private set; }
     [SerializeField] private Animator cursorAnimator;
     [SerializeField] private RectTransform[] waypoints;
@@ -26,12 +27,15 @@ public class TutorialCanvas : MonoBehaviour
         cursorGo.SetActive(value);
     }
     
-    public void PlayClickAnimationHold()
+    [ContextMenu("Press")]
+    private void PlayClickAnimationHold()
     {
         cursorAnimator.Play("ANIM_Pointer_OnPress");
+        cursorParticleSystem.Play();
     }
     
-    public void PlayReleaseAnimation()
+    [ContextMenu("Release")]
+    private void PlayReleaseAnimation()
     {
         cursorAnimator.Play("ANIM_Pointer_Release");
     }

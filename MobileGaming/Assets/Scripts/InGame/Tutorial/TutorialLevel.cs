@@ -100,6 +100,10 @@ public class TutorialLevel : Level
 
     private void GoToNextStepOnLinkDestroyed(LinkDestroyedEvent linkDestroyedEvent)
     {
+        var link = linkDestroyedEvent.Link;
+        if(link.StartLinkable is not Machine startMachine) return;
+        if(link.EndLinkable is not Machine endMachine) return;
+        if(startMachine != machines[2] || endMachine != machines[1]) return;
         NextSequence();
     }
 

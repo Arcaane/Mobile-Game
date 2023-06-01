@@ -736,6 +736,12 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 778459484}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &778459487 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8975229813862865895, guid: e039a9f1861fa5047b91d9529fdcb663,
+    type: 3}
+  m_PrefabInstance: {fileID: 778459484}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &932650926
 GameObject:
   m_ObjectHideFlags: 0
@@ -1239,6 +1245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorGo: {fileID: 1689796377}
+  cursorParticleSystem: {fileID: 778459487}
   <CursorTr>k__BackingField: {fileID: 1689796378}
   cursorAnimator: {fileID: 778459486}
   waypoints:
