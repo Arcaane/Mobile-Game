@@ -9,7 +9,7 @@ namespace Service
 
         public void StartLevel();
 
-        public void EndLevel(int state);
+        public void EndLevel();
     }
 }
 

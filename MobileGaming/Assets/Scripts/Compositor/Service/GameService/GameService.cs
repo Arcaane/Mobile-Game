@@ -133,6 +133,7 @@ namespace Service
             if (GamePathManager.instance.levels[currentLevel].starsClaimedCount > endLevelEvent.State) 
                 GamePathManager.instance.levels[currentLevel].starsClaimedCount = endLevelEvent.State;
             
+            //GamePathManager.instance.levels[currentLevel] fonctionne pas, on peut faire un dico de <scene,leveldata> ou <int,leveldata> avec les data qui ont le score et les etoiles 
             Debug.Log($"Level {GamePathManager.instance.levels[currentLevel]}, étoiles gagnés : {endLevelEvent.State}");
             
             // Débloque le niveau suivant
