@@ -8,8 +8,8 @@ public interface ILinkable
     public bool Inputable { get;}
     public bool Outputable { get;}
     public void ShowHighlight(bool value);
-    public void SetStartLinkable(Link link);
-    public void SetEndLinkable(Link link);
+    public void SetOutLink(Link link);
+    public void SetInLink(Link link);
     public bool IsAvailable();
     public event Action OnAvailable;
 }

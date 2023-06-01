@@ -14,7 +14,7 @@ public class GenerationMachine : Machine
     
     public override ProductShape MachineShape => data.Shape;
     public override ProductColor MachineColor => data.Color;
-    public override ProductTopping machineTopping => data.Topping;
+    public override ProductTopping MachineTopping => data.Topping;
 
     protected override void Setup()
     {
@@ -26,7 +26,7 @@ public class GenerationMachine : Machine
         
     }
 
-    public override void SetStartLinkable(Link link)
+    public override void SetOutLink(Link link)
     {
         if (link.EndLinkable.IsAvailable())
         {
@@ -44,7 +44,7 @@ public class GenerationMachine : Machine
         }
     }
     
-    public override void SetEndLinkable(Link link) { }
+    public override void SetInLink(Link link) { }
     public override bool IsAvailable() => false;
 
     #region Editor

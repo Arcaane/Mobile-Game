@@ -49,4 +49,9 @@ public class EventManager : AddressableSingleton<EventManager>
             listener.DynamicInvoke(triggeredKey);
         }
     }
+
+    protected override void FirstLoad()
+    {
+        m_events.Clear();
+    }
 }   

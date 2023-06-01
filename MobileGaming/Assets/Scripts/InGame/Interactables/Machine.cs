@@ -20,7 +20,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
     public float TimeToProduce => BaseTimeToProduce * 1/(BaseSpeed+bonusSpeed);
     public abstract ProductShape MachineShape { get; }
     public abstract ProductColor MachineColor { get; }
-    public abstract ProductTopping machineTopping { get; }
+    public abstract ProductTopping MachineTopping { get; }
 
     [field: SerializeField] public float BaseSpeed { get; private set; } = 1f;
     private float bonusSpeed = 0;
@@ -128,8 +128,8 @@ public abstract class Machine : MonoBehaviour, ILinkable
         selectedFeedbackGo.SetActive(value);
     }
 
-    public abstract void SetStartLinkable(Link link);
-    public abstract void SetEndLinkable(Link link);
+    public abstract void SetOutLink(Link link);
+    public abstract void SetInLink(Link link);
     public abstract bool IsAvailable();
     public event Action OnAvailable;
     protected void TriggerOnAvailable()

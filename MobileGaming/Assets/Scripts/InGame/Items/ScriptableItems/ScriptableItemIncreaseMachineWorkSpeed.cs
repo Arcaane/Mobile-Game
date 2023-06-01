@@ -25,7 +25,7 @@ public class ScriptableItemIncreaseMachineWorkSpeed : ScriptableItemEffect
         var machine = startWorkData.Machine;
         var productShape = machine.MachineShape;
         var productColor = machine.MachineColor;
-        var productTopping = machine.machineTopping;
+        var productTopping = machine.MachineTopping;
         var matchingShape = (shape & productShape) == productShape;
         var matchingColor = (color & productColor) == productColor;
         var matchingTopping = (topping & productTopping) == productTopping;

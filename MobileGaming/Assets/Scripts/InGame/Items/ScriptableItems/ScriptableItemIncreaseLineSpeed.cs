@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "Effect/Change Line Work Speed")]
 public class ScriptableItemIncreaseLineSpeed : ScriptableItemEffect
 {
-    [SerializeField,Tooltip("Decreases Line Duration by X of the Base Time")] private float decreasedTime;
+    [SerializeField,Tooltip("Speed Increase by X of the Base Time")] private float speedIncrease;
     [SerializeField] private int maxUses = 0;
     private int currentUses;
     [Header("Start Machine Work")]
@@ -30,7 +31,7 @@ public class ScriptableItemIncreaseLineSpeed : ScriptableItemEffect
             
         var productShape = machine.MachineShape;
         var productColor = machine.MachineColor;
-        var productTopping = machine.machineTopping;
+        var productTopping = machine.MachineTopping;
         var matchingShape = (shape & productShape) == productShape;
         var matchingColor = (color & productColor) == productColor;
         var matchingTopping = (topping & productTopping) == productTopping;
@@ -38,9 +39,9 @@ public class ScriptableItemIncreaseLineSpeed : ScriptableItemEffect
         var allMatch = (matchingShape && matchingColor && matchingTopping);
             
         if (!allMatch) return;
-            
-        var amount = link.BaseTimeToCompleteTransportation*decreasedTime;
-        link.IncreaseExtraSpeed(amount);
+        
+        link.IncreaseExtraSpeed(speedIncrease);
+        Debug.Log($"Increasing Speed of link going from {link.StartLinkable} to {link.EndLinkable}",link);
         
         if(maxUses <= 0) return;
         

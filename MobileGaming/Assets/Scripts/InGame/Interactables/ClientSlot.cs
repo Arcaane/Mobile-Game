@@ -237,11 +237,11 @@ public class ClientSlot : MonoBehaviour, ILinkable
         selectedHighlightGo.SetActive(value);
     }
 
-    public void SetStartLinkable(Link link)
+    public void SetOutLink(Link link)
     {
     }
 
-    public void SetEndLinkable(Link link)
+    public void SetInLink(Link link)
     {
         link.OnComplete += ReceiveProduct;
     }

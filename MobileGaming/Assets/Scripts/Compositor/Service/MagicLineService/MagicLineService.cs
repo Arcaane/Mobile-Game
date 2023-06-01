@@ -199,7 +199,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         link.OnDestroyed += RemoveLinkFromList;
         magicLinks.Add(link);
             
-        link.SetLinks(startLinkable,endLinkable,ScriptableSettings.GlobalSettings.collideExtraTime);
+        link.SetLinks(startLinkable,endLinkable);
         if(link.FlaggedForDestruction) return;
         
         var startLinkablePos = startLinkable.Position;

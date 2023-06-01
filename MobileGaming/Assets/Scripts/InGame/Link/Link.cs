@@ -18,14 +18,13 @@ public class Link : MonoBehaviour
 
     public ILinkable StartLinkable { get; private set; }
     public ILinkable EndLinkable { get; private set; }
-    public Vector2[] Points { get; private set; }
-    
+
     // Magic Transportation
     [field: SerializeField] public float BaseTimeToCompleteTransportation { get; private set; } = 1.5f;
     private float TimeToCompleteTransportation => BaseTimeToCompleteTransportation * 1/(BaseTransportationSpeed+extraSpeed);
     [field: SerializeField] public float BaseTransportationSpeed { get; private set; } = 1.5f;
     private float extraSpeed;
-    [field: SerializeField] public float BaseCollidingLinksSlowAmount { get; private set; } = 1.5f;
+    [field: SerializeField] public float BaseCollidingLinksSlowAmount { get; private set; } = 0.5f;
     private float extraCollidingLinksSlowAmount = 0f;
     private float CollidingLinksSlowAmount => BaseCollidingLinksSlowAmount + extraCollidingLinksSlowAmount;
     
@@ -34,7 +33,7 @@ public class Link : MonoBehaviour
     public Product ProductInTreatment { get; private set; }
     public bool FlaggedForDestruction { get; private set; } = false;
     
-    public Material material;
+    private Material material;
 
     private List<Link> collisionLinks = new List<Link>();
     #endregion
@@ -43,7 +42,9 @@ public class Link : MonoBehaviour
     {
         var ratio = currentTimer / TimeToCompleteTransportation;
         extraSpeed += amount;
+        Debug.Log($"Increasing extraSpeed by {amount}");
         currentTimer = TimeToCompleteTransportation * ratio;
+        Debug.Log($"Current Timer is at {currentTimer} (ration was {ratio})");
     }
     
     public void IncreaseExtraTimeInCollision(float amount)
@@ -92,7 +93,6 @@ public class Link : MonoBehaviour
             EndLinkable.Position + Vector3.up, currentTimer / TimeToCompleteTransportation);
         SetUIProduct();
         
-        currentTimer += Time.deltaTime;
         while (currentTimer < TimeToCompleteTransportation)
         {
             currentTimer += Time.deltaTime;
@@ -120,7 +120,7 @@ public class Link : MonoBehaviour
 
     #endregion
     
-    public void SetLinks(ILinkable startLink,ILinkable endLink,float slowAmount)
+    public void SetLinks(ILinkable startLink,ILinkable endLink)
     {
         collisionLinks.Clear();
 
@@ -129,38 +129,41 @@ public class Link : MonoBehaviour
         StartLinkable = startLink;
         EndLinkable = endLink;
         
-        ChangeColor(colors[0]);
-        EventManager.Trigger(new LinkCreatedEvent(this));
-
-        if(FlaggedForDestruction) return;
-        
         extraSpeed = 0f;
         extraCollidingLinksSlowAmount = 0f;
-        BaseCollidingLinksSlowAmount = slowAmount;
+
+        ChangeColor(colors[0]);
+
+        EventManager.Trigger(new LinkCreatedEvent(this));
+        if(FlaggedForDestruction) return;
         
         EventManager.AddListener<LinkCollisionEvent>(SlowIfCollision);
 
         canvasTr.SetParent(null);
-        EndLinkable.SetEndLinkable(this);
-        StartLinkable.SetStartLinkable(this);
+        EndLinkable.SetInLink(this);
+        StartLinkable.SetOutLink(this);
         
     }
 
     private void SlowIfCollision(LinkCollisionEvent linkCollisionEvent)
     {
         if(linkCollisionEvent.Link != this) return;
-        ChangeColor(colors[1]);
-
-        var slowSpeed = -CollidingLinksSlowAmount;
-        IncreaseExtraSpeed(slowSpeed);
-        
-        EventManager.AddListener<LinkDestroyedEvent>(RemoveListenerOnDestroyed);
-        EventManager.AddListener<LinkDestroyedEvent>(OnCollisionLinkDestroyed);
         
         foreach (var collidingLink in linkCollisionEvent.CollidingLinks)
         {
             if(!CommonLinkables(collidingLink)) collisionLinks.Add(collidingLink);
         }
+        
+        if (collisionLinks.Count <= 0) return;
+        
+        ChangeColor(colors[1]);
+        
+        var slowSpeed = -CollidingLinksSlowAmount;
+        
+        EventManager.AddListener<LinkDestroyedEvent>(RemoveListenerOnDestroyed);
+        EventManager.AddListener<LinkDestroyedEvent>(OnCollisionLinkDestroyed);
+        
+        IncreaseExtraSpeed(slowSpeed);
         
         TryReturnToNormal();
 
@@ -178,7 +181,7 @@ public class Link : MonoBehaviour
             if(collisionLinks.Count > 0) return;
             
             ChangeColor(colors[0]);
-            IncreaseExtraSpeed(slowSpeed);
+            IncreaseExtraSpeed(-slowSpeed);
             EventManager.RemoveListener<LinkDestroyedEvent>(OnCollisionLinkDestroyed);
         }
 
