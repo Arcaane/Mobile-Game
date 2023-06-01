@@ -2,7 +2,10 @@ using System;
 using Addressables;
 using Attributes;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using static UnityEngine.AddressableAssets.Addressables;
 using Object = UnityEngine.Object;
 
@@ -25,6 +28,9 @@ namespace Service
 
         private GameObject endGameCanvasGo;
         private TextMeshProUGUI endGameText;
+        private TextMeshProUGUI endGameButtonText;
+        private Image endGameSorcererImage;
+        private Sprite[] _sorcererSprites;
 
         private static event Action<int> OnLoadLevel;
 
@@ -67,8 +73,11 @@ namespace Service
                 
                 endGameText = sorcererController.endGameText;
                 endGameCanvasGo = sorcererController.endGameCanvasGo;
-                    
-                sorcererController.endGameButton.onClick.AddListener(RestartGame);
+                endGameSorcererImage = sorcererController.endGameImage;
+                _sorcererSprites = sorcererController.endGameSorcererSprites;
+                endGameButtonText = sorcererController.endGameButtonText;
+                
+                sorcererController.endToGoMenuButton.onClick.AddListener(RestartGame);
                 
                 SetListeners();
             }
@@ -125,6 +134,18 @@ namespace Service
         private void UpdateEndGameText(EndLevelEvent endLevelEvent)
         {
             endGameText.text = endLevelEvent.State == 0 ? "lose :c" : "win :)";
+            endGameButtonText.text = endLevelEvent.State == 0 ? "Try Again" : "Next Level"; 
+            endGameSorcererImage.sprite = endLevelEvent.State == 0 ? _sorcererSprites[0] : _sorcererSprites[1];
+            sorcererController.endGameButton.onClick.AddListener(endLevelEvent.State == 0 ?  ReloadScene : NextLevel);
+            
+            // TODO Afficher les étoiles gagnés
+            if (GamePathManager.instance.levels[currentLevel].starsClaimedCount > endLevelEvent.State)
+                GamePathManager.instance.levels[currentLevel].starsClaimedCount = endLevelEvent.State;
+            
+            // Débloque le niveau suivant
+            if (endLevelEvent.State == 1 && !GamePathManager.instance.levels[currentLevel + 1].isLevelUnlock)
+                GamePathManager.instance.unlockedLevels++;
+            
             endGameCanvasGo.SetActive(true);
         }
 
@@ -132,6 +153,12 @@ namespace Service
         {
             endGameCanvasGo.SetActive(false);
             sceneService.LoadSceneAsync(1);
+        }
+
+        private void ReloadScene()
+        {
+            endGameCanvasGo.SetActive(false);
+            sceneService.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
