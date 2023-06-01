@@ -130,6 +130,8 @@ public class LevelService : ILevelService
         
         EventManager.RemoveListeners<MachineStartWorkEvent>();
         EventManager.RemoveListeners<MachineEndWorkEvent>();
+        //TODO - remove plus de listeners
+        
         foreach (var machine in CurrentLevel.machines)
         {
             machine.ResetVariables();
