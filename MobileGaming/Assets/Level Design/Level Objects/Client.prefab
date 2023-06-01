@@ -84,6 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d558eb498335be49887bab1e383e696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  width: 0
   bottlesToBuyUIGo: {fileID: 8572395722108732976}
   satisfactionBarGo: {fileID: 5913738389520546109}
   selectedHighlightGo: {fileID: 5258073512220342345}
@@ -103,7 +104,6 @@ MonoBehaviour:
   data:
     scriptableClient: {fileID: 0}
     productDatas: []
-  currentSDebug: 0
 --- !u!1 &2072201412335529212
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -739631854, guid: 277fc0717c529b2409782516dfca77db, type: 3}
+  m_Sprite: {fileID: -1673468253, guid: 277fc0717c529b2409782516dfca77db, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
