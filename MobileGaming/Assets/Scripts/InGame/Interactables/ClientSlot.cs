@@ -128,8 +128,17 @@ public class ClientSlot : MonoBehaviour, ILinkable
     {
         data = newData;
         currentDataIndex = 0;
-
+        data.extraSatisfaction = 0f;
+        
+        EventManager.Trigger(new ClientDataSetEvent(this));
+        
+        Debug.Log($"Satisfaction is : {data.Satisfaction}, base is {data.scriptableClient.BaseTimer}");
         satisfactionRoutine = StartCoroutine(WaitForProductionRoutine());
+    }
+
+    public void IncreaseClientMaxSatisfaction(float amount)
+    {
+        data.extraSatisfaction += amount;
     }
 
     private IEnumerator WaitForProductionRoutine()
@@ -323,14 +332,25 @@ public class ClientSlotAvailableEvent
     }
 }
 
+public class ClientDataSetEvent
+{
+    public ClientSlot Slot { get; }
+
+    public ClientDataSetEvent(ClientSlot slot)
+    {
+        Slot = slot;
+    }
+}
+
 [Serializable]
 public struct ClientData
 {
     public string name => scriptableClient.DisplayName;
     public ScriptableClient scriptableClient;
     public ProductData[] productDatas;
+    public float extraSatisfaction;
 
-    public float Satisfaction => scriptableClient.BaseTimer +
+    public float Satisfaction => scriptableClient.BaseTimer + extraSatisfaction +
                                  (productDatas.Length > 1
                                      ? (productDatas.Length - 1) * scriptableClient.IncrementalTimer
                                      : 0);

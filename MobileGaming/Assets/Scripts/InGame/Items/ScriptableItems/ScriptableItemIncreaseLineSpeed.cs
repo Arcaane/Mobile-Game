@@ -12,28 +12,32 @@ public class ScriptableItemIncreaseLineSpeed : ScriptableItemEffect
     protected override void Effect(LevelService levelService)
     {
         EventManager.AddListener<LinkCreatedEvent>(ChangeMultiplierLinkCreated);
-        
-        void ChangeMultiplierLinkCreated(LinkCreatedEvent createdEvent)
-        {
-            var link = createdEvent.Link;
+    }
+
+    protected override void CleanUp(LevelService levelService)
+    {
+        EventManager.RemoveListener<LinkCreatedEvent>(ChangeMultiplierLinkCreated);
+    }
+    
+    private void ChangeMultiplierLinkCreated(LinkCreatedEvent createdEvent)
+    {
+        var link = createdEvent.Link;
             
-            if(link.StartLinkable is not Machine machine) return;
+        if(link.StartLinkable is not Machine machine) return;
             
-            var productShape = machine.MachineShape;
-            var productColor = machine.MachineColor;
-            var productTopping = machine.machineTopping;
-            var matchingShape = (shape & productShape) == productShape;
-            var matchingColor = (color & productColor) == productColor;
-            var matchingTopping = (topping & productTopping) == productTopping;
+        var productShape = machine.MachineShape;
+        var productColor = machine.MachineColor;
+        var productTopping = machine.machineTopping;
+        var matchingShape = (shape & productShape) == productShape;
+        var matchingColor = (color & productColor) == productColor;
+        var matchingTopping = (topping & productTopping) == productTopping;
             
-            var allMatch = (matchingShape && matchingColor && matchingTopping);
+        var allMatch = (matchingShape && matchingColor && matchingTopping);
             
-            if (!allMatch) return;
+        if (!allMatch) return;
             
+        var amount = link.BaseTimeToCompleteTransportation*(TimeMultiplier-1);
             
-            var amount = link.BaseTimeToCompleteTransportation*(TimeMultiplier-1);
-            
-            link.IncreaseExtraTimeToComplete(amount);
-        }
+        link.IncreaseExtraTimeToComplete(amount);
     }
 }

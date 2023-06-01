@@ -7,8 +7,14 @@ public abstract class ScriptableItemEffect : ScriptableObject
     {
         Effect(levelService);
     }
+    
+    public void RemoveEffect(LevelService levelService)
+    {
+        CleanUp(levelService);
+    }
 
     protected abstract void Effect(LevelService levelService);
+    protected abstract void CleanUp(LevelService levelService);
 }
 
 [Serializable]

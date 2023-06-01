@@ -102,6 +102,16 @@ public class LevelService : ILevelService
         }
     }
 
+    private void RemoveListeners()
+    {
+        EventManager.RemoveListeners<MachineStartWorkEvent>();
+        EventManager.RemoveListeners<MachineEndWorkEvent>();
+        EventManager.RemoveListeners<ClientSlotAvailableEvent>();
+        EventManager.RemoveListeners<ClientDataSetEvent>();
+        EventManager.RemoveListeners<LinkCreatedEvent>();
+        EventManager.RemoveListeners<LinkDestroyedEvent>();
+    }
+
     public void IncreaseLevelDuration(float amount)
     {
         extraLevelDuration += amount;
@@ -128,10 +138,9 @@ public class LevelService : ILevelService
         palier3 = CurrentLevel.palier3;
         clientCount = CurrentLevel.clientSlots.Count;
         
-        EventManager.RemoveListeners<MachineStartWorkEvent>();
-        EventManager.RemoveListeners<MachineEndWorkEvent>();
-        //TODO - remove plus de listeners
-        
+        RemoveListeners();
+        AddListeners();
+
         foreach (var machine in CurrentLevel.machines)
         {
             machine.ResetVariables();
@@ -262,6 +271,16 @@ public class LevelService : ILevelService
     {
         running = false;
         magicLineService.Disable();
+
+        var equippedItems = ScriptableSettings.EquippedItemEffects;
+        if (equippedItems.Count > 0)
+        {
+            foreach (var effect in equippedItems)
+            {
+                effect.RemoveEffect(this);
+            }
+        }
+        
         EventManager.Trigger(new EndLevelEvent(CurrentLevel,state));
         CurrentLevel = null;
     }

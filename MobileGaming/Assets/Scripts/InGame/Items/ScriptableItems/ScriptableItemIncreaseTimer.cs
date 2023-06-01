@@ -8,4 +8,9 @@ public class ScriptableItemIncreaseTimer : ScriptableItemEffect
     {
         levelService.IncreaseLevelDuration(levelService.CurrentLevel.levelDuration*TimerIncreaseAmount/100f);
     }
+
+    protected override void CleanUp(LevelService levelService)
+    {
+        levelService.IncreaseLevelDuration(-(levelService.CurrentLevel.levelDuration * TimerIncreaseAmount / 100f));
+    }
 }
