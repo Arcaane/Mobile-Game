@@ -130,7 +130,7 @@ namespace Service
             sorcererController.endGameButton.onClick.AddListener(endLevelEvent.State == 0 ?  ReloadScene : NextLevel);
             
             // Afficher les étoiles gagnés
-            if (GamePathManager.instance.levels[currentLevel].starsClaimedCount > endLevelEvent.State)
+            if (GamePathManager.instance.levels[currentLevel].starsClaimedCount > endLevelEvent.State) 
                 GamePathManager.instance.levels[currentLevel].starsClaimedCount = endLevelEvent.State;
             
             Debug.Log($"Level {GamePathManager.instance.levels[currentLevel]}, étoiles gagnés : {endLevelEvent.State}");
@@ -141,7 +141,11 @@ namespace Service
                 GamePathManager.instance.unlockedLevels++;
                 Debug.Log($"Level {GamePathManager.instance.levels[currentLevel + 1]} unlocked");
             }
-            
+
+            if (endLevelEvent.State > 0)
+            {
+                GamePathManager.instance.SaveLevel(currentLevel);
+            }
             endGameCanvasGo.SetActive(true);
         }
 

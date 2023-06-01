@@ -20,6 +20,7 @@ public class GamePathManager : MonoBehaviour
 
     public Sprite[] boutonSprite;
     Dictionary<string, int> progressionSave = new();
+    
 
     // Start is called before the first frame update
 
@@ -36,18 +37,21 @@ public class GamePathManager : MonoBehaviour
     private void Start()
     {
         UpdateBoutonsColor();
+
+        if (!PlayerPrefs.HasKey("LevelUnlocked"))
+            PlayerPrefs.SetInt("LevelUnlocked", 0);
+        
         
         // Init progressionSave dico
         for (int i = 0; i < levels.Length; i++)
         {
-            if (!PlayerPrefs.HasKey(levels[i].name))
-            {
-                PlayerPrefs.SetInt(levels[i].name, 0);
-            }
-
+            if (!PlayerPrefs.HasKey(levels[i].name)) PlayerPrefs.SetInt(levels[i].name, 0);
+            
             progressionSave.Add(levels[i].name, PlayerPrefs.GetInt(levels[i].name));
             levels[i].starsClaimedCount = PlayerPrefs.GetInt(levels[i].name);
         }
+
+        unlockedLevels = PlayerPrefs.GetInt("LevelUnlocked");
     }
     
     public void UpdateBoutonsColor()
@@ -56,5 +60,12 @@ public class GamePathManager : MonoBehaviour
         {
             levels[i].GetComponent<Image>().sprite = levels[i].isLevelUnlock ? boutonSprite[1] : boutonSprite[0];
         }
+    }
+
+    public void SaveLevel(int level)
+    {
+        if (levels[level] == null) return;
+        PlayerPrefs.SetInt(levels[level].name, levels[level].starsClaimedCount);
+        PlayerPrefs.SetInt("LevelUnlocked", unlockedLevels);
     }
 }
