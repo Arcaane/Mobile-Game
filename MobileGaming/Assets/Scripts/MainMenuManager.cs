@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Service;
 using TMPro;
 using UnityEngine;
@@ -23,7 +24,6 @@ public class MainMenuManager : MonoBehaviour
     private int goldCount;
     private int collectionLevel;
     
-    [field:SerializeField] 
     public int StarCount
     {
         get => starCount;
@@ -33,8 +33,6 @@ public class MainMenuManager : MonoBehaviour
             OnStarChangeValue?.Invoke(value);
         }
     }
-    
-    [field:SerializeField] 
     public int GoldCount
     {
         get => goldCount;
@@ -44,8 +42,6 @@ public class MainMenuManager : MonoBehaviour
             OnGoldChangeValue?.Invoke(value);
         }
     }
-
-    [field: SerializeField]
     public int CollectionLevel
     {
         get => collectionLevel;
@@ -55,19 +51,19 @@ public class MainMenuManager : MonoBehaviour
             OnCollectionLevelChange?.Invoke(value);
         }
     }
-     
+    
     // Start is called before the first frame update
     void Start()
     {
         InitUIAction();
-        
+       
         if (!PlayerPrefs.HasKey("Star")) PlayerPrefs.SetInt("Star", StarCount);
         if (!PlayerPrefs.HasKey("Gold")) PlayerPrefs.SetInt("Gold", GoldCount);
         if (!PlayerPrefs.HasKey("CollectionLevel")) PlayerPrefs.SetInt("CollectionLevel", 0);
 
         StarCount = PlayerPrefs.GetInt("Star");
         GoldCount = PlayerPrefs.GetInt("Gold");
-        GoldCount = PlayerPrefs.GetInt("Gold");
+        CollectionLevel = PlayerPrefs.GetInt("CollectionLevel");
       
         settingsMenu.SetActive(isInSettingsMenu);
     }

@@ -9,9 +9,14 @@ public class SorcererController : MonoBehaviour
     [field: SerializeField] public Slider scoreSlider { get; private set; }
     
     [field: SerializeField] public TextMeshProUGUI endGameText { get; private set; }
+    [field: SerializeField] public TextMeshProUGUI endGameButtonText { get; private set; }
+    [field: SerializeField] public Button endToGoMenuButton { get; private set; }
     [field: SerializeField] public Button endGameButton { get; private set; }
     [field: SerializeField] public GameObject endGameCanvasGo { get; private set; }
-
+    
+    [field: SerializeField] public Image endGameImage { get; private set; }
+    [field: SerializeField] public Sprite[] endGameSorcererSprites { get; private set; }
+    
     [field: SerializeField] public GameObject hudCanvasGO;
     
     [field: SerializeField] public GameObject menuCanvasGO;
