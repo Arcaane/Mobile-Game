@@ -136,11 +136,12 @@ public class Link : MonoBehaviour
         if(FlaggedForDestruction) return;
         
         EventManager.AddListener<LinkCollisionEvent>(SlowIfCollision);
+        EventManager.AddListener<ActivateDestroyModeEvent>(IncreaseColliderSizeInDestroyMode);
+        
 
         canvasTr.SetParent(null);
         EndLinkable.SetInLink(this);
         StartLinkable.SetOutLink(this);
-        
     }
 
     private void SlowIfCollision(LinkCollisionEvent linkCollisionEvent)
@@ -208,6 +209,7 @@ public class Link : MonoBehaviour
         EventManager.Trigger(new LinkDestroyedEvent(this,startedTransfer,completedTransfer));
         FlaggedForDestruction = true;
         
+        EventManager.RemoveListener<ActivateDestroyModeEvent>(IncreaseColliderSizeInDestroyMode);
         Destroy(canvasTr.gameObject);
         Destroy(gameObject);
     }
@@ -236,6 +238,13 @@ public class Link : MonoBehaviour
         var offset = StartLinkable.Width/2f - EndLinkable.Width/2f;
         Collider.center = new Vector3(0, 0, offset);
         Collider.size = new Vector3(1f, 0.5f, distance);
+    }
+
+    private void IncreaseColliderSizeInDestroyMode(ActivateDestroyModeEvent activateDestroyModeEvent)
+    {
+        var colliderSize = Collider.size;
+        colliderSize.x = activateDestroyModeEvent.Value ? 2f : 1f;
+        Collider.size = colliderSize;
     }
 }
 
