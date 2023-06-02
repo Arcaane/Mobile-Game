@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class OpenCollectionItem : MonoBehaviour
@@ -7,6 +9,7 @@ public class OpenCollectionItem : MonoBehaviour
     [field:Header("Components")]
     public Image ItemImage { get; private set; }
     [SerializeField] private Button button;
+    [SerializeField] private TextMeshProUGUI fragmentProgressText;
     //public Image myLockImage;
     
     [SerializeField] public CollectionItem thisScriptable;
@@ -60,19 +63,21 @@ public class OpenCollectionItem : MonoBehaviour
         float current = thisScriptable.ObtainedFragment;
         float total = thisScriptable.FragmentCount;
         if (total == 0) total = 1;
-        Debug.Log(((current/total)*sprites));
         
         if(current < total) SetUnlock(false);
         foreach (var go in fragmentsGo)
         {
             go.SetActive(false);
         }
-        for (int i = 0; i < ((current/total)*sprites); i++)
+        
+        for (int i = 0; i < Mathf.FloorToInt((current/total)*sprites); i++)
         {
             fragmentsGo[i].SetActive(true);
         }
+        if(current > 0) fragmentsGo[0].SetActive(true);
+
+        fragmentProgressText.text = $"{current}/{total}";
     }
-    
     
 
     public void ShowItem()

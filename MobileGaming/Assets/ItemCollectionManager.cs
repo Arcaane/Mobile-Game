@@ -23,21 +23,15 @@ public class ItemCollectionManager : MonoBehaviour
     [ContextMenu("AutoFill items")]
     private void AutoFill()
     {
-        items = GetComponentsInChildren<OpenCollectionItem>().ToArray();
+        items = GetComponentsInChildren<OpenCollectionItem>().Where(c => c.gameObject.activeSelf).ToArray();
     }
     
     private void Start()
     {
-        // Init dico
-        /*
-        itemSave.Clear();
-        for (int i = 0; i < items.Length; i++)
+        foreach (var collectionItem in items)
         {
-            if (!PlayerPrefs.HasKey(items[i].name)) { PlayerPrefs.SetInt(items[i].name, 0); }
-            itemSave.Add(items[i].name, PlayerPrefs.GetInt(items[i].name));
-            items[i].isUnlocked = PlayerPrefs.GetInt(items[i].name) == 1;
+            collectionItem.thisScriptable.GetProgress();
         }
-        */
         
         UpdateCollectionSlots(menuManager.CollectionLevel);
     }

@@ -22,25 +22,44 @@ public class CollectionItem : ScriptableObject
     public event Action OnObtainFragment;
     public event Action OnCompleteFragment;
     
+    [ContextMenu("Reset Progress")]
     public void InitProgress()
     {
         ObtainedFragment = 0;
-        OnObtainFragment?.Invoke();
+        InvokeEvents();
+    }
+
+    public void GetProgress()
+    {
+        ObtainedFragment = 0;
+        if (!PlayerPrefs.HasKey(name)) PlayerPrefs.SetInt(name, ObtainedFragment);
+        ObtainedFragment = PlayerPrefs.GetInt(name);
+        InvokeEvents();
+    }
+
+    public void SetProgess(int amount)
+    {
+        PlayerPrefs.SetInt(name, amount);
     }
 
     [ContextMenu("Fragment++")]
     public void ObtainFragment()
     {
         ObtainedFragment++;
-        OnObtainFragment?.Invoke();
-        if(ObtainedFragment == FragmentCount) OnCompleteFragment?.Invoke();
+        InvokeEvents();
     }
 
     public void ForceUnlock()
     {
         ObtainedFragment = FragmentCount;
+        InvokeEvents();
+    }
+
+    private void InvokeEvents()
+    {
+        SetProgess(ObtainedFragment);
         OnObtainFragment?.Invoke();
-        OnCompleteFragment?.Invoke();
+        if(ObtainedFragment == FragmentCount) OnCompleteFragment?.Invoke();
     }
 }
 
