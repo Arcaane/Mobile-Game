@@ -132,7 +132,7 @@ public class MainMenuManager : MonoBehaviour
 
         OnGoldChangeValue = InitUIGold;
         OnStarChangeValue = InitUIStar;
-        OnCollectionLevelChange = _collectionManager.UpdateCollectionSlots;
+        OnCollectionLevelChange = _collectionManager.UnlockItemSlots;
     }
     #endregion
 }

@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ShowCollectionItemHolder : MonoBehaviour
 {
+    [SerializeField] private GameObject panelGo;
+    [SerializeField] private Button closeButton;
     public Image itemImage;
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI descriptionText;
@@ -17,11 +19,44 @@ public class ShowCollectionItemHolder : MonoBehaviour
     [SerializeField] private Image[] items;
     [SerializeField] private Button[] buttons;
     
-    private CollectionItem lastScriptableOpened;
-    public void FillAndShowItemCollectionDescription(CollectionItem itemScriptable)
+    private CollectionItem displayedScriptable;
+
+    private void Start()
     {
-        lastScriptableOpened = itemScriptable;
-        
+        ClosePanel();
+        closeButton.onClick.AddListener(ClosePanel);
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            var index = i;
+            buttons[i].onClick.AddListener(SetSlotItem);
+            buttons[i].onClick.AddListener(ClosePanel);
+
+            void SetSlotItem()
+            {
+                SetItemInSlot(index);
+            }
+        }
+    }
+    
+    private void ClosePanel()
+    {
+        panelGo.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        EventManager.AddListener<ShowItemEvent>(FillAndShowItemCollectionDescription);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<ShowItemEvent>(FillAndShowItemCollectionDescription);
+    }
+
+    public void FillAndShowItemCollectionDescription(ShowItemEvent showItemEvent)
+    {
+        var itemScriptable = showItemEvent.Item;
+        displayedScriptable = itemScriptable;
         itemImage.sprite = itemScriptable.itemSprite;
         titleText.text = itemScriptable.objectTitle;
         descriptionText.text = itemScriptable.descriptionText;
@@ -38,30 +73,20 @@ public class ShowCollectionItemHolder : MonoBehaviour
         {
             t.SetActive(true);
         }
-
-        if (itemScriptable.isEquiped) return;
         
         equipItemPart.SetActive(true);
-
-        for (int i = 0; i < itemCollectionManager.slots.Length; i++)
-        {
-            items[i].sprite = itemCollectionManager.slots[i].itemSlotImage.sprite;
-        }
-
-        if (itemCollectionManager.menuManager.CollectionLevel == 1) buttons[0].interactable = true;
-        if (itemCollectionManager.menuManager.CollectionLevel == 2) buttons[1].interactable = true;
-        if (itemCollectionManager.menuManager.CollectionLevel == 2) buttons[2].interactable = true;
+        
+        if (itemCollectionManager.menuManager.CollectionLevel >= 1) buttons[0].interactable = true;
+        if (itemCollectionManager.menuManager.CollectionLevel >= 2) buttons[1].interactable = true;
+        if (itemCollectionManager.menuManager.CollectionLevel >= 3) buttons[2].interactable = true;
+        
+        panelGo.SetActive(true);
     }
 
     public void SetItemInSlot(int i)
     {
-        if (itemCollectionManager.slots[i].item != null) itemCollectionManager.slots[i].item.isEquiped = false;
-        
-        lastScriptableOpened.isEquiped = true;
-        itemCollectionManager.slots[i].item = lastScriptableOpened;
-        itemCollectionManager.slots[i].itemInSlotSprite = lastScriptableOpened.itemSprite;
         equipItemPart.SetActive(false);
         
-        itemCollectionManager.UpdateCollectionSlots(itemCollectionManager.menuManager.CollectionLevel);
+        EventManager.Trigger(new EquipItemEvent(displayedScriptable,i));
     }
 }

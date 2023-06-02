@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class CollectionItem : ScriptableObject
 {
@@ -18,7 +17,6 @@ public class CollectionItem : ScriptableObject
     [field: SerializeField] public int FragmentCount { get; private set; }
     public int ObtainedFragment { get; private set; }
     
-    public bool isEquiped;
     public event Action OnObtainFragment;
     public event Action OnCompleteFragment;
     
