@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,75 +6,98 @@ using UnityEngine.UI;
 public class ItemCollectionManager : MonoBehaviour
 {
     public MainMenuManager menuManager;
-    public ShowCollectionItemHolder showItem;
-    public Canvas c1;
-    public Canvas c2;
     public ScrollRect sr;
     
     public ItemSlot[] slots;
+    public ItemSlot[] showItemslots;
     public Sprite lockSprite;
     public Sprite emptySprite;
     
-    Dictionary<string, int> itemSave = new();
+    public CollectionItem[] items;
+    
+    [Serializable]
+    public class ItemSlot
+    {
+        [field:SerializeField] public Image ItemSlotImage { get; private set; }
+        [field:SerializeField] public Button Button { get; private set; }
+        [field:SerializeField] public Sprite LockedSprite { get; private set; }
+        [field:SerializeField] public Sprite EmptySprite { get; private set; }
+        public CollectionItem Item { get; private set; }
+        private bool unlocked;
 
-    public OpenCollectionItem[] items;
+        public void Unlock(bool value)
+        {
+            unlocked = value;
+            DisplayItem(Item);
+        }
+        
+        public void DisplayItem(CollectionItem item)
+        {
+            Item = item;
+            ItemSlotImage.sprite = Item != null ? Item.itemSprite : (unlocked ? EmptySprite : LockedSprite);
+            if(Button != null) Button.interactable = Item != null;
+        }
+    }
+    
 
     [ContextMenu("AutoFill items")]
     private void AutoFill()
     {
-        items = GetComponentsInChildren<OpenCollectionItem>().Where(c => c.gameObject.activeSelf).ToArray();
+        items = GetComponentsInChildren<OpenCollectionItem>().Where(c => c.gameObject.activeSelf).Select(item => item.thisScriptable).ToArray();
     }
     
     private void Start()
     {
-        foreach (var collectionItem in items)
+        for (var i = 0; i < slots.Length; i++)
         {
-            collectionItem.thisScriptable.GetProgress();
+            var itemSlot = slots[i];
+            var index = i;
+            itemSlot.Unlock(false);
+            itemSlot.DisplayItem(null);
+            itemSlot.Button.onClick.AddListener(()=>ShowItemInSlot(index));
         }
-        
-        UpdateCollectionSlots(menuManager.CollectionLevel);
+
+        foreach (var itemSlot in showItemslots)
+        {
+            itemSlot.Unlock(false);
+            itemSlot.DisplayItem(null);
+        }
+
+        GetProgress();
     }
 
-    public void UpdateCollectionSlots(int score)
+    private void GetProgress()
     {
-        Debug.Log( $"Collection score {score}");
-        for (int i = 0; i < slots.Length; i++)
+        //get current equiped items
+        
+        foreach (var item in items)
         {
-            if (score == 0)
-            {
-                for (int j = 0; j < slots.Length; j++)
-                {
-                    slots[i].itemSlotImage.sprite = lockSprite;
-                    slots[i].itemSlotImage.transform.parent.GetComponent<Button>().interactable = false;
-                }
-            }
-            
-            if (i < score)
-            {
-                slots[i].itemSlotImage.sprite = slots[i].itemInSlotSprite;
-                slots[i].itemSlotImage.transform.parent.GetComponent<Button>().interactable = true;
-            }
-            else
-            {
-                slots[i].itemSlotImage.sprite = lockSprite;
-                slots[i].itemSlotImage.transform.parent.GetComponent<Button>().interactable = false;
-            }
-            
+            item.GetProgress();
         }
+    }
+    
+    private void OnEnable()
+    {
+        EventManager.AddListener<ShowItemEvent>(StopScroll);
+        EventManager.AddListener<EquipItemEvent>(EquipItem);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<ShowItemEvent>(StopScroll);
+    }
+
+    public void StopScroll(ShowItemEvent showItemEvent)
+    {
+        sr.enabled = false;
     }
     
     [ContextMenu("Unlock all")]
     public void UnlockedAllItems()
     {
-        for (int i = 0; i < items.Length; i++)
+        foreach (var item in items)
         {
-            items[i].isUnlocked = true;
-            PlayerPrefs.SetInt(items[i].name, 1);
-        }
-        
-        foreach (var collectionItem in items)
-        {
-            collectionItem.thisScriptable.ForceUnlock();
+            item.ForceUnlock();
         }
 
         PlayerPrefs.Save();
@@ -84,45 +106,46 @@ public class ItemCollectionManager : MonoBehaviour
     [ContextMenu("Lock all")]
     public void LockAllItems()
     {
-        for (int i = 0; i < items.Length; i++)
+        foreach (var item in items)
         {
-            items[i].isUnlocked = false;
-            PlayerPrefs.SetInt(items[i].name, 0);
-        }
-
-        foreach (var collectionItem in items)
-        {
-            collectionItem.thisScriptable.InitProgress();
+            item.InitProgress();
         }
         
         PlayerPrefs.Save();
     }
-    
-    public void UnlockItem(int i)
+
+    public void UnlockItemSlots(int level)
     {
-        items[i].isUnlocked = true;
-        PlayerPrefs.SetInt(items[i].name, 1);
-        PlayerPrefs.Save();
+        for (int i = 0; i < slots.Length; i++)
+        {
+            slots[i].Unlock(i < level);
+            showItemslots[i].Unlock(i < level);
+        }
+    }
+
+    public void EquipItem(EquipItemEvent equipItemEvent)
+    {
+        if(equipItemEvent.Slot > menuManager.CollectionLevel) return;
+        if(equipItemEvent.Slot < 0 || equipItemEvent.Slot >= slots.Length) return;
+        
+        slots[equipItemEvent.Slot].DisplayItem(equipItemEvent.Item);
+        showItemslots[equipItemEvent.Slot].DisplayItem(equipItemEvent.Item);
     }
 
     public void ShowItemInSlot(int i)
     {
-        Debug.Log($"Slot {i} need a new item !");
-        var tempItem = slots[i].item;
-        if (tempItem == null) return;
-        
-        c1.gameObject.SetActive(false);
-        c2.gameObject.SetActive(false);
-        sr.enabled = false;
-        showItem.gameObject.SetActive(true);
-        showItem.FillAndShowItemCollectionDescription(tempItem);
+        EventManager.Trigger(new ShowItemEvent(slots[i].Item));
     }
 }
 
-[Serializable]
-public class ItemSlot
+public class EquipItemEvent
 {
-    public Image itemSlotImage;
-    public Sprite itemInSlotSprite;
-    public CollectionItem item;
+    public CollectionItem Item { get; }
+    public int Slot { get; }
+
+    public EquipItemEvent(CollectionItem item, int slot)
+    {
+        Item = item;
+        Slot = slot;
+    }
 }

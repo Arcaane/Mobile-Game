@@ -13,7 +13,6 @@ public class OpenCollectionItem : MonoBehaviour
     //public Image myLockImage;
     
     [SerializeField] public CollectionItem thisScriptable;
-    [SerializeField] private ShowCollectionItemHolder _holder;
     [SerializeField] private Image fragmentImage;
     private List<GameObject> fragmentsGo = new List<GameObject>();
     
@@ -29,9 +28,9 @@ public class OpenCollectionItem : MonoBehaviour
     {
         if (thisScriptable == null) return;
         
+        button.onClick.AddListener(ShowItem);
         ItemImage.sprite = thisScriptable.itemSprite;
 
-        Debug.Log(fragmentImage,this);
         foreach (var sprite in thisScriptable.fragmentsSprites)
         {
             var image = Instantiate(fragmentImage, transform);
@@ -83,5 +82,16 @@ public class OpenCollectionItem : MonoBehaviour
     public void ShowItem()
     {
         //_holder.FillAndShowItemCollectionDescription(thisScriptable);
+        EventManager.Trigger(new ShowItemEvent(thisScriptable));
+    }
+}
+
+public class ShowItemEvent
+{
+    public CollectionItem Item { get; }
+
+    public ShowItemEvent(CollectionItem item)
+    {
+        Item = item;
     }
 }
