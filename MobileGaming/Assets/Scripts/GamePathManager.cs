@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class GamePathManager : MonoBehaviour
@@ -39,31 +37,5 @@ public class GamePathManager : MonoBehaviour
             if(!levelDisplaySagaMap.LevelScriptable.Fake) return;
             UnlockNext(levelDisplaySagaMap.NextLevel);
         }
-    }
-    
-    
-
-    
-    
-    public void SaveLevel(int level)
-    {
-        if (levels[level] == null) return;
-        //PlayerPrefs.SetInt(levels[level].name, levels[level].starsClaimedCount);
-        PlayerPrefs.SetInt("LevelUnlocked", unlockedLevels);
-    }
-
-    public Transform tr;
-    public GameObject prefab;
-
-    [ContextMenu("GRZGRZG")]
-    private void ReplaceWithPrefab()
-    {
-        var sagaLevels = levels;
-        for (int i = 0; i < sagaLevels.Length-1; i++)
-        {
-            sagaLevels[i].nextLevel = sagaLevels[i + 1];
-            EditorUtility.SetDirty(sagaLevels[i]);
-        }
-        
     }
 }
