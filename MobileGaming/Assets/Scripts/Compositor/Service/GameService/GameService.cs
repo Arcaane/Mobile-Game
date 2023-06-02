@@ -107,13 +107,14 @@ namespace Service
 
         private void LoadLevelI(int index)
         {
-            currentLevel = index - 2;
+            currentLevel = index - 1;
             NextLevel();
         }
 
         private void SetListeners()
         {
             EventManager.AddListener<LoadLevelEvent>(OnLevelLoaded);
+            EventManager.AddListener<EndLevelEvent>(ReturnToMenu);
             EventManager.AddListener<EndLevelEvent>(UpdateEndGameText);
         }
         
@@ -122,8 +123,15 @@ namespace Service
             levelService.InitLevel(loadLevelEvent.Level);
         }
 
+        private void ReturnToMenu(EndLevelEvent endLevelEvent)
+        {
+            if(endLevelEvent.SaveScore) return;
+            sceneService.LoadScene(1);
+        }
+
         private void UpdateEndGameText(EndLevelEvent endLevelEvent)
         {
+            if(!endLevelEvent.SaveScore) return;
             endGameText.text = endLevelEvent.State == 0 ? "lose :c" : "win :)";
             endGameButtonText.text = endLevelEvent.State == 0 ? "Try Again" : "Next Level"; 
             endGameSorcererImage.sprite = endLevelEvent.State == 0 ? _sorcererSprites[0] : _sorcererSprites[1];
@@ -171,6 +179,5 @@ namespace Service
             inputService.Disable();
             sceneService.LoadSceneAsync(settings.LevelScenes[currentLevel]);
         }
-
     }
 }

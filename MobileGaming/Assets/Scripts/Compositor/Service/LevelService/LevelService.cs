@@ -41,6 +41,7 @@ public class LevelService : ILevelService
         EventManager.AddListener<ClientCompletedEvent>(TryDequeueData);
         EventManager.AddListener<ClientCompletedEvent>(TryEndLevelOnClientCompleted);
         EventManager.AddListener<LevelScoreUpdatedEvent>(TryEndLevelOn3Stars);
+        EventManager.AddListener<ExitLevelEvent>(EndLevelOnExit);
 
         void TryDequeueData(ClientCompletedEvent clientAvailableEvent)
         {
@@ -89,6 +90,11 @@ public class LevelService : ILevelService
         void TryEndLevelOn3Stars(LevelScoreUpdatedEvent levelScoreUpdatedEvent)
         {
             if(levelScoreUpdatedEvent.Score > levelScoreUpdatedEvent.Palier3) EndLevel();
+        }
+
+        void EndLevelOnExit(ExitLevelEvent exitLevelEvent)
+        {
+            EndLevel(false);
         }
     }
 
@@ -250,7 +256,7 @@ public class LevelService : ILevelService
         }
     }
     
-    public void EndLevel()
+    public void EndLevel(bool saveScore = true)
     {
         if(!running) return;
         running = false;
@@ -266,7 +272,7 @@ public class LevelService : ILevelService
         }
         
         var stars = CalculateScore();
-        EventManager.Trigger(new EndLevelEvent(CurrentLevel,stars,currentScore));
+        EventManager.Trigger(new EndLevelEvent(CurrentLevel,stars,currentScore, saveScore));
         CurrentLevel = null;
     }
 
@@ -311,12 +317,14 @@ public class EndLevelEvent
     public Level Level { get;}
     public int State { get;}
     public int Score { get;}
+    public bool SaveScore { get;}
 
-    public EndLevelEvent(Level level, int state,int score)
+    public EndLevelEvent(Level level, int state,int score,bool saveScore)
     {
         Level = level;
         State = state;
         Score = score;
+        SaveScore = saveScore;
     }
 }
 

@@ -7,12 +7,11 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenu;
-    [SerializeField] private GameObject levelMenu;
     [SerializeField] private GameObject darkmodeCanvasGo;
     [SerializeField] private Canvas darkmodeCanvas;
     [SerializeField] private Canvas hudCanvas;
     [SerializeField] private RectTransform chroneNeedleTr;
-    [SerializeField] private Vector3 needleRotation = new Vector3(0,0,10f);
+    [SerializeField] private Vector3 needleRotation = new Vector3(0, 0, 10f);
     
     //[SerializeField] private GameObject pauseMenu;
 
@@ -107,24 +106,17 @@ public class UIManager : MonoBehaviour
         _magicLinesData.enabled = false;
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
-    }
-
-    public void EnableInfoMenu()
-    {
-        //_magicLinesData.FinishLine();
-        sorcererController.enabled = false;
-        _magicLinesData.enabled = false;
-        levelMenu.SetActive(true);
-        Time.timeScale = 0f;
+        EventManager.Trigger(new PauseGameEvent(true));
     }
     
     public void ResumeGame()
     {
         pauseMenu.SetActive(false);
-        levelMenu.SetActive(false);
+        //levelMenu.SetActive(false);
         Time.timeScale = 1f;
-        sorcererController.enabled = false;
-        _magicLinesData.enabled = false;
+        sorcererController.enabled = true;
+        _magicLinesData.enabled = true;
+        EventManager.Trigger(new PauseGameEvent(false));
     }
 
     public void ReloadLevel()
@@ -134,7 +126,25 @@ public class UIManager : MonoBehaviour
     
     public void QuitGame()
     {
-        pauseMenu.SetActive(false);
-        SceneManager.LoadScene(0);
+        ResumeGame();
+        EventManager.Trigger(new ExitLevelEvent());
+    }
+}
+
+public class ExitLevelEvent
+{
+    public ExitLevelEvent()
+    {
+        
+    }
+}
+
+public class PauseGameEvent
+{
+    public bool Value { get; }
+
+    public PauseGameEvent(bool value)
+    {
+        Value = value;
     }
 }
