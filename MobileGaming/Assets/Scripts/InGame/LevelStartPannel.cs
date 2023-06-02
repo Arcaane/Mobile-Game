@@ -25,9 +25,9 @@ public class LevelStartPannel : MonoBehaviour
     
     public void UpdateValues(Level level)
     {
-        Debug.Log($"Chapter : {level.currentChapter}, level {level.currentLevel}");
-        chapterNumberText.text = $"Chapter {level.currentChapter}";
-        levelNumberText.text = $"Level {level.currentLevel}";
+        Debug.Log($"Chapter : {level.LevelScriptable.CurrentChapter}, level {level.LevelScriptable.CurrentLevel}");
+        chapterNumberText.text = $"Chapter {level.LevelScriptable.CurrentChapter}";
+        levelNumberText.text = $"Level {level.LevelScriptable.CurrentLevel}";
         
         var time = TimeSpan.FromSeconds(level.levelDuration);
         timerText.text = time.ToString(@"mm\:ss");

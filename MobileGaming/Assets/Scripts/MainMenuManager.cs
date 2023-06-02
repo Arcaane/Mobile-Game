@@ -53,7 +53,6 @@ public class MainMenuManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("Enabled");
         EventManager.AddListener<GoldValueChangedEvent>(UpdateGoldText);
         EventManager.AddListener<StarValueChangedEvent>(UpdateStarText);
         EventManager.AddListener<CollectionLevelChangeEvent>(UpdateItemLockState);

@@ -22,7 +22,6 @@ public class Product
         return $"{data.Color}, {data.Shape} and {data.Topping} Product";
     }
 
-    
 }
 
 [Serializable]

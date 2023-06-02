@@ -88,7 +88,7 @@ public class ScriptableForSagaWindow : EditorWindow
         temp.title = title;
         temp.areaText1 = areaText1;
         temp.areaText2 = areaText2;
-        temp.currentLevel = currentLevel;
+        //temp.currentLevel = currentLevel;
         temp.levelObjective = levelObjective;
         temp.gearCountPlayerCanEquip = gearCountPlayerCanEquip;
         temp.fragementReward = fragementReward;

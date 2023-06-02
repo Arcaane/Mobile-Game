@@ -7,17 +7,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Settings")]
 public class ScriptableSettings : ScriptableObject
 {
-    [field:Header("Levels")]
-    [field: SerializeField,Scene] public int[] LevelScenes { get; private set; } = Array.Empty<int>();
-    [field: SerializeField] public int DefaultStartIndex { get; private set; } = 0;
-
-    public void SetStartIndex(int index)
-    {
-        if (index < 0) index = 0;
-        if (index >= LevelScenes.Length) index = LevelScenes.Length - 1;
-        DefaultStartIndex = index;
-    }
-    
     [field:Header("Sprites")]
     [field: SerializeField] public Sprite[] bottleShapesSprites { get; private set; }
     [field: SerializeField] public Sprite[] bottleContentSprites { get; private set; }

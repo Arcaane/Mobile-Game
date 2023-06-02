@@ -35,7 +35,6 @@ public class ItemCollectionManager : MonoBehaviour
         {
             Item = item;
             ItemSlotImage.sprite = Item != null ? Item.itemSprite : (unlocked ? EmptySprite : LockedSprite);
-            Debug.Log($"Unlocking : {ItemSlotImage.sprite == EmptySprite}",ItemSlotImage);
             if(Button != null) Button.interactable = Item != null;
         }
     }
@@ -73,6 +72,8 @@ public class ItemCollectionManager : MonoBehaviour
         {
             item.GetProgress();
         }
+        
+        UnlockItemSlots(ScriptableItemDatabase.CollectionLevel);
     }
     
     private void OnEnable()

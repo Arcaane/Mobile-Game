@@ -110,19 +110,26 @@ namespace Service
 
         private void LoadLevelI(int index)
         {
-            currentLevel = index - 1;
-            NextLevel();
+            currentLevel = index;
+            endGameCanvasGo.SetActive(false);
+
+            inputService.Disable();
+            sceneService.LoadSceneAsync(currentLevel);
         }
 
         private void SetListeners()
         {
             EventManager.AddListener<LoadLevelEvent>(OnLevelLoaded);
             EventManager.AddListener<EndLevelEvent>(ReturnToMenu);
+            EventManager.AddListener<EndLevelEvent>(UpdateScriptableLevelsOnLevelEnd);
             EventManager.AddListener<EndLevelEvent>(UpdateEndGameText);
+            EventManager.AddListener<EndLevelEvent>(ObtainEndLevelRewards);
+            EventManager.AddListener<EndLevelEvent>(UnlockNextLevel);
         }
         
         private void OnLevelLoaded(LoadLevelEvent loadLevelEvent)
         {
+            Debug.Log("Loaded Level");
             levelService.InitLevel(loadLevelEvent.Level);
         }
 
@@ -135,30 +142,41 @@ namespace Service
         private void UpdateEndGameText(EndLevelEvent endLevelEvent)
         {
             if(!endLevelEvent.SaveScore) return;
-            endGameText.text = endLevelEvent.State == 0 ? "lose :c" : "win :)";
-            endGameButtonText.text = endLevelEvent.State == 0 ? "Try Again" : "Next Level"; 
-            endGameSorcererImage.sprite = endLevelEvent.State == 0 ? _sorcererSprites[0] : _sorcererSprites[1];
-            sorcererController.endGameButton.onClick.AddListener(endLevelEvent.State == 0 ?  ReloadScene : NextLevel);
+            endGameText.text = endLevelEvent.Stars == 0 ? "lose :c" : "win :)";
+            endGameButtonText.text = endLevelEvent.Stars == 0 ? "Try Again" : "Next Level"; 
+            endGameSorcererImage.sprite = endLevelEvent.Stars == 0 ? _sorcererSprites[0] : _sorcererSprites[1];
+            sorcererController.endGameButton.onClick.AddListener(endLevelEvent.Stars == 0 ?  ReloadScene : NextLevel);
             
-            // Afficher les étoiles gagnés
-            if (GamePathManager.instance.levels[currentLevel].starsClaimedCount > endLevelEvent.State) 
-                GamePathManager.instance.levels[currentLevel].starsClaimedCount = endLevelEvent.State;
-            
-            //GamePathManager.instance.levels[currentLevel] fonctionne pas, on peut faire un dico de <scene,leveldata> ou <int,leveldata> avec les data qui ont le score et les etoiles 
-            Debug.Log($"Level {GamePathManager.instance.levels[currentLevel]}, étoiles gagnés : {endLevelEvent.State}");
-            
-            // Débloque le niveau suivant
-            if (endLevelEvent.State == 1 && !GamePathManager.instance.levels[currentLevel + 1].isLevelUnlock)
-            {
-                GamePathManager.instance.unlockedLevels++;
-                Debug.Log($"Level {GamePathManager.instance.levels[currentLevel + 1]} unlocked");
-            }
-
-            if (endLevelEvent.State > 0)
-            {
-                GamePathManager.instance.SaveLevel(currentLevel);
-            }
+           
             endGameCanvasGo.SetActive(true);
+        }
+
+        private void UnlockNextLevel(EndLevelEvent endLevelEvent)
+        {
+            if(!endLevelEvent.SaveScore) return;
+            itemDatabase.SetLevelUnlocked(endLevelEvent.ScriptableLevel.CurrentLevel+1);
+            
+        }
+
+        private void UpdateScriptableLevelsOnLevelEnd(EndLevelEvent endLevelEvent)
+        {
+            var level = endLevelEvent.Level;
+            if(!endLevelEvent.SaveScore) return;
+
+            var score = endLevelEvent.Score;
+            if (score < level.LevelScriptable.Score) score = level.LevelScriptable.Score;
+        
+            level.LevelScriptable.SetProgress(endLevelEvent.Stars,score);
+        }
+
+        private void ObtainEndLevelRewards(EndLevelEvent endLevelEvent)
+        {
+            var level = endLevelEvent.Level;
+            if(!level.LevelScriptable.LastLevelOfChapter) return;
+
+            var chapter = level.LevelScriptable.CurrentChapter;
+           
+            itemDatabase.AddChapterToGacha(chapter);
         }
 
         private void RestartGame()
@@ -175,12 +193,7 @@ namespace Service
         
         private void NextLevel()
         {
-            endGameCanvasGo.SetActive(false);
-            currentLevel++;
-            if (currentLevel >= settings.LevelScenes.Length) currentLevel = 0;
-            
-            inputService.Disable();
-            sceneService.LoadSceneAsync(settings.LevelScenes[currentLevel]);
+            LoadLevelI(currentLevel++);
         }
     }
 }

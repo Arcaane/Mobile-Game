@@ -10,8 +10,8 @@ using UnityEditor.SceneManagement;
 
 public class Level : MonoBehaviour
 {
-    public int currentChapter;
-    public int currentLevel;
+    [field: SerializeField] public ScriptableLevelInSagaMap LevelScriptable { get; private set; }
+    
     [field: SerializeField] public int ScorePerExtraMillisecond { get; private set; } = 1;
 
     [field:Header("Components")]
@@ -23,6 +23,7 @@ public class Level : MonoBehaviour
     [HideInInspector,SerializeField] public int scoreToWin;
     [HideInInspector,SerializeField] public int palier2;
     [HideInInspector,SerializeField] public int palier3;
+    
 
     public List<ClientTiming> clientTimings = new ();
     public List<Machine> machines = new();
@@ -31,6 +32,7 @@ public class Level : MonoBehaviour
     
     private void Start()
     {
+        Debug.Log("LEVEL");
         EventManager.Trigger(new LoadLevelEvent(this));
     }
 

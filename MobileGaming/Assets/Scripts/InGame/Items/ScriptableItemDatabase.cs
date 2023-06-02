@@ -58,7 +58,8 @@ public class ScriptableItemDatabase : ScriptableObject
     [SerializeField] private List<ItemsPerChapter> itemsPerChapter = new ();
     [SerializeField] private List<CollectionItem> itemPool = new ();
 
-    private int unlockedChapters = 0;
+    private int completedChapters = 0;
+    private int unlockedLevels = 1;
 
     [ContextMenu("Get Progress")]
     public void GetProgress()
@@ -75,25 +76,38 @@ public class ScriptableItemDatabase : ScriptableObject
             item.GetProgress();
         }
         
-        if (!PlayerPrefs.HasKey("UnlockedChapters")) PlayerPrefs.SetInt("UnlockedChapters", 0);
-        unlockedChapters = PlayerPrefs.GetInt(name);
+        if (!PlayerPrefs.HasKey("CompletedChapters")) PlayerPrefs.SetInt("CompletedChapters", 0);
+        completedChapters = PlayerPrefs.GetInt("CompletedChapters");
+        
+        if (!PlayerPrefs.HasKey("LevelUnlocked")) PlayerPrefs.SetInt("LevelUnlocked", 1);
+        unlockedLevels = PlayerPrefs.GetInt("LevelUnlocked");
 
-        if(unlockedChapters <= 0) return;
-        for (int i = 0; i < unlockedChapters; i++)
+        if(completedChapters <= 0) return;
+        for (int i = 0; i < completedChapters; i++)
         {
             AddChapterToGacha(i);
         }
     }
 
-    public void SetProgess(int amount)
+    public void SetLevelUnlocked(int amount)
     {
-        unlockedChapters = amount;
-        PlayerPrefs.SetInt(name, unlockedChapters);
+        completedChapters = amount;
+        PlayerPrefs.SetInt("LevelUnlocked", completedChapters);
+        PlayerPrefs.Save();
+    }
+
+    public void SetChapterUnlocked(int amount)
+    {
+        completedChapters = amount;
+        PlayerPrefs.SetInt("CompletedChapters", completedChapters);
         PlayerPrefs.Save();
     }
     
-    public void AddChapterToGacha(int chapter) // chapter 1 is 0
+    public void AddChapterToGacha(int chapter) // chapter 1 is 1
     {
+        if(chapter <= completedChapters) return;
+        SetChapterUnlocked(chapter);
+        chapter--;
         foreach (var item in itemsPerChapter[chapter].items)
         {
             if(item.ObtainedFragment >= item.FragmentCount) continue;
