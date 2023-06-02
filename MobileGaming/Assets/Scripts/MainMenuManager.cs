@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using Service;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using NaughtyAttributes;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -12,9 +10,7 @@ public class MainMenuManager : MonoBehaviour
     public Button settingsButton;
     public bool isInSettingsMenu;
     public GameObject settingsMenu;
-    [SerializeField] private ScriptableSettings settings;
     [SerializeField] private ItemCollectionManager _collectionManager;
-    public RectTransform levelPanelRectTransform;
 
     [Space(10)] [Header("User variables")] 
     [SerializeField] private TextMeshProUGUI starCountText;
@@ -22,15 +18,14 @@ public class MainMenuManager : MonoBehaviour
     
     private int starCount;
     private int goldCount;
-    private int collectionLevel;
-    
+
     public int StarCount
     {
         get => starCount;
         set
         {
             starCount = value;
-            OnStarChangeValue?.Invoke(value);
+            EventManager.Trigger(new StarValueChangedEvent(starCount));
         }
     }
     public int GoldCount
@@ -39,33 +34,37 @@ public class MainMenuManager : MonoBehaviour
         set
         {
             goldCount = value;
-            OnGoldChangeValue?.Invoke(value);
-        }
-    }
-    public int CollectionLevel
-    {
-        get => collectionLevel;
-        set
-        {
-            collectionLevel = value;
-            OnCollectionLevelChange?.Invoke(value);
+            EventManager.Trigger(new GoldValueChangedEvent(goldCount));
         }
     }
     
     // Start is called before the first frame update
     void Start()
     {
-        InitUIAction();
-       
-        if (!PlayerPrefs.HasKey("Star")) PlayerPrefs.SetInt("Star", StarCount);
-        if (!PlayerPrefs.HasKey("Gold")) PlayerPrefs.SetInt("Gold", GoldCount);
+        if (!PlayerPrefs.HasKey("Star")) PlayerPrefs.SetInt("Star", 0);
+        if (!PlayerPrefs.HasKey("Gold")) PlayerPrefs.SetInt("Gold", 0);
         if (!PlayerPrefs.HasKey("CollectionLevel")) PlayerPrefs.SetInt("CollectionLevel", 0);
 
         StarCount = PlayerPrefs.GetInt("Star");
         GoldCount = PlayerPrefs.GetInt("Gold");
-        CollectionLevel = PlayerPrefs.GetInt("CollectionLevel");
-      
+
         settingsMenu.SetActive(isInSettingsMenu);
+    }
+
+    private void OnEnable()
+    {
+        Debug.Log("Enabled");
+        EventManager.AddListener<GoldValueChangedEvent>(UpdateGoldText);
+        EventManager.AddListener<StarValueChangedEvent>(UpdateStarText);
+        EventManager.AddListener<CollectionLevelChangeEvent>(UpdateItemLockState);
+        _collectionManager.UnlockItemSlots(ScriptableItemDatabase.CollectionLevel);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<GoldValueChangedEvent>(UpdateGoldText);
+        EventManager.RemoveListener<StarValueChangedEvent>(UpdateStarText);
+        EventManager.RemoveListener<CollectionLevelChangeEvent>(UpdateItemLockState);
     }
     
     public void ToggleSettings()
@@ -111,29 +110,27 @@ public class MainMenuManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void LevelCollectionButton(int i) =>  CollectionLevel = i;
+    public void LevelCollectionButton(int i) =>  ScriptableItemDatabase.CollectionLevel = i;
     #endregion
     
     #region UIMethods
-    private event Action<int> OnGoldChangeValue;
-    private event Action<int> OnStarChangeValue;
-    public event Action<int> OnCollectionLevelChange;
-
-    public void InitUIAction()
+    
+    public void UpdateItemLockState(CollectionLevelChangeEvent collectionLevelChangeEvent)
     {
-        void InitUIGold(int i)
-        {
-            goldCountText.text = i.ToString();
-        }
-        void InitUIStar(int i)
-        {
-            starCountText.text = i.ToString();
-        }
-
-        OnGoldChangeValue = InitUIGold;
-        OnStarChangeValue = InitUIStar;
-        OnCollectionLevelChange = _collectionManager.UnlockItemSlots;
+        Debug.Log($"Changed collection level to {collectionLevelChangeEvent.Value}");
+        _collectionManager.UnlockItemSlots(collectionLevelChangeEvent.Value);
     }
+
+    public void UpdateGoldText(GoldValueChangedEvent goldValueChangedEvent)
+    {
+        goldCountText.text = $"{goldValueChangedEvent.Value}";
+    }
+    
+    public void UpdateStarText(StarValueChangedEvent starValueChangedEvent)
+    {
+        starCountText.text = $"{starValueChangedEvent.Value}";
+    }
+    
     #endregion
 }
 

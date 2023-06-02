@@ -18,6 +18,7 @@ namespace Service
         [DependsOnService] private ILevelService levelService;
         [DependsOnService] private IMagicLineService magicLineService;
         private ScriptableSettings settings;
+        private ScriptableItemDatabase itemDatabase;
 
         private Transform levelParent;
         private int currentLevel;
@@ -34,10 +35,12 @@ namespace Service
 
         private static event Action<int> OnLoadLevel;
 
-        public GameService(ScriptableSettings baseSettings)
+        public GameService(ScriptableSettings baseSettings,ScriptableItemDatabase baseDatabase)
         {
             settings = baseSettings;
             settings.SetAsGlobalSettings();
+            itemDatabase = baseDatabase;
+            itemDatabase.GetProgress();
         }
 
         [ServiceInit]

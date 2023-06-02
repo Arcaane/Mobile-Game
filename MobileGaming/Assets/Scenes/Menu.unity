@@ -21918,12 +21918,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 644682850}
   m_CullTransparentMesh: 1
---- !u!224 &675198568 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 7925631398694473609, guid: 736075cbb0e526241a3bee7b66b6d4c2,
-    type: 3}
-  m_PrefabInstance: {fileID: 7925631398023756257}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &676507086
 GameObject:
   m_ObjectHideFlags: 0
@@ -22758,9 +22752,7 @@ MonoBehaviour:
   settingsButton: {fileID: 1647974947}
   isInSettingsMenu: 0
   settingsMenu: {fileID: 1313484761}
-  settings: {fileID: 11400000, guid: bae39384a5c99a24e97585a21b785c2b, type: 2}
   _collectionManager: {fileID: 1037108134}
-  levelPanelRectTransform: {fileID: 675198568}
   starCountText: {fileID: 2676340977319321432}
   goldCountText: {fileID: 2676340976953899636}
 --- !u!1001 &878942155
@@ -42827,6 +42819,26 @@ PrefabInstance:
       propertyPath: menuManager
       value: 
       objectReference: {fileID: 802955214}
+    - target: {fileID: 5480094235875061158, guid: bb2e78c78d3cd7c4ea327fc666d01aa4,
+        type: 3}
+      propertyPath: wishParticleSystem
+      value: 
+      objectReference: {fileID: 137570746}
+    - target: {fileID: 5480094235875061158, guid: bb2e78c78d3cd7c4ea327fc666d01aa4,
+        type: 3}
+      propertyPath: wishImageParticleSystem
+      value: 
+      objectReference: {fileID: 137570746}
+    - target: {fileID: 5480094235875061158, guid: bb2e78c78d3cd7c4ea327fc666d01aa4,
+        type: 3}
+      propertyPath: wishHatFlareParticleSystem
+      value: 
+      objectReference: {fileID: 231806164}
+    - target: {fileID: 5480094235875061158, guid: bb2e78c78d3cd7c4ea327fc666d01aa4,
+        type: 3}
+      propertyPath: wishItemFlareParticleSystem
+      value: 
+      objectReference: {fileID: 494501438}
     - target: {fileID: 5480094236669790232, guid: bb2e78c78d3cd7c4ea327fc666d01aa4,
         type: 3}
       propertyPath: m_Pivot.x

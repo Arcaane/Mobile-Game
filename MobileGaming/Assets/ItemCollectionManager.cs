@@ -35,6 +35,7 @@ public class ItemCollectionManager : MonoBehaviour
         {
             Item = item;
             ItemSlotImage.sprite = Item != null ? Item.itemSprite : (unlocked ? EmptySprite : LockedSprite);
+            Debug.Log($"Unlocking : {ItemSlotImage.sprite == EmptySprite}",ItemSlotImage);
             if(Button != null) Button.interactable = Item != null;
         }
     }
@@ -68,8 +69,6 @@ public class ItemCollectionManager : MonoBehaviour
 
     private void GetProgress()
     {
-        //get current equiped items
-        
         foreach (var item in items)
         {
             item.GetProgress();
@@ -85,6 +84,7 @@ public class ItemCollectionManager : MonoBehaviour
     private void OnDisable()
     {
         EventManager.RemoveListener<ShowItemEvent>(StopScroll);
+        EventManager.RemoveListener<EquipItemEvent>(EquipItem);
     }
 
     public void StopScroll(ShowItemEvent showItemEvent)
@@ -125,7 +125,7 @@ public class ItemCollectionManager : MonoBehaviour
 
     public void EquipItem(EquipItemEvent equipItemEvent)
     {
-        if(equipItemEvent.Slot > menuManager.CollectionLevel) return;
+        if(equipItemEvent.Slot > ScriptableItemDatabase.CollectionLevel) return;
         if(equipItemEvent.Slot < 0 || equipItemEvent.Slot >= slots.Length) return;
         
         slots[equipItemEvent.Slot].DisplayItem(equipItemEvent.Item);

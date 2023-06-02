@@ -76,9 +76,9 @@ public class ShowCollectionItemHolder : MonoBehaviour
         
         equipItemPart.SetActive(true);
         
-        if (itemCollectionManager.menuManager.CollectionLevel >= 1) buttons[0].interactable = true;
-        if (itemCollectionManager.menuManager.CollectionLevel >= 2) buttons[1].interactable = true;
-        if (itemCollectionManager.menuManager.CollectionLevel >= 3) buttons[2].interactable = true;
+        if (ScriptableItemDatabase.CollectionLevel >= 1) buttons[0].interactable = true;
+        if (ScriptableItemDatabase.CollectionLevel >= 2) buttons[1].interactable = true;
+        if (ScriptableItemDatabase.CollectionLevel >= 3) buttons[2].interactable = true;
         
         panelGo.SetActive(true);
     }

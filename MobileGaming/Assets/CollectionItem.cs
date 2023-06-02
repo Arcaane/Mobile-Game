@@ -17,9 +17,6 @@ public class CollectionItem : ScriptableObject
     [field: SerializeField] public int FragmentCount { get; private set; }
     public int ObtainedFragment { get; private set; }
     
-    public event Action OnObtainFragment;
-    public event Action OnCompleteFragment;
-    
     [ContextMenu("Reset Progress")]
     public void InitProgress()
     {
@@ -56,9 +53,20 @@ public class CollectionItem : ScriptableObject
     private void InvokeEvents()
     {
         SetProgess(ObtainedFragment);
-        OnObtainFragment?.Invoke();
-        if(ObtainedFragment == FragmentCount) OnCompleteFragment?.Invoke();
+        EventManager.Trigger(new ObtainFragmentEvent(this,ObtainedFragment == FragmentCount));
     }
 }
 
 public enum ItemRarity {Rare,Epic,Legendary}
+
+public class ObtainFragmentEvent
+{
+    public CollectionItem Item { get; }
+    public bool Completed { get; }
+
+    public ObtainFragmentEvent(CollectionItem item,bool completed)
+    {
+        Item = item;
+        Completed = completed;
+    }
+}

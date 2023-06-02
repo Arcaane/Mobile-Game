@@ -368,9 +368,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentChapter: 1
   currentLevel: 1
+  <ScorePerExtraMillisecond>k__BackingField: 1
   <StartPanel>k__BackingField: {fileID: 0}
   <Camera>k__BackingField: {fileID: 0}
-  <FeedbackFx>k__BackingField: []
   levelDuration: 999999
   scoreToWin: 800
   palier2: 1200
@@ -384,6 +384,8 @@ MonoBehaviour:
       - Color: 2
         Shape: 1
         Topping: 0
+      extraSatisfaction: 0
+      extraReward: 0
   - time: 1
     data:
       scriptableClient: {fileID: 11400000, guid: 29a897f0a87f8b1438c5443aeceac815,
@@ -392,6 +394,8 @@ MonoBehaviour:
       - Color: 4
         Shape: 1
         Topping: 0
+      extraSatisfaction: 0
+      extraReward: 0
   machines:
   - {fileID: 6174213034522413961}
   - {fileID: 5468457467748806883}
@@ -400,6 +404,7 @@ MonoBehaviour:
   - {fileID: 5847703843853925280}
   tutorialCanvas: {fileID: 0}
   tutorialLine: {fileID: 0}
+  unlockedItem: {fileID: 11400000, guid: 9ead3a32238448c419e732d1dcf9a722, type: 2}
 --- !u!1 &4757193045376362831
 GameObject:
   m_ObjectHideFlags: 0
