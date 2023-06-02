@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a2b26b2722e46f48169929435a8a473, type: 3}
-  m_Name: ItemCollection_Truly magical fertilizer_Item
+  m_Name: ItemCollection_18_Truly magical fertilizer_Item
   m_EditorClassIdentifier: 
   itemSprite: {fileID: -195822659, guid: 69f6ebb088ec636418cfe11ce1a5656b, type: 3}
+  emptySprite: {fileID: 0}
   objectTitle: Truly Magical Fertilizer
   chapterNumber: Chapter 4
   <Rarity>k__BackingField: 1
@@ -22,6 +23,9 @@ MonoBehaviour:
     -Ashova Jelgayardt.'
   powerUpText: '''+25% efficiency on every machines, doubled for Green-transforming
     machines.'
-  <ScriptableItemEffects>k__BackingField: []
-  fragments: []
+  <ScriptableItemEffects>k__BackingField:
+  - {fileID: 11400000, guid: 9862cbf3837e44047a89c605de3fe002, type: 2}
+  - {fileID: 11400000, guid: aee53da718d789442b153fb0b41a6977, type: 2}
+  fragmentsSprites: []
+  <FragmentCount>k__BackingField: 22
   isEquiped: 0

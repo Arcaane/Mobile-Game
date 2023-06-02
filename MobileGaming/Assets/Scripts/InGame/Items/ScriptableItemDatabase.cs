@@ -23,6 +23,7 @@ public class ScriptableItemDatabase : ScriptableObject
     
     public void AddItemToGacha(params CollectionItem[] items)
     {
+        /*
         foreach (var item in items)
         {
             foreach (var fragment in item.Fragments.Where(fragment => !availableFragments.Contains(fragment)))
@@ -31,6 +32,7 @@ public class ScriptableItemDatabase : ScriptableObject
                 availableFragments.Add(fragment);
             }
         }
+        */
     }
 
     public void GetRandomFragment()
@@ -54,7 +56,7 @@ public class ScriptableItemDatabase : ScriptableObject
     {
         if(obtainedItems.Contains(itemEffect)) return;
 
-        if (itemEffect.Fragments.Count < ObtainedFragments(itemEffect)) return;
+        //if (itemEffect.Fragments.Count < ObtainedFragments(itemEffect)) return;
 
         GetItem(itemEffect);
     }

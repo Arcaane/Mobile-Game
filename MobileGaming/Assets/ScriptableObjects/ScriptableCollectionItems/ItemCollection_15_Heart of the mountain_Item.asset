@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a2b26b2722e46f48169929435a8a473, type: 3}
-  m_Name: ItemCollection_Heart of the mountain_Item
+  m_Name: ItemCollection_15_Heart of the mountain_Item
   m_EditorClassIdentifier: 
   itemSprite: {fileID: 1432342854, guid: c24e6d9ca820bef49ab429076705fce9, type: 3}
+  emptySprite: {fileID: 0}
   objectTitle: Sacred Ore of the Mountain
   chapterNumber: Chapter 3
   <Rarity>k__BackingField: 1
@@ -20,6 +21,12 @@ MonoBehaviour:
     to ban darkness till oblivion. '
   powerUpText: Red-transforming machines and lines originating from them work 500%
     faster.
-  <ScriptableItemEffects>k__BackingField: []
-  fragments: []
+  <ScriptableItemEffects>k__BackingField:
+  - {fileID: 11400000, guid: 3eb2bf4e56abe1d439ca13c1b69b6da5, type: 2}
+  fragmentsSprites:
+  - {fileID: 146563918, guid: c24e6d9ca820bef49ab429076705fce9, type: 3}
+  - {fileID: 76223784, guid: c24e6d9ca820bef49ab429076705fce9, type: 3}
+  - {fileID: 188091210, guid: c24e6d9ca820bef49ab429076705fce9, type: 3}
+  - {fileID: 1290367067, guid: c24e6d9ca820bef49ab429076705fce9, type: 3}
+  <FragmentCount>k__BackingField: 24
   isEquiped: 0

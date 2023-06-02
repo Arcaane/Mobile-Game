@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a2b26b2722e46f48169929435a8a473, type: 3}
-  m_Name: ItemCollection_Plant fairy_Item
+  m_Name: ItemCollection_17_Plant fairy_Item
   m_EditorClassIdentifier: 
   itemSprite: {fileID: 1954075461, guid: 04007e61bc8672746925cabc07cd32c6, type: 3}
+  emptySprite: {fileID: 0}
   objectTitle: Plant Fairy
   chapterNumber: Chapter 4
   <Rarity>k__BackingField: 1
@@ -21,6 +22,11 @@ MonoBehaviour:
     -Mireille
     XX.'
   powerUpText: Shape-changing machines work 25% faster.
-  <ScriptableItemEffects>k__BackingField: []
-  fragments: []
+  <ScriptableItemEffects>k__BackingField:
+  - {fileID: 11400000, guid: 783ded69432350546bf77f254cc1df81, type: 2}
+  fragmentsSprites:
+  - {fileID: 625012625, guid: 04007e61bc8672746925cabc07cd32c6, type: 3}
+  - {fileID: 1841772259, guid: 04007e61bc8672746925cabc07cd32c6, type: 3}
+  - {fileID: -538842938, guid: 04007e61bc8672746925cabc07cd32c6, type: 3}
+  <FragmentCount>k__BackingField: 18
   isEquiped: 0

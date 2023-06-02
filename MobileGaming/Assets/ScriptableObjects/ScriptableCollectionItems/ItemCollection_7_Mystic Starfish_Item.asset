@@ -10,15 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a2b26b2722e46f48169929435a8a473, type: 3}
-  m_Name: ItemCollection_Mystic Starfish_Item
+  m_Name: ItemCollection_7_Mystic Starfish_Item
   m_EditorClassIdentifier: 
   itemSprite: {fileID: -1701507406, guid: 7af8bb15c01686e4ea7ba280c860c506, type: 3}
+  emptySprite: {fileID: 0}
   objectTitle: Mystic Starfish
   chapterNumber: Chapter 1
   <Rarity>k__BackingField: 0
   descriptionText: Wrapped by mystic powers, whoever detains this creature should
     be able to witness powerful magics.
   powerUpText: Every 5 succesful deliveries, speeds up machines by 25% for 5 seconds.
-  <ScriptableItemEffects>k__BackingField: []
-  fragments: []
+  <ScriptableItemEffects>k__BackingField:
+  - {fileID: 11400000, guid: 5b42186d48e70864883c1f7a5fe94cd1, type: 2}
+  fragmentsSprites:
+  - {fileID: 861999221, guid: 7af8bb15c01686e4ea7ba280c860c506, type: 3}
+  - {fileID: 399209459, guid: 7af8bb15c01686e4ea7ba280c860c506, type: 3}
+  - {fileID: 607836714, guid: 7af8bb15c01686e4ea7ba280c860c506, type: 3}
+  - {fileID: 1606112059, guid: 7af8bb15c01686e4ea7ba280c860c506, type: 3}
+  - {fileID: -101977288, guid: 7af8bb15c01686e4ea7ba280c860c506, type: 3}
+  - {fileID: 1970833369, guid: 7af8bb15c01686e4ea7ba280c860c506, type: 3}
+  - {fileID: -170421451, guid: 7af8bb15c01686e4ea7ba280c860c506, type: 3}
+  <FragmentCount>k__BackingField: 7
   isEquiped: 0

@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a2b26b2722e46f48169929435a8a473, type: 3}
-  m_Name: ItemCollection_Winter's crown_Item
+  m_Name: ItemCollection_10_Winter's crown_Item
   m_EditorClassIdentifier: 
   itemSprite: {fileID: 1881974404, guid: 6ab331d44a75f1c46a4c86bde64b9413, type: 3}
+  emptySprite: {fileID: 0}
   objectTitle: Winter's Crown
   chapterNumber: Chapter 2
   <Rarity>k__BackingField: 1
@@ -21,6 +22,12 @@ MonoBehaviour:
 
     -Elisa Bazotzof.'
   powerUpText: Lines that are currently crossed by another line are sped up by 50%.
-  <ScriptableItemEffects>k__BackingField: []
-  fragments: []
+  <ScriptableItemEffects>k__BackingField:
+  - {fileID: 11400000, guid: 14f2c65f1e3536a4db51f071b505b891, type: 2}
+  fragmentsSprites:
+  - {fileID: 646364496, guid: 6ab331d44a75f1c46a4c86bde64b9413, type: 3}
+  - {fileID: -549567249, guid: 6ab331d44a75f1c46a4c86bde64b9413, type: 3}
+  - {fileID: -234278056, guid: 6ab331d44a75f1c46a4c86bde64b9413, type: 3}
+  - {fileID: -1815624098, guid: 6ab331d44a75f1c46a4c86bde64b9413, type: 3}
+  <FragmentCount>k__BackingField: 16
   isEquiped: 0

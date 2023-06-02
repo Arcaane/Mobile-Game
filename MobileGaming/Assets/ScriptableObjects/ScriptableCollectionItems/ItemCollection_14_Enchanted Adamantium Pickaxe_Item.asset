@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a2b26b2722e46f48169929435a8a473, type: 3}
-  m_Name: ItemCollection_Enchanted Adamantium Pickaxe_Item
+  m_Name: ItemCollection_14_Enchanted Adamantium Pickaxe_Item
   m_EditorClassIdentifier: 
   itemSprite: {fileID: -1689643679, guid: 349f802c4473ec04bbab9f3ca8a5aa18, type: 3}
+  emptySprite: {fileID: 0}
   objectTitle: Enchanted Adamantium Pickaxe
   chapterNumber: Chapter 3
   <Rarity>k__BackingField: 0
@@ -22,6 +23,11 @@ MonoBehaviour:
     -Elisa
     Bazotzof.'
   powerUpText: Lines currently crossing other lines move 30% slower instead of 50%.
-  <ScriptableItemEffects>k__BackingField: []
-  fragments: []
+  <ScriptableItemEffects>k__BackingField:
+  - {fileID: 11400000, guid: 5331318e741fee34caedd2aa59f855b0, type: 2}
+  fragmentsSprites:
+  - {fileID: -1891154700, guid: 349f802c4473ec04bbab9f3ca8a5aa18, type: 3}
+  - {fileID: 1998398547, guid: 349f802c4473ec04bbab9f3ca8a5aa18, type: 3}
+  - {fileID: -480209708, guid: 349f802c4473ec04bbab9f3ca8a5aa18, type: 3}
+  <FragmentCount>k__BackingField: 11
   isEquiped: 0

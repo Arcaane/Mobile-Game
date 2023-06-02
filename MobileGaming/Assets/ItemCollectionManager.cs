@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,18 +19,27 @@ public class ItemCollectionManager : MonoBehaviour
     Dictionary<string, int> itemSave = new();
 
     public OpenCollectionItem[] items;
+
+    [ContextMenu("AutoFill items")]
+    private void AutoFill()
+    {
+        items = GetComponentsInChildren<OpenCollectionItem>().ToArray();
+    }
+    
     private void Start()
     {
         // Init dico
+        /*
+        itemSave.Clear();
         for (int i = 0; i < items.Length; i++)
         {
             if (!PlayerPrefs.HasKey(items[i].name)) { PlayerPrefs.SetInt(items[i].name, 0); }
             itemSave.Add(items[i].name, PlayerPrefs.GetInt(items[i].name));
             items[i].isUnlocked = PlayerPrefs.GetInt(items[i].name) == 1;
         }
+        */
         
         UpdateCollectionSlots(menuManager.CollectionLevel);
-        UpdateCollectionItemUnlocked();
     }
 
     public void UpdateCollectionSlots(int score)
@@ -59,25 +69,6 @@ public class ItemCollectionManager : MonoBehaviour
             
         }
     }
-
-    public void UpdateCollectionItemUnlocked()
-    {
-        for (int i = 0; i < items.Length; i++)
-        {
-            if (items[i].isUnlocked)
-            {
-                //items[i].myLockImage.enabled = false;
-                items[i].GetComponent<Button>().interactable = true;
-                items[i].myItemImage.color = Color.white;
-            }
-            else
-            {
-                items[i].myItemImage.color = new Color(0.2f,0.2f,0.2f,1);
-                items[i].GetComponent<Button>().interactable = false;
-                //items[i].myLockImage.enabled = true;
-            }
-        }
-    }
     
     [ContextMenu("Unlock all")]
     public void UnlockedAllItems()
@@ -87,9 +78,13 @@ public class ItemCollectionManager : MonoBehaviour
             items[i].isUnlocked = true;
             PlayerPrefs.SetInt(items[i].name, 1);
         }
+        
+        foreach (var collectionItem in items)
+        {
+            collectionItem.thisScriptable.ForceUnlock();
+        }
 
         PlayerPrefs.Save();
-        UpdateCollectionItemUnlocked();
     }
     
     [ContextMenu("Lock all")]
@@ -101,8 +96,12 @@ public class ItemCollectionManager : MonoBehaviour
             PlayerPrefs.SetInt(items[i].name, 0);
         }
 
+        foreach (var collectionItem in items)
+        {
+            collectionItem.thisScriptable.InitProgress();
+        }
+        
         PlayerPrefs.Save();
-        UpdateCollectionItemUnlocked();
     }
     
     public void UnlockItem(int i)
@@ -110,7 +109,6 @@ public class ItemCollectionManager : MonoBehaviour
         items[i].isUnlocked = true;
         PlayerPrefs.SetInt(items[i].name, 1);
         PlayerPrefs.Save();
-        UpdateCollectionItemUnlocked();
     }
 
     public void ShowItemInSlot(int i)

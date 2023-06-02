@@ -10,15 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a2b26b2722e46f48169929435a8a473, type: 3}
-  m_Name: ItemCollection_Ultra-magical Seed_Item
+  m_Name: ItemCollection_16_Ultra-magical Seed_Item
   m_EditorClassIdentifier: 
   itemSprite: {fileID: -2011901885, guid: 45e34572fc027e04db2844373ea8324e, type: 3}
+  emptySprite: {fileID: 0}
   objectTitle: Ultra-magical Seed
   chapterNumber: Chapter 4
   <Rarity>k__BackingField: 2
   descriptionText: Born in the first breath of life, this divine seed is able to
     bring life to any place in the world. Even the deadliest ones.
   powerUpText: Every successful deliveries, speeds up machines by 10% for 15 seconds.
-  <ScriptableItemEffects>k__BackingField: []
-  fragments: []
+  <ScriptableItemEffects>k__BackingField:
+  - {fileID: 11400000, guid: f5368584696598c42a32596ad2dfd324, type: 2}
+  fragmentsSprites:
+  - {fileID: -1343330463, guid: 45e34572fc027e04db2844373ea8324e, type: 3}
+  - {fileID: -914276107, guid: 45e34572fc027e04db2844373ea8324e, type: 3}
+  - {fileID: -1346107208, guid: 45e34572fc027e04db2844373ea8324e, type: 3}
+  - {fileID: -1340873647, guid: 45e34572fc027e04db2844373ea8324e, type: 3}
+  - {fileID: -288718949, guid: 45e34572fc027e04db2844373ea8324e, type: 3}
+  <FragmentCount>k__BackingField: 35
   isEquiped: 0
