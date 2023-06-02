@@ -21,7 +21,7 @@ public class LevelSelectionContentHolder : MonoBehaviour
     
     public void BuildUI(ScriptableLevelInSagaMap _scriptableObject)
     {
-        levelTitleText.text = _scriptableObject.title;
+        if(levelTitleText != null) levelTitleText.text = _scriptableObject.title;
         currentLevelText.text = $"Level: {_scriptableObject.currentLevel}";
         levelObjective.text = $"Objective: {_scriptableObject.levelObjective}";
         //sectionBackground.sprite = _scriptableObject.levelSelectionBackground;

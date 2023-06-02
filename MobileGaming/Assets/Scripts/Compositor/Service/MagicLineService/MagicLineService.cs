@@ -125,6 +125,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         
         buttonTr.pivot = Vector2.one * 0.5f;
         inDestroyMode = true;
+        EventManager.Trigger(new ActivateDestroyModeEvent(true));
     }
 
     private void OnScreenRelease(Vector2 obj)
@@ -135,7 +136,11 @@ public class MagicLineService : SwitchableService, IMagicLineService
         EventManager.Trigger(new ActivateDarkmodeEvent(false));
         
         buttonTr.pivot = Vector2.zero;
-        inDestroyMode = false;
+        if (inDestroyMode)
+        {
+            inDestroyMode = false;
+            EventManager.Trigger(new ActivateDestroyModeEvent(false));
+        }
         buttonTr.position = buttonPos;
         
         foreach (var linkable in currentLinkables)
@@ -199,7 +204,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         link.OnDestroyed += RemoveLinkFromList;
         magicLinks.Add(link);
             
-        link.SetLinks(startLinkable,endLinkable,ScriptableSettings.GlobalSettings.collideExtraTime);
+        link.SetLinks(startLinkable,endLinkable);
         if(link.FlaggedForDestruction) return;
         
         var startLinkablePos = startLinkable.Position;
@@ -343,6 +348,16 @@ public class ActivateDarkmodeEvent
     public bool Value { get; }
 
     public ActivateDarkmodeEvent(bool value)
+    {
+        Value = value;
+    }
+}
+
+public class ActivateDestroyModeEvent
+{
+    public bool Value { get; }
+
+    public ActivateDestroyModeEvent(bool value)
     {
         Value = value;
     }

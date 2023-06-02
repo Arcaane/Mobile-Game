@@ -1,6 +1,3 @@
-using TMPro;
-using UnityEngine.UI;
-
 namespace Service
 {
     public interface ILevelService : IService
@@ -9,7 +6,7 @@ namespace Service
 
         public void StartLevel();
 
-        public void EndLevel(int state);
+        public void EndLevel(bool saveScore);
     }
 }
 

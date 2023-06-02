@@ -19,7 +19,7 @@ public class ClientSlot : MonoBehaviour, ILinkable
     [SerializeField] private GameObject satisfactionBarGo;
     [SerializeField] private GameObject selectedHighlightGo;
     [SerializeField] private Image feedbackImage;
-    [SerializeField] private float fillOffset = 0.4f;
+    [SerializeField] private float fillOffset = 0.04f;
     [SerializeField] private Image contentImage;
     [SerializeField] private Image shapeImage;
     [SerializeField] private Image topingImage;
@@ -35,7 +35,9 @@ public class ClientSlot : MonoBehaviour, ILinkable
     public bool Outputable => false;
 
     private float currentSatisfaction = 0;
-    public float Satisfaction => currentSatisfaction;
+    private float elapsedTime = 0;
+    public float CurrentSatisfaction => currentSatisfaction;
+    private float SatisfactionProgress => currentSatisfaction / data.Satisfaction;
     private bool canReceiveProduct = false;
 
     private int currentDataIndex = 0;
@@ -93,19 +95,19 @@ public class ClientSlot : MonoBehaviour, ILinkable
             return;
         }
         
-        if (clientSatisfactionEnum == ClientSatisfaction.NewClient && currentSatisfaction / data.Satisfaction < 0.75f)
+        feedbackImage.fillAmount = fillOffset + SatisfactionProgress * (1-fillOffset*2);
+        
+        if (clientSatisfactionEnum == ClientSatisfaction.NewClient && SatisfactionProgress < 0.75f)
         {
             //emotesFeedback[0].Play();
             clientSatisfactionEnum = ClientSatisfaction.Interrogate;
         }
 
-        if (clientSatisfactionEnum == ClientSatisfaction.Interrogate && currentSatisfaction / data.Satisfaction < 0.25f)
+        if (clientSatisfactionEnum == ClientSatisfaction.Interrogate && SatisfactionProgress < 0.25f)
         {
             //emotesFeedback[1].Play();
             clientSatisfactionEnum = ClientSatisfaction.Sleepy;
         }
-
-        feedbackImage.fillAmount = fillOffset + (currentSatisfaction / data.Satisfaction) * (1-fillOffset*2);
     }
 
     public void PlayFeedback(int index)
@@ -128,8 +130,24 @@ public class ClientSlot : MonoBehaviour, ILinkable
     {
         data = newData;
         currentDataIndex = 0;
-
+        data.extraSatisfaction = 0f;
+        data.extraReward = 0;
+        
+        EventManager.Trigger(new ClientDataSetEvent(this));
+        
         satisfactionRoutine = StartCoroutine(WaitForProductionRoutine());
+    }
+
+    public void IncreaseClientMaxSatisfaction(float amount)
+    {
+        var ratio = SatisfactionProgress;
+        data.extraSatisfaction += amount;
+        currentSatisfaction = data.Satisfaction * (1-ratio);
+    }
+    
+    public void IncreaseClientScore(float amount)
+    {
+        data.extraReward += Mathf.RoundToInt(amount);
     }
 
     private IEnumerator WaitForProductionRoutine()
@@ -137,6 +155,7 @@ public class ClientSlot : MonoBehaviour, ILinkable
         yield return new WaitForSeconds(0.5f);
 
         currentSatisfaction = data.Satisfaction;
+        elapsedTime = 0;
 
         canReceiveProduct = true;
         OnAvailable?.Invoke();
@@ -146,7 +165,9 @@ public class ClientSlot : MonoBehaviour, ILinkable
         while (currentSatisfaction > 0)
         {
             yield return satisfactionWait;
-            currentSatisfaction -= 0.1f * data.SatisfactionDecayPerSecond;
+            var timePassed = 0.1f * data.SatisfactionDecayPerSecond;
+            currentSatisfaction -= timePassed;
+            elapsedTime += timePassed;
             UpdateFeedbackImage();
         }
 
@@ -172,30 +193,23 @@ public class ClientSlot : MonoBehaviour, ILinkable
 
     private void ReceiveProduct(Product product)
     {
-        Debug.Log($"Received {product.data} (expecting {expectedData}) ({product.data == expectedData})");
+        var success = product.data == expectedData;
+
+        Debug.Log($"Received {product.data} (expecting {expectedData}) ({success})");
+        EventManager.Trigger(new DeliveryEvent(this,expectedData,success));
+
+        if (!success) return;
         
-        if (product.data == expectedData)
+        currentDataIndex++;
+
+        if (currentDataIndex >= data.productDatas.Length)
         {
-            // TODO - wesh les emotes on fait kwa ?
-            //emotesFeedback[3].Play();
-            //emotesFeedback[4].Play();
-
-            currentDataIndex++;
-
-            if (currentDataIndex >= data.productDatas.Length)
-            {
-                CompleteClient();
-                return;
-            }
-
-            currentSatisfaction = data.Satisfaction;
-            clientSatisfactionEnum = ClientSatisfaction.NewClient;
-
+            CompleteClient();
             return;
         }
 
-        // TODO - EMOTE GAMING
-        //emotesFeedback[2].Play();
+        currentSatisfaction = data.Satisfaction;
+        clientSatisfactionEnum = ClientSatisfaction.NewClient;
     }
 
     private void CompleteClient()
@@ -207,7 +221,7 @@ public class ClientSlot : MonoBehaviour, ILinkable
             StopCoroutine(satisfactionRoutine);
         }
 
-        EventManager.Trigger(new ClientSlotAvailableEvent(this));
+        EventManager.Trigger(new ClientCompletedEvent(this,elapsedTime));
 
         currentSatisfaction = 0;
 
@@ -223,11 +237,11 @@ public class ClientSlot : MonoBehaviour, ILinkable
         selectedHighlightGo.SetActive(value);
     }
 
-    public void SetStartLinkable(Link link)
+    public void SetOutLink(Link link)
     {
     }
 
-    public void SetEndLinkable(Link link)
+    public void SetInLink(Link link)
     {
         link.OnComplete += ReceiveProduct;
     }
@@ -309,17 +323,43 @@ public class ClientSlot : MonoBehaviour, ILinkable
     #endregion
 }
 
-public class ClientSlotAvailableEvent
+public class DeliveryEvent
+{
+    public ClientSlot Slot { get; }
+    public ProductData ExpectedProduct { get; }
+    public bool Successful { get; }
+
+    public DeliveryEvent(ClientSlot slot, ProductData expectedProduct, bool successful)
+    {
+        Slot = slot;
+        ExpectedProduct = expectedProduct;
+        Successful = successful;
+    }
+}
+
+public class ClientCompletedEvent
 {
     public ClientSlot ClientSlot { get; }
     public ClientData Data { get; }
-    public float Satisfaction { get; }
+    public float CurrentSatisfaction { get; }
+    public float TimeToComplete { get; }
 
-    public ClientSlotAvailableEvent(ClientSlot clientSlot)
+    public ClientCompletedEvent(ClientSlot clientSlot,float timeToComplete)
     {
         ClientSlot = clientSlot;
         Data = clientSlot.data;
-        Satisfaction = clientSlot.Satisfaction;
+        CurrentSatisfaction = clientSlot.CurrentSatisfaction;
+        TimeToComplete = timeToComplete;
+    }
+}
+
+public class ClientDataSetEvent
+{
+    public ClientSlot Slot { get; }
+
+    public ClientDataSetEvent(ClientSlot slot)
+    {
+        Slot = slot;
     }
 }
 
@@ -329,15 +369,17 @@ public struct ClientData
     public string name => scriptableClient.DisplayName;
     public ScriptableClient scriptableClient;
     public ProductData[] productDatas;
+    public float extraSatisfaction;
+    public int extraReward;
 
-    public float Satisfaction => scriptableClient.BaseTimer +
+    public float Satisfaction => scriptableClient.BaseTimer + extraSatisfaction +
                                  (productDatas.Length > 1
                                      ? (productDatas.Length - 1) * scriptableClient.IncrementalTimer
                                      : 0);
 
     public float SatisfactionDecayPerSecond => scriptableClient.TimerDecayPerSecond;
 
-    public int Reward => scriptableClient.BaseReward +
+    public int Reward => scriptableClient.BaseReward + extraReward +
                          (productDatas.Length > 1 ? (productDatas.Length - 1) * scriptableClient.IncrementalReward : 0);
 }
 

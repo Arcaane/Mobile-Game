@@ -31,21 +31,23 @@ public class LevelService : ILevelService
     private Queue<ClientSlot> queuedSlots = new(); 
     
     private int currentScore;
-    private float currentTime;
+    public float CurrentTime { get; private set; }
     private bool running;
 
     [ServiceInit]
     private void AddListeners()
     {
-        EventManager.AddListener<ClientSlotAvailableEvent>(IncreaseScore);
-        EventManager.AddListener<ClientSlotAvailableEvent>(TryDequeueData);
-        EventManager.AddListener<ClientSlotAvailableEvent>(TryEndLevel);
+        EventManager.AddListener<ClientCompletedEvent>(IncreaseScoreOnClientCompleted);
+        EventManager.AddListener<ClientCompletedEvent>(TryDequeueData);
+        EventManager.AddListener<ClientCompletedEvent>(TryEndLevelOnClientCompleted);
+        EventManager.AddListener<LevelScoreUpdatedEvent>(TryEndLevelOn3Stars);
+        EventManager.AddListener<ExitLevelEvent>(EndLevelOnExit);
 
-        void TryDequeueData(ClientSlotAvailableEvent clientAvailableEvent)
+        void TryDequeueData(ClientCompletedEvent clientAvailableEvent)
         {
             var slot = clientAvailableEvent.ClientSlot;
             
-            if (currentTime < LevelDuration) queuedData.Enqueue(slot.data);
+            if (CurrentTime < LevelDuration) queuedData.Enqueue(slot.data);
             
             if (queuedData.Count > 0) // data is available
             {
@@ -58,53 +60,63 @@ public class LevelService : ILevelService
             queuedSlots.Enqueue(slot);
         }
 
-        void IncreaseScore(ClientSlotAvailableEvent clientAvailableEvent)
+        void IncreaseScoreOnClientCompleted(ClientCompletedEvent clientCompletedEvent)
         {
-            var data = clientAvailableEvent.Data;
+            var data = clientCompletedEvent.Data;
             var scriptable = data.scriptableClient;
 
-            if (clientAvailableEvent.Satisfaction > 0) currentScore += data.Reward;
-
-            UpdateScoreUI();
-
-            foreach (var system in CurrentLevel.FeedbackFx)
-            {
-                system.gameObject.SetActive(false);
-            }
+            if (clientCompletedEvent.CurrentSatisfaction > 0) IncreaseScore(data.Reward);
+            
+            EventManager.Trigger(new LevelScoreUpdatedEvent(currentScore,palier3));
 
             var fxIndex = 2;
-            var percent = (clientAvailableEvent.Satisfaction / data.Satisfaction);
+            var percent = (clientCompletedEvent.CurrentSatisfaction / data.Satisfaction);
             if (percent <= 0f) fxIndex = 3;
             if (percent >= scriptable.GoodPercent) fxIndex = 1;
             if (percent > scriptable.BrewtifulPercent) fxIndex = 0;
 
-            clientAvailableEvent.ClientSlot.PlayFeedback(fxIndex);
-            
-            if (fxIndex > 0 && fxIndex < CurrentLevel.FeedbackFx.Length)
-            {
-                CurrentLevel.FeedbackFx[fxIndex].gameObject.SetActive(true);
-                CurrentLevel.FeedbackFx[fxIndex].Play();
-            }
+            clientCompletedEvent.ClientSlot.PlayFeedback(fxIndex);
         }
 
-        void TryEndLevel(ClientSlotAvailableEvent clientAvailableEvent)
+        void TryEndLevelOnClientCompleted(ClientCompletedEvent clientCompletedEvent)
         {
-            if (currentTime < LevelDuration) return;
+            if (CurrentTime < LevelDuration) return;
 
             if(queuedSlots.Count < clientCount) return;
             
-            var stars = 0;
-            if (currentScore > scoreToWin) stars++;
-            if (currentScore > palier2) stars++;
-            if (currentScore > palier3) stars++;
-
-            EndLevel(stars);
+            EndLevel();
         }
+
+        void TryEndLevelOn3Stars(LevelScoreUpdatedEvent levelScoreUpdatedEvent)
+        {
+            if(levelScoreUpdatedEvent.Score > levelScoreUpdatedEvent.Palier3) EndLevel();
+        }
+
+        void EndLevelOnExit(ExitLevelEvent exitLevelEvent)
+        {
+            EndLevel(false);
+        }
+    }
+
+    private void RemoveListeners()
+    {
+        EventManager.RemoveListeners<MachineStartWorkEvent>();
+        EventManager.RemoveListeners<MachineEndWorkEvent>();
+        EventManager.RemoveListeners<ClientCompletedEvent>();
+        EventManager.RemoveListeners<ClientDataSetEvent>();
+        EventManager.RemoveListeners<LinkCreatedEvent>();
+        EventManager.RemoveListeners<LinkDestroyedEvent>();
     }
 
     public void IncreaseLevelDuration(float amount)
     {
         extraLevelDuration += amount;
+    }
+
+    public void IncreaseScore(int amount)
+    {
+        currentScore += amount;
+        Debug.Log($"Gained {amount} (score is now {currentScore}), need {palier3} to end");
     }
 
     public void InitLevel(Level level)
@@ -120,6 +132,8 @@ public class LevelService : ILevelService
 
     private void ResetVariables()
     {
+        Debug.Log("Reseting Variables");
+        
         clientTimings = CurrentLevel.clientTimings.ToList();
         baseLevelDuration = CurrentLevel.levelDuration;
         extraLevelDuration = 0f;
@@ -128,10 +142,9 @@ public class LevelService : ILevelService
         palier3 = CurrentLevel.palier3;
         clientCount = CurrentLevel.clientSlots.Count;
         
-        EventManager.RemoveListeners<MachineStartWorkEvent>();
-        EventManager.RemoveListeners<MachineEndWorkEvent>();
-        //TODO - remove plus de listeners
-        
+        RemoveListeners();
+        AddListeners();
+
         foreach (var machine in CurrentLevel.machines)
         {
             machine.ResetVariables();
@@ -141,18 +154,13 @@ public class LevelService : ILevelService
         queuedData.Clear();
         queuedSlots.Clear();
 
-        currentTime = 0;
+        CurrentTime = 0;
         currentScore = 0;
         running = false;
 
         FillQueuedTimings();
         FillQueuedClients();
-
-        foreach (var fx in CurrentLevel.FeedbackFx)
-        {
-            fx.gameObject.SetActive(false);
-        }
-
+        
         void FillQueuedTimings()
         {
             clientTimings.Sort();
@@ -189,8 +197,8 @@ public class LevelService : ILevelService
             }
         }
 
-        UpdateTimeUI();
-        UpdateScoreUI();
+        EventManager.Trigger(new LevelTimeUpdatedEvent(CurrentTime,LevelDuration,this));
+        EventManager.Trigger(new LevelScoreUpdatedEvent(currentScore,palier3));
         
         magicLineService.Enable();
 
@@ -199,13 +207,13 @@ public class LevelService : ILevelService
         
         running = true;
     }
-
+    
     [OnTick]
     private void Update()
     {
         if (!running) return;
 
-        if (currentTime > LevelDuration)
+        if (CurrentTime > LevelDuration)
         {
             return;
         }
@@ -215,13 +223,13 @@ public class LevelService : ILevelService
     
     private void IncreaseTime()
     {
-        currentTime += Time.deltaTime;
+        CurrentTime += Time.deltaTime;
 
         DequeueTimings();
 
-        UpdateTimeUI();
+        EventManager.Trigger(new LevelTimeUpdatedEvent(CurrentTime,LevelDuration,this));
 
-        if (currentTime > LevelDuration)
+        if (CurrentTime > LevelDuration)
         {
             queuedTimings.Clear();
             queuedData.Clear();
@@ -233,7 +241,7 @@ public class LevelService : ILevelService
 
             var nextTiming = queuedTimings.Peek().time;
             
-            if(currentTime < nextTiming) return;
+            if(CurrentTime < nextTiming) return;
 
             var timing = queuedTimings.Dequeue();
             var data = timing.data;
@@ -247,23 +255,40 @@ public class LevelService : ILevelService
             queuedData.Enqueue(data);
         }
     }
-
-    private void UpdateTimeUI()
-    {
-        EventManager.Trigger(new LevelTimeUpdatedEvent(currentTime,LevelDuration,this));
-    }
     
-    private void UpdateScoreUI()
+    public void EndLevel(bool saveScore = true)
     {
-        EventManager.Trigger(new LevelScoreUpdatedEvent(currentScore,palier3));
-    }
-
-    public void EndLevel(int state)
-    {
+        if(!running) return;
         running = false;
         magicLineService.Disable();
-        EventManager.Trigger(new EndLevelEvent(CurrentLevel,state));
+        
+        var equippedItems = ScriptableSettings.EquippedItemEffects;
+        if (equippedItems.Count > 0)
+        {
+            foreach (var effect in equippedItems)
+            {
+                effect.RemoveEffect(this);
+            }
+        }
+        
+        var stars = CalculateScore();
+        EventManager.Trigger(new EndLevelEvent(CurrentLevel,stars,currentScore, saveScore));
         CurrentLevel = null;
+    }
+
+    private int CalculateScore()
+    {
+        var stars = 0;
+        if (currentScore > scoreToWin) stars++;
+        if (currentScore > palier2) stars++;
+        if (currentScore < palier3) return stars;
+
+        var extraTime = CurrentLevel.levelDuration - CurrentTime;
+        var extraTimeMilliseconds = (int)Mathf.Ceil(extraTime * 1000);
+
+        if(extraTime > 0) currentScore += extraTimeMilliseconds * CurrentLevel.ScorePerExtraMillisecond;
+        
+        return 3;
     }
 }
 
@@ -291,11 +316,15 @@ public class EndLevelEvent
 {
     public Level Level { get;}
     public int State { get;}
+    public int Score { get;}
+    public bool SaveScore { get;}
 
-    public EndLevelEvent(Level level, int state)
+    public EndLevelEvent(Level level, int state,int score,bool saveScore)
     {
         Level = level;
         State = state;
+        Score = score;
+        SaveScore = saveScore;
     }
 }
 

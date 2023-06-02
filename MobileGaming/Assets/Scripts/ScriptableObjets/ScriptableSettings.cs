@@ -7,9 +7,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Settings")]
 public class ScriptableSettings : ScriptableObject
 {
-    [field:Header("Lines")]
-    [field: SerializeField] public float collideExtraTime { get; private set; } = 0.4f;
-    
     [field:Header("Levels")]
     [field: SerializeField,Scene] public int[] LevelScenes { get; private set; } = Array.Empty<int>();
     [field: SerializeField] public int DefaultStartIndex { get; private set; } = 0;

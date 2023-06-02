@@ -17,19 +17,19 @@ public abstract class Machine : MonoBehaviour, ILinkable
 
     [field:Header("Production Settings")]
     [field: SerializeField] public float BaseTimeToProduce { get; private set; } = 5f;
+    public float TimeToProduce => BaseTimeToProduce * 1/(BaseSpeed+bonusSpeed);
     public abstract ProductShape MachineShape { get; }
     public abstract ProductColor MachineColor { get; }
-    public abstract ProductTopping machineTopping { get; }
+    public abstract ProductTopping MachineTopping { get; }
 
-    [field: SerializeField] public float BaseTimeMultiplier { get; private set; } = 1f;
-    private float extraTime = 0;
+    [field: SerializeField] public float BaseSpeed { get; private set; } = 1f;
+    private float bonusSpeed = 0;
     
     public Vector3 Position => transform.position;
     public virtual bool Inputable => true;
     public virtual bool Outputable => true;
     
     protected double timer { get; private set; }
-    protected double waitDuration { get; private set; }
     public Product currentProduct { get; protected set; } = null;
     public bool IsWorking { get; protected set; } = false;
 
@@ -40,14 +40,16 @@ public abstract class Machine : MonoBehaviour, ILinkable
 
     public void ResetVariables()
     {
-        extraTime = 0f;
+        bonusSpeed = 0f;
         selectedFeedbackGo.SetActive(false);
         Setup();
     }
 
-    public void IncreaseTimeMultiplier(float amount)
+    public void IncreaseBonusSpeed(float amount)
     {
-        extraTime += amount;
+        var ratio = timer / TimeToProduce;
+        bonusSpeed += amount;
+        timer = TimeToProduce * ratio;
     }
 
     #region Feedback
@@ -79,7 +81,6 @@ public abstract class Machine : MonoBehaviour, ILinkable
         IsWorking = true;
         currentProduct = product;
         EventManager.Trigger(new MachineStartWorkEvent(this));
-        waitDuration = BaseTimeToProduce * 1f / (BaseTimeMultiplier+extraTime);
 
         StartCoroutine(WorkProduct());
     }
@@ -100,7 +101,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
         
         OnStartWork();
         
-        while (timer < waitDuration)
+        while (timer < TimeToProduce)
         {
             yield return null;
             timer += Time.deltaTime;
@@ -127,8 +128,8 @@ public abstract class Machine : MonoBehaviour, ILinkable
         selectedFeedbackGo.SetActive(value);
     }
 
-    public abstract void SetStartLinkable(Link link);
-    public abstract void SetEndLinkable(Link link);
+    public abstract void SetOutLink(Link link);
+    public abstract void SetInLink(Link link);
     public abstract bool IsAvailable();
     public event Action OnAvailable;
     protected void TriggerOnAvailable()

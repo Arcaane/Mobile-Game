@@ -16,7 +16,7 @@ public class WorkMachine : Machine
     [SerializeField] private ProductTopping targetTopping;
     public override ProductShape MachineShape => changeShape ? targetShape : 0;
     public override ProductColor MachineColor => changeColor ? targetColor : 0;
-    public override ProductTopping machineTopping => changeTopping ? targetTopping : 0;
+    public override ProductTopping MachineTopping => changeTopping ? targetTopping : 0;
     
 
     [Header("Components")]
@@ -45,7 +45,7 @@ public class WorkMachine : Machine
     private void UpdateProgressFx(bool value)
     {
         if(fxGo != null) fxGo.SetActive(value);
-        if(fxRenderer != null) fxRenderer.material.SetFloat(Length,(float)(timer/waitDuration));
+        if(fxRenderer != null) fxRenderer.material.SetFloat(Length,(float)(timer/TimeToProduce));
     }
 
     protected override void OnStartWork()
@@ -109,7 +109,7 @@ public class WorkMachine : Machine
         }
     }
     
-    public override void SetStartLinkable(Link link)
+    public override void SetOutLink(Link link)
     {
         nextLinksToLoad.Add(link);
         link.OnDestroyed += RemoveLinkFromList;
@@ -122,7 +122,7 @@ public class WorkMachine : Machine
         }
     }
     
-    public override void SetEndLinkable(Link link)
+    public override void SetInLink(Link link)
     {
         link.OnComplete += StartWork;
         

@@ -39,6 +39,6 @@ public class LevelOpener : MonoBehaviour
     public void LevelSelectionBuild()
     {
        GamePathManager.instance.levelSelection.BuildUI(levelScriptable);
-       GamePathManager.instance.preScreenLevel.BuildUI(levelScriptable);
+       //GamePathManager.instance.preScreenLevel.BuildUI(levelScriptable);
     }
 }

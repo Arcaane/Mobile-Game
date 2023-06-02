@@ -10,6 +10,9 @@ public abstract class AddressableSingleton<T> : MonoBehaviour where T : Addressa
     {
         var op = LoadAssetAsync<GameObject>($"{typeof(T)}");
         instance = op.WaitForCompletion().GetComponent<T>();
+        instance.FirstLoad();
         return instance;
     }
+
+    protected abstract void FirstLoad();
 }

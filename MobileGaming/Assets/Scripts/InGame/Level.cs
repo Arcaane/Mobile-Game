@@ -12,12 +12,11 @@ public class Level : MonoBehaviour
 {
     public int currentChapter;
     public int currentLevel;
-    
-    
+    [field: SerializeField] public int ScorePerExtraMillisecond { get; private set; } = 1;
+
     [field:Header("Components")]
     [field:SerializeField] public LevelStartPannel StartPanel { get; private set; }
     [field:SerializeField] public Camera Camera { get; private set; }
-    [field:SerializeField] public ParticleSystem[] FeedbackFx { get; private set; }
     
     [HideInInspector,SerializeField] public float levelDuration;
 

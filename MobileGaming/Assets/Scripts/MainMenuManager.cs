@@ -81,7 +81,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void PlaceHolderGoToGameScene(int level)
     {
-        settings.SetStartIndex(level-1);
+        Debug.Log(level);
         GameService.LoadLevel(level);
     }
 
