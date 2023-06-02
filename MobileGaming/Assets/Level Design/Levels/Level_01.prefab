@@ -675,15 +675,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a70c68433140d748bd40c37fb808550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentChapter: 1
-  currentLevel: 1
+  <LevelScriptable>k__BackingField: {fileID: 11400000, guid: 2822ce2d9fba95c4d8ff2503caf07602,
+    type: 2}
   <ScorePerExtraMillisecond>k__BackingField: 1
   <StartPanel>k__BackingField: {fileID: 0}
   <Camera>k__BackingField: {fileID: 0}
-  levelDuration: 60
-  scoreToWin: 1200
-  palier2: 1600
-  palier3: 2000
+  levelDuration: 90
+  scoreToWin: 1600
+  palier2: 2000
+  palier3: 2400
   clientTimings:
   - time: 1.5
     data:

@@ -7,6 +7,7 @@ public class TutorialLevel : Level
 {
     [SerializeField] private TutorialCanvas tutorialCanvas;
     [SerializeField] private LineRenderer tutorialLine;
+    [SerializeField] private CollectionItem unlockedItem;
 
     private List<ILinkable> expectedStartLinkables = new List<ILinkable>();
     private List<ILinkable> expectedEndLinkables = new List<ILinkable>();
@@ -202,6 +203,10 @@ public class TutorialLevel : Level
     private void EndTutorial()
     {
         EventManager.Trigger(new EndTutorialEvent());
+        
+        unlockedItem.ForceUnlock();
+        if(ScriptableItemDatabase.CollectionLevel < 1) ScriptableItemDatabase.CollectionLevel = 1;
+        
         tutorialCanvas.ShowCursor(false);
         RemoveTutorialModifications(null);
     }

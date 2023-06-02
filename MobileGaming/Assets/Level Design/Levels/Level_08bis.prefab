@@ -1097,8 +1097,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a70c68433140d748bd40c37fb808550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentChapter: 2
-  currentLevel: 8
+  <LevelScriptable>k__BackingField: {fileID: 11400000, guid: be0916af62b2c464fb01369154c60894,
+    type: 2}
   <ScorePerExtraMillisecond>k__BackingField: 1
   <StartPanel>k__BackingField: {fileID: 0}
   <Camera>k__BackingField: {fileID: 0}
@@ -1259,7 +1259,7 @@ MonoBehaviour:
       extraReward: 0
   machines:
   - {fileID: 3543955999690457095}
-  - {fileID: 0}
+  - {fileID: 7136973661360112180}
   - {fileID: 1155903056233869946}
   - {fileID: 4085551055555699466}
   clientSlots:
@@ -5037,6 +5037,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1428383957416745254}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7136973661360112180 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8131596707646495506, guid: 196434752eaf82c4b8c2a35a4436841b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1428383957416745254}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66abd8198c977404090887c78ba45a95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1466058630820380492
 PrefabInstance:
   m_ObjectHideFlags: 0

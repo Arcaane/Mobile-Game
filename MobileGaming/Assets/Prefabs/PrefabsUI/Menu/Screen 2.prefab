@@ -301,9 +301,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37cb05b6f4f9ee045a44c122b3d213c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemDatabase: {fileID: 11400000, guid: 9f53fe865ed76a64684e7eeacb2da4af, type: 2}
+  wishParticleSystem: {fileID: 0}
   menuManager: {fileID: 0}
   timeline: {fileID: 0}
   wishButton: {fileID: 5480094235796012266}
+  rareItemColor: {r: 0.31764707, g: 0.6627451, b: 0.7490196, a: 1}
+  epicItemColor: {r: 0.42352942, g: 0.14509805, b: 0.7490196, a: 1}
+  legendaryItemColor: {r: 0.9137255, g: 0.57254905, b: 0.14509805, a: 1}
 --- !u!1 &5480094236669790235
 GameObject:
   m_ObjectHideFlags: 0

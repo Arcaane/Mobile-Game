@@ -700,12 +700,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a70c68433140d748bd40c37fb808550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentChapter: 4
-  currentLevel: 50
+  <LevelScriptable>k__BackingField: {fileID: 11400000, guid: c72267e0c46385a43bbbb2928d31419b,
+    type: 2}
   <ScorePerExtraMillisecond>k__BackingField: 1
   <StartPanel>k__BackingField: {fileID: 0}
   <Camera>k__BackingField: {fileID: 0}
-  levelDuration: 90
+  levelDuration: 120
   scoreToWin: 1600
   palier2: 2000
   palier3: 2400
@@ -835,8 +835,8 @@ MonoBehaviour:
   - {fileID: 223726493693322675}
   - {fileID: 4756950276385819692}
   - {fileID: 8645619304913373397}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 4158607543974454149}
+  - {fileID: 7561200985546770568}
   clientSlots:
   - {fileID: 6717791834294828695}
   - {fileID: 4096345716262391838}
@@ -10406,6 +10406,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4593142292235259838}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7561200985546770568 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6291764696636245814, guid: 86e33c32ea5bb654799a384a3c0733fd,
+    type: 3}
+  m_PrefabInstance: {fileID: 4593142292235259838}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66abd8198c977404090887c78ba45a95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4604044342672079366
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12346,6 +12358,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 196434752eaf82c4b8c2a35a4436841b, type: 3}
+--- !u!114 &4158607543974454149 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8131596707646495506, guid: 196434752eaf82c4b8c2a35a4436841b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5291566389018638487}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66abd8198c977404090887c78ba45a95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7221290250509542364 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3267439188089690955, guid: 196434752eaf82c4b8c2a35a4436841b,

@@ -1,4 +1,5 @@
 using System;
+using Service;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,29 +13,71 @@ public class LevelSelectionContentHolder : MonoBehaviour
     public TextMeshProUGUI levelObjective;
     
     // Images
+    [Header("Components")]
+    [SerializeField] private GameObject panelGo;
     public Image sectionBackground;
     public Image[] starsImage;
     public Image[] gearImage;
+    [SerializeField] private Button startButton;
+    [SerializeField] private Button exitButton;
     
     [Header("Social Info Section")] [Space(5)]
     public SocialInfoHolder[] socialHolder;
-    
-    public void BuildUI(ScriptableLevelInSagaMap _scriptableObject)
+
+    private ScriptableLevelInSagaMap scriptableLevelInSagaMap;
+
+    public void Start()
     {
-        if(levelTitleText != null) levelTitleText.text = _scriptableObject.title;
-        currentLevelText.text = $"Level: {_scriptableObject.currentLevel}";
-        levelObjective.text = $"Objective: {_scriptableObject.levelObjective}";
+        exitButton.onClick.AddListener(HidePanel);
+        startButton.onClick.AddListener(StartLevel);
+        
+        
+        void HidePanel()
+        {
+            panelGo.SetActive(false);
+        }
+
+        void StartLevel()
+        {
+            GameService.LoadLevel(scriptableLevelInSagaMap.LevelScene);
+        }
+    }
+
+    public void OnEnable()
+    {
+        EventManager.AddListener<OpenLevelSagaMapEvent>(BuildUI);
+    }
+
+    public void OnDisable()
+    {
+        EventManager.RemoveListener<OpenLevelSagaMapEvent>(BuildUI);
+    }
+
+    public void BuildUI(OpenLevelSagaMapEvent openLevelSagaMapEvent)
+    {
+        panelGo.SetActive(true);
+        scriptableLevelInSagaMap = openLevelSagaMapEvent.ScriptableLevelInSagaMap;
+        Debug.Log($"Building ui for {scriptableLevelInSagaMap}, going to {scriptableLevelInSagaMap.LevelScene}");
+        if (scriptableLevelInSagaMap == null)
+        {
+            panelGo.SetActive(false);
+            return;
+        }
+        
+        if(levelTitleText != null) levelTitleText.text = scriptableLevelInSagaMap.title;
+        currentLevelText.text = $"Level: {scriptableLevelInSagaMap.CurrentLevel}";
+        levelObjective.text = $"Objective: {scriptableLevelInSagaMap.levelObjective}";
         //sectionBackground.sprite = _scriptableObject.levelSelectionBackground;
         
         // TODO - Voir pour les stars
         // TODO - Voir pour le gear
         // TODO - Partie Social Player
 
-        for (int i = 1; i < _scriptableObject.socialInfos.Length; i++)
+        for (int i = 1; i < scriptableLevelInSagaMap.socialInfos.Length; i++)
         {
-            socialHolder[i].image.sprite = _scriptableObject.socialInfos[i].image;
-            socialHolder[i].name.text = _scriptableObject.socialInfos[i].name;
-            socialHolder[i].score.text = $"Score: {_scriptableObject.socialInfos[i].score}";
+            socialHolder[i].image.sprite = scriptableLevelInSagaMap.socialInfos[i].image;
+            socialHolder[i].name.text = scriptableLevelInSagaMap.socialInfos[i].name;
+            socialHolder[i].score.text = $"Score: {scriptableLevelInSagaMap.socialInfos[i].score}";
         }
     }
 }

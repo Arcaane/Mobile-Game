@@ -366,8 +366,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e0af3b116280b41ae246c76c72796d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentChapter: 1
-  currentLevel: 1
+  <LevelScriptable>k__BackingField: {fileID: 11400000, guid: 253c3645cdf7b0542879981e34e7afee,
+    type: 2}
   <ScorePerExtraMillisecond>k__BackingField: 1
   <StartPanel>k__BackingField: {fileID: 0}
   <Camera>k__BackingField: {fileID: 0}
@@ -404,6 +404,7 @@ MonoBehaviour:
   - {fileID: 5847703843853925280}
   tutorialCanvas: {fileID: 0}
   tutorialLine: {fileID: 0}
+  unlockedItem: {fileID: 11400000, guid: 9ead3a32238448c419e732d1dcf9a722, type: 2}
 --- !u!1 &4757193045376362831
 GameObject:
   m_ObjectHideFlags: 0

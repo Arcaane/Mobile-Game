@@ -8,76 +8,202 @@ using Random = UnityEngine.Random;
 public class ScriptableItemDatabase : ScriptableObject
 {
     [Serializable]
-    public struct ItemsPerLevel
+    public struct ItemsPerChapter
     {
-        [field: SerializeField] public List<ScriptableItemEffect> items { get; private set; }
+        [field: SerializeField] public List<CollectionItem> items { get; private set; }
+    }
+
+    [Header("Currency")]
+    [SerializeField] private int starCount;
+    [SerializeField] private int goldCount;
+    private static int collectionLevel;
+    
+    public int StarCount
+    {
+        get => starCount;
+        set
+        {
+            starCount = value;
+            PlayerPrefs.SetInt("Star", starCount);
+            PlayerPrefs.Save();
+            EventManager.Trigger(new StarValueChangedEvent(starCount));
+        }
+    }
+    public int GoldCount
+    {
+        get => goldCount;
+        set
+        {
+            goldCount = value;
+            PlayerPrefs.SetInt("Gold", goldCount);
+            PlayerPrefs.Save();
+            EventManager.Trigger(new GoldValueChangedEvent(goldCount));
+        }
+    }
+    public static int CollectionLevel
+    {
+        get => collectionLevel;
+        set
+        {
+            collectionLevel = value;
+            PlayerPrefs.SetInt("CollectionLevel", collectionLevel);
+            PlayerPrefs.Save();
+            EventManager.Trigger(new CollectionLevelChangeEvent(collectionLevel));
+        }
     }
     
-    [SerializeField] private List<ItemsPerLevel> allItems = new ();
-    [SerializeField] private List<ItemFragment> availableFragments = new ();
-    [SerializeField] private List<ItemFragment> obtainedFragments = new ();
-    [SerializeField] private List<CollectionItem> obtainedItems = new ();
-    
-    private int currency;
-    public int Currency => currency;
-    
-    public void AddItemToGacha(params CollectionItem[] items)
+    [Header("Items")]
+    [SerializeField] private List<CollectionItem> allItems = new();
+    [Header("Gacha")]
+    [SerializeField] private List<ItemsPerChapter> itemsPerChapter = new ();
+    [SerializeField] private List<CollectionItem> itemPool = new ();
+
+    private int completedChapters = 0;
+    private int unlockedLevels = 1;
+
+    [ContextMenu("Get Progress")]
+    public void GetProgress()
     {
-        /*
-        foreach (var item in items)
+        if (!PlayerPrefs.HasKey("Star")) PlayerPrefs.SetInt("Star", 0);
+        if (!PlayerPrefs.HasKey("Gold")) PlayerPrefs.SetInt("Gold", 0);
+        if (!PlayerPrefs.HasKey("CollectionLevel")) PlayerPrefs.SetInt("CollectionLevel", 0);
+        StarCount = PlayerPrefs.GetInt("Star");
+        GoldCount = PlayerPrefs.GetInt("Gold");
+        CollectionLevel = PlayerPrefs.GetInt("CollectionLevel");
+        
+        foreach (var item in allItems)
         {
-            foreach (var fragment in item.Fragments.Where(fragment => !availableFragments.Contains(fragment)))
+            item.GetProgress();
+        }
+        
+        if (!PlayerPrefs.HasKey("CompletedChapters")) PlayerPrefs.SetInt("CompletedChapters", 0);
+        completedChapters = PlayerPrefs.GetInt("CompletedChapters");
+        
+        if (!PlayerPrefs.HasKey("LevelUnlocked")) PlayerPrefs.SetInt("LevelUnlocked", 1);
+        unlockedLevels = PlayerPrefs.GetInt("LevelUnlocked");
+
+        if(completedChapters <= 0) return;
+        for (int i = 0; i < completedChapters; i++)
+        {
+            AddChapterToGacha(i);
+        }
+    }
+
+    public void SetLevelUnlocked(int amount)
+    {
+        completedChapters = amount;
+        PlayerPrefs.SetInt("LevelUnlocked", completedChapters);
+        PlayerPrefs.Save();
+    }
+
+    public void SetChapterUnlocked(int amount)
+    {
+        completedChapters = amount;
+        PlayerPrefs.SetInt("CompletedChapters", completedChapters);
+        PlayerPrefs.Save();
+    }
+    
+    public void AddChapterToGacha(int chapter) // chapter 1 is 1
+    {
+        if(chapter <= completedChapters) return;
+        SetChapterUnlocked(chapter);
+        chapter--;
+        foreach (var item in itemsPerChapter[chapter].items)
+        {
+            if(item.ObtainedFragment >= item.FragmentCount) continue;
+            for (int i = 0; i < (item.FragmentCount-item.ObtainedFragment); i++)
             {
-                fragment.SetItem(item);
-                availableFragments.Add(fragment);
+                itemPool.Add(item);
             }
         }
-        */
     }
-
-    public void GetRandomFragment()
+    
+    public (CollectionItem item, int gold) Pull()
     {
-        if (availableFragments.Count <= 0)
+        if (itemPool.Count <= 0)
         {
-            Debug.LogWarning("No fragments available");
-            GainCurrency(10);
+            Debug.LogWarning("Empty Pool");
+            return (null,0);
+        }
+
+        var index = Random.Range(0, itemPool.Count);
+        var item = itemPool[index];
+        itemPool.RemoveAt(index);
+        return (item,0);
+    }
+    
+    [ContextMenu("Wish")]
+    public void Wish()
+    {
+        (var item,var gold) = Pull();
+        
+        EventManager.Trigger(new WishEvent(item,gold));
+
+        if (item == null)
+        {
+            
             return;
         }
-        var index = Random.Range(0, availableFragments.Count);
-        var fragment = availableFragments[index];
 
-        obtainedFragments.Add(fragment);
-        availableFragments.Remove(fragment);
+        item.ObtainFragment();
+    }
+
+    [ContextMenu("Add")]
+    private void AddChapter()
+    {
+        AddChapterToGacha(0);
+    }
+    
+    [ContextMenu("Reset All Items")]
+    public void LockAllItems()
+    {
+        foreach (var item in allItems)
+        {
+            item.InitProgress();
+        }
         
-        TryGetItem(fragment.AssociatedItem);
+        PlayerPrefs.Save();
     }
+}
 
-    private void TryGetItem(CollectionItem itemEffect)
+public class WishEvent
+{
+    public CollectionItem Item { get; }
+    public int Gold { get; }
+
+    public WishEvent(CollectionItem item, int gold)
     {
-        if(obtainedItems.Contains(itemEffect)) return;
-
-        //if (itemEffect.Fragments.Count < ObtainedFragments(itemEffect)) return;
-
-        GetItem(itemEffect);
+        Item = item;
+        Gold = gold;
     }
+}
 
-    private void GetItem(CollectionItem itemEffect)
+public class GoldValueChangedEvent
+{
+    public int Value { get; }
+
+    public GoldValueChangedEvent(int value)
     {
-        obtainedItems.Add(itemEffect);
+        Value = value;
     }
+}
 
-    public int ObtainedFragments(CollectionItem itemEffect)
+public class StarValueChangedEvent
+{
+    public int Value { get; }
+
+    public StarValueChangedEvent(int value)
     {
-        return obtainedFragments.Count(fragment => fragment.AssociatedItem == itemEffect);
+        Value = value;
     }
+}
 
-    public void GainCurrency(int amount)
-    {
-        currency += amount;
-    }
+public class CollectionLevelChangeEvent
+{
+    public int Value { get; }
 
-    public void SpendCurrency(int amount)
+    public CollectionLevelChangeEvent(int value)
     {
-        currency -= amount;
+        Value = value;
     }
 }

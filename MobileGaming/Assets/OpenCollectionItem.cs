@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -37,33 +38,29 @@ public class OpenCollectionItem : MonoBehaviour
             image.sprite = sprite;
             fragmentsGo.Add(image.gameObject);
         }
-
-        thisScriptable.OnObtainFragment += UpdateShownFragments;
-        thisScriptable.OnCompleteFragment += Unlock;
+        
     }
 
-    private void Unlock()
+    private void OnEnable()
     {
-        SetUnlock(true);
+        EventManager.AddListener<ObtainFragmentEvent>(UpdateShownFragments);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<ObtainFragmentEvent>(UpdateShownFragments);
     }
     
-    private void SetUnlock(bool value)
+    private void UpdateShownFragments(ObtainFragmentEvent obtainFragmentEvent)
     {
-        isUnlocked = value;
+        if(obtainFragmentEvent.Item != thisScriptable) return;
+        SetUnlock(obtainFragmentEvent.Completed);
         
-        button.interactable = isUnlocked;
-        ItemImage.color = isUnlocked ? Color.white : new Color(0.2f,0.2f,0.2f,1);
-        
-    }
-
-    private void UpdateShownFragments()
-    {
         var sprites = fragmentsGo.Count;
         float current = thisScriptable.ObtainedFragment;
         float total = thisScriptable.FragmentCount;
         if (total == 0) total = 1;
         
-        if(current < total) SetUnlock(false);
         foreach (var go in fragmentsGo)
         {
             go.SetActive(false);
@@ -76,6 +73,15 @@ public class OpenCollectionItem : MonoBehaviour
         if(current > 0) fragmentsGo[0].SetActive(true);
 
         fragmentProgressText.text = $"{current}/{total}";
+    }
+    
+    private void SetUnlock(bool value)
+    {
+        isUnlocked = value;
+        
+        button.interactable = isUnlocked;
+        ItemImage.color = isUnlocked ? Color.white : new Color(0.2f,0.2f,0.2f,1);
+        
     }
     
 

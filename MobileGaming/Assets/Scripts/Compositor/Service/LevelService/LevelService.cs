@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Attributes;
@@ -261,7 +260,7 @@ public class LevelService : ILevelService
         if(!running) return;
         running = false;
         magicLineService.Disable();
-        
+
         var equippedItems = ScriptableSettings.EquippedItemEffects;
         if (equippedItems.Count > 0)
         {
@@ -272,10 +271,11 @@ public class LevelService : ILevelService
         }
         
         var stars = CalculateScore();
+        
         EventManager.Trigger(new EndLevelEvent(CurrentLevel,stars,currentScore, saveScore));
         CurrentLevel = null;
     }
-
+    
     private int CalculateScore()
     {
         var stars = 0;
@@ -315,14 +315,16 @@ public class StartLevelEvent
 public class EndLevelEvent
 {
     public Level Level { get;}
-    public int State { get;}
+    public ScriptableLevelInSagaMap ScriptableLevel { get;}
+    public int Stars { get;}
     public int Score { get;}
     public bool SaveScore { get;}
 
-    public EndLevelEvent(Level level, int state,int score,bool saveScore)
+    public EndLevelEvent(Level level, int stars,int score,bool saveScore)
     {
         Level = level;
-        State = state;
+        ScriptableLevel = Level.LevelScriptable;
+        Stars = stars;
         Score = score;
         SaveScore = saveScore;
     }
