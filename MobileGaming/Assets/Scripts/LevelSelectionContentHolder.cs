@@ -53,11 +53,11 @@ public class LevelSelectionContentHolder : MonoBehaviour
         EventManager.RemoveListener<OpenLevelSagaMapEvent>(BuildUI);
     }
 
-    public void BuildUI(OpenLevelSagaMapEvent openLevelSagaMapEvent)
+    private void BuildUI(OpenLevelSagaMapEvent openLevelSagaMapEvent)
     {
         panelGo.SetActive(true);
         scriptableLevelInSagaMap = openLevelSagaMapEvent.ScriptableLevelInSagaMap;
-        Debug.Log($"Building ui for {scriptableLevelInSagaMap}, going to {scriptableLevelInSagaMap.LevelScene}");
+        //Debug.Log($"Building ui for {scriptableLevelInSagaMap}, going to {scriptableLevelInSagaMap.LevelScene}");
         if (scriptableLevelInSagaMap == null)
         {
             panelGo.SetActive(false);

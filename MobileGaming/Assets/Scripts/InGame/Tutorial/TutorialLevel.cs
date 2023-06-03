@@ -11,6 +11,7 @@ public class TutorialLevel : Level
 
     private List<ILinkable> expectedStartLinkables = new List<ILinkable>();
     private List<ILinkable> expectedEndLinkables = new List<ILinkable>();
+    private int minimumLinks = 1;
 
     private Queue<Action> sequenceQueue = new Queue<Action>();
     private IMagicLineService magicLineService;
@@ -62,6 +63,12 @@ public class TutorialLevel : Level
     private void DestroyIfInvalidLink(LinkCreatedEvent linkCreatedEvent)
     {
         var link = linkCreatedEvent.Link;
+
+        if (linkCreatedEvent.TotalLinksCreated < minimumLinks)
+        {
+            link.DestroyLink();
+            return;
+        }
         
         if (expectedStartLinkables.Contains(link.StartLinkable) && expectedEndLinkables.Contains(link.EndLinkable)) return;
         
@@ -128,6 +135,7 @@ public class TutorialLevel : Level
 
     private void PlayFirstSequence()
     {
+        minimumLinks = 1;
         expectedStartLinkables.Clear();
         expectedEndLinkables.Clear();
         
@@ -146,6 +154,7 @@ public class TutorialLevel : Level
 
     private void PlaySecondSequence()
     {
+        minimumLinks = 1;
         expectedStartLinkables.Clear();
         expectedEndLinkables.Clear();
         
@@ -163,6 +172,7 @@ public class TutorialLevel : Level
     
     private void PlayThirdSequence()
     {
+        minimumLinks = 2;
         expectedStartLinkables.Clear();
         expectedEndLinkables.Clear();
         
@@ -181,6 +191,7 @@ public class TutorialLevel : Level
     
     private void PlayFourthSequence()   
     {
+        minimumLinks = 0;
         expectedStartLinkables.Clear();
         expectedEndLinkables.Clear();
         expectedStartLinkables.Add(machines[2]);

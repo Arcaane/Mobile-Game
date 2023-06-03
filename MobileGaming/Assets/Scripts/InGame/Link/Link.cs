@@ -118,7 +118,7 @@ public class Link : MonoBehaviour
 
     #endregion
     
-    public void SetLinks(ILinkable startLink,ILinkable endLink)
+    public void SetLinks(ILinkable startLink,ILinkable endLink,int totalLinksCreated)
     {
         collisionLinks.Clear();
 
@@ -132,7 +132,7 @@ public class Link : MonoBehaviour
 
         ChangeColor(colors[0]);
 
-        EventManager.Trigger(new LinkCreatedEvent(this));
+        EventManager.Trigger(new LinkCreatedEvent(this,totalLinksCreated));
         if(FlaggedForDestruction) return;
         
         EventManager.AddListener<LinkCollisionEvent>(SlowIfCollision);
@@ -251,10 +251,12 @@ public class Link : MonoBehaviour
 public class LinkCreatedEvent
 {
     public Link Link { get; }
+    public int TotalLinksCreated;
 
-    public LinkCreatedEvent(Link link)
+    public LinkCreatedEvent(Link link,int totalLinksCreated)
     {
         Link = link;
+        TotalLinksCreated = totalLinksCreated;
     }
 }
 

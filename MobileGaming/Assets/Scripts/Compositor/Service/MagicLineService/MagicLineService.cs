@@ -207,8 +207,10 @@ public class MagicLineService : SwitchableService, IMagicLineService
             
         link.OnDestroyed += RemoveLinkFromList;
         magicLinks.Add(link);
-            
-        link.SetLinks(startLinkable,endLinkable);
+
+        var totalLinks = currentLinkables.Count - 1;
+        if (totalLinks < 0) totalLinks = 1; 
+        link.SetLinks(startLinkable,endLinkable,totalLinks);
         if(link.FlaggedForDestruction) return;
         
         var startLinkablePos = startLinkable.Position;

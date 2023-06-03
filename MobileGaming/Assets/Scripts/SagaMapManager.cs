@@ -27,7 +27,7 @@ public class SagaMapManager : MonoBehaviour
         {
             var level = levels[i];
             level.UnlockLevel(i < unlockedLevels);
-            Debug.Log($"level {level.gameObject} y : {sagaMapPanelTr.InverseTransformPoint(level.transform.localPosition).y}",level);
+            //Debug.Log($"level {level.gameObject} y : {sagaMapPanelTr.InverseTransformPoint(level.transform.localPosition).y}",level);
         }
 
         var lastUnlockedLevel = levels[0].transform;
