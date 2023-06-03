@@ -9,7 +9,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject darkmodeCanvasGo;
     [SerializeField] private Canvas darkmodeCanvas;
+    
     [SerializeField] private Canvas hudCanvas;
+    [SerializeField] private Image[] starsHolder;
+    [SerializeField] private Sprite starFill;
+    [SerializeField] private Sprite starEpmty;
+    [SerializeField] private TextMeshProUGUI levelText;
+
     [SerializeField] private RectTransform chroneNeedleTr;
     [SerializeField] private Vector3 needleRotation = new Vector3(0, 0, 10f);
     
@@ -58,6 +64,7 @@ public class UIManager : MonoBehaviour
             darkmodeCanvas.planeDistance = 2f;
             hudCanvas.worldCamera = loadLevelEvent.Level.Camera;
             hudCanvas.planeDistance = 2f;
+            levelText.text = $"Level {loadLevelEvent.Level.LevelScriptable.CurrentLevel}";
             
             HideHud();
         }

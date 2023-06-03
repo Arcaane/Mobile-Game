@@ -10,6 +10,10 @@ public class Swipe : MonoBehaviour
     public float dst;
     public bool isManually;
     
+    public Slider pointer;
+    private float[] pointerpos = { -145, -75, 0, 75, 145 };
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +30,6 @@ public class Swipe : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         if (Input.GetMouseButton(0) && !isManually)
         {
             scrollPos = scrollbar.value;
@@ -38,6 +41,7 @@ public class Swipe : MonoBehaviour
                 if (scrollPos < pos[i] + (dst/2) && scrollPos > pos[i] - (dst/2))
                 {
                     scrollbar.value = Mathf.Lerp(scrollbar.value, pos[i], 0.075f);
+                    pointer.value = scrollbar.value;
                 }
             }
         }
@@ -51,5 +55,7 @@ public class Swipe : MonoBehaviour
         scrollPos = value;
         yield return new WaitForSeconds(0.1f);
         isManually = false;
+
+        pointer.value = value;
     }
 }

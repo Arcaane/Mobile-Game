@@ -35,6 +35,7 @@ public class LevelStartPannel : MonoBehaviour
         oneStarNumberText.text = $"{level.scoreToWin}";
         twoStarNumberText.text = $"{level.palier2}";
         threeStarNumberText.text = $"{level.palier3}";
+
         
         Show();
     }
