@@ -41,7 +41,13 @@ public class MagicLineService : SwitchableService, IMagicLineService
     private void SetListeners()
     {
         EventManager.AddListener<LoadLevelEvent>(SetCamera);
+        EventManager.AddListener<LoadLevelEvent>(CleanupListeners);
         EventManager.AddListener<LoadTutorialEvent>(DeactivateLinkDestructionInTutorial);
+
+        void CleanupListeners(LoadLevelEvent loadLevelEvent)
+        {
+            EventManager.RemoveListeners<ActivateDarkmodeEvent>();
+        }
         
         void SetCamera(LoadLevelEvent loadLevelEvent)
         {
