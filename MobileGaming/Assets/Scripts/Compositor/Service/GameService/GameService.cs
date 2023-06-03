@@ -81,7 +81,7 @@ namespace Service
                 _sorcererSprites = sorcererController.endGameSorcererSprites;
                 endGameButtonText = sorcererController.endGameButtonText;
                 
-                sorcererController.endToGoMenuButton.onClick.AddListener(RestartGame);
+                sorcererController.endToGoMenuButton.onClick.AddListener(GoToMenu);
             }
         }
 
@@ -144,13 +144,18 @@ namespace Service
             endGameText.text = endLevelEvent.Stars == 0 ? "lose :c" : "win :)";
             endGameButtonText.text = endLevelEvent.Stars == 0 ? "Try Again" : "Next Level"; 
             endGameSorcererImage.sprite = endLevelEvent.Stars == 0 ? _sorcererSprites[0] : _sorcererSprites[1];
-            sorcererController.endGameButton.onClick.AddListener(endLevelEvent.Stars == 0 ?  ReloadScene : NextLevel);
+            sorcererController.endGameButton.onClick.AddListener(endLevelEvent.Stars == 0 ?  RetryLevel : NextLevel);
             
             endGameCanvasGo.SetActive(true);
             
             void NextLevel()
             {
                 LoadLevelI(endLevelEvent.ScriptableLevel.NextLevelScene);
+            }
+            
+            void RetryLevel()
+            {
+                LoadLevelI(endLevelEvent.ScriptableLevel.LevelScene);
             }
         }
 
@@ -181,16 +186,10 @@ namespace Service
             itemDatabase.AddChapterToGacha(chapter);
         }
 
-        private void RestartGame()
+        private void GoToMenu()
         {
             endGameCanvasGo.SetActive(false);
             sceneService.LoadSceneAsync(1);
-        }
-        
-        private void ReloadScene()
-        {
-            endGameCanvasGo.SetActive(false);
-            sceneService.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
