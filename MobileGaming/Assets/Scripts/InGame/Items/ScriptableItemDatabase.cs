@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NaughtyAttributes;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -54,12 +55,43 @@ public class ScriptableItemDatabase : ScriptableObject
     
     [Header("Items")]
     [SerializeField] private List<CollectionItem> allItems = new();
+
     [Header("Gacha")]
+    [SerializeField] private int wishCost;
     [SerializeField] private List<ItemsPerChapter> itemsPerChapter = new ();
     [SerializeField] private List<CollectionItem> itemPool = new ();
 
-    private int completedChapters = 0;
-    private int unlockedLevels = 1;
+    [SerializeField,ReadOnly] private int completedChapters = 0;
+    [SerializeField,ReadOnly] private int unlockedLevels = 1;
+
+    public void SetListeners()
+    {
+        EventManager.AddListener<GainStarEvent>(IncreaseTotalStars);
+        EventManager.AddListener<GainScoreEvent>(IncreaseTotalGold);
+        EventManager.AddListener<RefreshSagaMapLevelsEvent>(CheckUnlockedChapters);
+
+        void IncreaseTotalStars(GainStarEvent gainStarEvent)
+        {
+            StarCount += gainStarEvent.Amount;
+            Debug.Log($"Gained {gainStarEvent.Amount} stars, now at {StarCount}");
+        }
+        
+        void IncreaseTotalGold(GainScoreEvent gainScoreEvent)
+        {
+            GoldCount += gainScoreEvent.Amount;
+            Debug.Log($"Gained {gainScoreEvent.Amount} stars, now at {GoldCount}");
+        }
+        
+        void CheckUnlockedChapters(RefreshSagaMapLevelsEvent refreshSagaMapLevelsEvent)
+        {
+            foreach (var scriptableLevel in refreshSagaMapLevelsEvent.ScriptableLevelsInSagaMap.Where(scriptableLevel => scriptableLevel.Completed && scriptableLevel.IsLastLevelOfChapter))
+            {
+                SetChapterCompleted(scriptableLevel.CurrentChapter);
+            }
+
+            RefreshGachaPool();
+        }
+    }
 
     [ContextMenu("Get Progress")]
     public void GetProgress()
@@ -87,9 +119,14 @@ public class ScriptableItemDatabase : ScriptableObject
             unlockedLevels = 1;
         }
 
+        RefreshGachaPool();
+    }
+
+    private void RefreshGachaPool()
+    {
         itemPool.Clear();
         if(completedChapters <= 0) return;
-        for (int i = 0; i < completedChapters; i++)
+        for (int i = 1; i < completedChapters+1; i++)
         {
             AddChapterToGacha(i);
         }
@@ -97,26 +134,23 @@ public class ScriptableItemDatabase : ScriptableObject
 
     public void SetLevelUnlocked(int amount)
     {
-        completedChapters = amount;
-        PlayerPrefs.SetInt("LevelUnlocked", completedChapters);
+        unlockedLevels = amount;
+        PlayerPrefs.SetInt("LevelUnlocked", unlockedLevels);
         PlayerPrefs.Save();
     }
 
-    private void SetChapterUnlocked(int amount)
+    private void SetChapterCompleted(int amount)
     {
         completedChapters = amount;
         PlayerPrefs.SetInt("CompletedChapters", completedChapters);
         PlayerPrefs.Save();
     }
     
-    public void AddChapterToGacha(int chapter) // chapter 1 is 1
+    public void AddChapterToGacha(int chapter)
     {
-        if(chapter <= completedChapters) return;
-        SetChapterUnlocked(chapter);
-        chapter--;
-        foreach (var item in itemsPerChapter[chapter].items)
+        chapter--; // index starts at 0, but chapter 1 is 1
+        foreach (var item in itemsPerChapter[chapter].items.Where(item => item.ObtainedFragment < item.FragmentCount))
         {
-            if(item.ObtainedFragment >= item.FragmentCount) continue;
             for (int i = 0; i < (item.FragmentCount-item.ObtainedFragment); i++)
             {
                 itemPool.Add(item);
@@ -124,7 +158,7 @@ public class ScriptableItemDatabase : ScriptableObject
         }
     }
     
-    public (CollectionItem item, int gold) Pull()
+    private (CollectionItem item, int gold) Pull()
     {
         if (itemPool.Count <= 0)
         {
@@ -141,15 +175,15 @@ public class ScriptableItemDatabase : ScriptableObject
     [ContextMenu("Wish")]
     public void Wish()
     {
-        (var item,var gold) = Pull();
+        if (StarCount - wishCost < 0) return;
+        
+        StarCount -= wishCost;
+        
+        var (item, gold) = Pull();
         
         EventManager.Trigger(new WishEvent(item,gold));
 
-        if (item == null)
-        {
-            
-            return;
-        }
+        if (item == null) return;
 
         item.ObtainFragment();
     }

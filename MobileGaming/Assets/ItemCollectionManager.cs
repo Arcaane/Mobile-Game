@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class ItemCollectionManager : MonoBehaviour
 {
-    public MainMenuManager menuManager;
     public ScrollRect sr;
     
     public ItemSlot[] slots;

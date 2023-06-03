@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -9,62 +8,65 @@ public class WishManager : MonoBehaviour
     [SerializeField] private ScriptableItemDatabase itemDatabase;
     [SerializeField] private ParticleSystem wishImageParticleSystem;
     [SerializeField] private ParticleSystem wishItemFlareParticleSystem;
+    private Renderer wishItemFlareRenderer;
     [SerializeField] private ParticleSystem wishHatFlareParticleSystem;
-    public MainMenuManager menuManager;
+    private Renderer wishHatFlareRenderer;
     public PlayableDirector timeline;
     public Button wishButton;
 
     public Color rareItemColor;
     public Color epicItemColor;
     public Color legendaryItemColor;
-    
+
+    public void OnEnable()
+    {
+        wishItemFlareRenderer = wishItemFlareParticleSystem.GetComponent<Renderer>();
+        wishHatFlareRenderer = wishHatFlareParticleSystem.GetComponent<Renderer>();
+    }
+
     public void MakeAWish(int wishCost)
     {
-        if (menuManager.StarCount - wishCost < 0) // Pas assez d'étoiles pour faire un voeu
-        {
-            // Animation Broke
-            return;
-        }
+        EventManager.AddListener<WishEvent>(PlayWishAnimation);
 
-        // Animation Button Sucess
-        menuManager.StarCount -= wishCost;
-        //StartCoroutine(ButtonCd((float)timeline.duration));
+        itemDatabase.Wish();
+    }
+
+    private void PlayWishAnimation(WishEvent wishEvent)
+    {
+        EventManager.RemoveListener<WishEvent>(PlayWishAnimation);
+
+        var item = wishEvent.Item;
+        var gold = wishEvent.Gold;
         
-        // A la fin de l'anim, bouton disparait & la timeline se lance
+        ChangeWishAnimation(item);
+        ChangeWishAnimation(gold);
+        
+        if(item == null && gold == 0) return;
+        
         if (timeline.state == PlayState.Playing)
             timeline.Stop();
         
         timeline.Play();
-        EventManager.AddListener<WishEvent>(ChangeWishAnimation);
-        
-        itemDatabase.Wish();
     }
 
-    private void ChangeWishAnimation(WishEvent wishEvent)
+    private void ChangeWishAnimation(CollectionItem item)
     {
-        EventManager.RemoveListener<WishEvent>(ChangeWishAnimation);
-        var item = wishEvent.Item;
-        if (item != null)
+        if(item == null) return;
+        wishImageParticleSystem.textureSheetAnimation.SetSprite(0,item.itemSprite);
+        var color = item.Rarity switch
         {
-            wishImageParticleSystem.textureSheetAnimation.SetSprite(0,item.itemSprite);
-            var color = item.Rarity switch
-            {
-                ItemRarity.Rare => rareItemColor,
-                ItemRarity.Epic => epicItemColor,
-                ItemRarity.Legendary => legendaryItemColor,
-                _ => Color.white
-            };
-            wishItemFlareParticleSystem.GetComponent<Renderer>().material.color = color;
-            wishHatFlareParticleSystem.GetComponent<Renderer>().material.color = color;
-            /*
-            switch (item.Rarity)
-            {
-                case ItemRarity.Rare: wishImageParticleSystem.GetComponent<Renderer>().material.color = rareItemColor; break;
-                case ItemRarity.Epic: wishImageParticleSystem.GetComponent<Renderer>().material.color = epicItemColor; break;
-                case ItemRarity.Legendary: wishImageParticleSystem.GetComponent<Renderer>().material.color = legendaryItemColor; break;
-            } 
-            */
-        }
+            ItemRarity.Rare => rareItemColor,
+            ItemRarity.Epic => epicItemColor,
+            ItemRarity.Legendary => legendaryItemColor,
+            _ => Color.white
+        };
+        wishItemFlareRenderer.material.color = color;
+        wishHatFlareRenderer.material.color = color;
+    }
+
+    private void ChangeWishAnimation(int gold)
+    {
+        if(gold == 0) return;
     }
 
     private IEnumerator ButtonCd(float duration)
