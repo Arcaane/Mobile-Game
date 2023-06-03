@@ -1,4 +1,3 @@
-using System;
 using Service;
 using TMPro;
 using UnityEngine;
@@ -18,35 +17,18 @@ public class MainMenuManager : MonoBehaviour
     
     private int starCount;
     private int goldCount;
-
-    public int StarCount
-    {
-        get => starCount;
-        set
-        {
-            starCount = value;
-            EventManager.Trigger(new StarValueChangedEvent(starCount));
-        }
-    }
-    public int GoldCount
-    {
-        get => goldCount;
-        set
-        {
-            goldCount = value;
-            EventManager.Trigger(new GoldValueChangedEvent(goldCount));
-        }
-    }
     
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         if (!PlayerPrefs.HasKey("Star")) PlayerPrefs.SetInt("Star", 0);
         if (!PlayerPrefs.HasKey("Gold")) PlayerPrefs.SetInt("Gold", 0);
         if (!PlayerPrefs.HasKey("CollectionLevel")) PlayerPrefs.SetInt("CollectionLevel", 0);
 
-        StarCount = PlayerPrefs.GetInt("Star");
-        GoldCount = PlayerPrefs.GetInt("Gold");
+        starCount = PlayerPrefs.GetInt("Star");
+        goldCount = PlayerPrefs.GetInt("Gold");
+        
+        starCountText.text = $"{starCount}";
+        goldCountText.text = $"{goldCount}";
 
         settingsMenu.SetActive(isInSettingsMenu);
     }
@@ -57,6 +39,8 @@ public class MainMenuManager : MonoBehaviour
         EventManager.AddListener<StarValueChangedEvent>(UpdateStarText);
         EventManager.AddListener<CollectionLevelChangeEvent>(UpdateItemLockState);
         _collectionManager.UnlockItemSlots(ScriptableItemDatabase.CollectionLevel);
+        starCountText.text = $"{starCount}";
+        goldCountText.text = $"{goldCount}";
     }
 
     private void OnDisable()
@@ -82,36 +66,35 @@ public class MainMenuManager : MonoBehaviour
         Debug.Log(level);
         GameService.LoadLevel(level);
     }
-
-    #region PlayerMethods
+    
     public void AddStar(int i)
     {
-        StarCount += i;
+        starCount += i;
         PlayerPrefs.SetInt("Star", starCount);
         PlayerPrefs.Save();
     }
+    
     public void SubtractStar(int i)
     {
-        StarCount -= i;
+        starCount -= i;
         PlayerPrefs.SetInt("Star", starCount);
         PlayerPrefs.Save();
     }
     public void AddGold(int i)
     {
-        GoldCount += i;
+        goldCount += i;
         PlayerPrefs.SetInt("Gold", goldCount);
         PlayerPrefs.Save();
     }
     public void SubtractGold(int i)
     {
-        GoldCount -= i;
+        goldCount -= i;
         PlayerPrefs.SetInt("Gold", goldCount);
         PlayerPrefs.Save();
     }
 
     public void LevelCollectionButton(int i) =>  ScriptableItemDatabase.CollectionLevel = i;
-    #endregion
-    
+
     #region UIMethods
     
     public void UpdateItemLockState(CollectionLevelChangeEvent collectionLevelChangeEvent)

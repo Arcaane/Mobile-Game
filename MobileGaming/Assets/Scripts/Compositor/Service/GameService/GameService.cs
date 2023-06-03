@@ -52,6 +52,8 @@ namespace Service
             LoadSorcererController();
 
             OnLoadLevel = LoadLevelI;
+            
+            SetListeners();
         }
 
         private void LoadSorcererController()
@@ -80,8 +82,6 @@ namespace Service
                 endGameButtonText = sorcererController.endGameButtonText;
                 
                 sorcererController.endToGoMenuButton.onClick.AddListener(RestartGame);
-                
-                SetListeners();
             }
         }
 
@@ -125,6 +125,8 @@ namespace Service
             EventManager.AddListener<EndLevelEvent>(UnlockNextLevel);
             EventManager.AddListener<EquipItemEvent>(AddEquippedItemEffects);
             EventManager.AddListener<UnequipItemEvent>(RemoveUnequippedItemEffects);
+            
+            itemDatabase.SetListeners();
         }
         
         private void OnLevelLoaded(LoadLevelEvent loadLevelEvent)
@@ -174,7 +176,7 @@ namespace Service
         private void ObtainEndLevelRewards(EndLevelEvent endLevelEvent)
         {
             var level = endLevelEvent.Level;
-            if(!level.LevelScriptable.LastLevelOfChapter) return;
+            if(!level.LevelScriptable.IsLastLevelOfChapter) return;
 
             var chapter = level.LevelScriptable.CurrentChapter;
            

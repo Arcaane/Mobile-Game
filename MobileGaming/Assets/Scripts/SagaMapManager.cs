@@ -1,13 +1,19 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SagaMapManager : MonoBehaviour
 {
-    public LevelDisplaySagaMap[] levels;
+    public List<LevelDisplaySagaMap> levels;
+    private List<ScriptableLevelInSagaMap> scriptableLevelsInSagaMap;
     public int unlockedLevels = 1;
     
     private void Start()
     {
+        scriptableLevelsInSagaMap = levels.Where(level => level.LevelScriptable != null).Select(level => level.LevelScriptable)
+            .OrderBy(scriptable => scriptable.CurrentLevel).ToList();
+        
         if (!PlayerPrefs.HasKey("LevelUnlocked")) PlayerPrefs.SetInt("LevelUnlocked", 1);
         unlockedLevels = PlayerPrefs.GetInt("LevelUnlocked");
         if (unlockedLevels < 0)
@@ -16,13 +22,13 @@ public class SagaMapManager : MonoBehaviour
             unlockedLevels = 1;
         }
         
-        for (int i = 0; i < levels.Length; i++)
+        for (int i = 0; i < levels.Count; i++)
         {
             var level = levels[i];
             level.UnlockLevel(i < unlockedLevels);
         }
 
-        for (int i = levels.Length - 1; i >= 0; i--)
+        for (int i = levels.Count - 1; i >= 0; i--)
         {
             var level = levels[i];
             if(level.LevelScriptable == null) continue;
@@ -38,5 +44,17 @@ public class SagaMapManager : MonoBehaviour
             if(!levelDisplaySagaMap.LevelScriptable.Fake) return;
             UnlockNext(levelDisplaySagaMap.NextLevel);
         }
+        
+        EventManager.Trigger(new RefreshSagaMapLevelsEvent(scriptableLevelsInSagaMap));
+    }
+}
+
+public class RefreshSagaMapLevelsEvent
+{
+    public List<ScriptableLevelInSagaMap> ScriptableLevelsInSagaMap { get; }
+
+    public RefreshSagaMapLevelsEvent(List<ScriptableLevelInSagaMap> scriptableLevelInSagaMaps)
+    {
+        ScriptableLevelsInSagaMap = scriptableLevelInSagaMaps;
     }
 }
