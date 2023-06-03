@@ -47,6 +47,8 @@ public class MagicLineService : SwitchableService, IMagicLineService
 
         void CleanupListeners(LoadLevelEvent loadLevelEvent)
         {
+            CanDestroyLinks(true);
+            
             EventManager.RemoveListeners<ActivateDestroyModeEvent>();
         }
         
@@ -59,13 +61,10 @@ public class MagicLineService : SwitchableService, IMagicLineService
             var height = 2.0f * Mathf.Tan(0.5f * cam.fieldOfView * Mathf.Deg2Rad) * camPos.y;
             var width = height * Screen.width / Screen.height;
             
-            SetColliderSize(new Vector3(camPos.x, 0, camPos.y),new Vector3(width, height, 1f));
+            magicLinesData.CollisionPlane.position = new Vector3(camPos.x, 0, camPos.z);
+            magicLinesData.CollisionPlane.localScale = new Vector3(width, height, 1f);
             
-            void SetColliderSize(Vector3 pos, Vector3 scale)
-            {
-                magicLinesData.CollisionPlane.position = pos;
-                magicLinesData.CollisionPlane.localScale = scale;
-            }
+            //Debug.Log($"Setting Camera, position : {camPos}, plane position : {magicLinesData.CollisionPlane.position}");
         }
     }
     
