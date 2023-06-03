@@ -9,7 +9,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
 {
     private MagicLinesData magicLinesData;
 
-    private RectTransform buttonTr;
+    private RectTransform scissorsButtonTr;
     private LayerMask linkableMask;
 
     private Vector3[] points;
@@ -42,7 +42,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
     {
         EventManager.AddListener<LoadLevelEvent>(SetCamera);
         EventManager.AddListener<LoadTutorialEvent>(DeactivateLinkDestructionInTutorial);
-
+        
         void SetCamera(LoadLevelEvent loadLevelEvent)
         {
             cam = loadLevelEvent.Level.Camera;
@@ -69,8 +69,8 @@ public class MagicLineService : SwitchableService, IMagicLineService
         canDestroy = true;
         inDestroyMode = false;
 
-        buttonTr = magicLinesData.buttonTr;
-        buttonPos = buttonTr.position;
+        scissorsButtonTr = magicLinesData.buttonTr;
+        buttonPos = scissorsButtonTr.position;
         
         linkableMask = magicLinesData.linkableMask;
         linkLayer = magicLinesData.linkLayerMask;
@@ -82,6 +82,8 @@ public class MagicLineService : SwitchableService, IMagicLineService
         InputService.OnPress += OnScreenTouch;
         InputService.OnRelease += OnScreenRelease;
         
+        scissorsButtonTr.gameObject.SetActive(canDestroy);
+        
         base.Enable();
     }
 
@@ -89,6 +91,8 @@ public class MagicLineService : SwitchableService, IMagicLineService
     {
         InputService.OnPress -= OnScreenTouch;
         InputService.OnRelease -= OnScreenRelease;
+        
+        scissorsButtonTr.gameObject.SetActive(false);
         
         base.Disable();
         
@@ -117,13 +121,13 @@ public class MagicLineService : SwitchableService, IMagicLineService
         
         var pos = InputService.cursorPosition;
 
-        if (buttonTr == null) return;
-        if (pos.x > buttonPos.x + buttonTr.sizeDelta.x * 2) return;
-        if (pos.y > buttonPos.y + buttonTr.sizeDelta.y * 2) return;
+        if (scissorsButtonTr == null) return;
+        if (pos.x > buttonPos.x + scissorsButtonTr.sizeDelta.x * 2) return;
+        if (pos.y > buttonPos.y + scissorsButtonTr.sizeDelta.y * 2) return;
         if (pos.x < buttonPos.x) return;
         if (pos.y < buttonPos.y) return;
         
-        buttonTr.pivot = Vector2.one * 0.5f;
+        scissorsButtonTr.pivot = Vector2.one * 0.5f;
         inDestroyMode = true;
         EventManager.Trigger(new ActivateDestroyModeEvent(true));
     }
@@ -135,13 +139,13 @@ public class MagicLineService : SwitchableService, IMagicLineService
         
         EventManager.Trigger(new ActivateDarkmodeEvent(false));
         
-        buttonTr.pivot = Vector2.zero;
+        scissorsButtonTr.pivot = Vector2.zero;
         if (inDestroyMode)
         {
             inDestroyMode = false;
             EventManager.Trigger(new ActivateDestroyModeEvent(false));
         }
-        buttonTr.position = buttonPos;
+        scissorsButtonTr.position = buttonPos;
         
         foreach (var linkable in currentLinkables)
         {
@@ -158,7 +162,6 @@ public class MagicLineService : SwitchableService, IMagicLineService
         
         FinishLine();
         LinkMachines();
-
         
         currentLinkables.Clear();
     }
@@ -172,7 +175,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
 
     private void CleanupCurrentLinkables()
     {
-        
+        //TODO
     }
 
     private void CreateMagicLines()
@@ -247,7 +250,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
     public void CanDestroyLinks(bool value)
     {
         canDestroy = value;
-        buttonTr.gameObject.SetActive(canDestroy);
+        scissorsButtonTr.gameObject.SetActive(canDestroy);
     }
 
     private void GetLinkable(Vector3 position)
@@ -324,7 +327,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
             {
                 if (InDestroyMode)
                 {
-                    buttonTr.position = InputService.cursorPosition;
+                    scissorsButtonTr.position = InputService.cursorPosition;
                     GetLinkToDestroy(hit.point);
                 }
                 else

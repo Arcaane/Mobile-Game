@@ -17,8 +17,6 @@ public class LevelDisplaySagaMap : MonoBehaviour
     public LevelDisplaySagaMap nextLevel;
     public LevelDisplaySagaMap NextLevel => nextLevel;
     
-    public bool isLevelUnlock;
-
     [SerializeField] private GameObject[] starsBack;
     public GameObject[] stars;
     
@@ -34,17 +32,16 @@ public class LevelDisplaySagaMap : MonoBehaviour
     
     public void UnlockLevel(bool value)
     {
-        isLevelUnlock = value;
-        
-        button.interactable = isLevelUnlock;
-        image.sprite = isLevelUnlock ? unlockedSprite : lockedSprite;
+        button.interactable = value;
+        image.sprite = value ? unlockedSprite : lockedSprite;
 
         foreach (var go in starsBack)
         {
-            go.SetActive(isLevelUnlock);
+            go.SetActive(value);
         }
         
         if (LevelScriptable == null) return; 
+        LevelScriptable.UnlockLevel(value);
         LevelScriptable.GetProgress();
         for (int i = 0; i < stars.Length; i++)
         {

@@ -22,8 +22,7 @@ public class MagicLinesData : MonoBehaviour
 
     public void OpenScissors(bool value)
     {
-        if(areScissorsOpened == value) return;
+        if(areScissorsOpened && value) return;
         areScissorsOpened = value;
-        deleteButtonAnimator.Play(value ? "ANIM_CutScissors" : "ANIM_CutScissorsCLOSE",0,0.1f);
     }
 }

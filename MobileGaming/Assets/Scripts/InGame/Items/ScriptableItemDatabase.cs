@@ -193,6 +193,7 @@ public class ScriptableItemDatabase : ScriptableObject
 
     public void SetLevelUnlocked(int amount)
     {
+        if(amount < unlockedLevels) return;
         unlockedLevels = amount;
         PlayerPrefs.SetInt("LevelUnlocked", unlockedLevels);
         PlayerPrefs.Save();
@@ -200,6 +201,7 @@ public class ScriptableItemDatabase : ScriptableObject
 
     private void SetChapterCompleted(int amount)
     {
+        if(amount < completedChapters) return;
         completedChapters = amount;
         PlayerPrefs.SetInt("CompletedChapters", completedChapters);
         PlayerPrefs.Save();

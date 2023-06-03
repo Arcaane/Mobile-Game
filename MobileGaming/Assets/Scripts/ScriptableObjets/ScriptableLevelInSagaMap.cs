@@ -32,6 +32,7 @@ public class ScriptableLevelInSagaMap : ScriptableObject
     public bool Completed => Stars > 0 || Fake;
     public int Score { get; private set; }
     public int Stars { get; private set; }
+    public bool Unlocked { get; private set; }
 
     public void GetProgress()
     {
@@ -60,6 +61,11 @@ public class ScriptableLevelInSagaMap : ScriptableObject
             PlayerPrefs.SetInt($"{name}_Score",Score);
             EventManager.Trigger(new GainScoreEvent(increaseScore));
         }
+    }
+
+    public void UnlockLevel(bool value)
+    {
+        Unlocked = value;
     }
 }
 

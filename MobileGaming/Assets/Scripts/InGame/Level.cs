@@ -32,7 +32,6 @@ public class Level : MonoBehaviour
     
     private void Start()
     {
-        Debug.Log("LEVEL");
         EventManager.Trigger(new LoadLevelEvent(this));
     }
 
