@@ -81,7 +81,13 @@ public class ScriptableItemDatabase : ScriptableObject
         
         if (!PlayerPrefs.HasKey("LevelUnlocked")) PlayerPrefs.SetInt("LevelUnlocked", 1);
         unlockedLevels = PlayerPrefs.GetInt("LevelUnlocked");
+        if (unlockedLevels < 0)
+        {
+            PlayerPrefs.SetInt("LevelUnlocked", 1);
+            unlockedLevels = 1;
+        }
 
+        itemPool.Clear();
         if(completedChapters <= 0) return;
         for (int i = 0; i < completedChapters; i++)
         {
@@ -96,7 +102,7 @@ public class ScriptableItemDatabase : ScriptableObject
         PlayerPrefs.Save();
     }
 
-    public void SetChapterUnlocked(int amount)
+    private void SetChapterUnlocked(int amount)
     {
         completedChapters = amount;
         PlayerPrefs.SetInt("CompletedChapters", completedChapters);
@@ -207,3 +213,4 @@ public class CollectionLevelChangeEvent
         Value = value;
     }
 }
+

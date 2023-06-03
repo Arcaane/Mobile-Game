@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-public class GamePathManager : MonoBehaviour
+public class SagaMapManager : MonoBehaviour
 {
     public LevelDisplaySagaMap[] levels;
     public int unlockedLevels = 1;
