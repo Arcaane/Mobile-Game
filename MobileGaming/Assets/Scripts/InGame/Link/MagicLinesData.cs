@@ -15,14 +15,13 @@ public class MagicLinesData : MonoBehaviour
     [field: SerializeField] public LayerMask linkLayerMask{ get; private set; }
     [field: SerializeField] public LayerMask floorLayerMask{ get; private set; }
     [field: SerializeField] public Link linkPrefab{ get; private set; }
-    public Material[] shaderDarkness;
 
-    private static readonly int IsOpen = Animator.StringToHash("IsOpen");
     private bool areScissorsOpened = false;
 
     public void OpenScissors(bool value)
     {
-        if(areScissorsOpened && value) return;
+        if(areScissorsOpened == value) return;
         areScissorsOpened = value;
+        deleteButtonAnimator.Play(value ? "ANIM_CutScissors" : "ANIM_CutScissorsCLOSE",0,0.1f);
     }
 }
