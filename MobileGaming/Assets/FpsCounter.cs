@@ -5,11 +5,11 @@ using UnityEngine;
 public class FpsCounter : MonoBehaviour
 {
     public TextMeshProUGUI fpsText;
-    
+
     private int lastFrameIndex;
     private float[] frameDeltaTimeArray;
     private static FpsCounter instance;
-    
+
     private void Awake()
     {
         if (instance != null)
@@ -21,9 +21,14 @@ public class FpsCounter : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(this);
         frameDeltaTimeArray = new float[50];
+
+        gameObject.SetActive(false);
+#if DEVELOPMENT_BUILD //|| UNITY_EDITOR
+        gameObject.SetActive(true);
+#endif
     }
-    
-#if DEBUG
+
+#if DEVELOPMENT_BUILD //|| UNITY_EDITOR
     private void Update()
     {
         frameDeltaTimeArray[lastFrameIndex] = Time.unscaledDeltaTime;
