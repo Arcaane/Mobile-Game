@@ -749,7 +749,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -57}
+  m_AnchoredPosition: {x: 0, y: -36}
   m_SizeDelta: {x: 139, y: 115}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &6351099516922290048
@@ -1054,7 +1054,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 129.2}
+  m_SizeDelta: {x: 0, y: 110}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &2672913034095204009
 GameObject:
@@ -1206,10 +1206,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 6119857625426636338}
-  levelMenu: {fileID: 0}
   darkmodeCanvasGo: {fileID: 6674374018427242175}
   darkmodeCanvas: {fileID: 7012732833092882416}
   hudCanvas: {fileID: 6327865464220123759}
+  starsHolder:
+  - {fileID: 7980660093506190256}
+  - {fileID: 6305570906156918241}
+  - {fileID: 2121856224758089921}
+  starFill: {fileID: 1372999312, guid: daa933cad53951f43922c3743f823191, type: 3}
+  starEpmty: {fileID: 2040188598, guid: daa933cad53951f43922c3743f823191, type: 3}
+  levelText: {fileID: 6507947156115867661}
   chroneNeedleTr: {fileID: 5832960432087269375}
   needleRotation: {x: 0, y: 0, z: -0.5}
 --- !u!1 &3019029251866494754
