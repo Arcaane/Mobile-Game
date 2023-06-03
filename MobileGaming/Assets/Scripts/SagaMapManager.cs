@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,6 +6,7 @@ public class SagaMapManager : MonoBehaviour
 {
     public List<LevelDisplaySagaMap> levels;
     private List<ScriptableLevelInSagaMap> scriptableLevelsInSagaMap;
+    [SerializeField] private Transform sagaMapPanelTr;
     public int unlockedLevels = 1;
     
     private void Start()
@@ -28,6 +28,7 @@ public class SagaMapManager : MonoBehaviour
             level.UnlockLevel(i < unlockedLevels);
         }
 
+        var lastUnlockedLevel = levels[0];
         for (int i = levels.Count - 1; i >= 0; i--)
         {
             var level = levels[i];
@@ -36,11 +37,13 @@ public class SagaMapManager : MonoBehaviour
             if(level.NextLevel != null) UnlockNext(level.NextLevel);
             break;
         }
+        Debug.Log($"Last unlocked level : {lastUnlockedLevel}");
 
         void UnlockNext(LevelDisplaySagaMap levelDisplaySagaMap)
         {
             if(levelDisplaySagaMap.NextLevel == null) return;
             levelDisplaySagaMap.UnlockLevel(true);
+            lastUnlockedLevel = levelDisplaySagaMap;
             if(!levelDisplaySagaMap.LevelScriptable.Fake) return;
             UnlockNext(levelDisplaySagaMap.NextLevel);
         }
