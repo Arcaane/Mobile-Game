@@ -52,11 +52,6 @@ public class LevelDisplaySagaMap : MonoBehaviour
         }
     }
     
-    public void GetProgress()
-    {
-        UnlockLevel(isLevelUnlock);
-    }
-
     private void ButtonClick()
     {
         EventManager.Trigger(new OpenLevelSagaMapEvent(LevelScriptable));

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
@@ -32,7 +31,7 @@ public class CollectionItem : ScriptableObject
         InvokeEvents();
     }
 
-    public void SetProgess(int amount)
+    private void SetProgress(int amount)
     {
         PlayerPrefs.SetInt(name, amount);
     }
@@ -52,7 +51,7 @@ public class CollectionItem : ScriptableObject
 
     private void InvokeEvents()
     {
-        SetProgess(ObtainedFragment);
+        SetProgress(ObtainedFragment);
         EventManager.Trigger(new ObtainFragmentEvent(this,ObtainedFragment == FragmentCount));
     }
 }

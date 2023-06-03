@@ -12,6 +12,7 @@ public class ScriptableLevelInSagaMap : ScriptableObject
     [field: SerializeField] public bool LastLevelOfChapter { get; private set; }
     [field: SerializeField] public bool Fake { get; private set; }
     [field: SerializeField,Scene] public int LevelScene { get; private set; }
+    [field: SerializeField,Scene] public int NextLevelScene { get; private set; }
     
     [Space(5)] [Header("Level Selection Section")]
     public int levelObjective;

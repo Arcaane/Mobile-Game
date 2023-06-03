@@ -10,9 +10,7 @@ public class ItemCollectionManager : MonoBehaviour
     
     public ItemSlot[] slots;
     public ItemSlot[] showItemslots;
-    public Sprite lockSprite;
-    public Sprite emptySprite;
-    
+
     public CollectionItem[] items;
     
     [Serializable]
@@ -74,6 +72,8 @@ public class ItemCollectionManager : MonoBehaviour
         }
         
         UnlockItemSlots(ScriptableItemDatabase.CollectionLevel);
+        
+        
     }
     
     private void OnEnable()
@@ -88,7 +88,7 @@ public class ItemCollectionManager : MonoBehaviour
         EventManager.RemoveListener<EquipItemEvent>(EquipItem);
     }
 
-    public void StopScroll(ShowItemEvent showItemEvent)
+    private void StopScroll(ShowItemEvent showItemEvent)
     {
         sr.enabled = false;
     }
@@ -126,11 +126,16 @@ public class ItemCollectionManager : MonoBehaviour
 
     public void EquipItem(EquipItemEvent equipItemEvent)
     {
-        if(equipItemEvent.Slot > ScriptableItemDatabase.CollectionLevel) return;
-        if(equipItemEvent.Slot < 0 || equipItemEvent.Slot >= slots.Length) return;
+        var index = equipItemEvent.Slot;
+        if(index > ScriptableItemDatabase.CollectionLevel) return;
+        if(index < 0 || index >= slots.Length) return;
+
+
+        var slot = slots[index];
+        if(slot.Item != null) EventManager.Trigger(new UnequipItemEvent(slot.Item,index));
         
-        slots[equipItemEvent.Slot].DisplayItem(equipItemEvent.Item);
-        showItemslots[equipItemEvent.Slot].DisplayItem(equipItemEvent.Item);
+        slots[index].DisplayItem(equipItemEvent.Item);
+        showItemslots[index].DisplayItem(equipItemEvent.Item);
     }
 
     public void ShowItemInSlot(int i)
@@ -145,6 +150,18 @@ public class EquipItemEvent
     public int Slot { get; }
 
     public EquipItemEvent(CollectionItem item, int slot)
+    {
+        Item = item;
+        Slot = slot;
+    }
+}
+
+public class UnequipItemEvent
+{
+    public CollectionItem Item { get; }
+    public int Slot { get; }
+
+    public UnequipItemEvent(CollectionItem item, int slot)
     {
         Item = item;
         Slot = slot;

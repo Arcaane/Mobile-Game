@@ -21,7 +21,6 @@ namespace Service
         private ScriptableItemDatabase itemDatabase;
 
         private Transform levelParent;
-        private int currentLevel;
 
         private GameObject _dialogueManagerGo;
         private SorcererController sorcererController;
@@ -110,11 +109,10 @@ namespace Service
 
         private void LoadLevelI(int index)
         {
-            currentLevel = index;
             endGameCanvasGo.SetActive(false);
 
             inputService.Disable();
-            sceneService.LoadSceneAsync(currentLevel);
+            sceneService.LoadSceneAsync(index);
         }
 
         private void SetListeners()
@@ -125,11 +123,12 @@ namespace Service
             EventManager.AddListener<EndLevelEvent>(UpdateEndGameText);
             EventManager.AddListener<EndLevelEvent>(ObtainEndLevelRewards);
             EventManager.AddListener<EndLevelEvent>(UnlockNextLevel);
+            EventManager.AddListener<EquipItemEvent>(AddEquippedItemEffects);
+            EventManager.AddListener<UnequipItemEvent>(RemoveUnequippedItemEffects);
         }
         
         private void OnLevelLoaded(LoadLevelEvent loadLevelEvent)
         {
-            Debug.Log("Loaded Level");
             levelService.InitLevel(loadLevelEvent.Level);
         }
 
@@ -147,17 +146,20 @@ namespace Service
             endGameSorcererImage.sprite = endLevelEvent.Stars == 0 ? _sorcererSprites[0] : _sorcererSprites[1];
             sorcererController.endGameButton.onClick.AddListener(endLevelEvent.Stars == 0 ?  ReloadScene : NextLevel);
             
-           
             endGameCanvasGo.SetActive(true);
+            
+            void NextLevel()
+            {
+                LoadLevelI(endLevelEvent.ScriptableLevel.NextLevelScene);
+            }
         }
 
         private void UnlockNextLevel(EndLevelEvent endLevelEvent)
         {
             if(!endLevelEvent.SaveScore) return;
             itemDatabase.SetLevelUnlocked(endLevelEvent.ScriptableLevel.CurrentLevel+1);
-            
         }
-
+        
         private void UpdateScriptableLevelsOnLevelEnd(EndLevelEvent endLevelEvent)
         {
             var level = endLevelEvent.Level;
@@ -184,16 +186,21 @@ namespace Service
             endGameCanvasGo.SetActive(false);
             sceneService.LoadSceneAsync(1);
         }
+        
+        private void AddEquippedItemEffects(EquipItemEvent equipItemEvent)
+        {
+            ScriptableSettings.EquipItem(equipItemEvent.Item);
+        }
+
+        private void RemoveUnequippedItemEffects(UnequipItemEvent unequipItemEvent)
+        {
+            ScriptableSettings.RemoveItem(unequipItemEvent.Item);
+        }
 
         private void ReloadScene()
         {
             endGameCanvasGo.SetActive(false);
             sceneService.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
-        }
-        
-        private void NextLevel()
-        {
-            LoadLevelI(currentLevel++);
         }
     }
 }

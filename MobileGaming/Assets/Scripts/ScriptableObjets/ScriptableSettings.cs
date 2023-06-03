@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using NaughtyAttributes;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Settings")]
@@ -20,7 +18,7 @@ public class ScriptableSettings : ScriptableObject
     public void SetAsGlobalSettings()
     {
         GlobalSettings = this;
-        Debug.Log($"Global Settings set to {GlobalSettings}");
+        equippedItemEffects.Clear();
     }
 
     public static void EquipItem(CollectionItem item)
