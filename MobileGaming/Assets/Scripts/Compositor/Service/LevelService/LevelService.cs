@@ -115,7 +115,6 @@ public class LevelService : ILevelService
     public void IncreaseScore(int amount)
     {
         currentScore += amount;
-        Debug.Log($"Gained {amount} (score is now {currentScore}), need {palier3} to end");
     }
 
     public void InitLevel(Level level)
@@ -131,8 +130,6 @@ public class LevelService : ILevelService
 
     private void ResetVariables()
     {
-        Debug.Log("Reseting Variables");
-        
         clientTimings = CurrentLevel.clientTimings.ToList();
         baseLevelDuration = CurrentLevel.levelDuration;
         extraLevelDuration = 0f;

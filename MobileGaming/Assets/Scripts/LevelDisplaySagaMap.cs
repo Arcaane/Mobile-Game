@@ -43,6 +43,7 @@ public class LevelDisplaySagaMap : MonoBehaviour
         if (LevelScriptable == null) return; 
         LevelScriptable.UnlockLevel(value);
         LevelScriptable.GetProgress();
+        if(LevelScriptable.Fake) button.interactable = false;
         for (int i = 0; i < stars.Length; i++)
         {
             stars[i].SetActive((value && i < LevelScriptable.Stars) || LevelScriptable.Fake);

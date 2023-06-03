@@ -31,6 +31,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
 
     private GameObject currentLineInDrawning;
 
+    private ILinkable lastCheckedLinkable;
     private List<ILinkable> currentLinkables = new List<ILinkable>();
     
     public MagicLineService(bool startState) : base(startState)
@@ -46,7 +47,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
 
         void CleanupListeners(LoadLevelEvent loadLevelEvent)
         {
-            EventManager.RemoveListeners<ActivateDarkmodeEvent>();
+            EventManager.RemoveListeners<ActivateDestroyModeEvent>();
         }
         
         void SetCamera(LoadLevelEvent loadLevelEvent)
@@ -170,20 +171,14 @@ public class MagicLineService : SwitchableService, IMagicLineService
         LinkMachines();
         
         currentLinkables.Clear();
+        lastCheckedLinkable = null;
     }
     
     private void LinkMachines()
     {
-        CleanupCurrentLinkables();
-        
         CreateMagicLines();
     }
-
-    private void CleanupCurrentLinkables()
-    {
-        //TODO
-    }
-
+    
     private void CreateMagicLines()
     {
         for (var index = currentLinkables.Count - 2; index >= 0; index--)
@@ -258,7 +253,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         canDestroy = value;
         scissorsButtonTr.gameObject.SetActive(canDestroy);
     }
-
+    
     private void GetLinkable(Vector3 position)
     {
         position -= Vector3.up;
@@ -272,10 +267,30 @@ public class MagicLineService : SwitchableService, IMagicLineService
         var linkable = hit.transform.GetComponent<ILinkable>();
         if (linkable == null) return;
 
+        if(linkable == lastCheckedLinkable) return;
+        lastCheckedLinkable = linkable;
+        
+        if(!CanBeLinked(linkable)) return;
+        
         if (currentLinkables.Contains(linkable)) return;
         
         linkable.ShowHighlight(true);
         currentLinkables.Add(linkable);
+
+        bool CanBeLinked(ILinkable newLinkable)
+        {
+            if (!newLinkable.Inputable && !newLinkable.Outputable) return false;
+            
+            if (!newLinkable.Inputable && currentLinkables.Count > 0) return false;
+            
+            var otherClient = currentLinkables.FirstOrDefault(other => !other.Outputable);
+
+            if (otherClient == null) return true;
+            
+            otherClient.ShowHighlight(false);
+            currentLinkables.Remove(otherClient);
+            return true;
+        }
     }
     
     private void GetLinkToDestroy(Vector3 position)
