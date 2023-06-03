@@ -61,7 +61,7 @@ public class TutorialCanvas : MonoBehaviour
         sequence.AppendInterval(1f);
         sequence.AppendCallback(() => ShowCursor(false));
 
-        sequence.SetLoops(-1).SetDelay(1f);
+        sequence.SetLoops(-1).SetDelay(1f).SetUpdate(true);
 
         sequence.Play();
     }
@@ -82,7 +82,7 @@ public class TutorialCanvas : MonoBehaviour
         sequence.AppendInterval(1f);
         sequence.AppendCallback(() => ShowCursor(false));
 
-        sequence.SetLoops(-1).SetDelay(1f);
+        sequence.SetLoops(-1).SetDelay(1f).SetUpdate(true);
 
         sequence.Play();
     }
@@ -105,7 +105,7 @@ public class TutorialCanvas : MonoBehaviour
         sequence.AppendInterval(1f);
         sequence.AppendCallback(() => ShowCursor(false));
 
-        sequence.SetLoops(-1).SetDelay(1f);
+        sequence.SetLoops(-1).SetDelay(1f).SetUpdate(true);
 
         sequence.Play();
     }
@@ -118,15 +118,15 @@ public class TutorialCanvas : MonoBehaviour
         sequence = DOTween.Sequence();
         sequence.AppendCallback(() => CursorTr.position = scissorsPosition);
         sequence.AppendCallback(() => ShowCursor(true));
-        sequence.AppendInterval(1f);
+        sequence.AppendInterval(0.75f);
         sequence.AppendCallback(PlayClickAnimationHold);
-        sequence.AppendInterval(0.5f);
-        sequence.Append(CursorTr.DOMove(linePosition, 1f));
+        sequence.AppendInterval(0.25f);
+        sequence.Append(CursorTr.DOMove(linePosition, 0.75f));
         sequence.AppendCallback(PlayReleaseAnimation);
-        sequence.AppendInterval(1f);
+        sequence.AppendInterval(0.75f);
         sequence.AppendCallback(() => ShowCursor(false));
 
-        sequence.SetLoops(-1).SetDelay(1f);
+        sequence.SetLoops(-1).SetDelay(1f).SetUpdate(true);
         
         sequence.Play();
     }

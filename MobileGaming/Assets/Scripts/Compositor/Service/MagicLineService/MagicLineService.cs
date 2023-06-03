@@ -41,6 +41,8 @@ public class MagicLineService : SwitchableService, IMagicLineService
     [ServiceInit]
     private void SetListeners()
     {
+        
+        
         EventManager.AddListener<LoadLevelEvent>(SetCamera);
         EventManager.AddListener<LoadLevelEvent>(CleanupListeners);
         EventManager.AddListener<LoadTutorialEvent>(DeactivateLinkDestructionInTutorial);
@@ -82,6 +84,8 @@ public class MagicLineService : SwitchableService, IMagicLineService
         linkableMask = magicLinesData.linkableMask;
         linkLayer = magicLinesData.linkLayerMask;
         floorLayer = magicLinesData.floorLayerMask;
+        
+        scissorsButtonTr.gameObject.SetActive(false);
     }
     
     public override void Enable()
