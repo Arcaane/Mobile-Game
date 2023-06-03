@@ -19,7 +19,6 @@ public class Compositor : MonoBehaviour
     public static float TicksPerSecond { get; private set; }
     public static float DeltaTick => 1f / TicksPerSecond;
     [SerializeField] private ScriptableSettings settings;
-    [SerializeField] private ScriptableItemDatabase itemDatabase;
     private double currentTime = 0;
     
     protected struct FieldEntry
@@ -28,7 +27,7 @@ public class Compositor : MonoBehaviour
         public FieldInfo field;
     }
 
-    protected readonly Dictionary<Type, IService> m_services = new Dictionary<Type, IService>();
+    private readonly Dictionary<Type, IService> m_services = new Dictionary<Type, IService>();
     protected readonly Dictionary<Type, List<FieldEntry>> m_dependencySlots = new Dictionary<Type, List<FieldEntry>>();
     protected event Action OnTickAction;
     protected event Action OnUpdateAction;
@@ -248,7 +247,7 @@ public class Compositor : MonoBehaviour
         AddService<ISceneService>(new SceneService(true));
         AddService<IInputService>(new InputService(true));
         AddService<IMagicLineService>(new MagicLineService(false));
-        AddService<IGameService>(new GameService(settings,itemDatabase));
+        AddService<IGameService>(new GameService(settings));
     }
 
     private void Awake()

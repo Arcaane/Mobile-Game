@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class OpenCollectionItem : MonoBehaviour
@@ -22,7 +20,6 @@ public class OpenCollectionItem : MonoBehaviour
     private void Awake()
     {
         ItemImage = GetComponent<Image>();
-        //myLockImage = transform.GetChild(0).GetComponent<Image>();
     }
 
     private void Start()
@@ -38,9 +35,8 @@ public class OpenCollectionItem : MonoBehaviour
             image.sprite = sprite;
             fragmentsGo.Add(image.gameObject);
         }
-        
     }
-
+    
     private void OnEnable()
     {
         EventManager.AddListener<ObtainFragmentEvent>(UpdateShownFragments);
@@ -84,10 +80,8 @@ public class OpenCollectionItem : MonoBehaviour
         
     }
     
-
-    public void ShowItem()
+    private void ShowItem()
     {
-        //_holder.FillAndShowItemCollectionDescription(thisScriptable);
         EventManager.Trigger(new ShowItemEvent(thisScriptable));
     }
 }

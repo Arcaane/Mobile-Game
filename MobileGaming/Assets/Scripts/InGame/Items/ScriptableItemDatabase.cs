@@ -15,8 +15,8 @@ public class ScriptableItemDatabase : ScriptableObject
     }
 
     [Header("Currency")]
-    [SerializeField] private int starCount;
-    [SerializeField] private int goldCount;
+    [SerializeField,ReadOnly] private int starCount;
+    [SerializeField,ReadOnly] private int goldCount;
     private static int collectionLevel;
     
     public int StarCount
@@ -55,12 +55,14 @@ public class ScriptableItemDatabase : ScriptableObject
     
     [Header("Items")]
     [SerializeField] private List<CollectionItem> allItems = new();
+    [SerializeField, ReadOnly] private CollectionItem[] equipedItems = new CollectionItem[3];
 
     [Header("Gacha")]
     [SerializeField] private int wishCost;
     [SerializeField] private List<ItemsPerChapter> itemsPerChapter = new ();
     [SerializeField] private List<CollectionItem> itemPool = new ();
 
+    [Header("Completion")]
     [SerializeField,ReadOnly] private int completedChapters = 0;
     [SerializeField,ReadOnly] private int unlockedLevels = 1;
 
@@ -69,6 +71,9 @@ public class ScriptableItemDatabase : ScriptableObject
         EventManager.AddListener<GainStarEvent>(IncreaseTotalStars);
         EventManager.AddListener<GainScoreEvent>(IncreaseTotalGold);
         EventManager.AddListener<RefreshSagaMapLevelsEvent>(CheckUnlockedChapters);
+        EventManager.AddListener<RefreshEquippedEvent>(CheckEquippedItems);
+        EventManager.AddListener<EquipItemEvent>(AddEquippedItemEffects);
+        EventManager.AddListener<UnequipItemEvent>(RemoveUnequippedItemEffects);
 
         void IncreaseTotalStars(GainStarEvent gainStarEvent)
         {
@@ -90,6 +95,43 @@ public class ScriptableItemDatabase : ScriptableObject
             }
 
             RefreshGachaPool();
+        }
+
+        void CheckEquippedItems(RefreshEquippedEvent refreshEquippedEvent)
+        {
+            for (int i = 0; i < equipedItems.Length; i++)
+            {
+                var item = equipedItems[i];
+                EventManager.Trigger(new EquipItemEvent(item,i));
+            }
+        }
+        
+        void AddEquippedItemEffects(EquipItemEvent equipItemEvent)
+        {
+            var key = $"Equipped_Item{equipItemEvent.Slot}";
+            var item = equipItemEvent.Item;
+            PlayerPrefs.SetInt(key, IndexOfItem(item));
+            equipedItems[equipItemEvent.Slot] = item;
+            if (item == null)
+            {
+                ScriptableSettings.RemoveItem(item);
+                return;
+            }
+            ScriptableSettings.EquipItem(item);
+        }
+
+        void RemoveUnequippedItemEffects(UnequipItemEvent unequipItemEvent)
+        {
+            var key = $"Equipped_Item{unequipItemEvent.Slot}";
+            PlayerPrefs.SetInt(key, -1);
+            equipedItems[unequipItemEvent.Slot] = null;
+            ScriptableSettings.RemoveItem(unequipItemEvent.Item);
+        }
+
+        int IndexOfItem(CollectionItem item)
+        {
+            if (item == null) return -1;
+            return allItems.IndexOf(item);
         }
     }
 
@@ -119,9 +161,26 @@ public class ScriptableItemDatabase : ScriptableObject
             unlockedLevels = 1;
         }
 
+        RefreshEquippedItems();
+
         RefreshGachaPool();
     }
 
+    private void RefreshEquippedItems()
+    {
+        equipedItems = new CollectionItem[3];
+
+        for (int i = 0; i < equipedItems.Length; i++)
+        {
+            var key = $"Equipped_Item{i}";
+            if (!PlayerPrefs.HasKey(key)) PlayerPrefs.SetInt(key, -1);
+            var equippedItemIndex = PlayerPrefs.GetInt(key);
+            if(equippedItemIndex < 0 || equippedItemIndex >= allItems.Count) continue;
+            
+            EventManager.Trigger(new EquipItemEvent(allItems[equippedItemIndex],i));
+        }
+    }
+    
     private void RefreshGachaPool()
     {
         itemPool.Clear();

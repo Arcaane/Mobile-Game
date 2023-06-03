@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,9 +13,7 @@ public class ShowCollectionItemHolder : MonoBehaviour
     public TextMeshProUGUI raretyText;
     public GameObject[] GO;
     public GameObject equipItemPart;
-    public ItemCollectionManager itemCollectionManager;
     
-    [SerializeField] private Image[] items;
     [SerializeField] private Button[] buttons;
     
     private CollectionItem displayedScriptable;
@@ -28,16 +25,16 @@ public class ShowCollectionItemHolder : MonoBehaviour
         for (int i = 0; i < buttons.Length; i++)
         {
             var index = i;
-            buttons[i].onClick.AddListener(SetSlotItem);
+            buttons[i].onClick.AddListener(EquipOrUnequipItem);
             buttons[i].onClick.AddListener(ClosePanel);
 
-            void SetSlotItem()
+            void EquipOrUnequipItem()
             {
-                SetItemInSlot(index);
+                EquipOrUnequipItemInSlot(index);
             }
         }
     }
-    
+
     private void ClosePanel()
     {
         panelGo.SetActive(false);
@@ -53,7 +50,7 @@ public class ShowCollectionItemHolder : MonoBehaviour
         EventManager.RemoveListener<ShowItemEvent>(FillAndShowItemCollectionDescription);
     }
 
-    public void FillAndShowItemCollectionDescription(ShowItemEvent showItemEvent)
+    private void FillAndShowItemCollectionDescription(ShowItemEvent showItemEvent)
     {
         var itemScriptable = showItemEvent.Item;
         displayedScriptable = itemScriptable;
@@ -83,7 +80,7 @@ public class ShowCollectionItemHolder : MonoBehaviour
         panelGo.SetActive(true);
     }
 
-    public void SetItemInSlot(int i)
+    private void EquipOrUnequipItemInSlot(int i)
     {
         equipItemPart.SetActive(false);
         

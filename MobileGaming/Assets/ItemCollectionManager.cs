@@ -61,6 +61,7 @@ public class ItemCollectionManager : MonoBehaviour
         }
 
         GetProgress();
+        EventManager.Trigger(new RefreshEquippedEvent());
     }
 
     private void GetProgress()
@@ -71,20 +72,21 @@ public class ItemCollectionManager : MonoBehaviour
         }
         
         UnlockItemSlots(ScriptableItemDatabase.CollectionLevel);
-        
-        
     }
     
     private void OnEnable()
     {
         EventManager.AddListener<ShowItemEvent>(StopScroll);
         EventManager.AddListener<EquipItemEvent>(EquipItem);
+        EventManager.AddListener<UnequipItemEvent>(UnequipItem);
+        EventManager.Trigger(new RefreshEquippedEvent());
     }
 
     private void OnDisable()
     {
         EventManager.RemoveListener<ShowItemEvent>(StopScroll);
         EventManager.RemoveListener<EquipItemEvent>(EquipItem);
+        EventManager.RemoveListener<UnequipItemEvent>(UnequipItem);
     }
 
     private void StopScroll(ShowItemEvent showItemEvent)
@@ -123,13 +125,12 @@ public class ItemCollectionManager : MonoBehaviour
         }
     }
 
-    public void EquipItem(EquipItemEvent equipItemEvent)
+    private void EquipItem(EquipItemEvent equipItemEvent)
     {
         var index = equipItemEvent.Slot;
         if(index > ScriptableItemDatabase.CollectionLevel) return;
         if(index < 0 || index >= slots.Length) return;
-
-
+        
         var slot = slots[index];
         if(slot.Item != null) EventManager.Trigger(new UnequipItemEvent(slot.Item,index));
         
@@ -137,7 +138,16 @@ public class ItemCollectionManager : MonoBehaviour
         showItemslots[index].DisplayItem(equipItemEvent.Item);
     }
 
-    public void ShowItemInSlot(int i)
+    private void UnequipItem(UnequipItemEvent unequipItemEvent)
+    {
+        var index = unequipItemEvent.Slot;
+        if(index < 0 || index >= slots.Length) return;
+        
+        slots[index].DisplayItem(null);
+        showItemslots[index].DisplayItem(null);
+    }
+
+    private void ShowItemInSlot(int i)
     {
         EventManager.Trigger(new ShowItemEvent(slots[i].Item));
     }
@@ -165,4 +175,9 @@ public class UnequipItemEvent
         Item = item;
         Slot = slot;
     }
+}
+
+public class RefreshEquippedEvent
+{
+    
 }

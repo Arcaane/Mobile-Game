@@ -34,11 +34,11 @@ namespace Service
 
         private static event Action<int> OnLoadLevel;
 
-        public GameService(ScriptableSettings baseSettings,ScriptableItemDatabase baseDatabase)
+        public GameService(ScriptableSettings baseSettings)
         {
             settings = baseSettings;
             settings.SetAsGlobalSettings();
-            itemDatabase = baseDatabase;
+            itemDatabase = baseSettings.itemDB;
             itemDatabase.GetProgress();
         }
 
@@ -123,9 +123,7 @@ namespace Service
             EventManager.AddListener<EndLevelEvent>(UpdateEndGameText);
             EventManager.AddListener<EndLevelEvent>(ObtainEndLevelRewards);
             EventManager.AddListener<EndLevelEvent>(UnlockNextLevel);
-            EventManager.AddListener<EquipItemEvent>(AddEquippedItemEffects);
-            EventManager.AddListener<UnequipItemEvent>(RemoveUnequippedItemEffects);
-            
+
             itemDatabase.SetListeners();
         }
         
@@ -189,16 +187,6 @@ namespace Service
             sceneService.LoadSceneAsync(1);
         }
         
-        private void AddEquippedItemEffects(EquipItemEvent equipItemEvent)
-        {
-            ScriptableSettings.EquipItem(equipItemEvent.Item);
-        }
-
-        private void RemoveUnequippedItemEffects(UnequipItemEvent unequipItemEvent)
-        {
-            ScriptableSettings.RemoveItem(unequipItemEvent.Item);
-        }
-
         private void ReloadScene()
         {
             endGameCanvasGo.SetActive(false);
