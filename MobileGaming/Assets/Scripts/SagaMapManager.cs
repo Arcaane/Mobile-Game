@@ -7,6 +7,7 @@ public class SagaMapManager : MonoBehaviour
     public List<LevelDisplaySagaMap> levels;
     private List<ScriptableLevelInSagaMap> scriptableLevelsInSagaMap;
     [SerializeField] private Transform sagaMapPanelTr;
+    private RectTransform sagaMapPanelRectTr;
     public int unlockedLevels = 1;
     
     private void Start()
@@ -26,9 +27,10 @@ public class SagaMapManager : MonoBehaviour
         {
             var level = levels[i];
             level.UnlockLevel(i < unlockedLevels);
+            Debug.Log($"level {level.gameObject} y : {sagaMapPanelTr.InverseTransformPoint(level.transform.localPosition).y}",level);
         }
 
-        var lastUnlockedLevel = levels[0];
+        var lastUnlockedLevel = levels[0].transform;
         for (int i = levels.Count - 1; i >= 0; i--)
         {
             var level = levels[i];
@@ -37,18 +39,33 @@ public class SagaMapManager : MonoBehaviour
             if(level.NextLevel != null) UnlockNext(level.NextLevel);
             break;
         }
-        Debug.Log($"Last unlocked level : {lastUnlockedLevel}");
 
+        sagaMapPanelRectTr = sagaMapPanelTr.GetComponent<RectTransform>();
+        
+        
+
+        
+        
         void UnlockNext(LevelDisplaySagaMap levelDisplaySagaMap)
         {
             if(levelDisplaySagaMap.NextLevel == null) return;
             levelDisplaySagaMap.UnlockLevel(true);
-            lastUnlockedLevel = levelDisplaySagaMap;
+            lastUnlockedLevel = levelDisplaySagaMap.transform;
             if(!levelDisplaySagaMap.LevelScriptable.Fake) return;
             UnlockNext(levelDisplaySagaMap.NextLevel);
         }
         
         EventManager.Trigger(new RefreshSagaMapLevelsEvent(scriptableLevelsInSagaMap));
+    }
+
+    public float amount;
+    
+    [ContextMenu("Move")]
+    public void MoveSagaMap()
+    {
+        var position = sagaMapPanelRectTr.localPosition;
+        position.y = - amount - Screen.height/2f;
+        sagaMapPanelRectTr.localPosition = position;
     }
 }
 
