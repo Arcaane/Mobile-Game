@@ -27379,8 +27379,128 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1655729274743624997, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: itemPrice
+      value: 19.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655729274743624997, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: currencyQuantity
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655729274983063460, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: itemPrice
+      value: 15.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655729274983063460, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: currencyQuantity
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655729274983063460, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: purchasingCurrency
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655729274983063461, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: itemPrice
+      value: 3.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655729274983063463, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: itemPrice
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655729274983063463, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: currencyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1655729274983063463, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: currencySprite
+      value: 
+      objectReference: {fileID: 345587640, guid: bb7388e9994807a49b6a8e440f5576c7,
+        type: 3}
+    - target: {fileID: 1655729274983063463, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: currencyQuantity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1655729274983063507}
+    - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SendToPurchase
+      objectReference: {fileID: 0}
+    - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: BuyItemOpener, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852247245259577491, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: itemPrice
+      value: 0.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852247245259577491, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: currencyQuantity
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6cb6c88f2d693240a67ccded678f406, type: 3}
+--- !u!1 &1655729274983063505 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3572479769415364143, guid: c6cb6c88f2d693240a67ccded678f406,
+    type: 3}
+  m_PrefabInstance: {fileID: 1655729274983063504}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1655729274983063507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655729274983063505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e335dd8d606be5b4b89c2f061eaa3d1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shopManager: {fileID: 0}
+  itemPrice: 0
+  purchasingCurrency: 2
+  currencyQuantity: 30000
+  currencyType: 0
+  currencySprite: {fileID: 0}
 --- !u!1 &1663160796476381181
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,8 +7,7 @@ public class ShopManager : MonoBehaviour
 {
     [SerializeField] private ScriptableItemDatabase itemDatabase;
     
-    [Header("Confirm Buy Section")] 
-    [SerializeField] private MainMenuManager MenuManager;
+    [Header("Confirm Buy Section")]
     [SerializeField] private GameObject go;
     [SerializeField] private Image image;
     [SerializeField] private TextMeshProUGUI text;
