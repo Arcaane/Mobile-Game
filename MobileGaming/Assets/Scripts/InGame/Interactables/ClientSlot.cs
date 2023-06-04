@@ -143,11 +143,6 @@ public class ClientSlot : MonoBehaviour, ILinkable
         currentSatisfaction = data.Satisfaction * (1-ratio);
     }
     
-    public void IncreaseClientScore(float amount)
-    {
-        data.extraReward += Mathf.RoundToInt(amount);
-    }
-
     private IEnumerator WaitForProductionRoutine()
     {
         yield return new WaitForSeconds(0.5f);
@@ -191,6 +186,10 @@ public class ClientSlot : MonoBehaviour, ILinkable
 
     private void ReceiveProduct(Product product)
     {
+        if(data.productDatas == null) return;
+        if(data.productDatas.Length == 0) return;
+        if(currentDataIndex < 0 || currentDataIndex >= data.productDatas.Length) return;
+        
         var success = product.data == expectedData;
 
         //Debug.Log($"Received {product.data} (expecting {expectedData}) ({success})");
