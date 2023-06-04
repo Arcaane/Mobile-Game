@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1764974688692401904}
   - component: {fileID: 1764974688692401905}
   - component: {fileID: 6379789386309712356}
-  - component: {fileID: 4891596202690148203}
   m_Layer: 0
   m_Name: MachineAnchor
   m_TagString: Untagged
@@ -100,19 +99,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeCases: 3
   posOnTileSet: {x: 0, y: 0, z: 0}
---- !u!114 &4891596202690148203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1764974688692401911}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9401531d1657551449a54c1c1dd17ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <machine>k__BackingField: {fileID: 0}
 --- !u!1 &4863955176613551265
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422d7cb8c800f654e87871dbb476fda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: {fileID: 4891596202690148203}
+  interactable: {fileID: 0}
 --- !u!135 &511237707858910475
 SphereCollider:
   m_ObjectHideFlags: 0

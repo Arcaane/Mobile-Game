@@ -1,4 +1,5 @@
 using System;
+using UnityEngine.UI;
 
 [Serializable]
 public class Product
@@ -10,10 +11,17 @@ public class Product
         this.data = data;
     }
 
+    public Product(ProductColor color, ProductShape shape)
+    {
+        data.Color = color;
+        data.Shape = shape;
+    }
+    
     public override string ToString()
     {
-        return $"{data.Color} and {data.Shape} Product";
+        return $"{data.Color}, {data.Shape} and {data.Topping} Product";
     }
+
 }
 
 [Serializable]
@@ -21,6 +29,7 @@ public struct ProductData
 {
     public ProductColor Color;
     public ProductShape Shape;
+    public ProductTopping Topping;
 
     public static bool operator ==(ProductData data1, ProductData data2) 
     {
@@ -36,6 +45,7 @@ public struct ProductData
     {
         Shape = GetRandomEnum<ProductShape>(),
         Color = GetRandomEnum<ProductColor>(),
+        Topping = GetRandomEnum<ProductTopping>(),
     };
 
     public static T GetRandomEnum<T>()
@@ -43,9 +53,115 @@ public struct ProductData
         var values = Enum.GetValues(typeof(T)); 
         return (T) values.GetValue(UnityEngine.Random.Range(0, values.Length));
     }
+    
+    public void ApplySpriteIndexes(Image shapeImage,Image contentImage,Image topingImage)
+    {
+        var shapeSpriteIndex = 0;
+        var contentSpriteIndex = 0;
+        contentImage.color = UnityEngine.Color.white;
+        shapeImage.color = UnityEngine.Color.white;
+        topingImage.color = Topping == ProductTopping.No ? UnityEngine.Color.clear : UnityEngine.Color.white;
+        switch (Shape)
+        {
+            case ProductShape.Heart:
+                shapeSpriteIndex = 0;
+                switch (Color)
+                {
+                    case ProductColor.Transparent:
+                        contentImage.color = UnityEngine.Color.clear;
+                        break;
+                    case ProductColor.Blue:
+                        contentSpriteIndex = 0;
+                        break;
+                    case ProductColor.Green:
+                        contentSpriteIndex = 1;
+                        break;
+                    case ProductColor.Red:
+                        contentSpriteIndex = 2;
+                        break;
+                    default:
+                        contentSpriteIndex = contentSpriteIndex;
+                        break;
+                }
+                break;
+            
+            case ProductShape.Cross: 
+                shapeSpriteIndex = 1;
+                switch (Color)
+                {
+                    case ProductColor.Transparent:
+                        contentImage.color = UnityEngine.Color.clear;
+                        break;
+                    case ProductColor.Blue:
+                        contentSpriteIndex = 3;
+                        break;
+                    case ProductColor.Green:
+                        contentSpriteIndex = 4;
+                        break;
+                    case ProductColor.Red:
+                        contentSpriteIndex = 5;
+                        break;
+                    default:
+                        contentSpriteIndex = contentSpriteIndex;
+                        break;
+                }
+                break;
+            
+            case ProductShape.Moon:
+                shapeSpriteIndex = 2;
+                switch (Color)
+                {
+                    case ProductColor.Transparent:
+                        contentImage.color = UnityEngine.Color.clear;
+                        break;
+                    case ProductColor.Blue:
+                        contentSpriteIndex = 6;
+                        break;
+                    case ProductColor.Green:
+                        contentSpriteIndex = 7;
+                        break;
+                    case ProductColor.Red:
+                        contentSpriteIndex = 8;
+                        break;
+                    default:
+                        contentSpriteIndex = contentSpriteIndex;
+                        break;
+                }
+                break;
+            
+            case ProductShape.Base:
+                shapeSpriteIndex = 3;
+                switch (Color)
+                {
+                    case ProductColor.Transparent:
+                        contentImage.color = UnityEngine.Color.clear;
+                        break;
+                    case ProductColor.Blue:
+                        contentSpriteIndex = 9;
+                        break;
+                    case ProductColor.Green:
+                        contentSpriteIndex = 10;
+                        break;
+                    case ProductColor.Red:
+                        contentSpriteIndex = 11;
+                        break;
+                    default:
+                        contentSpriteIndex = contentSpriteIndex;
+                        break;
+                }
+                break;
+        }
+
+        shapeImage.sprite = ScriptableSettings.GlobalSettings.bottleShapesSprites[shapeSpriteIndex];
+        contentImage.sprite = ScriptableSettings.GlobalSettings.bottleContentSprites[contentSpriteIndex];
+    }
+
+    public override string ToString()
+    {
+        return $"Data : {Shape},{Color},{Topping}";
+    }
 }
 
-public enum ProductShape {Blurry,Good,Epic,Lmao} 
-public enum ProductColor {Transparent,White,Black,Red}
-
-
+[Flags] public enum ProductShape {None = 0,Base = 1,Heart = 2, Moon = 4, Cross = 8}
+[Flags] public enum ProductColor {Nothing = 0,Transparent = 1, Red = 2, Blue = 4, Green = 8}
+[Flags] public enum ProductTopping {No = 0, Yes = 1}

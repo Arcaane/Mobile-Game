@@ -1,22 +1,75 @@
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class GenerationMachine : Machine
 {
-    [Header("Work Settings")]
-    public Product newProduct;
+    [HideInInspector] public Product newProduct;
+    public ProductData data => newProduct.data;
+    private float timer;
 
-    public override void StartFeedback()
-    {
-        feedbackText.text = $"{newProduct}";
-    }
+    public override bool Inputable => false;
+    
+    public override ProductShape MachineShape => data.Shape;
+    public override ProductColor MachineColor => data.Color;
+    public override ProductTopping MachineTopping => data.Topping;
 
-    protected override void Work()
+    protected override void Setup()
     {
         
     }
 
-    public override void UnloadProduct(out Product product)
+    protected override void EndWork()
     {
-        product = newProduct;
+        
     }
+
+    public override void SetOutLink(Link link)
+    {
+        if (link.EndLinkable.IsAvailable())
+        {
+            link.LoadProduct(new Product(data));
+            return;
+        }
+
+        link.EndLinkable.OnAvailable += LoadProductInLink;
+
+        void LoadProductInLink()
+        {
+            if(!link.EndLinkable.IsAvailable()) return;
+            link.LoadProduct(new Product(data));
+            link.EndLinkable.OnAvailable -= LoadProductInLink;
+        }
+    }
+    
+    public override void SetInLink(Link link) { }
+    public override bool IsAvailable() => false;
+
+    #region Editor
+#if UNITY_EDITOR
+    [CustomEditor(typeof(GenerationMachine)),CanEditMultipleObjects]
+    public class GenerationMachineProductEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            var machine = (GenerationMachine)target;
+            
+            EditorGUILayout.LabelField("Work Settings",EditorStyles.boldLabel);
+            EditorGUILayout.BeginHorizontal();
+
+            EditorGUILayout.LabelField("Generated Product :",GUILayout.MaxWidth(160));
+            machine.newProduct.data.Shape = (ProductShape) EditorGUILayout.EnumPopup( machine.newProduct.data.Shape);
+            machine.newProduct.data.Color = (ProductColor) EditorGUILayout.EnumPopup( machine.newProduct.data.Color);
+            machine.newProduct.data.Topping = (ProductTopping) EditorGUILayout.EnumPopup( machine.newProduct.data.Topping);
+            
+            EditorGUILayout.EndHorizontal();
+        }
+    }
+#endif
+    #endregion
 }
+

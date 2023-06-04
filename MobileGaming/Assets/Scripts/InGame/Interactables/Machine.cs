@@ -1,105 +1,161 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class Machine : MonoBehaviour
+public abstract class Machine : MonoBehaviour, ILinkable
 {
+    [Header("Linkable")]
+    [SerializeField] private float width;
+    public float Width => width;
+    
     [Header("Feedback")]
-    [SerializeField] private Image feedbackImage;
-    [SerializeField] private GameObject feedbackObject; //TODO Make only one object (one per product), not one per machine and teleport it
+    [SerializeField] private Image[] feedbackImages;
     [SerializeField] protected TextMeshProUGUI feedbackText;
-    
-    [Header("Production Settings")]
-    [SerializeField] private float baseTimeToProduce = 5f;
-    [SerializeField] private float timeMultiplier = 1f;
-    
-    private Coroutine workRoutine;
+    [SerializeField] protected GameObject selectedFeedbackGo;
 
+    [field:Header("Production Settings")]
+    [field: SerializeField] public float BaseTimeToProduce { get; private set; } = 5f;
+    public float TimeToProduce => BaseTimeToProduce * 1/(BaseSpeed+bonusSpeed);
+    public abstract ProductShape MachineShape { get; }
+    public abstract ProductColor MachineColor { get; }
+    public abstract ProductTopping MachineTopping { get; }
+
+    [field: SerializeField] public float BaseSpeed { get; private set; } = 1f;
+    private float bonusSpeed = 0;
+    
+    public Vector3 Position => transform.position;
+    public virtual bool Inputable => true;
+    public virtual bool Outputable => true;
+    
     protected double timer { get; private set; }
-    protected double waitDuration { get; private set; }
-    protected Product currentProduct;
+    public Product currentProduct { get; protected set; } = null;
+    public bool IsWorking { get; protected set; } = false;
 
     private void Start()
     {
-        UpdateFeedbackObject();
-        UpdateFeedbackText(0);
-        StartFeedback();
+        ShowProduct(false);
     }
 
-    public abstract void StartFeedback();
-
-    public virtual void LoadProduct(Product inProduct,out Product outProduct)
+    public void ResetVariables()
     {
-        outProduct = inProduct;
-        if (workRoutine is not null) return;
-        
-        UnloadProduct(out outProduct);
-        
-        if (inProduct is not null)
+        bonusSpeed = 0f;
+        selectedFeedbackGo.SetActive(false);
+        Setup();
+    }
+
+    public void IncreaseBonusSpeed(float amount)
+    {
+        var ratio = timer / TimeToProduce;
+        bonusSpeed += amount;
+        timer = TimeToProduce * ratio;
+    }
+
+    #region Feedback
+
+    protected void ShowProduct(bool value)
+    {
+        if (currentProduct == null || !value)
         {
-            LoadProduct(inProduct);
+            foreach (var feedbackImage in feedbackImages)
+            {
+                feedbackImage.color = Color.clear;
+            }
+            return;
         }
+        
+        currentProduct.data.ApplySpriteIndexes(feedbackImages[0],feedbackImages[1],feedbackImages[2]);
+        
+        
     }
     
+    protected abstract void Setup();
 
-    public virtual void LoadProduct(Product product)
+    #endregion
+
+    #region Work
+
+    protected void StartWork(Product product)
     {
+        IsWorking = true;
         currentProduct = product;
-        waitDuration = baseTimeToProduce * 1f / timeMultiplier;
+        EventManager.Trigger(new MachineStartWorkEvent(this));
 
-        workRoutine = StartCoroutine(WorkProduct());
+        StartCoroutine(WorkProduct());
     }
 
+    protected virtual void OnStartWork()
+    {
+        
+    }
+
+    protected virtual void WorkUpdate()
+    {
+        
+    }
+    
     private IEnumerator WorkProduct()
     {
         timer = 0;
-        while (timer < waitDuration)
+        
+        OnStartWork();
+        
+        while (timer < TimeToProduce)
         {
             yield return null;
             timer += Time.deltaTime;
-            
-            UpdateFeedbackText(1 - timer/waitDuration);
-            
-            UpdateFeedbackObject();
+            WorkUpdate();
         }
         
-        Work();
+        IsWorking = false;
         
         EndWork();
+        EventManager.Trigger(new MachineEndWorkEvent(this));
+
+        TriggerOnAvailable();
     }
     
-    protected abstract void Work();
+    protected abstract void EndWork();
+    
+ 
+    #endregion
 
-    private void EndWork()
+    #region Linkable
+
+    public void ShowHighlight(bool value)
     {
-        UpdateFeedbackText(0);
-        
-        UpdateFeedbackObject();
-        
-        workRoutine = null;
+        selectedFeedbackGo.SetActive(value);
     }
 
-    public virtual void UnloadProduct(out Product outProduct)
+    public abstract void SetOutLink(Link link);
+    public abstract void SetInLink(Link link);
+    public abstract bool IsAvailable();
+    public event Action OnAvailable;
+    protected void TriggerOnAvailable()
     {
-        outProduct = currentProduct;
-
-        currentProduct = null;
-        
-        UpdateFeedbackText(0);
-        
-        UpdateFeedbackObject();
+        OnAvailable?.Invoke();
     }
 
-    public void UpdateFeedbackText(double amount)
-    {
-        if(feedbackImage is null) return;
-        feedbackImage.fillAmount = (float)amount;
-    }
+    #endregion
+}
 
-    public void UpdateFeedbackObject()
+public class MachineStartWorkEvent
+{
+    public Machine Machine { get; }
+    
+    public MachineStartWorkEvent(Machine machine)
     {
-        if(feedbackObject == null) return;
-        feedbackObject.SetActive(currentProduct != null);
+        Machine = machine;
+    }
+}
+
+public class MachineEndWorkEvent
+{
+    public Machine Machine { get; }
+    
+    public MachineEndWorkEvent(Machine machine)
+    {
+        Machine = machine;
     }
 }

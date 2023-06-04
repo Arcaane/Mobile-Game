@@ -13,6 +13,10 @@ namespace Addressables.Components
         public Camera perspCamera => _perspCamera;
         public Camera othoCamera => _othoCamera;
 
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
     }
 }
 

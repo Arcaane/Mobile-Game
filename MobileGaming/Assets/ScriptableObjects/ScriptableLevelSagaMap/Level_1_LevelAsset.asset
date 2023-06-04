@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e080e9472134dca46b3b89edc74c9412, type: 3}
+  m_Name: Level_1_LevelAsset
+  m_EditorClassIdentifier: 
+  title: The quest
+  indexInSaga: 1
+  <CurrentChapter>k__BackingField: 1
+  <CurrentLevel>k__BackingField: 1
+  <LastLevelOfChapter>k__BackingField: 0
+  <Fake>k__BackingField: 0
+  <LevelScene>k__BackingField: 2
+  <NextLevelScene>k__BackingField: 3
+  levelObjective: 800
+  gearCountPlayerCanEquip: 0
+  socialInfos:
+  - name: 
+    image: {fileID: 0}
+    score: 0
+  - name: Gertrude
+    image: {fileID: 21300000, guid: e5600378dd761e64d9423790c482bf36, type: 3}
+    score: 1100
+  - name: Bertrand
+    image: {fileID: 21300000, guid: 3a0c527d7f890d64a9b56b086e6e766a, type: 3}
+    score: 1500
+  fragementReward: {fileID: 0}
+  potionToUseSprite: {fileID: 0}
+  areaText1: Where the magic starts...
+  areaText2: 'It''s D-DAY ! I''m very excited to open the store. Hope there will
+    be enough clients to gain... enough MONEY ! HA HA HA ! '

@@ -9,10 +9,16 @@ using UnityEngine;
 using System.Runtime.CompilerServices;
 using Cysharp.Threading.Tasks;
 using Service.SceneService;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class Compositor : MonoBehaviour
 {
     [SerializeField] private float ticksPerSecond = 60;
+    public static float TicksPerSecond { get; private set; }
+    public static float DeltaTick => 1f / TicksPerSecond;
+    [SerializeField] private ScriptableSettings settings;
     private double currentTime = 0;
     
     protected struct FieldEntry
@@ -21,10 +27,18 @@ public class Compositor : MonoBehaviour
         public FieldInfo field;
     }
 
-    protected readonly Dictionary<Type, IService> m_services = new Dictionary<Type, IService>();
+    private readonly Dictionary<Type, IService> m_services = new Dictionary<Type, IService>();
     protected readonly Dictionary<Type, List<FieldEntry>> m_dependencySlots = new Dictionary<Type, List<FieldEntry>>();
     protected event Action OnTickAction;
     protected event Action OnUpdateAction;
+
+#if UNITY_EDITOR
+    [ContextMenu("Reload Assembly")]
+    private void ReloadAssembly()
+    {
+        EditorUtility.RequestScriptReload();
+    }
+#endif
 
     private bool ResolveDependencies()
     {
@@ -227,11 +241,13 @@ public class Compositor : MonoBehaviour
     // Add Services Here
     private void CreateAndWireObjects()
     {
-        AddService<IGameService>(new GameService());
+        TicksPerSecond = ticksPerSecond;
         
-        AddService<IInputService>(new InputService());
-        
-        AddService<ISceneService>(new SceneService());
+        AddService<ILevelService>(new LevelService());
+        AddService<ISceneService>(new SceneService(true));
+        AddService<IInputService>(new InputService(true));
+        AddService<IMagicLineService>(new MagicLineService(false));
+        AddService<IGameService>(new GameService(settings));
     }
 
     private void Awake()
@@ -266,7 +282,8 @@ public class Compositor : MonoBehaviour
         
         currentTime += Time.deltaTime;
         
-        if (currentTime < 1 / ticksPerSecond) return;
+        
+        if(ticksPerSecond != 0) if (currentTime < 1 / ticksPerSecond) return;
         
         currentTime = 0;
         OnTickAction?.Invoke();
