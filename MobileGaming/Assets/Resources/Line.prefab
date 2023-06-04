@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4346485368198927907}
   - component: {fileID: 9010914124148271911}
   - component: {fileID: 1985805050501338751}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,12 +144,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be066e9a5ee83034b9df3a7f840ff2c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  linkLayer:
-    serializedVersion: 2
-    m_Bits: 512
   linkMaterials:
   - {fileID: 2100000, guid: 6ee787819be07fe4aa80b99a5e3745e7, type: 2}
   - {fileID: 2100000, guid: 8e39c19582935d646b1b28c5a1d20498, type: 2}
   resetCollisionDetectionTime: 0.15
-  isLinkable: 0
   myLR: {fileID: 0}
