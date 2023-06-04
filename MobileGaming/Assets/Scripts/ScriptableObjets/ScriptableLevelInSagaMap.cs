@@ -38,9 +38,9 @@ public class ScriptableLevelInSagaMap : ScriptableObject
 
     //Save
     public bool Completed => Stars > 0 || Fake;
-    public int Score { get; private set; }
-    public int Stars { get; private set; }
-    public bool Unlocked { get; private set; }
+    [field:SerializeField,ReadOnly] public int Score { get; private set; }
+    [field:SerializeField,ReadOnly] public int Stars { get; private set; }
+    [field:SerializeField,ReadOnly] public bool Unlocked { get; private set; }
 
     public void GetProgress()
     {

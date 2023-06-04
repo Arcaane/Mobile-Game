@@ -36,6 +36,8 @@ public class Link : MonoBehaviour
     private Material material;
 
     private List<Link> collisionLinks = new List<Link>();
+
+    public static bool disableCollision = false;
     #endregion
     
     public void IncreaseExtraSpeed(float amount)
@@ -146,6 +148,8 @@ public class Link : MonoBehaviour
 
     private void SlowIfCollision(LinkCollisionEvent linkCollisionEvent)
     {
+        if(disableCollision) return;
+        
         if(linkCollisionEvent.Link != this) return;
         
         foreach (var collidingLink in linkCollisionEvent.CollidingLinks)

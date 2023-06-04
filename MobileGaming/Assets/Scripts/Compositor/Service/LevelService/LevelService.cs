@@ -275,11 +275,12 @@ public class LevelService : ILevelService
     
     private int CalculateScore()
     {
+        Debug.Log($"Score {currentScore}, palier 3 : {palier3}");
         var stars = 0;
-        if (currentScore > scoreToWin) stars++;
-        if (currentScore > palier2) stars++;
+        if (currentScore >= scoreToWin) stars++;
+        if (currentScore >= palier2) stars++;
         if (currentScore < palier3) return stars;
-
+        
         var extraTime = CurrentLevel.levelDuration - CurrentTime;
         var extraTimeMilliseconds = (int)Mathf.Ceil(extraTime * 1000);
 
