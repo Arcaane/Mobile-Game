@@ -66,7 +66,7 @@ public class LevelService : ILevelService
 
             if (clientCompletedEvent.CurrentSatisfaction > 0) IncreaseScore(data.Reward);
             
-            EventManager.Trigger(new LevelScoreUpdatedEvent(currentScore,palier3));
+            EventManager.Trigger(new LevelScoreUpdatedEvent(currentScore,scoreToWin,palier2,palier3));
 
             var fxIndex = 2;
             var percent = (clientCompletedEvent.CurrentSatisfaction / data.Satisfaction);
@@ -194,7 +194,7 @@ public class LevelService : ILevelService
         }
 
         EventManager.Trigger(new LevelTimeUpdatedEvent(CurrentTime,LevelDuration,this));
-        EventManager.Trigger(new LevelScoreUpdatedEvent(currentScore,palier3));
+        EventManager.Trigger(new LevelScoreUpdatedEvent(currentScore,scoreToWin,palier2,palier3));
         
         magicLineService.Enable();
 
@@ -331,10 +331,14 @@ public class LevelScoreUpdatedEvent
 {
     public int Score { get; }
     public int Palier3 { get; }
-    public LevelScoreUpdatedEvent(int score,int palier3)
+    public int Palier2 { get; }
+    public int Palier1 { get; }
+    public LevelScoreUpdatedEvent(int score,int palier1, int palier2, int palier3)
     {
         Score = score;
         Palier3 = palier3;
+        Palier2 = palier2;
+        Palier1 = palier1;
     }
 }
 

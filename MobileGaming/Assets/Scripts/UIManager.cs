@@ -12,6 +12,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Canvas darkmodeCanvas;
     
     [SerializeField] private Canvas hudCanvas;
+
+    [Header("Stars Progression")]
+    [SerializeField] private RectTransform starReferenceTr;
     [SerializeField] private Image[] starsHolder;
     [SerializeField] private Sprite starFill;
     [SerializeField] private Sprite starEmpty;
@@ -38,6 +41,7 @@ public class UIManager : MonoBehaviour
         HideHud();
         
         EventManager.AddListener<LoadLevelEvent>(HideHudOnLevelInit);
+        EventManager.AddListener<LoadLevelEvent>(PlaceStars);
         EventManager.AddListener<EndLevelEvent>(HideHudOnLevelEnd);
         EventManager.AddListener<LevelScoreUpdatedEvent>(UpdateScore);
         EventManager.AddListener<LevelTimeUpdatedEvent>(UpdateTime);
@@ -73,26 +77,29 @@ public class UIManager : MonoBehaviour
             
             HideHud();
         }
+
+        void PlaceStars(LoadLevelEvent loadLevelEvent)
+        {
+            var scriptable = loadLevelEvent.Level.LevelScriptable;
+            var palier1 = scriptable.ScoreToWin;
+            var palier2 = scriptable.Palier2;
+            var palier3 = scriptable.Palier3;
+
+            var refWidth = starReferenceTr.sizeDelta.x;
+            
+            starsHolder[0].rectTransform.localPosition = new Vector3(refWidth*((float)palier1/palier3),0,0);
+            starsHolder[1].rectTransform.localPosition = new Vector3(refWidth*((float)palier2/palier3),0,0);
+            starsHolder[2].rectTransform.localPosition = new Vector3(refWidth,0,0);
+        }
         
         void UpdateScore(LevelScoreUpdatedEvent scoreUpdatedEvent)
         {
             scoreSlider.value = ((float)scoreUpdatedEvent.Score) / scoreUpdatedEvent.Palier3;
 
-            if (scoreSlider.value > 0.99f)
-            {
-                UpdateStarUI(2);
-            }
+            if(scoreUpdatedEvent.Score >= scoreUpdatedEvent.Palier1) UpdateStarUI(0);
+            if(scoreUpdatedEvent.Score >= scoreUpdatedEvent.Palier2) UpdateStarUI(1);
+            if(scoreUpdatedEvent.Score >= scoreUpdatedEvent.Palier3) UpdateStarUI(2);
             
-            if (scoreSlider.value > 0.66f)
-            {
-                UpdateStarUI(1);
-            }
-            
-            if (scoreSlider.value > 0.33f)
-            {
-                UpdateStarUI(0);
-            }
-
             void UpdateStarUI(int i)
             {
                 if (starsHolder[i].sprite == starFill) return;

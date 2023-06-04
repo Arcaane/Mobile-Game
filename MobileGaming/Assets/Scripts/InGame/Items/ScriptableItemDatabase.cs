@@ -60,8 +60,10 @@ public class ScriptableItemDatabase : ScriptableObject
 
     [Header("Gacha")]
     [SerializeField] private int wishCost;
+    [SerializeField] private int goldObtained;
     [SerializeField] private List<ItemsPerChapter> itemsPerChapter = new ();
     [SerializeField] private List<CollectionItem> itemPool = new ();
+    public bool CanWish => StarCount - wishCost >= 0;
 
     [Header("Completion")]
     [SerializeField,ReadOnly] private int completedChapters = 0;
@@ -80,13 +82,11 @@ public class ScriptableItemDatabase : ScriptableObject
         void IncreaseTotalStars(GainStarEvent gainStarEvent)
         {
             StarCount += gainStarEvent.Amount;
-            Debug.Log($"Gained {gainStarEvent.Amount} stars, now at {StarCount}");
         }
         
         void IncreaseTotalGold(GainScoreEvent gainScoreEvent)
         {
             GoldCount += gainScoreEvent.Amount;
-            Debug.Log($"Gained {gainScoreEvent.Amount} stars, now at {GoldCount}");
         }
         
         void CheckUnlockedChapters(RefreshSagaMapLevelsEvent refreshSagaMapLevelsEvent)
@@ -246,7 +246,7 @@ public class ScriptableItemDatabase : ScriptableObject
         if (itemPool.Count <= 0)
         {
             Debug.LogWarning("Empty Pool");
-            return (null,0);
+            return (null,goldObtained);
         }
 
         var index = Random.Range(0, itemPool.Count);
@@ -257,8 +257,7 @@ public class ScriptableItemDatabase : ScriptableObject
     
     public void Wish()
     {
-        if (StarCount - wishCost < 0) return;
-        
+        if (CanWish) return;
         
         var (item, gold) = Pull();
         

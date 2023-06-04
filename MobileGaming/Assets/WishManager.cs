@@ -14,14 +14,18 @@ public class WishManager : MonoBehaviour
     public PlayableDirector timeline;
     public Button wishButton;
 
-    public Color rareItemColor;
-    public Color epicItemColor;
-    public Color legendaryItemColor;
+    [Header("Settings")]
+    [SerializeField] private Sprite goldSprite;
+    [SerializeField] private Color goldColor;
+    [SerializeField] private Color rareItemColor;
+    [SerializeField] private Color epicItemColor;
+    [SerializeField] private Color legendaryItemColor;
 
     public void OnEnable()
     {
         wishItemFlareRenderer = wishItemFlareParticleSystem.GetComponent<Renderer>();
         wishHatFlareRenderer = wishHatFlareParticleSystem.GetComponent<Renderer>();
+        wishButton.interactable = itemDatabase.CanWish;
     }
 
     public void MakeAWish(int wishCost)
@@ -29,6 +33,7 @@ public class WishManager : MonoBehaviour
         EventManager.AddListener<WishEvent>(PlayWishAnimation);
 
         itemDatabase.Wish();
+        wishButton.interactable = false;
     }
 
     private void PlayWishAnimation(WishEvent wishEvent)
@@ -67,6 +72,9 @@ public class WishManager : MonoBehaviour
     private void ChangeWishAnimation(int gold)
     {
         if(gold == 0) return;
+        wishImageParticleSystem.textureSheetAnimation.SetSprite(0,goldSprite);
+        wishItemFlareRenderer.material.color = goldColor;
+        wishHatFlareRenderer.material.color = goldColor;
     }
 
     private IEnumerator ButtonCd(float duration)
