@@ -1,3 +1,5 @@
+using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,7 +14,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Canvas hudCanvas;
     [SerializeField] private Image[] starsHolder;
     [SerializeField] private Sprite starFill;
-    [SerializeField] private Sprite starEpmty;
+    [SerializeField] private Sprite starEmpty;
     [SerializeField] private TextMeshProUGUI levelText;
 
     [SerializeField] private RectTransform chroneNeedleTr;
@@ -22,7 +24,6 @@ public class UIManager : MonoBehaviour
 
     private SorcererController sorcererController;
     private MagicLinesData _magicLinesData;
-
     private Slider scoreSlider;
     private TextMeshProUGUI timerText;
 
@@ -33,7 +34,7 @@ public class UIManager : MonoBehaviour
         timerText = sorcererController.timeLeftText;
         scoreSlider = sorcererController.scoreSlider;
         darkmodeCanvasGo.SetActive(false);
-
+        
         HideHud();
         
         EventManager.AddListener<LoadLevelEvent>(HideHudOnLevelInit);
@@ -65,12 +66,43 @@ public class UIManager : MonoBehaviour
             hudCanvas.planeDistance = 2f;
             levelText.text = $"Level {loadLevelEvent.Level.LevelScriptable.CurrentLevel}";
             
+            for (int i = 0; i < starsHolder.Length; i++)
+            {
+                starsHolder[i].sprite = starEmpty;
+            }
+            
             HideHud();
         }
         
         void UpdateScore(LevelScoreUpdatedEvent scoreUpdatedEvent)
         {
             scoreSlider.value = ((float)scoreUpdatedEvent.Score) / scoreUpdatedEvent.Palier3;
+
+            if (scoreSlider.value > 0.99f)
+            {
+                UpdateStarUI(2);
+            }
+            
+            if (scoreSlider.value > 0.66f)
+            {
+                UpdateStarUI(1);
+            }
+            
+            if (scoreSlider.value > 0.33f)
+            {
+                UpdateStarUI(0);
+            }
+
+            void UpdateStarUI(int i)
+            {
+                if (starsHolder[i].sprite == starFill) return;
+                
+                starsHolder[i].sprite = starFill;
+                starsHolder[i].transform.DOScale(1.8f, 0.55f).SetEase(Ease.OutBack).OnComplete(() =>
+                {
+                    starsHolder[i].transform.DOScale(1.15f, 0.25f);
+                });
+            }
         }
 
         void UpdateTime(LevelTimeUpdatedEvent timeUpdatedEvent)
