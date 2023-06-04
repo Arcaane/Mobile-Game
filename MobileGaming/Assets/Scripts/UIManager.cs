@@ -94,9 +94,9 @@ public class UIManager : MonoBehaviour
 
             var refWidth = starReferenceTr.sizeDelta.x;
             
-            starsHolder[0].rectTransform.localPosition = new Vector3(refWidth*((float)palier1/palier3),starReferenceTr.anchoredPosition.y,0);
-            starsHolder[1].rectTransform.localPosition = new Vector3(refWidth*((float)palier2/palier3),starReferenceTr.anchoredPosition.y,0);
-            starsHolder[2].rectTransform.localPosition = new Vector3(refWidth,starReferenceTr.anchoredPosition.y,0);
+            starsHolder[0].rectTransform.localPosition = new Vector3(refWidth*((float)palier1/palier3),0,0);
+            starsHolder[1].rectTransform.localPosition = new Vector3(refWidth*((float)palier2/palier3),0,0);
+            starsHolder[2].rectTransform.localPosition = new Vector3(refWidth,0,0);
         }
         
         void UpdateScore(LevelScoreUpdatedEvent scoreUpdatedEvent)
