@@ -71,7 +71,7 @@ public class SagaMapManager : MonoBehaviour
             //Debug.Log($"level {level.gameObject} y : {sagaMapPanelTr.InverseTransformPoint(level.transform.localPosition).y}",level);
         }
 
-        var lastUnlockedLevel = levels[0].transform;
+        var lastUnlockedLevel = levels[0].LevelScriptable;
         for (int i = levels.Count - 1; i >= 0; i--)
         {
             var level = levels[i];
@@ -82,12 +82,15 @@ public class SagaMapManager : MonoBehaviour
         }
 
         sagaMapPanelRectTr = sagaMapPanelTr.GetComponent<RectTransform>();
+        var pos = sagaMapPanelRectTr.anchoredPosition;
+        pos.y = lastUnlockedLevel.autoscrollPositionY;
+        sagaMapPanelRectTr.anchoredPosition = pos;
         
         void UnlockNext(LevelDisplaySagaMap levelDisplaySagaMap)
         {
             if(levelDisplaySagaMap.NextLevel == null) return;
             levelDisplaySagaMap.UnlockLevel(true);
-            lastUnlockedLevel = levelDisplaySagaMap.transform;
+            lastUnlockedLevel = levelDisplaySagaMap.LevelScriptable;
             if(!levelDisplaySagaMap.LevelScriptable.Fake) return;
             UnlockNext(levelDisplaySagaMap.NextLevel);
         }

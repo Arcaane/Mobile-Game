@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
     
     [Header("Feedback")]
     [SerializeField] private Image[] feedbackImages;
+    private Transform feedbackImageTr;
     [SerializeField] protected TextMeshProUGUI feedbackText;
     [SerializeField] protected GameObject selectedFeedbackGo;
 
@@ -35,6 +37,7 @@ public abstract class Machine : MonoBehaviour, ILinkable
 
     private void Start()
     {
+        if(feedbackImages.Length > 0) feedbackImageTr = feedbackImages[0].transform.parent;
         ShowProduct(false);
     }
 
@@ -56,6 +59,12 @@ public abstract class Machine : MonoBehaviour, ILinkable
 
     protected void ShowProduct(bool value)
     {
+        if (feedbackImageTr != null)
+        {
+            feedbackImageTr.DOKill();
+            feedbackImageTr.localPosition = new Vector3(0, 0, 70);
+        }
+        
         if (currentProduct == null || !value)
         {
             foreach (var feedbackImage in feedbackImages)
@@ -64,10 +73,9 @@ public abstract class Machine : MonoBehaviour, ILinkable
             }
             return;
         }
-        
+
+        if (feedbackImageTr != null) feedbackImageTr.DOLocalMove(new Vector3(0, 80, 0), 0.25f);
         currentProduct.data.ApplySpriteIndexes(feedbackImages[0],feedbackImages[1],feedbackImages[2]);
-        
-        
     }
     
     protected abstract void Setup();
