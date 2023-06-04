@@ -176,7 +176,7 @@ public class ScriptableItemDatabase : ScriptableObject
         RefreshGachaPool();
     }
     
-    private void RefreshEquippedItems()
+    public void RefreshEquippedItems()
     {
         equipedItems = new CollectionItem[3];
         

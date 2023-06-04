@@ -91,6 +91,7 @@ public class SagaMapManager : MonoBehaviour
             if(levelDisplaySagaMap.NextLevel == null) return;
             levelDisplaySagaMap.UnlockLevel(true);
             lastUnlockedLevel = levelDisplaySagaMap.LevelScriptable;
+            if(levelDisplaySagaMap.LevelScriptable == null) return;
             if(!levelDisplaySagaMap.LevelScriptable.Fake) return;
             UnlockNext(levelDisplaySagaMap.NextLevel);
         }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ItemCollectionManager : MonoBehaviour
 {
+    [SerializeField] private ScriptableItemDatabase itemDB;
     public ScrollRect sr;
     
     public ItemSlot[] slots;
@@ -44,6 +45,13 @@ public class ItemCollectionManager : MonoBehaviour
         foreach (var item in items)
         {
             item.GetProgress();
+        }
+
+        itemDB.RefreshEquippedItems();
+
+        foreach (var itemSlot in showItemslots)
+        {
+            itemSlot.DisplayItem(itemSlot.Item);
         }
         
         UnlockItemSlots(ScriptableItemDatabase.CollectionLevel);
