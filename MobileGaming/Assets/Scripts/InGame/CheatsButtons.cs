@@ -91,6 +91,7 @@ public class CheatsButtons : MonoBehaviour
         void UnlockSlot(int i)
         {
             ScriptableItemDatabase.CollectionLevel = i;
+            itemDb.ResetEquippedItems();
         }
     }
 }

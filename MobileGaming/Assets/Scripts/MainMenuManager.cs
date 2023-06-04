@@ -98,18 +98,17 @@ public class MainMenuManager : MonoBehaviour
 
     #region UIMethods
     
-    public void UpdateItemLockState(CollectionLevelChangeEvent collectionLevelChangeEvent)
+    private void UpdateItemLockState(CollectionLevelChangeEvent collectionLevelChangeEvent)
     {
-        Debug.Log($"Changed collection level to {collectionLevelChangeEvent.Value}");
         _collectionManager.UnlockItemSlots(collectionLevelChangeEvent.Value);
     }
 
-    public void UpdateGoldText(GoldValueChangedEvent goldValueChangedEvent)
+    private void UpdateGoldText(GoldValueChangedEvent goldValueChangedEvent)
     {
         goldCountText.text = $"{goldValueChangedEvent.Value}";
     }
     
-    public void UpdateStarText(StarValueChangedEvent starValueChangedEvent)
+    private void UpdateStarText(StarValueChangedEvent starValueChangedEvent)
     {
         starCountText.text = $"{starValueChangedEvent.Value}";
     }

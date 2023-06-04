@@ -83,7 +83,6 @@ public class ShowCollectionItemHolder : MonoBehaviour
     private void EquipOrUnequipItemInSlot(int i)
     {
         equipItemPart.SetActive(false);
-        
         EventManager.Trigger(new EquipItemEvent(displayedScriptable,i));
     }
 }

@@ -56,6 +56,7 @@ public class ScriptableItemDatabase : ScriptableObject
     [Header("Items")]
     [SerializeField] private List<CollectionItem> allItems = new();
     [SerializeField, ReadOnly] private CollectionItem[] equipedItems = new CollectionItem[3];
+    
 
     [Header("Gacha")]
     [SerializeField] private int wishCost;
@@ -75,7 +76,7 @@ public class ScriptableItemDatabase : ScriptableObject
         EventManager.AddListener<EquipItemEvent>(AddEquippedItemEffects);
         EventManager.AddListener<UnequipItemEvent>(RemoveUnequippedItemEffects);
         EventManager.AddListener<ResetPlayerPrefsEvent>(GetProgress);
-
+        
         void IncreaseTotalStars(GainStarEvent gainStarEvent)
         {
             StarCount += gainStarEvent.Amount;
@@ -102,8 +103,9 @@ public class ScriptableItemDatabase : ScriptableObject
         {
             for (int i = 0; i < equipedItems.Length; i++)
             {
-                var item = equipedItems[i];
-                EventManager.Trigger(new EquipItemEvent(item,i));
+                refreshEquippedEvent.Slots[i].DisplayItem(equipedItems[i]);
+                refreshEquippedEvent.ShowItemslots[i].DisplayItem(equipedItems[i]);
+                EventManager.Trigger(new EquipItemEvent(equipedItems[i],i));
             }
         }
         
@@ -111,20 +113,27 @@ public class ScriptableItemDatabase : ScriptableObject
         {
             var key = $"Equipped_Item{equipItemEvent.Slot}";
             var item = equipItemEvent.Item;
-            PlayerPrefs.SetInt(key, IndexOfItem(item));
-            equipedItems[equipItemEvent.Slot] = item;
-            if (item == null)
+            
+            if (equipedItems[equipItemEvent.Slot] == item) return;
+
+            for (int i = 0; i < equipedItems.Length; i++)
             {
-                ScriptableSettings.RemoveItem(item);
-                return;
+                if(equipedItems[i] == item) EventManager.Trigger(new UnequipItemEvent(equipedItems[i],i));
             }
-            ScriptableSettings.EquipItem(item);
+            EventManager.Trigger(new UnequipItemEvent(equipedItems[equipItemEvent.Slot],equipItemEvent.Slot));
+            
+            PlayerPrefs.SetInt(key, IndexOfItem(item));
+            PlayerPrefs.Save();
+
+            equipedItems[equipItemEvent.Slot] = item;
+            ScriptableSettings.EquipItem(equipedItems[equipItemEvent.Slot]);
         }
 
         void RemoveUnequippedItemEffects(UnequipItemEvent unequipItemEvent)
         {
             var key = $"Equipped_Item{unequipItemEvent.Slot}";
             PlayerPrefs.SetInt(key, -1);
+            PlayerPrefs.Save();
             equipedItems[unequipItemEvent.Slot] = null;
             ScriptableSettings.RemoveItem(unequipItemEvent.Item);
         }
@@ -135,7 +144,7 @@ public class ScriptableItemDatabase : ScriptableObject
             return allItems.IndexOf(item);
         }
     }
-
+    
     [ContextMenu("Get Progress")]
     public void GetProgress(ResetPlayerPrefsEvent _ = null)
     {
@@ -166,17 +175,18 @@ public class ScriptableItemDatabase : ScriptableObject
 
         RefreshGachaPool();
     }
-
+    
     private void RefreshEquippedItems()
     {
         equipedItems = new CollectionItem[3];
-
+        
         for (int i = 0; i < equipedItems.Length; i++)
         {
             var key = $"Equipped_Item{i}";
             if (!PlayerPrefs.HasKey(key)) PlayerPrefs.SetInt(key, -1);
             var equippedItemIndex = PlayerPrefs.GetInt(key);
-            if(equippedItemIndex < 0 || equippedItemIndex >= allItems.Count) continue;
+            
+            if (equippedItemIndex < 0 || equippedItemIndex >= allItems.Count) continue;
             
             EventManager.Trigger(new EquipItemEvent(allItems[equippedItemIndex],i));
         }
@@ -219,6 +229,17 @@ public class ScriptableItemDatabase : ScriptableObject
             }
         }
     }
+
+    public void ResetEquippedItems()
+    {
+        for (int i = 0; i < equipedItems.Length; i++)
+        {
+            if (i >= CollectionLevel)
+            {
+                EventManager.Trigger(new UnequipItemEvent(equipedItems[i],i));
+            }
+        }
+    }
     
     private (CollectionItem item, int gold) Pull()
     {
@@ -238,14 +259,14 @@ public class ScriptableItemDatabase : ScriptableObject
     {
         if (StarCount - wishCost < 0) return;
         
-        StarCount -= wishCost;
         
         var (item, gold) = Pull();
         
         EventManager.Trigger(new WishEvent(item,gold));
 
-        if (item == null) return;
-
+        if (item == null && gold == 0) return;
+        
+        StarCount -= wishCost;
         item.ObtainFragment();
     }
     

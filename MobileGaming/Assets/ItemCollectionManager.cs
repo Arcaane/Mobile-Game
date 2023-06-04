@@ -12,31 +12,6 @@ public class ItemCollectionManager : MonoBehaviour
 
     public CollectionItem[] items;
     
-    [Serializable]
-    public class ItemSlot
-    {
-        [field:SerializeField] public Image ItemSlotImage { get; private set; }
-        [field:SerializeField] public Button Button { get; private set; }
-        [field:SerializeField] public Sprite LockedSprite { get; private set; }
-        [field:SerializeField] public Sprite EmptySprite { get; private set; }
-        public CollectionItem Item { get; private set; }
-        private bool unlocked;
-
-        public void Unlock(bool value)
-        {
-            unlocked = value;
-            DisplayItem(Item);
-        }
-        
-        public void DisplayItem(CollectionItem item)
-        {
-            Item = item;
-            ItemSlotImage.sprite = Item != null ? Item.itemSprite : (unlocked ? EmptySprite : LockedSprite);
-            if(Button != null) Button.interactable = Item != null;
-        }
-    }
-    
-
     [ContextMenu("AutoFill items")]
     private void AutoFill()
     {
@@ -61,7 +36,7 @@ public class ItemCollectionManager : MonoBehaviour
         }
 
         GetProgress();
-        EventManager.Trigger(new RefreshEquippedEvent());
+        EventManager.Trigger(new RefreshEquippedEvent(slots,showItemslots));
     }
 
     private void GetProgress()
@@ -79,7 +54,6 @@ public class ItemCollectionManager : MonoBehaviour
         EventManager.AddListener<ShowItemEvent>(StopScroll);
         EventManager.AddListener<EquipItemEvent>(EquipItem);
         EventManager.AddListener<UnequipItemEvent>(UnequipItem);
-        EventManager.Trigger(new RefreshEquippedEvent());
     }
 
     private void OnDisable()
@@ -131,15 +105,14 @@ public class ItemCollectionManager : MonoBehaviour
         if(index > ScriptableItemDatabase.CollectionLevel) return;
         if(index < 0 || index >= slots.Length) return;
         
-        var slot = slots[index];
-        if(slot.Item != null) EventManager.Trigger(new UnequipItemEvent(slot.Item,index));
-        
         slots[index].DisplayItem(equipItemEvent.Item);
         showItemslots[index].DisplayItem(equipItemEvent.Item);
     }
 
     private void UnequipItem(UnequipItemEvent unequipItemEvent)
     {
+        UnlockItemSlots(ScriptableItemDatabase.CollectionLevel);
+        
         var index = unequipItemEvent.Slot;
         if(index < 0 || index >= slots.Length) return;
         
@@ -150,6 +123,30 @@ public class ItemCollectionManager : MonoBehaviour
     private void ShowItemInSlot(int i)
     {
         EventManager.Trigger(new ShowItemEvent(slots[i].Item));
+    }
+}
+
+[Serializable]
+public class ItemSlot
+{
+    [field:SerializeField] public Image ItemSlotImage { get; private set; }
+    [field:SerializeField] public Button Button { get; private set; }
+    [field:SerializeField] public Sprite LockedSprite { get; private set; }
+    [field:SerializeField] public Sprite EmptySprite { get; private set; }
+    public CollectionItem Item { get; private set; }
+    private bool unlocked;
+
+    public void Unlock(bool value)
+    {
+        unlocked = value;
+        DisplayItem(Item);
+    }
+        
+    public void DisplayItem(CollectionItem item)
+    {
+        Item = item;
+        ItemSlotImage.sprite = Item != null ? Item.itemSprite : (unlocked ? EmptySprite : LockedSprite);
+        if(Button != null) Button.interactable = Item != null;
     }
 }
 
@@ -179,5 +176,12 @@ public class UnequipItemEvent
 
 public class RefreshEquippedEvent
 {
-    
+    public ItemSlot[] Slots { get; }
+    public ItemSlot[] ShowItemslots { get; }
+
+    public RefreshEquippedEvent(ItemSlot[] slots, ItemSlot[] showItemslots)
+    {
+        Slots = slots;
+        ShowItemslots = showItemslots;
+    }
 }

@@ -39,7 +39,6 @@ namespace Service
             settings = baseSettings;
             settings.SetAsGlobalSettings();
             itemDatabase = baseSettings.itemDB;
-            itemDatabase.GetProgress();
         }
 
         [ServiceInit]
@@ -54,6 +53,8 @@ namespace Service
             OnLoadLevel = LoadLevelI;
             
             SetListeners();
+            
+            itemDatabase.GetProgress();
         }
 
         private void LoadSorcererController()
@@ -123,7 +124,7 @@ namespace Service
             EventManager.AddListener<EndLevelEvent>(UpdateEndGameText);
             EventManager.AddListener<EndLevelEvent>(ObtainEndLevelRewards);
             EventManager.AddListener<EndLevelEvent>(UnlockNextLevel);
-
+            
             itemDatabase.SetListeners();
         }
         
