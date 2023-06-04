@@ -302,10 +302,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemDatabase: {fileID: 11400000, guid: 9f53fe865ed76a64684e7eeacb2da4af, type: 2}
-  wishParticleSystem: {fileID: 0}
-  menuManager: {fileID: 0}
+  wishImageParticleSystem: {fileID: 0}
+  wishItemFlareParticleSystem: {fileID: 0}
+  wishHatFlareParticleSystem: {fileID: 0}
   timeline: {fileID: 0}
   wishButton: {fileID: 5480094235796012266}
+  goldSprite: {fileID: 345587640, guid: bb7388e9994807a49b6a8e440f5576c7, type: 3}
+  goldColor: {r: 1, g: 1, b: 1, a: 1}
   rareItemColor: {r: 0.31764707, g: 0.6627451, b: 0.7490196, a: 1}
   epicItemColor: {r: 0.42352942, g: 0.14509805, b: 0.7490196, a: 1}
   legendaryItemColor: {r: 0.9137255, g: 0.57254905, b: 0.14509805, a: 1}

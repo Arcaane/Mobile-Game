@@ -257,16 +257,17 @@ public class ScriptableItemDatabase : ScriptableObject
     
     public void Wish()
     {
-        if (CanWish) return;
+        if (!CanWish) return;
         
         var (item, gold) = Pull();
         
+        Debug.Log($"Event with {item} and {gold} gold");
         EventManager.Trigger(new WishEvent(item,gold));
-
-        if (item == null && gold == 0) return;
         
         StarCount -= wishCost;
-        item.ObtainFragment();
+        
+        if (gold > 0) GoldCount += gold;
+        if (item != null) item.ObtainFragment();
     }
     
     public void UnlockedAllItems()
