@@ -1,4 +1,5 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,11 +10,10 @@ public class Swipe : MonoBehaviour
     public float[] pos;
     public float dst;
     public bool isManually;
-    
     public Slider pointer;
-    private float[] pointerpos = { -145, -75, 0, 75, 145 };
 
-
+    public RectTransform[] icon;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -36,7 +36,7 @@ public class Swipe : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < pos.Length; i++)
+            for (var i = 0; i < pos.Length; i++)
             {
                 if (scrollPos < pos[i] + (dst/2) && scrollPos > pos[i] - (dst/2))
                 {
@@ -47,9 +47,22 @@ public class Swipe : MonoBehaviour
         }
     }
 
-    public void SwipeManually(float value) => StartCoroutine(SwipeTask(value));
+    public void SwipeManually(float value)
+    {
+        var i = 0;
+        switch (value)
+        {
+            case 0: i = 0; break;
+            case 0.25f: i = 1; break;
+            case 0.5f: i = 2; break;
+            case 0.75f: i = 3; break;
+            case 1f: i = 4; break;
+        }
+        
+        StartCoroutine(SwipeTask(value,i));
+    }
     
-    private IEnumerator SwipeTask(float value)
+    private IEnumerator SwipeTask(float value, int pannel)
     {
         isManually = true;
         scrollPos = value;
@@ -57,5 +70,15 @@ public class Swipe : MonoBehaviour
         isManually = false;
 
         pointer.value = value;
+        icon[pannel].transform.DOScale(1.25f, 0.125f);
+        icon[pannel].transform.DOLocalMoveY(10, 0.15f);
+
+        for (int i = 0; i < icon.Length; i++)
+        {
+            if (icon[i] == icon[pannel]) continue;
+           
+            icon[i].localPosition = Vector2.zero;
+            icon[i].localScale = Vector3.one;
+        }
     }
 }
