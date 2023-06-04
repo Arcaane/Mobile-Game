@@ -1442,7 +1442,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c9768c91900c3a4f8041d98926722b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuManager: {fileID: 0}
   sr: {fileID: 8632615052932101186}
   slots:
   - <ItemSlotImage>k__BackingField: {fileID: 8632615053654633578}
@@ -1482,8 +1481,6 @@ MonoBehaviour:
       type: 3}
     <EmptySprite>k__BackingField: {fileID: -725785206, guid: 601e4e00f7a6d7d439f8c1e420685bc6,
       type: 3}
-  lockSprite: {fileID: -1006129681, guid: 601e4e00f7a6d7d439f8c1e420685bc6, type: 3}
-  emptySprite: {fileID: -725785206, guid: 601e4e00f7a6d7d439f8c1e420685bc6, type: 3}
   items:
   - {fileID: 11400000, guid: 9ead3a32238448c419e732d1dcf9a722, type: 2}
   - {fileID: 11400000, guid: b85125d8a9f06c04ba813bdfb919c884, type: 2}
@@ -2693,7 +2690,7 @@ PrefabInstance:
     - target: {fileID: 813995927077119121, guid: c0163eb5488578941bdfe952f363b5fd,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 813995927162639902, guid: c0163eb5488578941bdfe952f363b5fd,
         type: 3}
