@@ -1,8 +1,13 @@
+using System;
 using Addressables;
-using Addressables.Components;
 using Attributes;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using static UnityEngine.AddressableAssets.Addressables;
+using Object = UnityEngine.Object;
 
 namespace Service
 {
@@ -10,89 +15,181 @@ namespace Service
     {
         [DependsOnService] private ISceneService sceneService;
         [DependsOnService] private IInputService inputService;
+        [DependsOnService] private ILevelService levelService;
+        [DependsOnService] private IMagicLineService magicLineService;
+        private ScriptableSettings settings;
+        private ScriptableItemDatabase itemDatabase;
 
+        private Transform levelParent;
+
+        private GameObject _dialogueManagerGo;
         private SorcererController sorcererController;
-        private MachineManager machineManager;
-        
-        private Product currentProduct; // TODO - multiple products (product slot class list)
-        
-        private Interactable currentInteractable;
+        private MagicLinesData magicLinesData;
+
+        private GameObject endGameCanvasGo;
+        private TextMeshProUGUI endGameText;
+        private TextMeshProUGUI endGameButtonText;
+        private Image endGameSorcererImage;
+        private Sprite[] _sorcererSprites;
+
+        private static event Action<int> OnLoadLevel;
+
+        public GameService(ScriptableSettings baseSettings)
+        {
+            settings = baseSettings;
+            settings.SetAsGlobalSettings();
+            itemDatabase = baseSettings.itemDB;
+            itemDatabase.GetProgress();
+        }
 
         [ServiceInit]
         public void InitGame()
         {
-            LoadAssets();
+            LoadEventSystem();
+            
+            LoadMenu();
+
+            LoadSorcererController();
+
+            OnLoadLevel = LoadLevelI;
+            
+            SetListeners();
         }
 
-        private void LoadAssets()
+        private void LoadSorcererController()
         {
-            AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("Cameras", LoadCameras);
-        }
-
-        private void LoadGame()
-        {
-            machineManager.InitMachines();
-
-            Interactable.ResetEvents();
-            Interactable.OnRangeEnter += OnInteractableEnter;
-            Interactable.OnRangeExit += OnInteractableExit;
-        }
-
-        private void LoadCameras(GameObject camerasGo)
-        {
-            var cameras = Object.Instantiate(camerasGo).GetComponent<CameraComponents>();
-            Release(camerasGo);
-
-            AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("JoystickCanvas", LoadJoystickCanvas);
-
-            void LoadJoystickCanvas(GameObject joystickCanvasGo)
+            AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("DialogueCanvas", LoadDialogueManager);
+            
+            void LoadDialogueManager(GameObject dialogueManagerGo)
             {
-                var joystickCanvas = Object.Instantiate(joystickCanvasGo).GetComponent<JoystickComponents>();
-                Release(joystickCanvasGo);
+                _dialogueManagerGo = Object.Instantiate(dialogueManagerGo);
+                DialogueManager.SetInstance(_dialogueManagerGo.GetComponent<DialogueManager>());
+                Release(dialogueManagerGo);
                 
                 AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("SorcererController", LoadSorcererController);
-
-                void LoadSorcererController(GameObject sorcererControllerGo)
-                {
-                    sorcererController = Object.Instantiate(sorcererControllerGo).GetComponent<SorcererController>();
-                    Release(sorcererControllerGo);
-
-                    sorcererController.perspCameraGo = cameras.perspCameraGo;
-                    sorcererController.perspCam = cameras.perspCamera;
-                    sorcererController.orthoCam = cameras.othoCamera;
-
-                    sorcererController.joystickParentGo = joystickCanvas.parentGo;
-                    sorcererController.joystickParentTr = joystickCanvas.parentTr;
-                    sorcererController.joystickTr = joystickCanvas.joystickTr;
-                    
-                    sorcererController.SetVariables();
-
-                    sorcererController.OnInteract += InteractWithInteractable;
-
-                    machineManager = Object.FindObjectOfType<MachineManager>(); // TODO - load it before, with the level layout
-                    
-                    LoadGame();
-                }
+            }
+            
+            void LoadSorcererController(GameObject sorcererControllerGo)
+            {
+                sorcererController = Object.Instantiate(sorcererControllerGo).GetComponent<SorcererController>();
+                magicLinesData = sorcererController.GetComponent<MagicLinesData>();
+                magicLineService.SetData(magicLinesData);
+                
+                endGameText = sorcererController.endGameText;
+                endGameCanvasGo = sorcererController.endGameCanvasGo;
+                endGameSorcererImage = sorcererController.endGameImage;
+                _sorcererSprites = sorcererController.endGameSorcererSprites;
+                endGameButtonText = sorcererController.endGameButtonText;
+                
+                sorcererController.endToGoMenuButton.onClick.AddListener(GoToMenu);
             }
         }
 
-        private void InteractWithInteractable()
+        private void LoadEventSystem()
         {
-            if(currentInteractable is null) return;
-            
-            Debug.Log($"Interacting, product is {currentProduct}");
-            currentInteractable.Interact(currentProduct,out currentProduct);
-            Debug.Log($"Interacted, product is now {currentProduct}");
+            AddressableHelper.LoadAssetAsyncWithCompletionHandler<GameObject>("EventSystem", DontDestroy);
+
+            void DontDestroy(GameObject go)
+            {
+                var obj = Object.Instantiate(go);
+                Object.DontDestroyOnLoad(obj);
+                Release(go);
+            }
         }
 
-        private void OnInteractableEnter(Interactable interactable)
+        private void LoadMenu()
         {
-            currentInteractable = interactable;
+            sceneService.LoadScene(1);
         }
         
-        private void OnInteractableExit(Interactable interactable)
+        public static void LoadLevel(int index)
         {
-            if (currentInteractable == interactable) currentInteractable = null;
+            OnLoadLevel?.Invoke(index);
+        }
+
+        private void LoadLevelI(int index)
+        {
+            endGameCanvasGo.SetActive(false);
+
+            inputService.Disable();
+            sceneService.LoadSceneAsync(index);
+        }
+
+        private void SetListeners()
+        {
+            EventManager.AddListener<LoadLevelEvent>(OnLevelLoaded);
+            EventManager.AddListener<EndLevelEvent>(ReturnToMenu);
+            EventManager.AddListener<EndLevelEvent>(UpdateScriptableLevelsOnLevelEnd);
+            EventManager.AddListener<EndLevelEvent>(UpdateEndGameText);
+            EventManager.AddListener<EndLevelEvent>(ObtainEndLevelRewards);
+            EventManager.AddListener<EndLevelEvent>(UnlockNextLevel);
+
+            itemDatabase.SetListeners();
+        }
+        
+        private void OnLevelLoaded(LoadLevelEvent loadLevelEvent)
+        {
+            levelService.InitLevel(loadLevelEvent.Level);
+        }
+
+        private void ReturnToMenu(EndLevelEvent endLevelEvent)
+        {
+            if(endLevelEvent.SaveScore) return;
+            sceneService.LoadScene(1);
+        }
+
+        private void UpdateEndGameText(EndLevelEvent endLevelEvent)
+        {
+            if(!endLevelEvent.SaveScore) return;
+            endGameText.text = endLevelEvent.Stars == 0 ? "lose :c" : "win :)";
+            endGameButtonText.text = endLevelEvent.Stars == 0 ? "Try Again" : "Next Level"; 
+            endGameSorcererImage.sprite = endLevelEvent.Stars == 0 ? _sorcererSprites[0] : _sorcererSprites[1];
+            sorcererController.endGameButton.onClick.AddListener(endLevelEvent.Stars == 0 ?  RetryLevel : NextLevel);
+            
+            endGameCanvasGo.SetActive(true);
+            
+            void NextLevel()
+            {
+                LoadLevelI(endLevelEvent.ScriptableLevel.NextLevelScene);
+            }
+            
+            void RetryLevel()
+            {
+                LoadLevelI(endLevelEvent.ScriptableLevel.LevelScene);
+            }
+        }
+
+        private void UnlockNextLevel(EndLevelEvent endLevelEvent)
+        {
+            if(!endLevelEvent.SaveScore) return;
+            itemDatabase.SetLevelUnlocked(endLevelEvent.ScriptableLevel.CurrentLevel+1);
+        }
+        
+        private void UpdateScriptableLevelsOnLevelEnd(EndLevelEvent endLevelEvent)
+        {
+            var level = endLevelEvent.Level;
+            if(!endLevelEvent.SaveScore) return;
+
+            var score = endLevelEvent.Score;
+            if (score < level.LevelScriptable.Score) score = level.LevelScriptable.Score;
+        
+            level.LevelScriptable.SetProgress(endLevelEvent.Stars,score);
+        }
+
+        private void ObtainEndLevelRewards(EndLevelEvent endLevelEvent)
+        {
+            var level = endLevelEvent.Level;
+            if(!level.LevelScriptable.IsLastLevelOfChapter) return;
+
+            var chapter = level.LevelScriptable.CurrentChapter;
+           
+            itemDatabase.AddChapterToGacha(chapter);
+        }
+
+        private void GoToMenu()
+        {
+            endGameCanvasGo.SetActive(false);
+            sceneService.LoadSceneAsync(1);
         }
     }
 }

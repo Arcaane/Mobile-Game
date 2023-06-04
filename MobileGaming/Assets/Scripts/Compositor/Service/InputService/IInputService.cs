@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Service
 {
-    public interface IInputService : IService
+    public interface IInputService : ISwitchableService
     {
         public PlayerControls controls { get; }
         public static Vector2 movement { get; }

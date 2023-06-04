@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a2b26b2722e46f48169929435a8a473, type: 3}
+  m_Name: ItemCollection_8_Turbo-Treasure_Item
+  m_EditorClassIdentifier: 
+  itemSprite: {fileID: 1370101951, guid: 99133acc876087a429806b8de1eebaed, type: 3}
+  emptySprite: {fileID: 0}
+  objectTitle: Turbo-Treasure
+  chapterNumber: Chapter 1
+  <Rarity>k__BackingField: 0
+  descriptionText: 'A rusty treasure, abandoned in the darkness of the sea. It seems...
+    alive ?
+
+    -Ashova Jelgayardt.'
+  powerUpText: '''+10% Score from clients satisfied 15 seconds or less after they
+    arrived.'
+  <ScriptableItemEffects>k__BackingField:
+  - {fileID: 11400000, guid: 31a88a2548ba9a648a261ebcdf209180, type: 2}
+  fragmentsSprites:
+  - {fileID: 1581645870, guid: 99133acc876087a429806b8de1eebaed, type: 3}
+  - {fileID: 1746759449, guid: 99133acc876087a429806b8de1eebaed, type: 3}
+  - {fileID: 525476034, guid: 99133acc876087a429806b8de1eebaed, type: 3}
+  <FragmentCount>k__BackingField: 9
+  isEquiped: 0
