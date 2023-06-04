@@ -78,6 +78,8 @@ public class ScriptableItemDatabase : ScriptableObject
         EventManager.AddListener<EquipItemEvent>(AddEquippedItemEffects);
         EventManager.AddListener<UnequipItemEvent>(RemoveUnequippedItemEffects);
         EventManager.AddListener<ResetPlayerPrefsEvent>(GetProgress);
+
+        CollectionLevel = 2;
         
         void IncreaseTotalStars(GainStarEvent gainStarEvent)
         {
