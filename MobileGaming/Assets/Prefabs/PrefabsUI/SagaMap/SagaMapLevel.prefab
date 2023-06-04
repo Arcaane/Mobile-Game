@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 8672305166085153583}
   - component: {fileID: 8672305166085153570}
   - component: {fileID: 8672305166085153581}
+  - component: {fileID: 2416029223442973947}
   m_Layer: 5
   m_Name: SagaMapLevel
   m_TagString: Untagged
@@ -287,6 +288,21 @@ MonoBehaviour:
   - {fileID: 8672305166683811008}
   - {fileID: 8672305166882999001}
   - {fileID: 8672305165712536210}
+--- !u!114 &2416029223442973947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8672305166085153577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b8c49ce5fee07f4f9af931fee086f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAnimPlayed: 0
+  anchor: {fileID: 0}
+  myCamera: {fileID: 0}
 --- !u!1001 &6676539699081076166
 PrefabInstance:
   m_ObjectHideFlags: 0

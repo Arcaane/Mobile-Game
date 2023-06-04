@@ -1,9 +1,12 @@
 using System;
+using System.Collections;
+using System.Diagnostics;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 public class UIManager : MonoBehaviour
 {
@@ -30,6 +33,7 @@ public class UIManager : MonoBehaviour
     private Slider scoreSlider;
     private TextMeshProUGUI timerText;
 
+    Vector3Int scorePalier;
     private void Start()
     {
         sorcererController = GetComponent<SorcererController>();
@@ -62,6 +66,7 @@ public class UIManager : MonoBehaviour
             HideHud();
         }
 
+        
         void HideHudOnLevelInit(LoadLevelEvent loadLevelEvent)
         {
             darkmodeCanvas.worldCamera = loadLevelEvent.Level.Camera;
@@ -69,15 +74,17 @@ public class UIManager : MonoBehaviour
             hudCanvas.worldCamera = loadLevelEvent.Level.Camera;
             hudCanvas.planeDistance = 2f;
             levelText.text = $"Level {loadLevelEvent.Level.LevelScriptable.CurrentLevel}";
-            
+
             for (int i = 0; i < starsHolder.Length; i++)
             {
                 starsHolder[i].sprite = starEmpty;
+                starsHolder[i].transform.DOLocalRotate(new Vector3(0, 0, 0), 0.01f);
+                starsHolder[i].transform.DOScale(1, 0.1f); 
             }
             
             HideHud();
         }
-
+        
         void PlaceStars(LoadLevelEvent loadLevelEvent)
         {
             var scriptable = loadLevelEvent.Level.LevelScriptable;
@@ -87,15 +94,15 @@ public class UIManager : MonoBehaviour
 
             var refWidth = starReferenceTr.sizeDelta.x;
             
-            starsHolder[0].rectTransform.localPosition = new Vector3(refWidth*((float)palier1/palier3),0,0);
-            starsHolder[1].rectTransform.localPosition = new Vector3(refWidth*((float)palier2/palier3),0,0);
-            starsHolder[2].rectTransform.localPosition = new Vector3(refWidth,0,0);
+            starsHolder[0].rectTransform.localPosition = new Vector3(refWidth*((float)palier1/palier3),starReferenceTr.anchoredPosition.y,0);
+            starsHolder[1].rectTransform.localPosition = new Vector3(refWidth*((float)palier2/palier3),starReferenceTr.anchoredPosition.y,0);
+            starsHolder[2].rectTransform.localPosition = new Vector3(refWidth,starReferenceTr.anchoredPosition.y,0);
         }
         
         void UpdateScore(LevelScoreUpdatedEvent scoreUpdatedEvent)
         {
             scoreSlider.value = ((float)scoreUpdatedEvent.Score) / scoreUpdatedEvent.Palier3;
-
+            
             if(scoreUpdatedEvent.Score >= scoreUpdatedEvent.Palier1) UpdateStarUI(0);
             if(scoreUpdatedEvent.Score >= scoreUpdatedEvent.Palier2) UpdateStarUI(1);
             if(scoreUpdatedEvent.Score >= scoreUpdatedEvent.Palier3) UpdateStarUI(2);
@@ -109,6 +116,7 @@ public class UIManager : MonoBehaviour
                 {
                     starsHolder[i].transform.DOScale(1.15f, 0.25f);
                 });
+                starsHolder[i].transform.DOLocalRotate(new Vector3(0, 180, 0), 0.255f).SetDelay(0.25f);
             }
         }
 
