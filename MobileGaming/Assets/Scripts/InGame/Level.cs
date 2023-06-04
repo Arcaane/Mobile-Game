@@ -17,12 +17,10 @@ public class Level : MonoBehaviour
     [field:Header("Components")]
     [field:SerializeField] public LevelStartPannel StartPanel { get; private set; }
     [field:SerializeField] public Camera Camera { get; private set; }
-    
-    [HideInInspector,SerializeField] public float levelDuration;
-
-    [HideInInspector,SerializeField] public int scoreToWin;
-    [HideInInspector,SerializeField] public int palier2;
-    [HideInInspector,SerializeField] public int palier3;
+    public float levelDuration => LevelScriptable.LevelDuration;
+    public int scoreToWin => LevelScriptable.ScoreToWin;
+    public int palier2 => LevelScriptable.Palier2;
+    public int palier3 => LevelScriptable.Palier3;
     
 
     public List<ClientTiming> clientTimings = new ();
@@ -78,8 +76,9 @@ public class Level : MonoBehaviour
             
             EditorGUILayout.LabelField("Level Settings",EditorStyles.boldLabel);
 
-            level.levelDuration = EditorGUILayout.FloatField("Level Duration", level.levelDuration);
+            //level.levelDuration = EditorGUILayout.FloatField("Level Duration", level.levelDuration);
             
+            /*
             level.scoreToWin = EditorGUILayout.IntField("Score to Win", level.scoreToWin);
 
             EditorGUILayout.BeginHorizontal();
@@ -88,6 +87,7 @@ public class Level : MonoBehaviour
             level.palier2 = EditorGUILayout.IntField(level.palier2);
             level.palier3 = EditorGUILayout.IntField(level.palier3);
             EditorGUILayout.EndHorizontal();
+            */
 
             clientTimingCount = EditorGUILayout.IntField("Client Count", level.clientTimings.Count);
 

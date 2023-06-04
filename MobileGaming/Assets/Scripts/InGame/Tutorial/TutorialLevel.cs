@@ -20,7 +20,6 @@ public class TutorialLevel : Level
     {
         Debug.Log("Starting tutorial");
         
-        levelDuration = 2f;
         tutorialLine.positionCount = 0;
         
         sequenceQueue.Clear();

@@ -66,7 +66,7 @@ public class LevelSelectionContentHolder : MonoBehaviour
         
         if(levelTitleText != null) levelTitleText.text = scriptableLevelInSagaMap.title;
         currentLevelText.text = $"Level: {scriptableLevelInSagaMap.CurrentLevel}";
-        levelObjective.text = $"Objective: {scriptableLevelInSagaMap.levelObjective}";
+        levelObjective.text = $"Objective: {scriptableLevelInSagaMap.ScoreToWin}";
         //sectionBackground.sprite = _scriptableObject.levelSelectionBackground;
         
         // TODO - Voir pour les stars

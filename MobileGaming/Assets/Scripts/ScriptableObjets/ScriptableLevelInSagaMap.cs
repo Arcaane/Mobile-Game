@@ -8,13 +8,20 @@ public class ScriptableLevelInSagaMap : ScriptableObject
     public string title = $"Level title";
     [field: SerializeField] public int CurrentChapter { get; private set; }
     [field: SerializeField] public int CurrentLevel { get; private set; }
+    
+    [field: SerializeField] public float LevelDuration { get; private set; }
+    [field: SerializeField] public int ScoreToWin { get; private set; }
+    [field: SerializeField] public int Palier2 { get; private set; }
+    [field: SerializeField] public int Palier3 { get; private set; }
+    
     [field: SerializeField] public bool IsLastLevelOfChapter { get; private set; }
     [field: SerializeField] public bool Fake { get; private set; }
+    
+    [field:Header("Navigation")]
     [field: SerializeField,Scene] public int LevelScene { get; private set; }
     [field: SerializeField,Scene] public int NextLevelScene { get; private set; }
-    
+
     [Space(5)] [Header("Level Selection Section")]
-    public int levelObjective;
     public int gearCountPlayerCanEquip;
     //[ShowAssetPreview] public Sprite levelSelectionBackground;
 
