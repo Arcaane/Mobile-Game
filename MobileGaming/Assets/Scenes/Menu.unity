@@ -27438,7 +27438,7 @@ PrefabInstance:
     - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
         type: 3}
@@ -27447,9 +27447,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1655729274983063505}
+    - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1655729274983063507}
+      objectReference: {fileID: 0}
     - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -27457,8 +27462,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Buy
+      objectReference: {fileID: 0}
+    - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: SendToPurchase
+      objectReference: {fileID: 0}
+    - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BuyBundle, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3572479769415364137, guid: c6cb6c88f2d693240a67ccded678f406,
         type: 3}
@@ -27482,30 +27497,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6cb6c88f2d693240a67ccded678f406, type: 3}
---- !u!1 &1655729274983063505 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3572479769415364143, guid: c6cb6c88f2d693240a67ccded678f406,
+--- !u!114 &1655729274983063505 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2945471025394915825, guid: c6cb6c88f2d693240a67ccded678f406,
     type: 3}
   m_PrefabInstance: {fileID: 1655729274983063504}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1655729274983063507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1655729274983063505}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e335dd8d606be5b4b89c2f061eaa3d1f, type: 3}
+  m_Script: {fileID: 11500000, guid: 25cc936dab644b342bd36a62ae9fa08f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shopManager: {fileID: 0}
-  itemPrice: 0
-  purchasingCurrency: 2
-  currencyQuantity: 30000
-  currencyType: 0
-  currencySprite: {fileID: 0}
 --- !u!1 &1663160796476381181
 GameObject:
   m_ObjectHideFlags: 0
@@ -43250,7 +43253,12 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4470548523109662676, guid: ab04acfad13ab824ea5f7a34acdbaa4a, type: 3}
+    - {fileID: 4971450327876581418, guid: ab04acfad13ab824ea5f7a34acdbaa4a, type: 3}
+    - {fileID: 7331890278874876333, guid: ab04acfad13ab824ea5f7a34acdbaa4a, type: 3}
+    - {fileID: 8123954281349626086, guid: ab04acfad13ab824ea5f7a34acdbaa4a, type: 3}
+    - {fileID: 6409780156368101369, guid: ab04acfad13ab824ea5f7a34acdbaa4a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ab04acfad13ab824ea5f7a34acdbaa4a, type: 3}
 --- !u!222 &8737647047231180324
 CanvasRenderer:

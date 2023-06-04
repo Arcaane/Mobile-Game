@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -24,12 +25,18 @@ public class AnimPannel : MonoBehaviour
         
         if (isFullyVisible)
         {
-            transform.DOScale(1.3f, 0.35f).SetDelay(0.1f).SetEase(Ease.OutBack).OnComplete(() =>
+            transform.DOScale(1.15f, 0.35f).SetDelay(0.1f).SetEase(Ease.OutBack).OnComplete(() =>
             {
-                transform.DOScale(1.17f, 0.185f);
+                transform.DOScale(1, 0.185f);
             });
 
             isAnimPlayed = true;
         }
+    }
+
+    private void OnDisable()
+    {
+        isAnimPlayed = false;
+        transform.DOScale(0, 0.01f);
     }
 }
