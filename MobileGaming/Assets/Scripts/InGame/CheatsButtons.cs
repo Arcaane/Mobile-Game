@@ -27,6 +27,7 @@ public class CheatsButtons : MonoBehaviour
     [SerializeField] private Button unlockSlot1Button;
     [SerializeField] private Button unlockSlot2Button;
     [SerializeField] private Button unlockSlot3Button;
+    [SerializeField] private Toggle toggleLineCollision;
     
     private ResetPlayerPrefsEvent resetPlayerPrefsEvent = new ();
     private ResetLevelsEvent resetLevelsEvent = new ();
@@ -57,6 +58,9 @@ public class CheatsButtons : MonoBehaviour
         
         getAllItemButton.onClick.AddListener(itemDb.UnlockedAllItems);
         resetAllItemsButton.onClick.AddListener(itemDb.LockAllItems);
+
+        toggleLineCollision.isOn = Link.disableCollision;
+        toggleLineCollision.onValueChanged.AddListener(ToggleLineCollision);
 
         void OpenPanel()
         {
@@ -91,6 +95,11 @@ public class CheatsButtons : MonoBehaviour
         {
             ScriptableItemDatabase.CollectionLevel = i;
             itemDb.ResetEquippedItems();
+        }
+
+        void ToggleLineCollision(bool value)
+        {
+            Link.disableCollision = value;
         }
     }
 }
