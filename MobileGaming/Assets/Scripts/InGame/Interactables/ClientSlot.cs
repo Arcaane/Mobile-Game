@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -81,10 +82,7 @@ public class ClientSlot : MonoBehaviour, ILinkable
             return;
         }
         
-        clientGraphsHandler[
-                (int) Enum.Parse(data.scriptableClient.clientType.GetType(),
-                    data.scriptableClient.clientType.ToString())]
-            .SetActive(true);
+        clientGraphsHandler[Random.Range(0, clientGraphsHandler.Length)].SetActive(true);
     }
 
     private void UpdateFeedbackImage()
@@ -386,5 +384,6 @@ public struct ClientData
 public enum ClientLook
 {
     Frog,
-    Peasant
+    Peasant,
+    Knight
 }

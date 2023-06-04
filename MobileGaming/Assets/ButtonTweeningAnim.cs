@@ -20,7 +20,7 @@ public class ButtonTweeningAnim : MonoBehaviour
         transform.DOScale(0, 0.1f);
     }
 
-    private void Update()
+    private void Update() 
     {
         if (isAnimPlayed) return; 
         isFullyVisible = anchor.IsFullyVisibleFrom();

@@ -96,6 +96,7 @@ MonoBehaviour:
   clientGraphsHandler:
   - {fileID: 4550204102842884337}
   - {fileID: 8590630388810331988}
+  - {fileID: 7227904560720410647}
   emotesFeedback:
   - {fileID: 645445225752494644}
   - {fileID: 6391475410622094078}
@@ -5482,6 +5483,7 @@ Transform:
   m_Children:
   - {fileID: 3778029888247298635}
   - {fileID: 8967753718007557614}
+  - {fileID: 7999936977855718061}
   m_Father: {fileID: 1764974688692401907}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
@@ -15949,6 +15951,92 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3071801974986848444, guid: c55af812b6f66ca469ad2ebbfd97a602,
     type: 3}
   m_PrefabInstance: {fileID: 6467588392761607647}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6993428103387039263
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 4697322052542210046}
+    m_Modifications:
+    - target: {fileID: 379156867688185352, guid: b4a547e13191322489ff7bde71576fbb,
+        type: 3}
+      propertyPath: m_Name
+      value: P_Knight
+      objectReference: {fileID: 0}
+    - target: {fileID: 379156867688185352, guid: b4a547e13191322489ff7bde71576fbb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1011297281967940786, guid: b4a547e13191322489ff7bde71576fbb,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1011297281967940786, guid: b4a547e13191322489ff7bde71576fbb,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1011297281967940786, guid: b4a547e13191322489ff7bde71576fbb,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1011297281967940786, guid: b4a547e13191322489ff7bde71576fbb,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1011297281967940786, guid: b4a547e13191322489ff7bde71576fbb,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1011297281967940786, guid: b4a547e13191322489ff7bde71576fbb,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1011297281967940786, guid: b4a547e13191322489ff7bde71576fbb,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1011297281967940786, guid: b4a547e13191322489ff7bde71576fbb,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1011297281967940786, guid: b4a547e13191322489ff7bde71576fbb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1011297281967940786, guid: b4a547e13191322489ff7bde71576fbb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1011297281967940786, guid: b4a547e13191322489ff7bde71576fbb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b4a547e13191322489ff7bde71576fbb, type: 3}
+--- !u!1 &7227904560720410647 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 379156867688185352, guid: b4a547e13191322489ff7bde71576fbb,
+    type: 3}
+  m_PrefabInstance: {fileID: 6993428103387039263}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7999936977855718061 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1011297281967940786, guid: b4a547e13191322489ff7bde71576fbb,
+    type: 3}
+  m_PrefabInstance: {fileID: 6993428103387039263}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7705363134900939469
 PrefabInstance:
