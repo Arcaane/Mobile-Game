@@ -35,6 +35,14 @@ public class WishManager : MonoBehaviour
         Debug.Log("Wish");
         itemDatabase.Wish();
         wishButton.interactable = false;
+
+        StartCoroutine(WaitAnimationRoutine());
+    }
+
+    private IEnumerator WaitAnimationRoutine()
+    {
+        yield return new WaitForSeconds((float)timeline.duration*1f/2f);
+        wishButton.interactable = itemDatabase.CanWish;
     }
 
     private void PlayWishAnimation(WishEvent wishEvent)
