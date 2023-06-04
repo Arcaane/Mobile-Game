@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
+    [SerializeField] private ScriptableItemDatabase itemDatabase;
+    
     [Header("Confirm Buy Section")] 
     [SerializeField] private MainMenuManager MenuManager;
     [SerializeField] private GameObject go;
@@ -31,15 +33,15 @@ public class ShopManager : MonoBehaviour
     {
         switch (currencyToTake)
         {
-            case HowIPay.gold: MenuManager.SubtractGold((int)lastPrice); break;
-            case HowIPay.stars: MenuManager.SubtractStar((int)lastPrice); break;
+            case HowIPay.gold: itemDatabase.GoldCount -= (int)lastPrice; break;
+            case HowIPay.stars: itemDatabase.StarCount -= (int)lastPrice; break;
             case HowIPay.money: Debug.Log($"Player stend {lastPrice}€"); break;
         }
         
         switch (currencyToGive)
         {
-            case CurrencyOwnByPlayer.gold: MenuManager.AddGold(quantity); break;
-            case CurrencyOwnByPlayer.stars: MenuManager.AddStar(quantity); break;
+            case CurrencyOwnByPlayer.gold: itemDatabase.GoldCount += (int)quantity; break;
+            case CurrencyOwnByPlayer.stars: itemDatabase.StarCount += (int)quantity; break;
         }
     }
 }

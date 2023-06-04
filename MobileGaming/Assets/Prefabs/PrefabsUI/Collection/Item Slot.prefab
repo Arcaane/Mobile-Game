@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 4082608018545656447}
   - component: {fileID: 4082608018545656445}
   - component: {fileID: 4082608018545656444}
+  - component: {fileID: 8847711866379189729}
   m_Layer: 5
   m_Name: Item Slot
   m_TagString: Untagged
@@ -171,7 +172,6 @@ MonoBehaviour:
   button: {fileID: 4082608018545656444}
   fragmentProgressText: {fileID: 7738112850974073801}
   thisScriptable: {fileID: 11400000, guid: b85125d8a9f06c04ba813bdfb919c884, type: 2}
-  _holder: {fileID: 0}
   fragmentImage: {fileID: 3772967159153878902}
   isUnlocked: 0
 --- !u!114 &4082608018545656444
@@ -218,6 +218,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8847711866379189729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4082608018545656441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b8c49ce5fee07f4f9af931fee086f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAnimPlayed: 0
+  anchor: {fileID: 0}
+  myCamera: {fileID: 0}
 --- !u!1 &5048878760744922712
 GameObject:
   m_ObjectHideFlags: 0
