@@ -11,6 +11,7 @@ public class ShowCollectionItemHolder : MonoBehaviour
     public TextMeshProUGUI descriptionText;
     public TextMeshProUGUI chapterText;
     public TextMeshProUGUI raretyText;
+    [SerializeField] private TextMeshProUGUI effectText;
     public GameObject[] GO;
     public GameObject equipItemPart;
     
@@ -65,6 +66,7 @@ public class ShowCollectionItemHolder : MonoBehaviour
             ItemRarity.Legendary => "Legendary",
             _ => raretyText.text
         };
+        effectText.text = itemScriptable.powerUpText;
 
         foreach (var t in GO)
         {

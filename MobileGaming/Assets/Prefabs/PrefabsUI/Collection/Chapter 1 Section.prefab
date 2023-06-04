@@ -262,7 +262,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Tutorial
+  m_text: Chapter 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9cb9cb4cb834e9942aff13f4bf200860, type: 2}
   m_sharedMaterial: {fileID: -1116754523508372850, guid: 9cb9cb4cb834e9942aff13f4bf200860,
@@ -524,19 +524,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slot 2
       objectReference: {fileID: 0}
-    - target: {fileID: 4082608018545656441, guid: 1d45f203747509746b2679d672f0fbe8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4082608018545656445, guid: 1d45f203747509746b2679d672f0fbe8,
         type: 3}
       propertyPath: thisScriptable
       value: 
-      objectReference: {fileID: 11400000, guid: 2ec5bc00ba31bfd4bbe6e3c31b790bea,
+      objectReference: {fileID: 11400000, guid: bfacfdce87f43744f96bc32ac415c2fd,
         type: 2}
-    m_RemovedComponents:
-    - {fileID: 8847711866379189729, guid: 1d45f203747509746b2679d672f0fbe8, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d45f203747509746b2679d672f0fbe8, type: 3}
 --- !u!224 &4293340313944483196 stripped
 RectTransform:
@@ -661,19 +655,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slot 3
       objectReference: {fileID: 0}
-    - target: {fileID: 4082608018545656441, guid: 1d45f203747509746b2679d672f0fbe8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4082608018545656445, guid: 1d45f203747509746b2679d672f0fbe8,
         type: 3}
       propertyPath: thisScriptable
       value: 
-      objectReference: {fileID: 11400000, guid: 8b00065b462b38f42b27fcb3f0e11902,
+      objectReference: {fileID: 11400000, guid: f16121b789dd4c549865b2a4b32de2d2,
         type: 2}
-    m_RemovedComponents:
-    - {fileID: 8847711866379189729, guid: 1d45f203747509746b2679d672f0fbe8, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d45f203747509746b2679d672f0fbe8, type: 3}
 --- !u!224 &2229717024479715170 stripped
 RectTransform:
@@ -802,7 +790,7 @@ PrefabInstance:
         type: 3}
       propertyPath: thisScriptable
       value: 
-      objectReference: {fileID: 11400000, guid: e9ffc089fa6540c489d4fb571d1f3ba8,
+      objectReference: {fileID: 11400000, guid: b85125d8a9f06c04ba813bdfb919c884,
         type: 2}
     - target: {fileID: 4082608018545656447, guid: 1d45f203747509746b2679d672f0fbe8,
         type: 3}
@@ -810,8 +798,7 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -46171299, guid: a5f6c16a57872c049b372d9e97b20f7f,
         type: 3}
-    m_RemovedComponents:
-    - {fileID: 8847711866379189729, guid: 1d45f203747509746b2679d672f0fbe8, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d45f203747509746b2679d672f0fbe8, type: 3}
 --- !u!224 &6876205036507637153 stripped
 RectTransform:
