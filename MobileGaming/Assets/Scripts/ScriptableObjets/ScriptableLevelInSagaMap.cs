@@ -20,6 +20,7 @@ public class ScriptableLevelInSagaMap : ScriptableObject
     [field:Header("Navigation")]
     [field: SerializeField,Scene] public int LevelScene { get; private set; }
     [field: SerializeField,Scene] public int NextLevelScene { get; private set; }
+    [field: SerializeField] public Vector3 autoscrollPosition { get; private set; }
 
     [Space(5)] [Header("Level Selection Section")]
     public int gearCountPlayerCanEquip;
