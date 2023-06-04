@@ -57,7 +57,6 @@ public class LevelSelectionContentHolder : MonoBehaviour
     {
         panelGo.SetActive(true);
         scriptableLevelInSagaMap = openLevelSagaMapEvent.ScriptableLevelInSagaMap;
-        //Debug.Log($"Building ui for {scriptableLevelInSagaMap}, going to {scriptableLevelInSagaMap.LevelScene}");
         if (scriptableLevelInSagaMap == null)
         {
             panelGo.SetActive(false);
@@ -67,17 +66,12 @@ public class LevelSelectionContentHolder : MonoBehaviour
         if(levelTitleText != null) levelTitleText.text = scriptableLevelInSagaMap.title;
         currentLevelText.text = $"Level: {scriptableLevelInSagaMap.CurrentLevel}";
         levelObjective.text = $"Objective: {scriptableLevelInSagaMap.ScoreToWin}";
-        //sectionBackground.sprite = _scriptableObject.levelSelectionBackground;
+        sectionBackground.sprite = scriptableLevelInSagaMap.levelSelectionBackground;
         
         // TODO - Voir pour les stars
-        // TODO - Voir pour le gear
-        // TODO - Partie Social Player
-
-        for (int i = 1; i < scriptableLevelInSagaMap.socialInfos.Length; i++)
+        for (int i = 0; i < starsImage.Length; i++)
         {
-            socialHolder[i].image.sprite = scriptableLevelInSagaMap.socialInfos[i].image;
-            socialHolder[i].name.text = scriptableLevelInSagaMap.socialInfos[i].name;
-            socialHolder[i].score.text = $"Score: {scriptableLevelInSagaMap.socialInfos[i].score}";
+            starsImage[i].gameObject.SetActive(i < openLevelSagaMapEvent.ScriptableLevelInSagaMap.Stars);
         }
     }
 }
