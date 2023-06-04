@@ -1,9 +1,12 @@
 using System;
+using System.Collections;
+using System.Diagnostics;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 public class UIManager : MonoBehaviour
 {
@@ -27,6 +30,7 @@ public class UIManager : MonoBehaviour
     private Slider scoreSlider;
     private TextMeshProUGUI timerText;
 
+    Vector3Int scorePalier;
     private void Start()
     {
         sorcererController = GetComponent<SorcererController>();
@@ -58,6 +62,7 @@ public class UIManager : MonoBehaviour
             HideHud();
         }
 
+        
         void HideHudOnLevelInit(LoadLevelEvent loadLevelEvent)
         {
             darkmodeCanvas.worldCamera = loadLevelEvent.Level.Camera;
@@ -66,18 +71,71 @@ public class UIManager : MonoBehaviour
             hudCanvas.planeDistance = 2f;
             levelText.text = $"Level {loadLevelEvent.Level.LevelScriptable.CurrentLevel}";
             
-            for (int i = 0; i < starsHolder.Length; i++)
+            PlaceStarsOnHUD();
+            
+            void PlaceStarsOnHUD()
             {
-                starsHolder[i].sprite = starEmpty;
+                var palier1 = loadLevelEvent.Level.scoreToWin;
+                var palier2 = loadLevelEvent.Level.palier2;
+                var palier3 = loadLevelEvent.Level.palier3;
+
+                scorePalier = new Vector3Int(palier1, palier2, palier3);
+                Debug.Log($"{palier1} / {palier2} / {palier3}");
+                
+                for (int i = 0; i < starsHolder.Length; i++)
+                {
+                    var rectPos = starsHolder[i].GetComponent<RectTransform>().anchoredPosition;
+                    var posX = 0f;
+                    
+                    switch (i)
+                    {
+                        case 0: posX =
+                                Mathf.Lerp(-88.9f, 88.9f, scorePalier.x / scorePalier.z);
+                            Debug.Log("Palier 1 " + posX);
+                            break;
+                        
+                        case 1: posX = 
+                            Mathf.Lerp(-88.9f, 88.9f, scorePalier.y / scorePalier.z); 
+                            Debug.Log("Palier 2 " + posX);
+                            break;
+                        
+                        case 2: posX = 
+                            Mathf.Lerp(-88.9f, 88.9f, scorePalier.z / scorePalier.z); 
+                            Debug.Log("Palier 3 " + posX);
+                            break;
+                    }
+                    
+                    rectPos = new Vector2(posX, rectPos.y);
+                    
+                    starsHolder[i].sprite = starEmpty;
+                    starsHolder[i].transform.DOLocalRotate(new Vector3(0, 0, 0), 0.01f);
+                    starsHolder[i].transform.DOScale(1, 0.1f);
+                }
             }
             
             HideHud();
         }
-        
+
+       
         void UpdateScore(LevelScoreUpdatedEvent scoreUpdatedEvent)
         {
             scoreSlider.value = ((float)scoreUpdatedEvent.Score) / scoreUpdatedEvent.Palier3;
 
+            if (scoreUpdatedEvent.Score > scorePalier.x)
+            {
+                Debug.Log("Palier 1 atteints");
+            }
+            
+            if (scoreUpdatedEvent.Score > scorePalier.y)
+            {
+                Debug.Log("Palier 2 atteints");
+            }
+            
+            if (scoreUpdatedEvent.Score > scoreUpdatedEvent.Palier3)
+            {
+                Debug.Log("Palier 3 atteints");
+            }
+            
             if (scoreSlider.value > 0.99f)
             {
                 UpdateStarUI(2);
@@ -102,6 +160,7 @@ public class UIManager : MonoBehaviour
                 {
                     starsHolder[i].transform.DOScale(1.15f, 0.25f);
                 });
+                starsHolder[i].transform.DOLocalRotate(new Vector3(0, 180, 0), 0.255f).SetDelay(0.25f);
             }
         }
 
