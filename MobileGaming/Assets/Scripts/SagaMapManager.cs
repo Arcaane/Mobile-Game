@@ -30,7 +30,6 @@ public class SagaMapManager : MonoBehaviour
 
     private void UpdateLevels(UpdateLevelsEvent _)
     {
-        Debug.Log("Updating Levels");
         GetProgress();
     }
 

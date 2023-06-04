@@ -70,7 +70,6 @@ public class CheatsButtons : MonoBehaviour
 
         void UnlockAllLevels()
         {
-            Debug.Log("Unlocking all levels");
             itemDb.SetLevelUnlocked(22);
             EventManager.Trigger(new UpdateLevelsEvent());
         }

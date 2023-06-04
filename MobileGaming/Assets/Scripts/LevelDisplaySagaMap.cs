@@ -26,8 +26,13 @@ public class LevelDisplaySagaMap : MonoBehaviour
         {
             button.interactable = false;
             return;
+        }
+
+        if (LevelScriptable.Fake)
+        {
+            button.interactable = false;
+            return;
         } 
-        if (LevelScriptable.Fake) return; 
         
         levelText.text = $"{LevelScriptable.CurrentLevel}";
         
@@ -43,8 +48,12 @@ public class LevelDisplaySagaMap : MonoBehaviour
         {
             go.SetActive(value);
         }
-        
-        if (LevelScriptable == null) return; 
+
+        if (LevelScriptable == null)
+        {
+            button.interactable = false;
+            return;
+        }
         LevelScriptable.UnlockLevel(value);
         LevelScriptable.GetProgress();
         if(LevelScriptable.Fake) button.interactable = false;
