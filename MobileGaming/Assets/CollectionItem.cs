@@ -15,6 +15,7 @@ public class CollectionItem : ScriptableObject
     [field: SerializeField] public List<Sprite> fragmentsSprites = new List<Sprite>();
     [field: SerializeField] public int FragmentCount { get; private set; }
     public int ObtainedFragment { get; private set; }
+    public bool Completed =>  ObtainedFragment >= FragmentCount;
     
     [ContextMenu("Reset Progress")]
     public void InitProgress()

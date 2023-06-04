@@ -35,6 +35,8 @@ public class OpenCollectionItem : MonoBehaviour
             image.sprite = sprite;
             fragmentsGo.Add(image.gameObject);
         }
+        
+        UpdateShown();
     }
     
     private void OnEnable()
@@ -50,7 +52,12 @@ public class OpenCollectionItem : MonoBehaviour
     private void UpdateShownFragments(ObtainFragmentEvent obtainFragmentEvent)
     {
         if(obtainFragmentEvent.Item != thisScriptable) return;
-        SetUnlock(obtainFragmentEvent.Completed);
+       UpdateShown();
+    }
+
+    private void UpdateShown()
+    {
+        SetUnlock(thisScriptable.Completed);
         
         var sprites = fragmentsGo.Count;
         float current = thisScriptable.ObtainedFragment;
