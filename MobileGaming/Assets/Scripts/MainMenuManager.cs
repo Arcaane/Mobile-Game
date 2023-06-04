@@ -52,6 +52,7 @@ public class MainMenuManager : MonoBehaviour
     
     public void ToggleSettings()
     {
+        return;
         isInSettingsMenu = !isInSettingsMenu;
         settingsMenu.SetActive(isInSettingsMenu);
     }
