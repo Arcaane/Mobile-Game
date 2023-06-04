@@ -15,7 +15,6 @@ public class AnimPannel : MonoBehaviour
         isAnimPlayed = false;
         anchor = GetComponent<RectTransform>();
         myCamera = Camera.main;
-        transform.DOScale(0, 0.1f);
     }
 
     private void Update()
@@ -25,9 +24,9 @@ public class AnimPannel : MonoBehaviour
         
         if (isFullyVisible)
         {
-            transform.DOScale(1.25f, 0.15f).SetDelay(0.1f).SetEase(Ease.OutBack).OnComplete(() =>
+            transform.DOScale(1.3f, 0.35f).SetDelay(0.1f).SetEase(Ease.OutBack).OnComplete(() =>
             {
-                transform.DOScale(1f, 0.1f);
+                transform.DOScale(1.17f, 0.185f);
             });
 
             isAnimPlayed = true;

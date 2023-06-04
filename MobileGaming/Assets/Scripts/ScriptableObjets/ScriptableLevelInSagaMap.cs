@@ -24,7 +24,7 @@ public class ScriptableLevelInSagaMap : ScriptableObject
 
     [Space(5)] [Header("Level Selection Section")]
     public int gearCountPlayerCanEquip;
-    //[ShowAssetPreview] public Sprite levelSelectionBackground;
+    [ShowAssetPreview] public Sprite levelSelectionBackground;
 
     // Social
     public SocialInfo[] socialInfos;
