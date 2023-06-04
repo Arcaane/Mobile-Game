@@ -32,6 +32,7 @@ public class WishManager : MonoBehaviour
     {
         EventManager.AddListener<WishEvent>(PlayWishAnimation);
 
+        Debug.Log("Wish");
         itemDatabase.Wish();
         wishButton.interactable = false;
     }
