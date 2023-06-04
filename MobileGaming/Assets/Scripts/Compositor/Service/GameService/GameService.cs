@@ -151,7 +151,13 @@ namespace Service
             
             void NextLevel()
             {
-                LoadLevelI(endLevelEvent.ScriptableLevel.NextLevelScene);
+                var sceneIndex = endLevelEvent.ScriptableLevel.NextLevelScene;
+                if (sceneIndex == 1)
+                {
+                    sceneService.LoadScene(1);
+                    return;
+                }
+                LoadLevelI(sceneIndex);
             }
             
             void RetryLevel()
