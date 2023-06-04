@@ -43,6 +43,19 @@ public class ScriptableLevelInSagaMap : ScriptableObject
         Stars = PlayerPrefs.GetInt($"{name}_Stars");
     }
 
+    public void ResetProgress()
+    {
+        Stars = 0;
+        PlayerPrefs.SetInt($"{name}_Stars",Stars);
+        PlayerPrefs.Save();
+        
+        Score = 0;
+        PlayerPrefs.SetInt($"{name}_Score",Score);
+        PlayerPrefs.Save();
+
+        Unlocked = false;
+    }
+
     public void SetProgress(int newStars,int newScore)
     {
         var increaseStars = newStars - Stars;
@@ -50,6 +63,7 @@ public class ScriptableLevelInSagaMap : ScriptableObject
         {
             Stars = newStars;
             PlayerPrefs.SetInt($"{name}_Stars",Stars);
+            PlayerPrefs.Save();
             EventManager.Trigger(new GainStarEvent(increaseStars));
         }
 
@@ -59,6 +73,7 @@ public class ScriptableLevelInSagaMap : ScriptableObject
         {
             Score = newScore;
             PlayerPrefs.SetInt($"{name}_Score",Score);
+            PlayerPrefs.Save();
             EventManager.Trigger(new GainScoreEvent(increaseScore));
         }
     }

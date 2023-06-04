@@ -74,6 +74,7 @@ public class ScriptableItemDatabase : ScriptableObject
         EventManager.AddListener<RefreshEquippedEvent>(CheckEquippedItems);
         EventManager.AddListener<EquipItemEvent>(AddEquippedItemEffects);
         EventManager.AddListener<UnequipItemEvent>(RemoveUnequippedItemEffects);
+        EventManager.AddListener<ResetPlayerPrefsEvent>(GetProgress);
 
         void IncreaseTotalStars(GainStarEvent gainStarEvent)
         {
@@ -136,7 +137,7 @@ public class ScriptableItemDatabase : ScriptableObject
     }
 
     [ContextMenu("Get Progress")]
-    public void GetProgress()
+    public void GetProgress(ResetPlayerPrefsEvent _ = null)
     {
         if (!PlayerPrefs.HasKey("Star")) PlayerPrefs.SetInt("Star", 0);
         if (!PlayerPrefs.HasKey("Gold")) PlayerPrefs.SetInt("Gold", 0);
@@ -155,7 +156,7 @@ public class ScriptableItemDatabase : ScriptableObject
         
         if (!PlayerPrefs.HasKey("LevelUnlocked")) PlayerPrefs.SetInt("LevelUnlocked", 1);
         unlockedLevels = PlayerPrefs.GetInt("LevelUnlocked");
-        if (unlockedLevels < 0)
+        if (unlockedLevels <= 0)
         {
             PlayerPrefs.SetInt("LevelUnlocked", 1);
             unlockedLevels = 1;
@@ -191,9 +192,9 @@ public class ScriptableItemDatabase : ScriptableObject
         }
     }
 
-    public void SetLevelUnlocked(int amount)
+    public void SetLevelUnlocked(int amount,bool force = false)
     {
-        if(amount < unlockedLevels) return;
+        if(amount < unlockedLevels && !force) return;
         unlockedLevels = amount;
         PlayerPrefs.SetInt("LevelUnlocked", unlockedLevels);
         PlayerPrefs.Save();
@@ -233,7 +234,6 @@ public class ScriptableItemDatabase : ScriptableObject
         return (item,0);
     }
     
-    [ContextMenu("Wish")]
     public void Wish()
     {
         if (StarCount - wishCost < 0) return;
@@ -248,14 +248,17 @@ public class ScriptableItemDatabase : ScriptableObject
 
         item.ObtainFragment();
     }
-
-    [ContextMenu("Add")]
-    private void AddChapter()
+    
+    public void UnlockedAllItems()
     {
-        AddChapterToGacha(0);
+        foreach (var item in allItems)
+        {
+            item.ForceUnlock();
+        }
+
+        PlayerPrefs.Save();
     }
     
-    [ContextMenu("Reset All Items")]
     public void LockAllItems()
     {
         foreach (var item in allItems)

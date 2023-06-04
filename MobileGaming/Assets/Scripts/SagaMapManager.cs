@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,15 +10,56 @@ public class SagaMapManager : MonoBehaviour
     [SerializeField] private Transform sagaMapPanelTr;
     private RectTransform sagaMapPanelRectTr;
     public int unlockedLevels = 1;
+
+    private void OnEnable()
+    {
+        EventManager.AddListener<ResetPlayerPrefsEvent>(ResetLevelProgress);
+        EventManager.AddListener<ResetLevelsEvent>(ResetLevels);
+        EventManager.AddListener<UpdateLevelsEvent>(UpdateLevels);
+        EventManager.AddListener<ResetPlayerPrefsEvent>(GetProgress);
+        GetProgress();
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<ResetPlayerPrefsEvent>(ResetLevelProgress);
+        EventManager.RemoveListener<ResetLevelsEvent>(ResetLevels);
+        EventManager.RemoveListener<UpdateLevelsEvent>(UpdateLevels);
+        EventManager.RemoveListener<ResetPlayerPrefsEvent>(GetProgress);
+    }
+
+    private void UpdateLevels(UpdateLevelsEvent _)
+    {
+        Debug.Log("Updating Levels");
+        GetProgress();
+    }
+
+    private void ResetLevels(ResetLevelsEvent _)
+    {
+        ResetLevelProgress(null);
+    }
+
+    private void ResetLevelProgress(ResetPlayerPrefsEvent _)
+    {
+        scriptableLevelsInSagaMap = levels.Where(level => level.LevelScriptable != null).Select(level => level.LevelScriptable)
+            .OrderBy(scriptable => scriptable.CurrentLevel).ToList();
+        
+        foreach (var scriptableLevelInSaga in scriptableLevelsInSagaMap)
+        {
+            scriptableLevelInSaga.ResetProgress();
+        }
+        
+        EventManager.Trigger(new UpdateLevelsEvent());
+    }
     
-    private void Start()
+    private void GetProgress(ResetPlayerPrefsEvent _ = null)
     {
         scriptableLevelsInSagaMap = levels.Where(level => level.LevelScriptable != null).Select(level => level.LevelScriptable)
             .OrderBy(scriptable => scriptable.CurrentLevel).ToList();
         
         if (!PlayerPrefs.HasKey("LevelUnlocked")) PlayerPrefs.SetInt("LevelUnlocked", 1);
         unlockedLevels = PlayerPrefs.GetInt("LevelUnlocked");
-        if (unlockedLevels < 0)
+        if (unlockedLevels <= 0)
         {
             PlayerPrefs.SetInt("LevelUnlocked", 1);
             unlockedLevels = 1;
@@ -41,10 +83,6 @@ public class SagaMapManager : MonoBehaviour
         }
 
         sagaMapPanelRectTr = sagaMapPanelTr.GetComponent<RectTransform>();
-        
-        
-
-        
         
         void UnlockNext(LevelDisplaySagaMap levelDisplaySagaMap)
         {
@@ -78,3 +116,5 @@ public class RefreshSagaMapLevelsEvent
         ScriptableLevelsInSagaMap = scriptableLevelInSagaMaps;
     }
 }
+
+public class UpdateLevelsEvent { }

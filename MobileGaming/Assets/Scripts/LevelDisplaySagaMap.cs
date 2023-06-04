@@ -22,7 +22,11 @@ public class LevelDisplaySagaMap : MonoBehaviour
     
     private void Start()
     {
-        if (LevelScriptable == null) return; 
+        if (LevelScriptable == null)
+        {
+            button.interactable = false;
+            return;
+        } 
         if (LevelScriptable.Fake) return; 
         
         levelText.text = $"{LevelScriptable.CurrentLevel}";
