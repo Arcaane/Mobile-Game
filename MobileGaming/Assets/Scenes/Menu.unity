@@ -28008,6 +28008,7 @@ GameObject:
   - component: {fileID: 2676340976245074494}
   - component: {fileID: 2676340976245074480}
   - component: {fileID: 2676340976245074495}
+  - component: {fileID: 2676340976245074496}
   m_Layer: 5
   m_Name: Star 2
   m_TagString: Untagged
@@ -28065,6 +28066,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2676340976245074496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2676340976245074493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b8c49ce5fee07f4f9af931fee086f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAnimPlayed: 0
+  anchor: {fileID: 0}
+  myCamera: {fileID: 0}
 --- !u!1 &2676340976288436164
 GameObject:
   m_ObjectHideFlags: 0
@@ -29335,6 +29351,7 @@ GameObject:
   - component: {fileID: 2676340976908280997}
   - component: {fileID: 2676340976908280999}
   - component: {fileID: 2676340976908280998}
+  - component: {fileID: 2676340976908281000}
   m_Layer: 5
   m_Name: Star 3
   m_TagString: Untagged
@@ -29400,6 +29417,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2676340976908280996}
   m_CullTransparentMesh: 1
+--- !u!114 &2676340976908281000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2676340976908280996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b8c49ce5fee07f4f9af931fee086f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAnimPlayed: 0
+  anchor: {fileID: 0}
+  myCamera: {fileID: 0}
 --- !u!1 &2676340976910267157
 GameObject:
   m_ObjectHideFlags: 0
@@ -29664,6 +29696,7 @@ GameObject:
   - component: {fileID: 2676340977115323973}
   - component: {fileID: 2676340977115323975}
   - component: {fileID: 2676340977115323974}
+  - component: {fileID: 2676340977115323976}
   m_Layer: 5
   m_Name: Star 1
   m_TagString: Untagged
@@ -29729,6 +29762,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2676340977115323972}
   m_CullTransparentMesh: 1
+--- !u!114 &2676340977115323976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2676340977115323972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b8c49ce5fee07f4f9af931fee086f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAnimPlayed: 0
+  anchor: {fileID: 0}
+  myCamera: {fileID: 0}
 --- !u!114 &2676340977137511632
 MonoBehaviour:
   m_ObjectHideFlags: 0

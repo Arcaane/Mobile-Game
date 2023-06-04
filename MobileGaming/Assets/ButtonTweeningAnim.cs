@@ -14,10 +14,8 @@ public class ButtonTweeningAnim : MonoBehaviour
     
     private void Start()
     {
-        isAnimPlayed = false;
         anchor = GetComponent<RectTransform>();
         myCamera = Camera.main;
-        transform.DOScale(0, 0.1f);
     }
 
     private void Update() 
@@ -34,5 +32,15 @@ public class ButtonTweeningAnim : MonoBehaviour
 
             isAnimPlayed = true;
         }
+    }
+
+    private void OnEnable()
+    {
+        transform.DOScale(0, 0.01f);
+        isAnimPlayed = false;
+    }
+
+    private void OnDisable()
+    {
     }
 }
