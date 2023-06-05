@@ -195,7 +195,9 @@ public class ClientSlot : MonoBehaviour, ILinkable
         //Debug.Log($"Received {product.data} (expecting {expectedData}) ({success})");
         EventManager.Trigger(new DeliveryEvent(this,expectedData,success));
 
-        if (!success) return;
+        UIManager.SetHumor(success == true ? Humeur.Happy : Humeur.Sad);
+        
+        if (!success) {return;}
         
         currentDataIndex++;
 

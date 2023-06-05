@@ -202,6 +202,8 @@ public class MagicLineService : SwitchableService, IMagicLineService
     {
         if(!startLinkable.Outputable || !endLinkable.Inputable) return;
         
+        UIManager.SetHumor(Humeur.Realease);
+        
         var link = Object.Instantiate(magicLinesData.linkPrefab, Vector3.zero, Quaternion.identity);
             
         var lr = link.LineRenderer;
@@ -326,6 +328,7 @@ public class MagicLineService : SwitchableService, IMagicLineService
         }
         
         drawing = magicLinesData.StartCoroutine(DrawLine());
+        UIManager.SetHumor(Humeur.Concentré);
     }
 
     private void FinishLine()

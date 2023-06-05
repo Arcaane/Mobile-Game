@@ -26,16 +26,25 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform chroneNeedleTr;
     [SerializeField] private Vector3 needleRotation = new Vector3(0, 0, 10f);
     
-    //[SerializeField] private GameObject pauseMenu;
-
     private SorcererController sorcererController;
     private MagicLinesData _magicLinesData;
     private Slider scoreSlider;
     private TextMeshProUGUI timerText;
 
+    
+    
+    [field:SerializeField] static Image sorcererVisage;
+    [field:SerializeField] static Sprite[] visages;
+
+    public Image _sV;
+    public Sprite[] _v;
+    
     Vector3Int scorePalier;
     private void Start()
     {
+        sorcererVisage = _sV;
+        visages = _v;
+        
         sorcererController = GetComponent<SorcererController>();
         _magicLinesData = GetComponent<MagicLinesData>();
         timerText = sorcererController.timeLeftText;
@@ -97,14 +106,25 @@ public class UIManager : MonoBehaviour
             starsHolder[0].rectTransform.localPosition = new Vector3(refWidth*((float)palier1/palier3),0,0);
             starsHolder[1].rectTransform.localPosition = new Vector3(refWidth*((float)palier2/palier3),0,0);
             starsHolder[2].rectTransform.localPosition = new Vector3(refWidth,0,0);
+            
+            SetHumor(Humeur.Idle);
         }
         
         void UpdateScore(LevelScoreUpdatedEvent scoreUpdatedEvent)
         {
             scoreSlider.value = ((float)scoreUpdatedEvent.Score) / scoreUpdatedEvent.Palier3;
-            
-            if(scoreUpdatedEvent.Score >= scoreUpdatedEvent.Palier1) UpdateStarUI(0);
-            if(scoreUpdatedEvent.Score >= scoreUpdatedEvent.Palier2) UpdateStarUI(1);
+
+            if (scoreUpdatedEvent.Score >= scoreUpdatedEvent.Palier1)
+            {
+                UpdateStarUI(0);
+                SetHumor(Humeur.Confiant);
+            }
+
+            if (scoreUpdatedEvent.Score >= scoreUpdatedEvent.Palier2)
+            {
+                UpdateStarUI(1);
+                SetHumor(Humeur.Extase);
+            }
             if(scoreUpdatedEvent.Score >= scoreUpdatedEvent.Palier3) UpdateStarUI(2);
             
             void UpdateStarUI(int i)
@@ -182,6 +202,11 @@ public class UIManager : MonoBehaviour
         ResumeGame();
         EventManager.Trigger(new ExitLevelEvent());
     }
+    
+    public static void SetHumor(Humeur humeur)
+    {
+        sorcererVisage.sprite = visages[(int)humeur];
+    }
 }
 
 public class ExitLevelEvent
@@ -200,4 +225,16 @@ public class PauseGameEvent
     {
         Value = value;
     }
+}
+
+public enum Humeur
+{
+    Happy = 0,
+    Sad,
+    Concentré,
+    Realease,
+    Inquet,
+    Confiant,
+    Idle,
+    Extase
 }

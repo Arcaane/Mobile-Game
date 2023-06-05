@@ -765,8 +765,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -36}
-  m_SizeDelta: {x: 139, y: 115}
+  m_AnchoredPosition: {x: 0, y: -95}
+  m_SizeDelta: {x: 256, y: 256}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &6351099516922290048
 CanvasRenderer:
@@ -790,13 +790,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 828974804, guid: 4d450cba5a53dce44af3aedd7ab751d9, type: 3}
+  m_Sprite: {fileID: 1582568997, guid: d11a31d31bf1cc943955875c4fd7c70b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1151,6 +1151,16 @@ MonoBehaviour:
   levelText: {fileID: 6507947156115867661}
   chroneNeedleTr: {fileID: 5832960432087269375}
   needleRotation: {x: 0, y: 0, z: -0.5}
+  _sV: {fileID: 6532155987147695361}
+  _v:
+  - {fileID: 1598105542, guid: d11a31d31bf1cc943955875c4fd7c70b, type: 3}
+  - {fileID: -1754238238, guid: d11a31d31bf1cc943955875c4fd7c70b, type: 3}
+  - {fileID: 1582568997, guid: d11a31d31bf1cc943955875c4fd7c70b, type: 3}
+  - {fileID: 512275702, guid: d11a31d31bf1cc943955875c4fd7c70b, type: 3}
+  - {fileID: -353937572, guid: d11a31d31bf1cc943955875c4fd7c70b, type: 3}
+  - {fileID: 21491225, guid: d11a31d31bf1cc943955875c4fd7c70b, type: 3}
+  - {fileID: -1646192652, guid: d11a31d31bf1cc943955875c4fd7c70b, type: 3}
+  - {fileID: 1031739733, guid: d11a31d31bf1cc943955875c4fd7c70b, type: 3}
 --- !u!1 &3019029251866494754
 GameObject:
   m_ObjectHideFlags: 0
