@@ -132,8 +132,8 @@ public class MagicLineService : SwitchableService, IMagicLineService
         if (scissorsButtonTr == null) return;
         if (pos.x > buttonPos.x + scissorsButtonTr.sizeDelta.x * 2) return;
         if (pos.y > buttonPos.y + scissorsButtonTr.sizeDelta.y * 2) return;
-        if (pos.x < buttonPos.x) return;
-        if (pos.y < buttonPos.y) return;
+        if (pos.x < buttonPos.x - scissorsButtonTr.sizeDelta.x/2f) return;
+        if (pos.y < buttonPos.y - scissorsButtonTr.sizeDelta.y/2f) return;
         
         scissorsButtonTr.pivot = Vector2.one * 0.5f;
         inDestroyMode = true;
