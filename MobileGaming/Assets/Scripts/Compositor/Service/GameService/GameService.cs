@@ -154,7 +154,7 @@ namespace Service
                 var sceneIndex = endLevelEvent.ScriptableLevel.NextLevelScene;
                 if (sceneIndex == 1)
                 {
-                    sceneService.LoadScene(1);
+                    GoToMenu();
                     return;
                 }
                 LoadLevelI(sceneIndex);
